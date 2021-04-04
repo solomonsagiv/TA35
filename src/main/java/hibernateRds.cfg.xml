@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://sagivwork.ca16ljkfxgo3.us-east-2.rds.amazonaws.com:3306/ta35</property>
+          <property name="hibernate.connection.username">sagivAwsMaster</property>
+        <property name="hibernate.connection.password">Solomonsagivawsmaster12</property>
+        <property name="hibernate.connection.pool_size">5</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    </session-factory>
+</hibernate-configuration>
