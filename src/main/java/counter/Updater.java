@@ -79,7 +79,7 @@ public class Updater extends MyThread implements Runnable {
 	// Write the data to the window
 	private void write() throws InterruptedException {
 
-		String streamMarket = "רצ";
+		String streamMarket = "stream";
 
 		Exp expMonth = apiObject.getExpMonth();
 		Exp expWeek = apiObject.getExpWeek();

@@ -1,6 +1,8 @@
 package api;
 
 import java.util.ArrayList;
+
+import lists.ListsService;
 import org.json.JSONObject;
 import charts.charts.FullCharts2;
 import charts.charts.MainMonthWeekChart;
@@ -47,9 +49,10 @@ public class ApiObject implements IJsonData {
 	OptionsDataUpdater optionsDataUpdater;
 
 	ListsHandler listsHandler;
+	ListsService listsService;
 	
 	private String status = null;
-	private String streamMarket = "רצ";
+	private String streamMarket = "stream";
 
 	private double interest = 0.006;
 	private boolean dbLoaded = false;
@@ -160,12 +163,16 @@ public class ApiObject implements IJsonData {
 
 		return json;
 	}
-	
+
 	public void start() {
 		getServiceHandler().getHandler().start();
 
 		logic = new Logic();
 		dataBaseService = new DataBaseService();
+
+		// Lists
+		ListsService listsService = new ListsService();
+
 
 		// Options window table
 		optionsDataCalculator = new OptionsDataCalculator();
@@ -176,7 +183,6 @@ public class ApiObject implements IJsonData {
 		if (Manifest.OPEN_CHART) {
 			openCharts();
 		}
-		
 	}
 
 	public void openCharts() {

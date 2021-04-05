@@ -1,6 +1,7 @@
 
 package counter;
 import api.ApiObject;
+import dataBase.mySql.ConnectionPool;
 
 import java.util.Scanner;
 
@@ -11,7 +12,9 @@ public class Main {
 	 */
 
 	public static void main(String[] args) throws InterruptedException {
+		ConnectionPool.getConnectionsPoolInstance();
 		ApiObject apiObject = ApiObject.getInstance();
+
 		Thread.sleep(1000);
 		new WindowTA35();
 	}

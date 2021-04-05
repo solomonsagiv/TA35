@@ -113,6 +113,8 @@ public abstract class MySqlTable implements IMyTableSql {
 
 		insertQuery.append(columns).append(values).append(vColumns);
 
+		System.out.println(insertQuery.toString());
+
 		// Insert
 		MySql.insert(insertQuery.toString());
 

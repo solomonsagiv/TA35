@@ -82,7 +82,7 @@ class DataSheet {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// Cells
 	String futureCell = "R2C1";
 	String indexCell = "R2C2";
@@ -93,8 +93,6 @@ class DataSheet {
 	String lowCell = "R2C7";
 	String baseCell = "R2C8";
 	String lastCell = "R2C9";
-	String pesimiBuyCell = "R2C10";
-	String optimiSellCell = "R2C11";
 	String futureWeekBidCell = "R9C2";
 	String futureWeekAskCell = "R9C3";
 	String futureWeekCell = "R9C4";
@@ -105,8 +103,6 @@ class DataSheet {
 	String futureAskCell = "R7C3";
 	String daysToExpCell = "R4C1";
 
-	String optimiMarginCell = "R7C5";
-	String pesimiMarginCell = "R7C6";
 
 	// Constructor
 	public DataSheet(DDEConnection ddeConnection) {
@@ -159,7 +155,7 @@ class DataSheet {
 				// Ticker datas
 				apiObject.setStatus(status);
 
-				if (apiObject.getStatus() != "טפ") {
+				if (apiObject.getStatus() != "preopen") {
 
 					Options optionsWeek = apiObject.getExpWeek().getOptions();
 					Options optionsMonth = apiObject.getExpMonth().getOptions();
@@ -183,7 +179,6 @@ class DataSheet {
 					apiObject.setLast(dbl(conversation.request(lastCell)));
 					optionsMonth.setContractBid(dbl(conversation.request(futureBidCell)));
 					optionsMonth.setContractAsk(dbl(conversation.request(futureAskCell)));
-
 				}
 
 			} catch (Exception e) {
@@ -245,7 +240,9 @@ class DataSheet {
 
 		}
 
-		private void calcStocksDelta() {
+		private void
+
+		calcStocksDelta() {
 
 			MiniStock[] miniStocks = apiObject.getStocksHandler().getStocks();
 
@@ -453,7 +450,7 @@ class OptionsSheet {
 			volume = requestInt(cell(row, 5));
 			delta = requestDouble(cell(row, 6));
 
-			if (apiObject.getStatus().contains("רצ") && apiObject.isDbLoaded()) {
+			if (apiObject.getStatus().contains("stream") && apiObject.isDbLoaded()) {
 				// Calc
 				calculator.calc(exp.getOptions(), option, last, volume, delta);
 			}

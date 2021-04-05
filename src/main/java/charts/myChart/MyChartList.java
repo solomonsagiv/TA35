@@ -12,11 +12,10 @@ public class MyChartList extends ArrayList<MyChartPoint> {
 	
     private ArrayList<Double> values = new ArrayList<>();
     private JSONArray jsonArray = new JSONArray();
-    
-    
+
     public MyChartList() {
     }
-    
+
     @Override
     public boolean add(MyChartPoint myChartPoint) {
         values.add(myChartPoint.getY());
@@ -31,7 +30,7 @@ public class MyChartList extends ArrayList<MyChartPoint> {
     public MyChartPoint getLast() throws UnknownHostException {
     	if (size() == 0) {
 			throw new IndexOutOfBoundsException();
-		}
+    	}
         return get(size() - 1);
     }
     
@@ -45,6 +44,5 @@ public class MyChartList extends ArrayList<MyChartPoint> {
     @Override
     public String toString() {
         return jsonArray.toString();
-
     }
 }

@@ -17,7 +17,6 @@ import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -63,8 +62,6 @@ import setting.Setting;
 
 public class WindowTA35 {
 
-	boolean isRunning_lastTime = false;
-
 	public JFrame frame;
 
 	Color lightGreen = new Color(12, 135, 0);
@@ -75,21 +72,14 @@ public class WindowTA35 {
 	static int s;
 	
 	public JTextField op_avg;
-	public JButton send;
-	public JButton cancelCall;
-	public JButton cancelPut;
-	public JButton cancelStock;
 	public static JTextField rando;
-	public JTextArea textArea;
 	public static JButton start;
-	public String res = "All Day";
 	public static JTextField conUpField;
 	public static JTextField conDownField;
 	public static JTextField indUpField;
 	public static JTextField indDownField;
 	public static JTextField conSumField;
 	public static JTextField indSumField;
-	public JButton demo;
 	private JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
@@ -156,6 +146,8 @@ public class WindowTA35 {
 
 		optionsDataUpdater = new OptionsDataUpdater(table, optionsCalcTable);
 		optionsDataUpdater.start();
+		
+		load_on_startup();
 	}
 
 	// Load on startup
