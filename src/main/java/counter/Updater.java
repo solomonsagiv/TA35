@@ -24,12 +24,7 @@ public class Updater extends MyThread implements Runnable {
 
 	// local variables
 	int count = 0;
-	double avgDay;
-	double avg;
-	double madadPresentDay;
 
-	LocalTime pre_trading_time = LocalTime.parse("09:31:00");
-	LocalTime start_trading_time = LocalTime.parse("09:45:00");
 	LocalTime current_time;
 
 	// Avg list
@@ -37,23 +32,14 @@ public class Updater extends MyThread implements Runnable {
 
 	// test
 	double efresh;
-	JSONArray madadNetunim;
 	double text;
 	boolean run = true;
 
 	Color lightGreen = new Color(12, 135, 0);
 	Color lightRed = new Color(229, 19, 0);
 
-	Elements pay;
-	Elements company_for_israel;
-
 	WindowTA35 window;
-
-	long startTime;
-	long endTime;
-
-	int sleepCounter = 0;
-	int sleep = 200;
+	int sleep = 500;
 
 	// Constructor
 	public Updater(WindowTA35 window) {
@@ -78,8 +64,6 @@ public class Updater extends MyThread implements Runnable {
 
 	// Write the data to the window
 	private void write() throws InterruptedException {
-
-		String streamMarket = "stream";
 
 		Exp expMonth = apiObject.getExpMonth();
 		Exp expWeek = apiObject.getExpWeek();
@@ -183,45 +167,6 @@ public class Updater extends MyThread implements Runnable {
 			f += avg_day.get(i);
 		}
 		return f / avg_day.size();
-	}
-
-	// avg
-	public void avgFunction(JTextField avgMax, ArrayList<Double> list, int listLength) {
-		if (list.size() < listLength) {
-			list.add(efresh);
-		} else {
-			list.remove(0);
-			list.add(efresh);
-		}
-
-		// for loop
-		double sum = 0;
-		for (int i = 0; i < list.size(); i++) {
-			sum += list.get(i);
-		}
-		avg = sum / list.size();
-
-		if (list.size() >= listLength) {
-			text = floor(avg, 10);
-			setColor(avgMax, text, Color.blue);
-		}
-	}
-
-	// min
-	public void lastMin(JTextField madadTEXT, ArrayList<Double> list, int listLength) throws JSONException {
-		double madad = 0;
-
-		if (list.size() < listLength) {
-			list.add(apiObject.getIndex());
-		} else {
-			madad = list.get(0);
-			list.remove(0);
-			list.add(apiObject.getIndex());
-			double madadPresent = ((apiObject.getIndex() / madad) * 100) - 100;
-
-			text = floor(madadPresent, 100);
-			setColorPresent(madadTEXT, text);
-		}
 	}
 
 	// color setting function();

@@ -112,7 +112,6 @@ public class WindowTA35 {
 	public JTextField conBidAskCounterMonthField;
 	public JTextField equalMoveField;
 	public JTextField weekStartExpField;
-	protected OptionsDataUpdater optionsDataUpdater;
 	public JTextField indexDeltaField;
 	private JButton btnDetails;
 	public JTextField expDeltaWeekField;
@@ -144,9 +143,6 @@ public class WindowTA35 {
 		updater = new Updater(this);
 		updater.getHandler().start();
 
-		optionsDataUpdater = new OptionsDataUpdater(table, optionsCalcTable);
-		optionsDataUpdater.start();
-		
 		load_on_startup();
 	}
 

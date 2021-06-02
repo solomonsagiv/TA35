@@ -42,6 +42,8 @@ public class ListsService extends MyBaseService {
     private void insert() {
     	try {
 
+            System.out.println("Lists " + hashCode());
+
             LocalDateTime now = LocalDateTime.now();
 
             week.getOptions().getOpChartList().add(new MyChartPoint(now, week.getOptions().getOp()));

@@ -10,13 +10,11 @@ import charts.myChart.MyChartList;
 import dataBase.DataBaseService;
 import exp.ExpMonth;
 import exp.ExpWeek;
-import lists.ListsHandler;
 import logic.Logic;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import options.OptionsDataCalculator;
-import options.OptionsDataUpdater;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
 
@@ -46,9 +44,6 @@ public class ApiObject implements IJsonData {
 	private static ApiObject apiObject;
 
 	OptionsDataCalculator optionsDataCalculator;
-	OptionsDataUpdater optionsDataUpdater;
-
-	ListsHandler listsHandler;
 	ListsService listsService;
 	
 	private String status = null;
@@ -126,7 +121,6 @@ public class ApiObject implements IJsonData {
 	private ApiObject() {
 		expWeek = new ExpWeek(this);
 		expMonth = new ExpMonth(this);
-		listsHandler = new ListsHandler();
 		stocksHandler = new StocksHandler();
 	}
 
@@ -171,7 +165,7 @@ public class ApiObject implements IJsonData {
 		dataBaseService = new DataBaseService();
 
 		// Lists
-		ListsService listsService = new ListsService();
+		listsService = new ListsService();
 
 
 		// Options window table
@@ -608,10 +602,6 @@ public class ApiObject implements IJsonData {
 
 	public void setRando(double rando) {
 		this.rando = rando;
-	}
-
-	public ListsHandler getListsHandler() {
-		return listsHandler;
 	}
 
 	public StocksHandler getStocksHandler() {
