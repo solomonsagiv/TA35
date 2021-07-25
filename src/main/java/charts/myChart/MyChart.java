@@ -1,335 +1,461 @@
 package charts.myChart;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
+
+import api.ApiObject;
+import charts.MyChartPanel;
+import dataBase.DataBaseHandler;
+import locals.L;
+import locals.Themes;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.*;
+import org.jfree.chart.plot.ValueMarker;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.time.DateRange;
+import org.jfree.data.time.RegularTimePeriod;
+import org.jfree.data.time.Second;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.ui.Layer;
+import org.jfree.ui.RectangleInsets;
+import threads.MyThread;
+import javax.swing.*;
+import java.awt.*;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
-import javax.swing.JLabel;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.AxisLocation;
-import org.jfree.chart.axis.DateAxis;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.Marker;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.ui.Layer;
-import org.jfree.ui.RectangleInsets;
-
-import api.ApiObject;
-import charts.MyChartPanel;
-import counter.BackGroundRunner;
-import locals.L;
-import locals.Themes;
-import threads.MyThread;
-
 public class MyChart {
-	
-	// Variables
-	XYPlot plot;
-	double[] oldVals;
-	JFreeChart chart;
-	MyChartPanel chartPanel;
-	public ChartUpdater updater;
-	public ApiObject apiObject = ApiObject.getInstance();
 
-	MyTimeSeries[] series;
-	MyProps props;
+    public XYPlot plot;
+    public ChartUpdater updater;
+    // Variables
+    double[] oldVals;
+    JFreeChart chart;
+    MyChartPanel chartPanel;
+    private MyTimeSeries[] series;
+    private MyProps props;
+    boolean load = false;
+    XYLineAndShapeRenderer renderer;
+    ApiObject apiObject;
 
-	// Constructor
-	public MyChart(MyTimeSeries[] series, MyProps props) {
-		this.series = series;
-		this.props = props;
-		oldVals = new double[series.length];
+    // Constructor
+    public MyChart(MyTimeSeries[] series, MyProps props) {
+        apiObject = ApiObject.getInstance();
+        this.series = series;
+        this.props = props;
+        oldVals = new double[series.length];
 
-		// Init
-		init(series, props);
+        // Init
+        init(series, props);
+        load_data();
 
-		// Start updater
-		updater = new ChartUpdater(series);
-		updater.getHandler().start();
-	}
+        // Start updater
+        updater = new ChartUpdater(series);
+        updater.getHandler().start();
+    }
 
-	public MyTimeSeries[] getSeries() {
-		return series;
-	}
-	
-	private void init(MyTimeSeries[] series, MyProps props) {
-		// Series
-		TimeSeriesCollection data = new TimeSeriesCollection();
-		
-		// Create the chart
-		chart = ChartFactory.createTimeSeriesChart(null, null, null, data, false, true, false);
+    private void load_data() {
+        try {
+            new Thread(() -> {
+                for (MyTimeSeries serie : series) {
+                    serie.load_data();
+                }
+            }).start();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getStackTrace());
+        }
+    }
 
-		plot = chart.getXYPlot();
-		plot.setBackgroundPaint(Color.WHITE);
-		plot.setRangeGridlinesVisible(props.getBool(ChartPropsEnum.IS_GRID_VISIBLE));
-		plot.setDomainGridlinesVisible(false);
-		plot.setRangeGridlinePaint(Color.BLACK);
-		plot.setRangeAxisLocation(AxisLocation.BOTTOM_OR_RIGHT);
-		plot.getDomainAxis().setVisible(props.getBool(ChartPropsEnum.INCLUDE_DOMAIN_AXIS));
-		plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
+    private void init(MyTimeSeries[] series, MyProps props) {
 
-		plot.getRangeAxis().setLabelPaint(Themes.BLUE);
-		plot.getRangeAxis().setLabelFont(Themes.ARIEL_15);
+        // Series
+        TimeSeriesCollection data = new TimeSeriesCollection();
 
-		DateAxis axis = (DateAxis) plot.getDomainAxis();
-		axis.setAutoRange(true);
-		axis.setDateFormatOverride(new SimpleDateFormat("HH:mm"));
+        // Create the chart
+        chart = ChartFactory.createTimeSeriesChart(null, null, null, data, false, true, false);
 
-		NumberAxis numberAxis = (NumberAxis) plot.getRangeAxis();
-		DecimalFormat df = new DecimalFormat("#0000.00");
-		df.setNegativePrefix("-");
-		numberAxis.setNumberFormatOverride(df);
-		
-		// Marker
-		if (props.get(ChartPropsEnum.MARKER) != null) {
-			plot.addRangeMarker((Marker) props.get(ChartPropsEnum.MARKER), Layer.BACKGROUND);
-		}
+        // plot style
+        plot_style();
 
-		// Range unit
-		if (props.getDouble(ChartPropsEnum.RANGE_MARGIN) > 0) {
-			ValueAxis range = plot.getRangeAxis();
-			((NumberAxis) range).setTickUnit(new NumberTickUnit(props.getDouble(ChartPropsEnum.RANGE_MARGIN)));
-		}
+        // Date axis
+        date_axis();
 
-		// Style lines
-		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-		renderer.setShapesVisible(false);
-		plot.setRenderer(renderer);
+        // Number axis
+        number_axis();
 
-		int i = 0;
-		for (MyTimeSeries serie : series) {
+        // Marker
+        marker();
 
-			// Append serie
-			data.addSeries(serie);
+        // Range margin
+        range_margin();
 
-			// Style serie
-			renderer.setSeriesShapesVisible(i, false);
-			renderer.setSeriesPaint(i, serie.getColor());
-			renderer.setSeriesStroke(i, new BasicStroke(serie.getStokeSize()));
+        // Renderer (Style series)
+        renderer(data);
 
-			i++;
-		}
+        // Update visibility
+        updateSeriesVisibility();
+    }
 
-	}
+    private void plot_style() {
+        plot = chart.getXYPlot();
+        plot.setBackgroundPaint(Color.WHITE);
+        plot.setRangeGridlinesVisible(props.getBool(ChartPropsEnum.IS_RANGE_GRID_VISIBLE));
+        plot.setDomainGridlinesVisible(props.getBool(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE));
+        plot.setRangeGridlinePaint(Color.BLACK);
+        plot.setDomainGridlinePaint(Color.BLACK);
+        plot.setRangeAxisLocation(AxisLocation.BOTTOM_OR_RIGHT);
+        plot.getDomainAxis().setVisible(props.getBool(ChartPropsEnum.INCLUDE_DOMAIN_AXIS));
+        plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
+        plot.setDomainPannable(false);
+        plot.setRangePannable(false);
+        plot.getRangeAxis().setAutoRange(true);
+        plot.getRangeAxis().setTickLabelPaint(Themes.BINANCE_GREY);
+        plot.getRangeAxis().setTickLabelFont(Themes.ARIEL_BOLD_15);
+    }
 
-	boolean load = false;
+    private void number_axis() {
+        NumberAxis numberAxis = (NumberAxis) plot.getRangeAxis();
+        DecimalFormat df = new DecimalFormat("#0000.00");
+        df.setNegativePrefix("-");
+        numberAxis.setNumberFormatOverride(df);
+    }
 
-	public ChartUpdater getUpdater() {
-		return updater;
-	}
-	
-	// ---------- Chart updater thread ---------- //
-	public class ChartUpdater extends MyThread implements Runnable {
-		
-		// Variables
-		ArrayList<Double> dots = new ArrayList<>();
-		MyTimeSeries[] series;
-		NumberAxis range;
-		
-		// Constructor
-		public ChartUpdater(MyTimeSeries[] series) {
-			super(  );
-			this.series = series;
-			setRunnable(this);
-		}
+    private void date_axis() {
+        DateAxis axis = (DateAxis) plot.getDomainAxis();
+        axis.setAutoRange(true);
+        axis.setDateFormatOverride(new SimpleDateFormat("HH:mm"));
+    }
 
-		
-		public void forceReRange() {
-			dots.clear();
-			
-			for (MyTimeSeries serie : series) {
-				dots.addAll(serie.getMyChartList().getValues());
-			}
-			
-			double min = Collections.min(dots);
-			double max = Collections.max(dots);
-			
-			updateChartRange(min, max);
-			
-		}
-		
-		@Override
-		public void run() {
+    private void renderer(TimeSeriesCollection data) {
+        // Style lines
+        renderer = new XYLineAndShapeRenderer();
+        renderer.setShapesVisible(false);
+        plot.setRenderer(renderer);
 
-			// While loop
-			while (isRun()) {
-				try {
-					
-					if (BackGroundRunner.streamMarketBool) {
-						if (!load) {
-							loadChartData();
-							load = true;
-						}
-						// Sleep
-						Thread.sleep(props.getInt(ChartPropsEnum.SLEEP));
+        int i = 0;
+        for (MyTimeSeries serie : series) {
 
-						if (props.getBool(ChartPropsEnum.IS_LIVE)) {
-							if (isDataChanged()) {
-								append();
-							}
-						} else {
-							append();
-						}
-					} else {
-						// Sleep 
-						Thread.sleep(1000);
-					}
-				} catch (InterruptedException e) {
-					break;
-				}
-			}
-		}
+            // Append serie
+            data.addSeries(serie);
+            serie.setId(i);
 
-		private void append() {
-			// Append data
-			appendDataToSeries();
-			// Change range getting bigger
-			chartRangeGettingBigFilter();
-			// Ticker
-			setTickerData();
-		}
+            // Style serie
+            renderer.setSeriesShapesVisible(i, false);
+            renderer.setSeriesPaint(i, serie.getColor());
+            renderer.setSeriesStroke(i, new BasicStroke(serie.getStokeSize()));
 
-		private void loadChartData() {
-			if (props.getBool(ChartPropsEnum.IS_LOAD_DB)) {
-				for (MyTimeSeries serie : series) {
-					serie.loadData(dots);
-				}
-			}
-		}
+            i++;
+        }
+    }
 
-		// Append data to series
-		private void appendDataToSeries() {
-			try {
+    private void range_margin() {
+        // Range unit
+        if (props.getProp(ChartPropsEnum.RANGE_MARGIN) > 0) {
+            ValueAxis range = plot.getRangeAxis();
+            ((NumberAxis) range).setTickUnit(new NumberTickUnit(props.getProp(ChartPropsEnum.RANGE_MARGIN)));
+        }
+    }
 
-				for (MyTimeSeries serie : series) {
+    public MyProps getProps() {
+        return props;
+    }
 
-					// If bigger then target Seconds
-					if (serie.getItemCount() > props.getInt(ChartPropsEnum.SECONDS)) {
-						serie.delete(0, 0);
-						dots.remove(0);
-					}
-					// Append data
-					dots.add(serie.add());
-				}
-			} catch (IndexOutOfBoundsException e) {
-				e.printStackTrace();
-			}
-		}
+    private void marker() {
+        // Marker
+        if (props.getProp(ChartPropsEnum.MARKER) != MyProps.p_null) {
+            ValueMarker marker = new ValueMarker(props.getProp(ChartPropsEnum.MARKER));
+            marker.setStroke(new BasicStroke(1.2f));
+            marker.setPaint(Color.BLACK);
+            marker.setValue(props.getProp(ChartPropsEnum.MARKER));
+            plot.addRangeMarker(marker, Layer.BACKGROUND);
+        }
+    }
 
-		public void setTickerData() {
-			if (props.getBool(ChartPropsEnum.IS_INCLUDE_TICKER)) {
-				try {
-					double min = Collections.min(dots);
-					double max = Collections.max(dots);
-					double last = dots.get(dots.size() - 1);
+    public MyTimeSeries[] getSeries() {
+        return series;
+    }
 
-					chartPanel.getHighLbl().colorForge(max, L.format10());
-					chartPanel.getLowLbl().colorForge(min, L.format10());
-					chartPanel.getLastLbl().colorForge(last, L.format10());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
+    public ChartUpdater getUpdater() {
+        return updater;
+    }
 
-		private void updateChartRange(double min, double max) {
-			try {
-				if (dots.size() > 0) {
-					range = (NumberAxis) plot.getRangeAxis();
-					range.setRange(min, max);
-				}
-			} catch (NoSuchElementException e) {
-				e.printStackTrace();
-			}
-		}
+    public void updateSeriesVisibility() {
+        for (MyTimeSeries serie : series) {
+            renderer.setSeriesVisible(serie.getId(), serie.isVisible());
+        }
+    }
 
-		public void setTextWithColor(JLabel label, double price) {
+    // ---------- Chart updater thread ---------- //
+    class ChartUpdater extends MyThread implements Runnable {
 
-			label.setText(L.str(price));
+        // Variables
+//        ArrayList< Double > dots = new ArrayList<>( );
+        MyTimeSeries[] series;
+        NumberAxis range;
+        double min, max;
 
-			if (price > 0) {
-				label.setForeground(Themes.GREEN);
-			} else {
-				label.setForeground(Themes.RED);
-			}
-		}
+        // Constructor
+        public ChartUpdater(MyTimeSeries[] series) {
+            this.series = series;
+            initListeners();
+        }
 
-		private void chartRangeGettingBigFilter() {
+        private void initListeners() {
 
-			if (dots.size() > 0) {
-				double min = Collections.min(dots) - props.getDouble(ChartPropsEnum.MARGIN);
-				double max = Collections.max(dots) + props.getDouble(ChartPropsEnum.MARGIN);
+        }
 
-				if (dots.size() > series.length * props.getInt(ChartPropsEnum.SECONDS_ON_MESS)) {
+        @Override
+        public void run() {
 
-					// If need to rearrange
-					if (max - min > props.getDouble(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS)) {
+            // While loop
+            while (isRun()) {
+                try {
+                    System.out.println(apiObject.isStarted());
+                    if (apiObject.isStarted()) {
+                        if (!load) {
+                            load = true;
+                        }
 
-						// For each serie
-						for (MyTimeSeries serie : series) {
+                        // Sleep
+                        Thread.sleep((long) props.getProp(ChartPropsEnum.SLEEP));
 
-							serie.delete(0, serie.getItemCount() - props.getInt(ChartPropsEnum.SECONDS_ON_MESS) - 1);
+                        if (props.getBool(ChartPropsEnum.IS_LIVE)) {
+                            if (isDataChanged()) {
+                                append();
+                            }
+                        } else if (props.getProp(ChartPropsEnum.RETRO_MINS) > 0) {
+                            append_retro();
+                        } else {
+                            append();
+                        }
+                    } else {
+                        // Sleep
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        }
 
-							for (int i = 0; i < dots.size()
-									- (props.getInt(ChartPropsEnum.SECONDS_ON_MESS) * series.length); i++) {
-								dots.remove(i);
-							}
+        private void append_retro() {
+            int minuts = (int) props.getProp(ChartPropsEnum.RETRO_MINS);
 
-						}
-					}
-				}
+            if (minuts > 0) {
+                for (MyTimeSeries serie : series) {
+                    new Thread(() -> {
+                        serie.clear_data();
+                        DataBaseHandler.loadSerieData(serie.load_last_x_time(minuts), serie);
+                    }).start();
+                }
+            }
+        }
 
-				// Update chart range
-				updateChartRange(min, max);
-			}
+        private void append() {
+            // Append data
+            appendDataToSeries();
+            // Change range getting bigger
+            chartRangeGettingBigFilter();
+            // Ticker
+            setTickerData();
+        }
 
-		}
+        // Append data to series
+        private void appendDataToSeries() {
+            try {
+                for (MyTimeSeries serie : series) {
+                    // If bigger then target Seconds
+                    if (serie.getItemCount() > props.getProp(ChartPropsEnum.SECONDS)) {
+                        serie.remove(0);
+                    }
+                    // Append data
+                    serie.add();
+                }
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        }
 
-		
-		// Is data changed
-		private boolean isDataChanged() {
+        public void setTickerData() {
+            if (props.getBool(ChartPropsEnum.IS_INCLUDE_TICKER)) {
+                try {
+                    double min = Collections.min(series[0].getMyValues());
+                    double max = Collections.max(series[0].getMyValues());
+                    double last = (double) series[0].getLastItem().getValue();
 
-			boolean change = false;
-			double oldVal = 0;
-			double newVal = 0;
+                    chartPanel.getHighLbl().colorForge(max, L.format10());
+                    chartPanel.getLowLbl().colorForge(min, L.format10());
+                    chartPanel.getLastLbl().colorForge(last, L.format10());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
-			int i = 0;
+        public void updateChartRange() {
+            try {
+                if (series[0].getItemCount() > 0) {
 
-			try {
+                    // X
+                    DateRange xRange = (DateRange) plot.getDomainAxis().getRange();
 
-				for (MyTimeSeries serie : series) {
+                    RegularTimePeriod startPeroid = new Second(L.formatter.parse(xRange.getLowerDate().toString()));
+                    RegularTimePeriod endPeroid = new Second(L.formatter.parse(xRange.getUpperDate().toString()));
 
-					oldVal = oldVals[i];
-					newVal = serie.getData();
+                    int startIndex = (int) L.abs(series[0].getIndex(startPeroid));
+                    int endIndex = (int) L.abs(series[0].getIndex(endPeroid));
 
-					// If 0
-					if (newVal == 0) {
-						break;
-					}
+                    ArrayList<Double> dots = new ArrayList<>();
 
-					// If new val
-					if (newVal != oldVal) {
-						oldVals[i] = newVal;
-						change = true;
-					}
-					i++;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+                    try {
+                        if (series[0].isScaled()) {
 
-			return change;
-		}
+                            for (MyTimeSeries mts : series) {
+                                for (int i = startIndex; i < endIndex; i++) {
+                                    if (mts.isVisible()) {
+                                        dots.add(mts.getScaledData(i));
+                                    }
+                                }
+                            }
 
-	}
+                            min = Collections.min(dots);
+                            max = Collections.max(dots);
+                        } else {
+
+                            for (MyTimeSeries mts : series) {
+                                for (int i = startIndex; i < endIndex; i++) {
+                                    if (mts.isVisible()) {
+                                        dots.add((Double) mts.getValue(i));
+                                    }
+                                }
+                            }
+                            min = Collections.min(dots);
+                            max = Collections.max(dots);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    min = min - (min * 0.0001);
+                    max = max + (max * 0.0001);
+
+                    range = (NumberAxis) plot.getRangeAxis();
+                    range.setRange(min, max);
+
+                }
+            } catch (NoSuchElementException | ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void updateChartRange(double min, double max) {
+            try {
+                if (series[0].getItemCount() > 0) {
+                    range = (NumberAxis) plot.getRangeAxis();
+                    range.setRange(min, max);
+                }
+            } catch (NoSuchElementException e) {
+                e.printStackTrace();
+            }
+        }
+
+        public void setTextWithColor(JLabel label, double price) {
+            label.setText(L.str(price));
+
+            if (price > 0) {
+                label.setForeground(Themes.GREEN);
+            } else {
+                label.setForeground(Themes.RED);
+            }
+        }
+
+        private void chartRangeGettingBigFilter() {
+
+            if (series[0].getItemCount() > 0) {
+
+                ArrayList<Double> dots = new ArrayList<>();
+                for (MyTimeSeries serie : series) {
+                    if (serie.isScaled()) {
+                        if (serie.isVisible()) {
+                            dots.addAll(serie.getMyValues().scaledList());
+                        }
+                    } else {
+                        if (serie.isVisible()) {
+                            dots.addAll(serie.getMyValues());
+                        }
+                    }
+                }
+
+                double min = Collections.min(dots) - props.getProp(ChartPropsEnum.MARGIN);
+                double max = Collections.max(dots) + props.getProp(ChartPropsEnum.MARGIN);
+
+                if (dots.size() > series.length * props.getProp(ChartPropsEnum.SECONDS_ON_MESS)) {
+                    // If need to rearrange
+                    if (max - min > props.getProp(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS)) {
+                        // For each serie
+                        for (MyTimeSeries serie : series) {
+                            for (int i = 0; i < serie.getItemCount() - props.getProp(ChartPropsEnum.SECONDS_ON_MESS) - 1; i++) {
+                                serie.remove(i);
+                            }
+                        }
+                    }
+                }
+                // Update chart range
+                updateChartRange(min, max);
+            }
+        }
+
+        // Is data changed
+        private boolean isDataChanged() {
+            boolean change = false;
+            double oldVal = 0;
+            double newVal = 0;
+
+            int i = 0;
+            for (MyTimeSeries serie : series) {
+
+                oldVal = oldVals[i];
+
+                try {
+                    newVal = serie.getData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    change = false;
+                    break;
+                }
+
+                // If new val
+                if (newVal != oldVal) {
+                    oldVals[i] = newVal;
+                    change = true;
+                }
+                i++;
+            }
+            return change;
+        }
+
+        @Override
+        public void initRunnable() {
+            setRunnable(this);
+        }
+
+        public void moveForward() {
+            try {
+                // X
+                DateRange xRange = (DateRange) plot.getDomainAxis().getRange();
+                RegularTimePeriod startPeroid = new Second(L.formatter.parse(xRange.getLowerDate().toString()));
+                RegularTimePeriod endPeroid = new Second(L.formatter.parse(xRange.getUpperDate().toString()));
+
+                int startIndex = (int) L.abs(series[0].getIndex(startPeroid));
+                int endIndex = (int) L.abs(series[0].getIndex(endPeroid));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -1,27 +1,16 @@
 package charts.gui;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.ParseException;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.SwingConstants;
-
-import org.jfree.data.time.RegularTimePeriod;
-import org.jfree.data.time.Second;
-
 import charts.myChart.MyChart;
 import charts.myChart.MyTimeSeries;
 import locals.L;
+import org.jfree.data.time.RegularTimePeriod;
+import org.jfree.data.time.Second;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 public class ChartSettingWindow {
 
@@ -101,13 +90,13 @@ public class ChartSettingWindow {
 
 					RegularTimePeriod period;
 
-					period = new Second(L.dateFormat.parse(selected[0]));
+					period = new Second(L.formatter.parse(selected[0]));
 
 					series.delete(period);
 					
 					initList();
 					
-					myChart.getUpdater().forceReRange();
+//					myChart.getUpdater().forceReRange();
 					
 				} catch (ParseException e) {
 					e.printStackTrace();

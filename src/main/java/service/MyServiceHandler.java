@@ -1,11 +1,11 @@
 package service;
 
+import threads.MyThread;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import threads.MyThread;
 
 public class MyServiceHandler extends MyThread implements Runnable {
 
@@ -97,5 +97,10 @@ public class MyServiceHandler extends MyThread implements Runnable {
 			sb.append(service.getName() + "\n");
 		}
 		return sb.toString();
+	}
+
+	@Override
+	public void initRunnable() {
+		setRunnable(this);
 	}
 }

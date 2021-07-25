@@ -1,22 +1,17 @@
 package counter;
 
-import java.awt.Color;
-import java.text.DecimalFormat;
-import java.time.LocalTime;
-import java.util.ArrayList;
-
-import javax.swing.JTextField;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.jsoup.select.Elements;
-
 import api.ApiObject;
 import exp.Exp;
 import locals.L;
 import locals.Themes;
 import options.Options;
 import threads.MyThread;
+
+import javax.swing.*;
+import java.awt.*;
+import java.text.DecimalFormat;
+import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class Updater extends MyThread implements Runnable {
 	
@@ -229,4 +224,8 @@ public class Updater extends MyThread implements Runnable {
 		return String.valueOf(o);
 	}
 
+	@Override
+	public void initRunnable() {
+		setRunnable(this);
+	}
 }

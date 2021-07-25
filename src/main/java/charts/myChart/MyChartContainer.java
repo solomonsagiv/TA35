@@ -1,15 +1,13 @@
 package charts.myChart;
 
-import java.awt.GridLayout;
-import java.awt.event.WindowEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.swing.JFrame;
-
 import api.ApiObject;
 import charts.MyChartPanel;
 import gui.popupsFactory.PopupsMenuFactory;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MyChartContainer extends JFrame {
 
@@ -64,7 +62,7 @@ public class MyChartContainer extends JFrame {
 	
 	private void appendCharts() {
 		for (MyChart myChart : charts) {
-			MyChartPanel chartPanel = new MyChartPanel(myChart.chart, myChart.props.getBool(ChartPropsEnum.IS_INCLUDE_TICKER));
+			MyChartPanel chartPanel = new MyChartPanel(myChart.chart, myChart.getProps().getBool(ChartPropsEnum.IS_INCLUDE_TICKER));
 			chartPanel.setPopupMenu(PopupsMenuFactory.chartMenu(chartPanel, myChart));
 			myChart.chartPanel = chartPanel;
 			add(chartPanel);

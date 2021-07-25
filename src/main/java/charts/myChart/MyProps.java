@@ -1,64 +1,10 @@
 package charts.myChart;
 
-import java.util.Properties;
-
+import myJson.MyJson;
 import org.jfree.chart.plot.Marker;
 
-public class MyProps implements Cloneable {
-
-    private Properties properties = new Properties( );
-
-    public void setProp( Enum e, Object o ) {
-        properties.put( e, o );
-    }
-
-    public Object get( Enum e ) {
-        return properties.get( e );
-    }
-
-    public double getDouble( Enum e ) {
-        return ( double ) properties.get( e );
-    }
-
-    public int getInt( Enum e ) {
-        return ( int ) properties.get( e );
-    }
-
-    public String getString( Enum e ) {
-        return ( String ) properties.get( e );
-    }
-
-    public boolean getBool( Enum e ) {
-        try {
-            return ( boolean ) properties.get( e );
-        } catch ( NullPointerException exception ) {
-            return false;
-        }
-    }
-
-    public float getFloat( Enum e ) {
-        return ( float ) properties.get( e );
-    }
-
-
-    private void setProperties( Properties properties ) {
-        this.properties = properties;
-    }
-
-    @Override
-    public String toString() {
-        return "MyProps{" +
-                "properties=" + properties +
-                '}';
-    }
-
-    @Override
-    public Object clone() {
-        MyProps props = new MyProps();
-        props.setProperties( ( Properties ) this.properties.clone() );
-        return props;
-    }
-}
+import java.util.HashMap;
+import java.util.Map;
 
 interface IChartProps {
 
@@ -85,5 +31,38 @@ interface IChartProps {
     double getChartHighInDots();
 
     int getSecondsOnMess();
+
+}
+
+public class MyProps implements Cloneable {
+
+    public static final double p_null = -10000.0;
+
+    Map<String , Double> map = new HashMap<>();
+
+    public double getProp(String key) {
+        return map.getOrDefault(key, p_null);
+    }
+
+    public boolean getBool(String key) {
+        return getProp(key) == 1;
+    }
+
+    public void setProp(String key, double value) {
+        map.put(key, value);
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    public MyJson getAsJson() {
+        MyJson json = new MyJson();
+        for (Map.Entry<String, Double> entry: map.entrySet()) {
+            json.put(entry.getKey(), entry.getValue());
+        }
+        return json;
+    }
 
 }

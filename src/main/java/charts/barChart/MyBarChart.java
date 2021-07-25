@@ -1,11 +1,8 @@
 package charts.barChart;
 
-import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-
+import api.ApiObject;
+import charts.barChart.updater.IBarChartUpdater;
+import charts.barChart.updater.StocksChartBarUpdater;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -17,11 +14,12 @@ import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RefineryUtilities;
-
-import api.ApiObject;
-import charts.barChart.updater.IBarChartUpdater;
-import charts.barChart.updater.StocksChartBarUpdater;
 import threads.MyThread;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MyBarChart extends JFrame {
 	
@@ -156,6 +154,11 @@ public class MyBarChart extends JFrame {
 					e.printStackTrace();
 				}
 			}
+		}
+
+		@Override
+		public void initRunnable() {
+			setRunnable(this);
 		}
 	}
 }

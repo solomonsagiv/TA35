@@ -46,7 +46,7 @@ public class DDEReader {
 // Get ticker data from excel
 class DataSheet {
 
-	private String excelPath = "C://Users/yosef/OneDrive/Desktop/DDE/[DDE.xlsm]Data";
+	private String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
 	private boolean run = true;
 	ApiObject apiObject = ApiObject.getInstance();
 	DDEClientConversation conversation;
@@ -276,6 +276,11 @@ class DataSheet {
 		public String cell(int row, int col) {
 			return "R" + row + "C" + col;
 		}
+
+		@Override
+		public void initRunnable() {
+
+		}
 	}
 
 	// Basket runner thread
@@ -353,6 +358,11 @@ class DataSheet {
 
 			}
 		}
+
+		@Override
+		public void initRunnable() {
+			setRunnable(this);
+		}
 	}
 }
 
@@ -361,8 +371,8 @@ class OptionsSheet {
 	DDEConnection ddeConnection;
 	ApiObject apiObject = ApiObject.getInstance();
 	Calculator calculator;
-	private String weekPath = "C://Users/yosef/OneDrive/Desktop/DDE/[DDE.xlsm]Week";
-	private String monthPath = "C://Users/yosef/OneDrive/Desktop/DDE/[DDE.xlsm]Month";
+	private String weekPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Week";
+	private String monthPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Month";
 
 	OptionsRunner weekRunner, monthRunner;
 
@@ -542,6 +552,10 @@ class OptionsSheet {
 			}
 		}
 
+		@Override
+		public void initRunnable() {
+			setRunnable(this);
+		}
 	}
 
 	// To double

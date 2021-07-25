@@ -12,8 +12,12 @@ public abstract class MyThread {
 	private Runnable runnable;
 	
 	protected ApiObject apiObject = ApiObject.getInstance();
-	
-	// Getters and setters 
+
+	public MyThread() {
+		initRunnable();
+	}
+
+	// Getters and setters
 	public boolean isRun() {
 		return run;
 	}
@@ -38,7 +42,9 @@ public abstract class MyThread {
 		this.runnable = runnable;
 		setHandler(new MyThreadHandler(this));
 	}
-	
+
+	public abstract void initRunnable();
+
 	public String getName() {
 		return name;
 	}

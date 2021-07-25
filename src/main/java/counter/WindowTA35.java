@@ -1,64 +1,32 @@
 package counter;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.SystemColor;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-
 import api.ApiObject;
 import api.Manifest;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
 import charts.barChart.StocksDeltaChart;
 import charts.barChart.updater.StocksChartBarUpdater;
-import charts.charts.FullCharts;
 import charts.charts.FullCharts2;
-import charts.charts.IndDelta_Index_Chart;
-import charts.charts.Ind_Baskets_IndDeltaNoBaskets_Chart;
-import charts.charts.Ind_Baskets_IndDelta_Chart;
-import charts.charts.Index_BA_Delta_Month_Chart;
-import charts.charts.Index_BA_Delta_Week_Chart;
-import charts.charts.Index_BA_Week_Month_Chart;
 import charts.charts.MainMonthChart;
-import charts.charts.MainMonthContractBidAsk;
 import charts.charts.MainMonthWeekChart;
 import charts.charts.MainWeekChart;
 import gui.details.DetailsWindow;
 import logic.Logic;
 import options.OptionsDataUpdater;
 import setting.Setting;
+
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class WindowTA35 {
 
@@ -469,9 +437,6 @@ public class WindowTA35 {
 					try {
 						MainMonthChart mainMonthChart = new MainMonthChart(apiObject);
 						mainMonthChart.createChart();
-
-						Index_BA_Delta_Month_Chart chart = new Index_BA_Delta_Month_Chart(apiObject);
-						chart.createChart();
 					} catch (CloneNotSupportedException exception) {
 						exception.printStackTrace();
 					}
@@ -480,17 +445,6 @@ public class WindowTA35 {
 					try {
 						MainWeekChart mainWeekChart = new MainWeekChart(apiObject);
 						mainWeekChart.createChart();
-
-						Index_BA_Delta_Week_Chart chart = new Index_BA_Delta_Week_Chart(apiObject);
-						chart.createChart();
-					} catch (CloneNotSupportedException exception) {
-						exception.printStackTrace();
-					}
-					break;
-				case "Ind delta":
-					try {
-						IndDelta_Index_Chart indDeltaChart = new IndDelta_Index_Chart(apiObject);
-						indDeltaChart.createChart();
 					} catch (CloneNotSupportedException exception) {
 						exception.printStackTrace();
 					}
@@ -506,41 +460,9 @@ public class WindowTA35 {
 					}
 					break;
 					
-				case "Ind delta baskets":
-					try {
-						Ind_Baskets_IndDelta_Chart chart = new Ind_Baskets_IndDelta_Chart(apiObject);
-						chart.createChart();
-					} catch (CloneNotSupportedException exception) {
-						exception.printStackTrace();
-					}
-					break;
-				case "Ind delta no baskets, baskets":
-					try {
-						Ind_Baskets_IndDeltaNoBaskets_Chart chart = new Ind_Baskets_IndDeltaNoBaskets_Chart(apiObject);
-						chart.createChart();
-					} catch (CloneNotSupportedException exception) {
-						exception.printStackTrace();
-					}
-					break;
 				case "Full chart 2":
 					try {
 						FullCharts2 chart = new FullCharts2(apiObject);
-						chart.createChart();
-					} catch (CloneNotSupportedException exception) {
-						exception.printStackTrace();
-					}
-					break;
-				case "B/A":
-					try {
-						Index_BA_Week_Month_Chart chart = new Index_BA_Week_Month_Chart(apiObject);
-						chart.createChart();
-					} catch (CloneNotSupportedException exception) {
-						exception.printStackTrace();
-					}
-					break;
-				case "Main month with contract":
-					try {
-						MainMonthContractBidAsk chart = new MainMonthContractBidAsk(apiObject);
 						chart.createChart();
 					} catch (CloneNotSupportedException exception) {
 						exception.printStackTrace();

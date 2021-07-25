@@ -1,19 +1,12 @@
 package gui.details;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-
 import dataBase.mySql.ConnectionPool;
 import threads.MyThread;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class DetailsWindow {
 
@@ -155,6 +148,11 @@ public class DetailsWindow {
 			optionsWeekArea.setText(apiObject.getExpWeek().getOptions().getOptionsWithDataAsJson().toString(4));
 			optionsMonthArea.setText(apiObject.getExpMonth().getOptions().getOptionsWithDataAsJson().toString(4));
 			indStocksArea.setText(apiObject.getStocksHandler().getData().toString(4));
+		}
+
+		@Override
+		public void initRunnable() {
+			setRunnable(this);
 		}
 	}
 }

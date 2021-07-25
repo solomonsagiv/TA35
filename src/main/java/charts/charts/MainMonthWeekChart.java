@@ -1,15 +1,11 @@
 package charts.charts;
 
-import java.awt.Color;
-
 import api.ApiObject;
-import charts.myChart.ChartPropsEnum;
-import charts.myChart.MyChart;
-import charts.myChart.MyChartContainer;
-import charts.myChart.MyChartCreator;
-import charts.myChart.MyProps;
-import charts.myChart.MyTimeSeries;
+import charts.myChart.*;
 import locals.Themes;
+
+import java.awt.*;
+import java.sql.ResultSet;
 
 public class MainMonthWeekChart extends MyChartCreator {
 
@@ -25,56 +21,116 @@ public class MainMonthWeekChart extends MyChartCreator {
 		// Props
 		props = new MyProps();
 		props.setProp(ChartPropsEnum.SECONDS, 900);
-		props.setProp(ChartPropsEnum.IS_INCLUDE_TICKER, false);
+		props.setProp(ChartPropsEnum.IS_INCLUDE_TICKER, -1);
 		props.setProp(ChartPropsEnum.MARGIN, .17);
 		props.setProp(ChartPropsEnum.RANGE_MARGIN, 0.0);
-		props.setProp(ChartPropsEnum.IS_GRID_VISIBLE, false);
-		props.setProp(ChartPropsEnum.IS_LOAD_DB, false);
-		props.setProp(ChartPropsEnum.IS_LIVE, true);
+		props.setProp(ChartPropsEnum.IS_GRID_VISIBLE, -1);
+		props.setProp(ChartPropsEnum.IS_LOAD_DB, -1);
+		props.setProp(ChartPropsEnum.IS_LIVE, 1);
 		props.setProp(ChartPropsEnum.SLEEP, 200);
 		props.setProp(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS, (double) INFINITE);
 		props.setProp(ChartPropsEnum.SECONDS_ON_MESS, 10);
 
 		// ----- Chart 1 ----- //
 		// Index
-		MyTimeSeries index = new MyTimeSeries("Index", Color.BLACK, 2.25f, props, null) {
+		MyTimeSeries index = new MyTimeSeries("Index") {
+			@Override
+			public ResultSet load_last_x_time(int minuts) {
+				return null;
+			}
+
 			@Override
 			public double getData() {
 				return apiObject.getIndex();
 			}
+
+			@Override
+			public void load_data() {
+
+			}
 		};
+		index.setColor(Color.BLACK);
+		index.setStokeSize(2.25f);
 
 		// Bid
-		MyTimeSeries bid = new MyTimeSeries("Bid", Themes.BLUE, 2.25f, props, null) {
+		MyTimeSeries bid = new MyTimeSeries("Bid") {
+			@Override
+			public ResultSet load_last_x_time(int minuts) {
+				return null;
+			}
+
 			@Override
 			public double getData() {
 				return apiObject.getIndex_bid();
 			}
+
+			@Override
+			public void load_data() {
+
+			}
 		};
+		bid.setColor(Themes.BLUE);
+		bid.setStokeSize(2.25f);
 
 		// Ask
-		MyTimeSeries ask = new MyTimeSeries("Ask", Themes.RED, 2.25f, props, null) {
+		MyTimeSeries ask = new MyTimeSeries("Ask") {
+			@Override
+			public ResultSet load_last_x_time(int minuts) {
+				return null;
+			}
+
 			@Override
 			public double getData() {
 				return apiObject.getIndex_ask();
 			}
+
+			@Override
+			public void load_data() {
+
+			}
 		};
+		ask.setColor(Themes.RED);
+		ask.setStokeSize(2.25f);
 
 		// Future
-		MyTimeSeries future = new MyTimeSeries("Future", Themes.GREEN, 2.25f, props, null) {
+		MyTimeSeries future = new MyTimeSeries("Future") {
+			@Override
+			public ResultSet load_last_x_time(int minuts) {
+				return null;
+			}
+
 			@Override
 			public double getData() {
 				return apiObject.getExpMonth().getOptions().getContract();
 			}
+
+			@Override
+			public void load_data() {
+
+			}
 		};
+		future.setColor(Themes.GREEN);
+		future.setStokeSize(2.25f);
 
 		// Future
-		MyTimeSeries futureWeek = new MyTimeSeries("Future week", Themes.GREEN_LIGHT, 2.25f, props, null) {
+		MyTimeSeries futureWeek = new MyTimeSeries("Future week") {
+			@Override
+			public ResultSet load_last_x_time(int minuts) {
+				return null;
+			}
+
 			@Override
 			public double getData() {
 				return apiObject.getExpWeek().getOptions().getContract();
 			}
+
+			@Override
+			public void load_data() {
+
+			}
 		};
+		futureWeek.setColor(Themes.GREEN_LIGHT);
+		futureWeek.setStokeSize(2.25f);
 
 		MyTimeSeries[] series = { index, bid, ask, future, futureWeek };
 

@@ -1,13 +1,13 @@
 package dataBase.mySql;
 
+import myJson.JsonStrings;
+import myJson.MyJson;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import myJson.JsonStrings;
-import myJson.MyJson;
 
 public class ConnectionPool implements IConnectionPool {
 	
@@ -37,9 +37,13 @@ public class ConnectionPool implements IConnectionPool {
 				// String user = "sagivAwsMaster";
 				// String password = "Solomonsagivawsmaster12";
 
-				String url = "jdbc:mysql://parisdb.chuxlqcvlex2.eu-west-3.rds.amazonaws.com:3306/";
-				String user = "sagivMasterUser";
-				String password = "Solomonsagivawsmaster12";
+//				String url = "jdbc:mysql://parisdb.chuxlqcvlex2.eu-west-3.rds.amazonaws.com:3306/";
+//				String user = "sagivMasterUser";
+//				String password = "Solomonsagivawsmaster12";
+
+				String url = "jdbc:postgresql://52.4.58.207:5432/jibe";
+				String user = "jibe_admin";
+				String password = "160633a0cd2ab5a9b82f088a77240cb68f9232a8";
 
 				connectionPool = ConnectionPool.create(url, user, password);
 			} catch (Exception e) {

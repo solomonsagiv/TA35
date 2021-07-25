@@ -1,16 +1,13 @@
 package counter;
 
-import java.awt.Color;
+import api.ApiObject;
+import org.json.JSONArray;
+import threads.MyThread;
+
+import javax.swing.*;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
-import javax.swing.JTextField;
-
-import org.json.JSONArray;
-
-import api.ApiObject;
-import arik.Arik;
-import threads.MyThread;
 
 public class BackGroundRunner extends MyThread implements Runnable {
 	
@@ -80,54 +77,56 @@ public class BackGroundRunner extends MyThread implements Runnable {
 					ask = apiObject.getIndex_ask();
 					current_time = LocalTime.now();
 					
-					// Pre trading
-					if (apiObject.getStatus().contains(preOpen) && !preTradingBool) {
-						preTradingBool = true;
-					}
 
-					System.out.println(" Running ");
-					// Auto start
-					if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
-						apiObject.setFutureOpen(apiObject.getExpMonth().getOptions().getContract());
-						apiObject.start();
-						streamMarketBool = true;
-						System.out.println(" Strated ");
-					}
-					
-					// Rando
-					if (apiObject.getStatus().contains(randomally) && !randomallyBool) {
-						streamMarketBool = false;
-						randomallyBool = true;
-						startRando();
-						apiObject.getServiceHandler().removeService(apiObject.getLogic());
-					}
-					
-					// End of rando
-					if (apiObject.getStatus().contains(endMarket) && randomallyBool) {
-						randomallyBool = false;
-						endRando();
-					}
-					
-					// End of Day
-					if (apiObject.getStatus().contains(endMarket) && current_time.isAfter(end_day) && !endMarketBool && !exported) {
-						apiObject.getDataBaseService().getSumTable().insert();
-						apiObject.close();
-						endMarketBool = true;
-						exported = true;
-						
-						Arik.getInstance().sendMessage(Arik.sagivID, "TA35: Export complited", null);
-					}
-					
-					// Reset all and close window 
-					if (apiObject.getStatus().contains(endMarket) && current_time.isAfter(LocalTime.of(18, 0, 0)) && endMarketBool && !reset) {
-						apiObject.getDataBaseService().getStatusTable().reset();
-						apiObject.getDataBaseService().getArraysTable().reset();
-						reset = true;
-					}
-					
-					if (reset) {
-						System.exit(0);
-					}
+//
+//					// Pre trading
+//					if (apiObject.getStatus().contains(preOpen) && !preTradingBool) {
+//						preTradingBool = true;
+//					}
+//
+//					System.out.println(" Running ");
+//					// Auto start
+//					if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
+//						apiObject.setFutureOpen(apiObject.getExpMonth().getOptions().getContract());
+//						apiObject.start();
+//						streamMarketBool = true;
+//						System.out.println(" Strated ");
+//					}
+//
+//					// Rando
+//					if (apiObject.getStatus().contains(randomally) && !randomallyBool) {
+//						streamMarketBool = false;
+//						randomallyBool = true;
+//						startRando();
+//						apiObject.getServiceHandler().removeService(apiObject.getLogic());
+//					}
+//
+//					// End of rando
+//					if (apiObject.getStatus().contains(endMarket) && randomallyBool) {
+//						randomallyBool = false;
+//						endRando();
+//					}
+//
+//					// End of Day
+//					if (apiObject.getStatus().contains(endMarket) && current_time.isAfter(end_day) && !endMarketBool && !exported) {
+//						apiObject.getDataBaseService().getSumTable().insert();
+//						apiObject.close();
+//						endMarketBool = true;
+//						exported = true;
+//
+//						Arik.getInstance().sendMessage(Arik.sagivID, "TA35: Export complited", null);
+//					}
+//
+//					// Reset all and close window
+//					if (apiObject.getStatus().contains(endMarket) && current_time.isAfter(LocalTime.of(18, 0, 0)) && endMarketBool && !reset) {
+//						apiObject.getDataBaseService().getStatusTable().reset();
+//						apiObject.getDataBaseService().getArraysTable().reset();
+//						reset = true;
+//					}
+//
+//					if (reset) {
+//						System.exit(0);
+//					}
 					
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -173,5 +172,10 @@ public class BackGroundRunner extends MyThread implements Runnable {
 			textField.setBackground(lightRed);
 			textField.setText(String.valueOf(text) + "% ");
 		}
+	}
+
+	@Override
+	public void initRunnable() {
+		setRunnable(this);
 	}
 }
