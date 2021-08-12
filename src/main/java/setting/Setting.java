@@ -1,34 +1,22 @@
 package setting;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.SystemColor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.SQLException;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
-
 import api.ApiObject;
 import arik.Arik;
 import counter.WindowTA35;
-import dataBase.mySql.ConnectionPool;
+import dataBase.DataBaseHandler;
+import dataBase.mySql.JibeConnectionPool;
 import exp.Exp;
 import locals.L;
 import options.Option;
 import options.Options;
 import options.OptionsDataUpdater;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 public class Setting {
 	
@@ -453,10 +441,6 @@ public class Setting {
 		JButton btnResetDb = new JButton("Reset db");
 		btnResetDb.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
-				apiObject.getDataBaseService().getStatusTable().reset();
-				apiObject.getDataBaseService().getArraysTable().reset();
-
 				Arik.getInstance().sendMessage(Arik.sagivID, "Ta35 reset success", null);
 			}
 		});
@@ -897,9 +881,6 @@ public class Setting {
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					apiObject.getDataBaseService().getStatusTable().reset();
-					apiObject.getDataBaseService().getArraysTable().reset();
-
 					Arik.getInstance().sendMessage(Arik.sagivID, "Ta35 reset success", null);
 				} catch (Exception exception) {
 					popup("Reset failed", exception);
@@ -916,9 +897,8 @@ public class Setting {
 		btnLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					apiObject.getDataBaseService().getStatusTable().load();
-					apiObject.getDataBaseService().getArraysTable().load();
-
+					DataBaseHandler dataBaseHandler = new DataBaseHandler();
+					dataBaseHandler.load_data();
 					Arik.getInstance().sendMessage(Arik.sagivID, "Ta35 load success", null);
 				} catch (Exception exception) {
 					popup("Load failed", exception);
@@ -935,7 +915,6 @@ public class Setting {
 		btnSum.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					apiObject.getDataBaseService().getSumTable().insert();
 					Arik.getInstance().sendMessage(Arik.sagivID, "Ta35 Sum line success", null);
 				} catch (Exception exception) {
 					popup("Insert sum line failed", exception);
@@ -952,7 +931,6 @@ public class Setting {
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					apiObject.getDataBaseService().getStatusTable().update();
 					Arik.getInstance().sendMessage(Arik.sagivID, "Ta35 update status success", null);
 				} catch (Exception exception) {
 					popup("Update failed", exception);
@@ -969,7 +947,7 @@ public class Setting {
 		btnNewConnection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					ConnectionPool.addNewConnection();
+					JibeConnectionPool.addNewConnection();
 				} catch (SQLException e) {
 					WindowTA35.popup("Add connection faild", e);
 				}

@@ -1,12 +1,14 @@
 package dataBase.mySql;
 
+import dataBase.TablesFactory;
+
 import java.sql.ResultSet;
 
 public class Queries {
 
     public static ResultSet get_index_serie() {
-        String query = "SELECT time, index as value FROM data.ta35_index WHERE time::date = now()::date ORDER BY time;";
-        System.out.println(query);
+        String q = "SELECT time, index as value FROM %s WHERE time::date = now()::date ORDER BY time;";
+        String query = String.format(q, TablesFactory.INDEX_TABLE);
         return MySql.select(query);
     }
 
@@ -22,5 +24,22 @@ public class Queries {
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
+    
+    public static ResultSet get_op_avg(String fut_table_location) {
+        String q = "select avg(f.futures - i.index) as value " +
+                "from %s f " +
+                "inner join %s i on f.time = i.time " +
+                "where i.time::date = now()::date;";
+
+        String query = String.format(q, fut_table_location, TablesFactory.INDEX_TABLE);
+        return MySql.select(query);
+    }
+
+    public static String insert(String table_location, double value) {
+        String q = "INSERT INTO %s (time, value) VALUES ('now()', %s)";
+        String query = String.format(q, table_location, value);
+        return query;
+    }
+
 
 }

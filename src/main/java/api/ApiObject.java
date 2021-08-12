@@ -1,45 +1,23 @@
 package api;
 
-import java.util.ArrayList;
-
-import lists.ListsService;
-import org.json.JSONObject;
 import charts.charts.FullCharts2;
 import charts.charts.MainMonthWeekChart;
 import charts.myChart.MyChartList;
 import dataBase.DataBaseService;
 import exp.ExpMonth;
 import exp.ExpWeek;
+import lists.ListsService;
 import logic.Logic;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import options.OptionsDataCalculator;
+import org.json.JSONObject;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
+import java.util.ArrayList;
 
 public class ApiObject implements IJsonData {
-	
-	public static void main(String[] args) {
-		ApiObject apiObject = ApiObject.getInstance();
-		apiObject.getDataBaseService().getDayTable().insert();
-
-		long start = System.currentTimeMillis();
-
-		for (int i = 0; i < 10; i++) {
-			new Thread(() -> {
-				apiObject.getDataBaseService().getDayTable().insert();
-			}).start();
-
-		}
-		
-		long end = System.currentTimeMillis();
-
-		long time = end - start;
-		System.out.println(time);
-
-		System.out.println("---------------");
-	}
 	
 	private static ApiObject apiObject;
 

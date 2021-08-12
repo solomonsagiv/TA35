@@ -1,84 +1,93 @@
 package dataBase;
 
-import api.ApiObject;
 import api.Manifest;
-import dataBase.mySql.tables.ArraysTable;
+import dataBase.mySql.MySql;
+import dataBase.mySql.Queries;
 import dataBase.mySql.tables.BoundsTable;
-import dataBase.mySql.tables.jsonTables.DayJsonTable;
-import dataBase.mySql.tables.jsonTables.StatusJsonTable;
-import dataBase.mySql.tables.jsonTables.SumJsonTable;
 import service.MyBaseService;
 
 public class DataBaseService extends MyBaseService {
-	
-	public static void main(String[] args) {
-		ApiObject apiObject = ApiObject.getInstance();
-		SumJsonTable jsonTable = new SumJsonTable("ta35Sum");
-		jsonTable.insert();
-	}
-	
-	ArraysTable arraysTable;
-	DayJsonTable dayTable;
-	StatusJsonTable statusTable;
-	SumJsonTable sumTable;
-	BoundsTable boundsTable;
-	
-	public DataBaseService() {
-		super();
-		arraysTable = new ArraysTable("ta35Arrays");
-		dayTable = new DayJsonTable("ta35Day");
-		statusTable = new StatusJsonTable("ta35Status");
-		sumTable = new SumJsonTable("ta35Sum");
-		boundsTable = new BoundsTable("bounds");
-	}
-	
-	@Override
-	public void go() {
-		
-		if (Manifest.DB) {
-			// Day
-			dayTable.insert();
-		}
-		
-		if (Manifest.DB_UPDATER) {
-			// Status
-			statusTable.update();
-		}
-		
-		// Arrays
-		if (sleepCount % 5000 == 0) {
-			arraysTable.insert();
-		}
-	}
-	
-	@Override
-	public String getName() {
-		return "DataBaseService";
-	}
-	
-	@Override
-	public int getSleep() {
-		return 1000;
-	}
 
-	public ArraysTable getArraysTable() {
-		return arraysTable;
-	}
+    BoundsTable boundsTable;
 
-	public BoundsTable getBoundsTable() {
-		return boundsTable;
-	}
+    double pre_bid_ask_counter_week = 0;
+    double pre_bid_ask_counter_month = 0;
+    double pre_delta_week = 0;
+    double pre_delta_month = 0;
+    double pre_ind_delta = 0;
 
-	public StatusJsonTable getStatusTable() {
-		return statusTable;
-	}
-	
-	public SumJsonTable getSumTable() {
-		return sumTable;
-	}
-	
-	public DayJsonTable getDayTable() {
-		return dayTable;
-	}
-	
+    public DataBaseService() {
+        super();
+        boundsTable = new BoundsTable("bounds");
+    }
+
+    @Override
+    public void go() {
+        if (Manifest.DB) {
+            //	 Day
+            insert_data();
+        }
+    }
+
+    private void insert_data() {
+
+        System.out.println("insert data is running");
+
+        double last_delta_week = apiObject.getExpWeek().getOptions().getDelta();
+        double last_delta_month = apiObject.getExpMonth().getOptions().getDelta();
+        double last_bid_ask_counter_week = apiObject.getExpWeek().getOptions().getConBidAskCounter();
+        double last_bid_ask_counter_month = apiObject.getExpMonth().getOptions().getConBidAskCounter();
+        double last_ind_delta = apiObject.getStocksHandler().getDelta();
+
+
+        // Delta week
+        double change = last_delta_week - pre_delta_week;
+        if (change != 0) {
+            MySql.insert(Queries.insert(TablesFactory.DELTA_WEEK_TABLE, change));
+            pre_delta_week = last_delta_week;
+        }
+
+        // Delta month
+        change = last_delta_month - pre_delta_month;
+        if (change != 0) {
+            MySql.insert(Queries.insert(TablesFactory.DELTA_MONTH_TABLE, change));
+            pre_delta_month = last_delta_month;
+        }
+
+        // Bid ask counter week
+        change = last_bid_ask_counter_week - pre_bid_ask_counter_week;
+        if (change != 0) {
+            MySql.insert(Queries.insert(TablesFactory.BID_ASK_COUNTER_WEEK_TABLE, change));
+            pre_bid_ask_counter_week = last_bid_ask_counter_week;
+        }
+
+        // Delta month
+        change = last_bid_ask_counter_month - pre_bid_ask_counter_month;
+        if (change != 0) {
+            MySql.insert(Queries.insert(TablesFactory.BID_ASK_COUNTER_MONTH_TABLE, change));
+            pre_bid_ask_counter_month = last_bid_ask_counter_month;
+        }
+
+        // Index delta
+        change = last_ind_delta - pre_ind_delta;
+        if (change != 0) {
+            MySql.insert(Queries.insert(TablesFactory.INDEX_TABLE, change));
+            pre_ind_delta = last_ind_delta;
+        }
+    }
+
+    @Override
+    public String getName() {
+        return "DataBaseService";
+    }
+
+    @Override
+    public int getSleep() {
+        return 1000;
+    }
+
+    public BoundsTable getBoundsTable() {
+        return boundsTable;
+    }
+
 }

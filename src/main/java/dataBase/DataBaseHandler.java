@@ -1,12 +1,88 @@
 package dataBase;
 
+import api.ApiObject;
 import charts.myChart.MyTimeSeries;
-
+import dataBase.mySql.MySql;
+import dataBase.mySql.Queries;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class DataBaseHandler {
+
+    public static final int SERIE_RESULT_TYPE = 0;
+    public static final int SUM_RESULT_TYPE = 1;
+    public static final int AVG_RESULT_TYPE = 2;
+
+    public static final String EXP_WEEK = "WEEK";
+    public static final String EXP_MONTH = "MONTH";
+
+    public void load_data() {
+        ApiObject apiObject = ApiObject.getInstance();
+
+        double exp_week_delta = handle_rs(get_exp_data(TablesFactory.DELTA_WEEK_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
+        double exp_month_delta = handle_rs(get_exp_data(TablesFactory.DELTA_MONTH_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
+        double ind_delta_week = handle_rs(get_exp_data(TablesFactory.INDEX_DELTA_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
+        double ind_delta_month = handle_rs(get_exp_data(TablesFactory.INDEX_DELTA_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
+        double baskets_exp_week = handle_rs(get_exp_data(TablesFactory.BASKETS, EXP_WEEK, SUM_RESULT_TYPE));
+        double baskets_exp_month = handle_rs(get_exp_data(TablesFactory.BASKETS, EXP_MONTH, SUM_RESULT_TYPE));
+
+        apiObject.getExpWeek().getExpData().setDelta(exp_week_delta);
+        apiObject.getExpMonth().getExpData().setDelta(exp_month_delta);
+        apiObject.getExpWeek().getExpData().setIndDelta(ind_delta_week);
+        apiObject.getExpMonth().getExpData().setIndDelta(ind_delta_month);
+        apiObject.getExpWeek().getExpData().setBaskets((int) baskets_exp_week);
+        apiObject.getExpMonth().getExpData().setBaskets((int) baskets_exp_month);
+        apiObject.getExpWeek().getOptions().load_op_avg(handle_rs_double_list(Queries.get_op_avg(TablesFactory.FUT_WEEK_TABLE)));
+        apiObject.getExpMonth().getOptions().load_op_avg(handle_rs_double_list(Queries.get_op_avg(TablesFactory.FUT_MONTH_TABLE)));
+    }
+
+    public ResultSet get_exp_data(String target_table_location, String exp, int result_type) {
+        String q = "";
+
+        // Serie
+        if (result_type == SERIE_RESULT_TYPE) {
+            q = "select * " +
+                    "from %s where time::date > (select date from %s where exp_type = '%s');";
+        } else if (result_type == SUM_RESULT_TYPE) {
+            // Sum
+            q = "select sum(value) as value " +
+                    "from %s where time::date > (select date from %s where exp_type = '%s');";
+        } else if (result_type == AVG_RESULT_TYPE) {
+            q =  // Sum
+                    q = "select avg(value) as value " +
+                            "from %s where time::date > (select date from %s where exp_type = '%s');";
+        }
+
+        String query = String.format(q, target_table_location, TablesFactory.EXPS_TABLE, exp.toUpperCase());
+        return MySql.select(query);
+    }
+
+    public double handle_rs(ResultSet rs) {
+         while (true) {
+             try {
+                 if (!rs.next()) break;
+                 return rs.getDouble("value");
+             } catch (SQLException throwables) {
+                 throwables.printStackTrace();
+             }
+         }
+         return 0;
+    }
+
+    public ArrayList<Double> handle_rs_double_list(ResultSet rs) {
+        ArrayList<Double> list = new ArrayList<>();
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                list.add(rs.getDouble("value"));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        return list;
+    }
 
     public static void loadSerieData(ResultSet rs, MyTimeSeries timeSeries) {
         while (true) {

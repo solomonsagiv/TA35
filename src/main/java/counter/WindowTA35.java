@@ -4,17 +4,15 @@ import api.ApiObject;
 import api.Manifest;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
-import charts.barChart.StocksDeltaChart;
-import charts.barChart.updater.StocksChartBarUpdater;
 import charts.charts.FullCharts2;
 import charts.charts.MainMonthChart;
 import charts.charts.MainMonthWeekChart;
 import charts.charts.MainWeekChart;
+import dataBase.DataBaseService;
 import gui.details.DetailsWindow;
 import logic.Logic;
 import options.OptionsDataUpdater;
 import setting.Setting;
-
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -63,6 +61,7 @@ public class WindowTA35 {
 	public int updater_id = 0;
 
 	ApiObject apiObject = ApiObject.getInstance();
+	DataBaseService dataBaseService;
 
 	// Threads
 	Updater updater;
@@ -118,15 +117,11 @@ public class WindowTA35 {
 	private void load_on_startup() {
 		try {
 			// DDE connection
-			ddeConnection = new DDEConnection(apiObject);
-			ddeConnection.start();
+//			ddeConnection = new DDEConnection(apiObject);
+//			ddeConnection.start();
 
-			apiObject.getDataBaseService().getArraysTable().load();
-			apiObject.getDataBaseService().getStatusTable().load();
-			apiObject.setDbLoaded(true);
-
-			// Options from DB
-			// loadOptionsDataFromDB();
+			// Data base service
+			dataBaseService = new DataBaseService();
 
 			// Back ground runner
 			backGroundRunner = new BackGroundRunner();
@@ -423,8 +418,7 @@ public class WindowTA35 {
 		bottomPanel.add(btnDetails);
 
 		@SuppressWarnings("unchecked")
-		JComboBox chartsCombo = new JComboBox(new String[] { "Week", "Month", "Ind delta","Stocks delta", "Ind delta baskets",
-				"Full chart", "Full chart 2", "B/A", "Main month with contract", "Main month week" });
+		JComboBox chartsCombo = new JComboBox(new String[] { "Week", "Month", "Full chart 2", "Main month week" });
 		chartsCombo.setBounds(609, 8, 182, 23);
 		bottomPanel.add(chartsCombo);
 		chartsCombo.setBorder(null);
@@ -449,17 +443,6 @@ public class WindowTA35 {
 						exception.printStackTrace();
 					}
 					break;
-				case "Stocks delta":
-					try {
-						StocksDeltaChart chart = new StocksDeltaChart("Delta", "Stocks",
-								new StocksChartBarUpdater(apiObject.getStocksHandler().getStocks()));
-						chart.createChart();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					break;
-					
 				case "Full chart 2":
 					try {
 						FullCharts2 chart = new FullCharts2(apiObject);

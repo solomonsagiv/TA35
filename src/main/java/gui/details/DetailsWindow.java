@@ -1,6 +1,6 @@
 package gui.details;
 
-import dataBase.mySql.ConnectionPool;
+import dataBase.mySql.JibeConnectionPool;
 import threads.MyThread;
 
 import javax.swing.*;
@@ -142,7 +142,7 @@ public class DetailsWindow {
 			StringBuilder text = new StringBuilder();
 			text.append(apiObject.getAsJson().toString(4));
 			text.append("/n Connection pool /n");
-			text.append(ConnectionPool.getAsJson().toString(4));
+			text.append(JibeConnectionPool.getAsJson().toString(4));
 			
 			textArea.setText(text.toString());
 			optionsWeekArea.setText(apiObject.getExpWeek().getOptions().getOptionsWithDataAsJson().toString(4));

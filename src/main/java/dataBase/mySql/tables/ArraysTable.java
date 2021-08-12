@@ -1,26 +1,18 @@
 package dataBase.mySql.tables;
 
-import java.net.UnknownHostException;
-import java.time.LocalTime;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import api.ApiObject;
 import dataBase.mySql.myBaseTables.MyArraysTable;
 import dataBase.mySql.mySqlComps.MyColumnSql;
 import dataBase.mySql.mySqlComps.MyLoadAbleColumn;
 import dataBase.mySql.mySqlComps.MySqlColumnEnum;
 import lists.MyChartPoint;
 import options.Options;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.net.UnknownHostException;
+import java.time.LocalTime;
 
 public class ArraysTable extends MyArraysTable {
-	
-	
-	public static void main(String[] args) {
-		ApiObject apiObject = ApiObject.getInstance();
-		apiObject.getDataBaseService().getStatusTable().reset();
-	}
 	
 	public ArraysTable(String name) {
 		super(name);

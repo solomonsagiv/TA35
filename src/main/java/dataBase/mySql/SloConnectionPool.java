@@ -9,43 +9,43 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConnectionPool implements IConnectionPool {
-	
+public class SloConnectionPool implements IConnectionPool {
+
 	private static final int MAX_POOL_SIZE = 25;
-	
+
 	// Instance
-	private static ConnectionPool connectionPool;
+	private static SloConnectionPool connectionPool;
 	private static int INITIAL_POOL_SIZE = 15;
 	private static String url;
 	private static String user;
 	private static String password;
 	private static List<Connection> connections;
 	private static List<Connection> usedConnections = new ArrayList<>();
-	
-	private ConnectionPool(String url, String user, String password, List<Connection> connections) {
+
+	private SloConnectionPool(String url, String user, String password, List<Connection> connections) {
 		this.url = url;
 		this.user = user;
 		this.password = password;
 		this.connections = connections;
 	}
 	
-	public static ConnectionPool getConnectionsPoolInstance() {
+	public static SloConnectionPool getConnectionsPoolInstance() {
 		if (connectionPool == null) {
 			try {
 				// String url =
 				// "jdbc:mysql://sagivwork.ca16ljkfxgo3.us-east-2.rds.amazonaws.com:3306/ta35";
 				// String user = "sagivAwsMaster";
 				// String password = "Solomonsagivawsmaster12";
+				
+				String url = "jdbc:mysql://parisdb.chuxlqcvlex2.eu-west-3.rds.amazonaws.com:3306/";
+				String user = "sagivMasterUser";
+				String password = "Solomonsagivawsmaster12";
 
-//				String url = "jdbc:mysql://parisdb.chuxlqcvlex2.eu-west-3.rds.amazonaws.com:3306/";
-//				String user = "sagivMasterUser";
-//				String password = "Solomonsagivawsmaster12";
+//				String url = "jdbc:postgresql://52.4.58.207:5432/jibe";
+//				String user = "jibe_admin";
+//				String password = "160633a0cd2ab5a9b82f088a77240cb68f9232a8";
 
-				String url = "jdbc:postgresql://52.4.58.207:5432/jibe";
-				String user = "jibe_admin";
-				String password = "160633a0cd2ab5a9b82f088a77240cb68f9232a8";
-
-				connectionPool = ConnectionPool.create(url, user, password);
+				connectionPool = SloConnectionPool.create(url, user, password);
 			} catch (Exception e) {
 				// Arik.getInstance( ).sendMessage( e.getMessage( ) + "\n" + e.getCause( ) );
 			}
@@ -54,7 +54,7 @@ public class ConnectionPool implements IConnectionPool {
 	}
 
 	@SuppressWarnings("finally")
-	public static ConnectionPool create(String url, String user, String password) throws SQLException {
+	public static SloConnectionPool create(String url, String user, String password) throws SQLException {
 
 		List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
 		try {
@@ -68,7 +68,7 @@ public class ConnectionPool implements IConnectionPool {
 				}).start();
 			}
 		} finally {
-			return new ConnectionPool(url, user, password, pool);
+			return new SloConnectionPool(url, user, password, pool);
 		}
 	}
 

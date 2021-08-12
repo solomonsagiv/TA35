@@ -1,17 +1,15 @@
 package options;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.json.JSONObject;
-
 import api.ApiObject;
 import charts.myChart.MyChartList;
 import locals.L;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
+import org.json.JSONObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class Options implements IJsonData {
 	
@@ -385,6 +383,9 @@ public class Options implements IJsonData {
 	public MyJson getFullResetJson() {
 		return new MyJson();
 	}
-	
+
+	public void load_op_avg(ArrayList<Double> op_list) {
+		getOpChartList().getValues().addAll(op_list);
+	}
 }
 
