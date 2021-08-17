@@ -39,6 +39,9 @@ public class ApiObject implements IJsonData {
 	private double bigConBid = 0;
 	private double bigConAsk = 0;
 
+	private double bid_ask_counter_avg_60 = 0;
+	private double bid_ask_counter_avg = 0;
+
 	private StocksHandler stocksHandler;
 
 	// Ticker
@@ -588,6 +591,14 @@ public class ApiObject implements IJsonData {
 
 	public MyChartList getIndBasketsList() {
 		return indBasketsList;
+	}
+
+	public double getBid_ask_counter_avg() {
+		return bid_ask_counter_avg;
+	}
+
+	public double getBid_ask_counter_avg_60() {
+		return bid_ask_counter_avg_60;
 	}
 
 	@Override

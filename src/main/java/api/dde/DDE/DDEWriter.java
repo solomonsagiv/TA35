@@ -47,7 +47,7 @@ public class DDEWriter extends Thread {
 			conversation.poke(futureDownCell, str(apiObject.getConDown()));
 			conversation.poke(indexUpCell, str(apiObject.getIndUp()));
 			conversation.poke(indexDownCell, str(apiObject.getIndDown()));
-			conversation.poke(opAvgCell, str(apiObject.getExpMonth().getOptions().getOp_avg()));
+			conversation.poke(opAvgCell, str(apiObject.getExpMonth().getOp_avg()));
 		} catch (DDEException e) {
 			System.out.println("DDE request error on updateData()");
 			e.printStackTrace();

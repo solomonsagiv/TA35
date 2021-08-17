@@ -4,10 +4,10 @@ import api.ApiObject;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 
 public class DataBaseHandler {
 
@@ -21,12 +21,12 @@ public class DataBaseHandler {
     public void load_data() {
         ApiObject apiObject = ApiObject.getInstance();
 
-        double exp_week_delta = handle_rs(get_exp_data(TablesFactory.DELTA_WEEK_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
-        double exp_month_delta = handle_rs(get_exp_data(TablesFactory.DELTA_MONTH_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
-        double ind_delta_week = handle_rs(get_exp_data(TablesFactory.INDEX_DELTA_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
-        double ind_delta_month = handle_rs(get_exp_data(TablesFactory.INDEX_DELTA_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
-        double baskets_exp_week = handle_rs(get_exp_data(TablesFactory.BASKETS, EXP_WEEK, SUM_RESULT_TYPE));
-        double baskets_exp_month = handle_rs(get_exp_data(TablesFactory.BASKETS, EXP_MONTH, SUM_RESULT_TYPE));
+        double exp_week_delta = Queries.handle_rs(get_exp_data(Factories.Tables.DELTA_WEEK_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
+        double exp_month_delta = Queries.handle_rs(get_exp_data(Factories.Tables.DELTA_MONTH_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
+        double ind_delta_week = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
+        double ind_delta_month = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
+        double baskets_exp_week = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS, EXP_WEEK, SUM_RESULT_TYPE));
+        double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS, EXP_MONTH, SUM_RESULT_TYPE));
 
         apiObject.getExpWeek().getExpData().setDelta(exp_week_delta);
         apiObject.getExpMonth().getExpData().setDelta(exp_month_delta);
@@ -34,8 +34,8 @@ public class DataBaseHandler {
         apiObject.getExpMonth().getExpData().setIndDelta(ind_delta_month);
         apiObject.getExpWeek().getExpData().setBaskets((int) baskets_exp_week);
         apiObject.getExpMonth().getExpData().setBaskets((int) baskets_exp_month);
-        apiObject.getExpWeek().getOptions().load_op_avg(handle_rs_double_list(Queries.get_op_avg(TablesFactory.FUT_WEEK_TABLE)));
-        apiObject.getExpMonth().getOptions().load_op_avg(handle_rs_double_list(Queries.get_op_avg(TablesFactory.FUT_MONTH_TABLE)));
+        apiObject.getExpWeek().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE)));
+        apiObject.getExpMonth().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE)));
     }
 
     public ResultSet get_exp_data(String target_table_location, String exp, int result_type) {
@@ -55,33 +55,8 @@ public class DataBaseHandler {
                             "from %s where time::date > (select date from %s where exp_type = '%s');";
         }
 
-        String query = String.format(q, target_table_location, TablesFactory.EXPS_TABLE, exp.toUpperCase());
+        String query = String.format(q, target_table_location, Factories.Tables.EXPS_TABLE, exp.toUpperCase());
         return MySql.select(query);
-    }
-
-    public double handle_rs(ResultSet rs) {
-         while (true) {
-             try {
-                 if (!rs.next()) break;
-                 return rs.getDouble("value");
-             } catch (SQLException throwables) {
-                 throwables.printStackTrace();
-             }
-         }
-         return 0;
-    }
-
-    public ArrayList<Double> handle_rs_double_list(ResultSet rs) {
-        ArrayList<Double> list = new ArrayList<>();
-        while (true) {
-            try {
-                if (!rs.next()) break;
-                list.add(rs.getDouble("value"));
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        return list;
     }
 
     public static void loadSerieData(ResultSet rs, MyTimeSeries timeSeries) {

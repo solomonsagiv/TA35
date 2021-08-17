@@ -1,7 +1,6 @@
 package dataBase.mySql;
 
 import arik.Arik;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -12,7 +11,7 @@ public class MySql {
     private static Statement stmt;
 
     // Insert
-    public static void insert(String query) {
+    private static void insert(String query) {
         new Thread(() -> {
             Connection conn = null;
             try {
@@ -33,6 +32,16 @@ public class MySql {
                 }
             }
         }).start();
+    }
+
+    public static void insert(String query, boolean thread) {
+        if (thread) {
+            new Thread(() -> {
+                insert(query);
+            }).start();
+        } else {
+            insert(query);
+        }
     }
 
     // Update

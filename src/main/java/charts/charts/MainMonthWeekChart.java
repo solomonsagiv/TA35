@@ -45,7 +45,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 			}
 
 			@Override
-			public void load_data() {
+			public void load() {
 
 			}
 		};
@@ -65,7 +65,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 			}
 
 			@Override
-			public void load_data() {
+			public void load() {
 
 			}
 		};
@@ -85,7 +85,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 			}
 
 			@Override
-			public void load_data() {
+			public void load() {
 
 			}
 		};
@@ -105,7 +105,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 			}
 
 			@Override
-			public void load_data() {
+			public void load() {
 
 			}
 		};
@@ -125,7 +125,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 			}
 
 			@Override
-			public void load_data() {
+			public void load() {
 
 			}
 		};

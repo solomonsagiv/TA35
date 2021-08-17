@@ -25,7 +25,7 @@ public class Options implements IJsonData {
 	
 	List<Strike> strikes;
 	HashMap<Integer, Option> optionsMap;
-	
+
 	private MyChartList deltaChartList = new MyChartList();
 	private MyChartList conBidAskCounterList = new MyChartList();
 	private MyChartList opChartList = new MyChartList();
@@ -148,21 +148,6 @@ public class Options implements IJsonData {
 		if (!contains) {
 			strikes.add(strike);
 		}
-	}
-	
-	public double getOp_avg() {
-
-		if (opChartList.getValues().size() > 0) {
-
-			double avg = 0;
-			for (Double price : opChartList.getValues()) {
-				avg += price;
-			}
-			return L.floor(avg / opChartList.getValues().size(), 100);
-		} else {
-			return 0;
-		}
-
 	}
 	
 	public Option getOptionById(int id) {
@@ -357,7 +342,6 @@ public class Options implements IJsonData {
 	public MyJson getAsJson() {
 		MyJson json = new MyJson();
 		json.put(JsonStrings.op, getOp());
-		json.put(JsonStrings.opAvg, getOp_avg());
 		json.put(JsonStrings.conBidAskCounter, getConBidAskCounter());
 		json.put(JsonStrings.delta, getDelta());
 		json.put(JsonStrings.con, getContract());
@@ -387,5 +371,6 @@ public class Options implements IJsonData {
 	public void load_op_avg(ArrayList<Double> op_list) {
 		getOpChartList().getValues().addAll(op_list);
 	}
+
 }
 

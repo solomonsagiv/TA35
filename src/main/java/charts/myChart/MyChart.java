@@ -62,7 +62,7 @@ public class MyChart {
         try {
             new Thread(() -> {
                 for (MyTimeSeries serie : series) {
-                    serie.load_data();
+                    serie.load();
                 }
             }).start();
         } catch (Exception e) {
@@ -71,7 +71,6 @@ public class MyChart {
     }
 
     private void init(MyTimeSeries[] series, MyProps props) {
-
         // Series
         TimeSeriesCollection data = new TimeSeriesCollection();
 
@@ -138,7 +137,6 @@ public class MyChart {
 
         int i = 0;
         for (MyTimeSeries serie : series) {
-
             // Append serie
             data.addSeries(serie);
             serie.setId(i);
@@ -208,18 +206,50 @@ public class MyChart {
 
         }
 
+
+        private void can_i_start() {
+            // Should load
+            if (props.getBool(ChartPropsEnum.IS_LOAD_DB)) {
+                // Load each serie
+                for (MyTimeSeries serie : series) {
+                    new Thread(() -> {
+                        serie.load_data();
+                    }).start();
+                }
+
+                while (true) {
+                    try {
+                        // Sleep
+                        Thread.sleep(500);
+                        boolean loaded = true;
+
+                        // Is load each serie
+                        for (MyTimeSeries serie : series) {
+                            if (!serie.isLoad()) {
+                                loaded = false;
+                            }
+                        }
+                        // On Done
+                        if (loaded) {
+                            return;
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
         @Override
         public void run() {
+
+            // Can start data updating
+            can_i_start();
 
             // While loop
             while (isRun()) {
                 try {
-                    System.out.println(apiObject.isStarted());
                     if (apiObject.isStarted()) {
-                        if (!load) {
-                            load = true;
-                        }
-
                         // Sleep
                         Thread.sleep((long) props.getProp(ChartPropsEnum.SLEEP));
 

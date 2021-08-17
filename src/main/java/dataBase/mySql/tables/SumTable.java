@@ -1,12 +1,12 @@
 package dataBase.mySql.tables;
 
-import java.time.LocalDate;
-
 import counter.WindowTA35;
 import dataBase.mySql.myBaseTables.MySumTable;
 import dataBase.mySql.mySqlComps.MyColumnSql;
 import dataBase.mySql.mySqlComps.MySqlColumnEnum;
 import options.Options;
+
+import java.time.LocalDate;
 
 public class SumTable extends MySumTable {
 
@@ -73,12 +73,6 @@ public class SumTable extends MySumTable {
 			@Override
 			public Integer getObject() {
 				return apiObject.getIndDown();
-			}
-		});
-		addColumn(new MyColumnSql<Double>(this, MySqlColumnEnum.opAvg) {
-			@Override
-			public Double getObject() {
-				return optionsMonth.getOp_avg();
 			}
 		});
 		addColumn(new MyColumnSql<String>(this, MySqlColumnEnum.rando) {

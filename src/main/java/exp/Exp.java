@@ -15,6 +15,11 @@ public abstract class Exp implements IJsonData {
 	private int futureStartStrike = 0;
 	private int futureEndStrike = 0;
 
+	private double op_avg_60 = 0;
+	private double op_avg = 0;
+	private double delta_avg = 0;
+	private double delta_avg_60 = 0;
+
 	public Exp(ApiObject apiObject) {
 		this.apiObject = apiObject;
 		options = new Options(apiObject);
@@ -85,7 +90,36 @@ public abstract class Exp implements IJsonData {
 	public void setExpData(ExpData expData) {
 		this.expData = expData;
 	}
-	
-	
-	
+
+	public double getOp_avg_60() {
+		return op_avg_60;
+	}
+
+	public double getOp_avg() {
+		return op_avg;
+	}
+
+	public void setOp_avg_60(double op_avg_60) {
+		this.op_avg_60 = op_avg_60;
+	}
+
+	public void setOp_avg(double op_avg) {
+		this.op_avg = op_avg;
+	}
+
+	public double getDelta_avg() {
+		return delta_avg;
+	}
+
+	public double getDelta_avg_60() {
+		return delta_avg_60;
+	}
+
+	public void setDelta_avg(double delta_avg) {
+		this.delta_avg = delta_avg;
+	}
+
+	public void setDelta_avg_60(double delta_avg_60) {
+		this.delta_avg_60 = delta_avg_60;
+	}
 }

@@ -2,6 +2,7 @@ package charts.charts;
 
 import api.ApiObject;
 import charts.myChart.*;
+import dataBase.Factories;
 import locals.Themes;
 
 import java.awt.*;
@@ -38,7 +39,7 @@ public class FullCharts2 extends MyChartCreator {
 		bottomChartProps.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
 		
 		// Index
-		MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(MyTimeSeriesFactory.INDEX_SERIE);
+		MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_SERIE);
 		indexSerie.setColor(Color.BLACK);
 		indexSerie.setStokeSize(1.5f);
 
@@ -51,12 +52,12 @@ public class FullCharts2 extends MyChartCreator {
 		// --------- Deltas ---------- //
 		
 		// Delta week
-		MyTimeSeries deltaWeekSerie = MyTimeSeriesFactory.get_serie(MyTimeSeriesFactory.DELTA_WEEK_SERIE);
+		MyTimeSeries deltaWeekSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_WEEK_SERIE);
 		deltaWeekSerie.setColor(Themes.GREEN_LIGHT);
 		deltaWeekSerie.setStokeSize(1.5f);
 		
 		// Delta month
-		MyTimeSeries deltaMonthSerie = MyTimeSeriesFactory.get_serie(MyTimeSeriesFactory.DELTA_MONTH_SERIE);
+		MyTimeSeries deltaMonthSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_SERIE);
 		deltaMonthSerie.setColor(Themes.GREEN);
 		deltaMonthSerie.setStokeSize(1.5f);
 		
