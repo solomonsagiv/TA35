@@ -6,6 +6,7 @@ import dataBase.DataBaseHandler;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import gui.popupsFactory.PopupsMenuFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -56,11 +57,19 @@ public class MyChartContainer extends JFrame {
     }
 
     private void loadBounds(HashMap<String, Integer> map) {
-        setPreferredSize(new Dimension(map.get(DataBaseHandler.x), map.get(DataBaseHandler.y)));
-        int x = map.get(DataBaseHandler.x);
-        int y = map.get(DataBaseHandler.y);
-        int width = map.get(DataBaseHandler.width);
-        int height = map.get(DataBaseHandler.height);
+        int x = 100;
+        int y = 100;
+        int width = 300;
+        int height = 300;
+        try {
+            setPreferredSize(new Dimension(map.get(DataBaseHandler.x), map.get(DataBaseHandler.y)));
+            x = map.get(DataBaseHandler.x);
+            y = map.get(DataBaseHandler.y);
+            width = map.get(DataBaseHandler.width);
+            height = map.get(DataBaseHandler.height);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         setBounds(x, y, width, height);
     }
 

@@ -117,9 +117,9 @@ public class WindowTA35 {
 	private void load_on_startup() {
 		try {
 			// DDE connection
-//			ddeConnection = new DDEConnection(apiObject);
-//			ddeConnection.start();
-
+			ddeConnection = new DDEConnection(apiObject);
+			ddeConnection.start();
+			
 			// Data base service
 			dataBaseService = new DataBaseService();
 

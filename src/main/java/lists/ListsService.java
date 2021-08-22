@@ -41,25 +41,22 @@ public class ListsService extends MyBaseService {
 
     private void insert() {
     	try {
-
-            System.out.println("Lists " + hashCode());
-
             LocalDateTime now = LocalDateTime.now();
 
-            week.getOptions().getOpChartList().add(new MyChartPoint(now, week.getOptions().getOp()));
-            month.getOptions().getOpChartList().add(new MyChartPoint(now, month.getOptions().getOp()));
-
-            week.getOptions().getDeltaChartList().add(new MyChartPoint(now, week.getOptions().getDelta()));
-            month.getOptions().getDeltaChartList().add(new MyChartPoint(now, month.getOptions().getDelta()));
-
-            week.getOptions().getConBidAskCounterList().add(new MyChartPoint(now, week.getOptions().getConBidAskCounter()));
-            month.getOptions().getConBidAskCounterList().add(new MyChartPoint(now, month.getOptions().getConBidAskCounter()));
-
-    	    apiObject.getIndexChartList().add(new MyChartPoint(now, apiObject.getIndex()));
-            apiObject.getIndBasketsList().add(new MyChartPoint(now, apiObject.getBasketUp() - apiObject.getBasketDown()));
-
-            apiObject.getStocksHandler().getIndDeltaList().add(new MyChartPoint(now, apiObject.getStocksHandler().getDelta()));
-            apiObject.getStocksHandler().getIndDeltaNoBasketsList().add(new MyChartPoint(now, apiObject.getStocksHandler().getDeltaNoBaskets()));
+//            week.getOptions().getOpChartList().add(new MyChartPoint(now, week.getOptions().getOp()));
+//            month.getOptions().getOpChartList().add(new MyChartPoint(now, month.getOptions().getOp()));
+//
+//            week.getOptions().getDeltaChartList().add(new MyChartPoint(now, week.getOptions().getDelta()));
+//            month.getOptions().getDeltaChartList().add(new MyChartPoint(now, month.getOptions().getDelta()));
+//
+//            week.getOptions().getConBidAskCounterList().add(new MyChartPoint(now, week.getOptions().getConBidAskCounter()));
+//            month.getOptions().getConBidAskCounterList().add(new MyChartPoint(now, month.getOptions().getConBidAskCounter()));
+//
+//    	    apiObject.getIndexChartList().add(new MyChartPoint(now, apiObject.getIndex()));
+//            apiObject.getIndBasketsList().add(new MyChartPoint(now, apiObject.getBasketUp() - apiObject.getBasketDown()));
+//
+//            apiObject.getStocksHandler().getIndDeltaList().add(new MyChartPoint(now, apiObject.getStocksHandler().getDelta()));
+//            apiObject.getStocksHandler().getIndDeltaNoBasketsList().add(new MyChartPoint(now, apiObject.getStocksHandler().getDeltaNoBaskets()));
 
     	} catch (Exception e) {
 			e.printStackTrace();

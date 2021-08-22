@@ -5,6 +5,7 @@ import arik.Arik;
 import dataBase.DataBaseHandler;
 import org.json.JSONArray;
 import threads.MyThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -117,16 +118,17 @@ public class BackGroundRunner extends MyThread implements Runnable {
                             exported = true;
                         }
                     } else {
-                    	try {
-                             System.out.println("Loading...");
-						DataBaseHandler dataBaseHandler = new DataBaseHandler();
-						dataBaseHandler.load_data();
-					} catch (Exception e) {
-                    		e.printStackTrace();
-						Arik.getInstance().sendMessage(Arik.sagivID, "TA35 load data failed", null);
-					}
-                    	apiObject.setDbLoaded(true);
-				}
+                        try {
+                            System.out.println("Loading...");
+                            DataBaseHandler dataBaseHandler = new DataBaseHandler();
+                            dataBaseHandler.load_data();
+                            System.out.println("Loaded!!!");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Arik.getInstance().sendMessage(Arik.sagivID, "TA35 load data failed", null);
+                        }
+                        apiObject.setDbLoaded(true);
+                    }
                 } catch (Exception e) {
                     // TODO: handle exception
                 }

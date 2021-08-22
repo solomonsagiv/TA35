@@ -43,6 +43,7 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
         this.name = (String) name;
         this.series_type = (String) name;
         myValues = new MyDoubleList();
+        apiObject = ApiObject.getInstance();
     }
 
     // Constructor
