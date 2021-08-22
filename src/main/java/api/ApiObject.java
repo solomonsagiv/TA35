@@ -31,6 +31,7 @@ public class ApiObject implements IJsonData {
 	private boolean dbLoaded = false;
 	private double rando = 0;
 
+
 	private MyServiceHandler serviceHandler;
 	private DataBaseService dataBaseService;
 	private Logic logic;
@@ -97,12 +98,14 @@ public class ApiObject implements IJsonData {
 	private String export_dir = "C://Users/user/Desktop/Work/Data history/TA35/";
 
 	private boolean started;
+	private String name;
 
 	// Private constructor
 	private ApiObject() {
 		expWeek = new ExpWeek(this);
 		expMonth = new ExpMonth(this);
 		stocksHandler = new StocksHandler();
+		this.name = "ta35";
 	}
 
 	// Get instance
@@ -651,4 +654,8 @@ public class ApiObject implements IJsonData {
 	public MyJson getFullResetJson() {
 		return new MyJson();
 	}
+
+    public Object getName() {
+		return name;
+    }
 }

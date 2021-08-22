@@ -18,6 +18,12 @@ public class DataBaseHandler {
     public static final String EXP_WEEK = "WEEK";
     public static final String EXP_MONTH = "MONTH";
 
+    public static final String x = "x";
+    public static final String y = "y";
+    public static final String width = "width";
+    public static final String height = "height";
+
+
     public void load_data() {
         ApiObject apiObject = ApiObject.getInstance();
 
@@ -57,6 +63,10 @@ public class DataBaseHandler {
 
         String query = String.format(q, target_table_location, Factories.Tables.EXPS_TABLE, exp.toUpperCase());
         return MySql.select(query);
+    }
+
+    public static void insert_or_update_bounds(int x, int y, int width, int height) {
+
     }
 
     public static void loadSerieData(ResultSet rs, MyTimeSeries timeSeries) {

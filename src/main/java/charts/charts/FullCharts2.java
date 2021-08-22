@@ -50,28 +50,53 @@ public class FullCharts2 extends MyChartCreator {
 		MyChart indexChart = new MyChart(series, props);
 
 		// --------- Deltas ---------- //
-		
+
 		// Delta week
 		MyTimeSeries deltaWeekSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_WEEK_SERIE);
 		deltaWeekSerie.setColor(Themes.GREEN_LIGHT);
 		deltaWeekSerie.setStokeSize(1.5f);
+
+		// Delta week avg 60
+		MyTimeSeries delta_week_avg_60_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_WEEK_AVG_60_SERIE);
+		delta_week_avg_60_serie.setColor(Themes.PURPLE);
+		delta_week_avg_60_serie.setStokeSize(1.1f);
 		
 		// Delta month
 		MyTimeSeries deltaMonthSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_SERIE);
 		deltaMonthSerie.setColor(Themes.GREEN);
 		deltaMonthSerie.setStokeSize(1.5f);
+
+		// Delta week
+		MyTimeSeries delta_month_avg_60_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_AVG_60_SERIE);
+		delta_month_avg_60_serie.setColor(Themes.PURPLE);
+		delta_month_avg_60_serie.setStokeSize(1.1f);
 		
-		series = new MyTimeSeries[2];
+		series = new MyTimeSeries[4];
 		series[0] = deltaWeekSerie;
 		series[1] = deltaMonthSerie;
+		series[2] = delta_month_avg_60_serie;
+		series[3] = delta_week_avg_60_serie;
 			
 		// Chart
 		MyChart deltaWeekChart = new MyChart(series, props);
 
+
+		// -------------------- OP AVG ------------------ //
+		// Index
+		MyTimeSeries op_avg_week_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
+		op_avg_week_60.setColor(Themes.BLUE);
+		op_avg_week_60.setStokeSize(1.5f);
+
+		series = new MyTimeSeries[1];
+		series[0] = op_avg_week_60;
+
+		// Chart
+		MyChart op_avg_chart = new MyChart(series, props);
+
 		// -------------------- Chart -------------------- //
 
 		// ----- Charts ----- //
-		MyChart[] charts = { indexChart, deltaWeekChart };
+		MyChart[] charts = { indexChart, deltaWeekChart, op_avg_chart };
 
 		// ----- Container ----- //
 		MyChartContainer chartContainer = new MyChartContainer(charts, "Delta chart");

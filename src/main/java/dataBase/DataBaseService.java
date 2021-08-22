@@ -3,7 +3,6 @@ package dataBase;
 import api.Manifest;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
-import dataBase.mySql.tables.BoundsTable;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import service.MyBaseService;
@@ -11,8 +10,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 
 public class DataBaseService extends MyBaseService {
-
-    BoundsTable boundsTable;
 
     double bid_ask_counter_week_0 = 0;
     double bid_ask_counter_month_0 = 0;
@@ -28,7 +25,6 @@ public class DataBaseService extends MyBaseService {
 
     public DataBaseService() {
         super();
-        boundsTable = new BoundsTable("bounds");
     }
 
     @Override
@@ -140,12 +136,6 @@ public class DataBaseService extends MyBaseService {
     public int getSleep() {
         return 1000;
     }
-
-    public BoundsTable getBoundsTable() {
-        return boundsTable;
-    }
-
-
 
     void insert_data_retro(ArrayList<MyTimeStampObject> list, String table_location) {
         if (list.size() > 0) {

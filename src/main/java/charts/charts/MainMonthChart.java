@@ -3,7 +3,6 @@ package charts.charts;
 import api.ApiObject;
 import charts.myChart.*;
 import locals.Themes;
-
 import java.awt.*;
 import java.sql.ResultSet;
 

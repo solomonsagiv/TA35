@@ -1,10 +1,12 @@
 package dataBase.mySql;
 
+import api.ApiObject;
+import dataBase.DataBaseHandler;
 import dataBase.Factories;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Queries {
 
@@ -26,7 +28,7 @@ public class Queries {
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
-    
+
     public static ResultSet get_op_avg(String fut_table_location) {
         String q = "select avg(f.futures - i.index) as value " +
                 "from %s f " +
@@ -80,6 +82,38 @@ public class Queries {
         }
         return 0;
     }
+    
+    public static HashMap<String, Integer> get_bounds(String title) {
+
+        ApiObject apiObject = ApiObject.getInstance();
+
+        int width = 300, height = 300, x = 100, y = 100;
+
+        String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", apiObject.getName(), title);
+        ResultSet rs = MySql.select(query);
+
+        while (true) {
+            try {
+                if (!rs.next()) break;
+
+                x = rs.getInt("x");
+                y = rs.getInt("y");
+                width = rs.getInt("width");
+                height = rs.getInt("height");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            HashMap<String, Integer> map = new HashMap<>();
+            map.put(DataBaseHandler.x, x);
+            map.put(DataBaseHandler.y, y);
+            map.put(DataBaseHandler.width, width);
+            map.put(DataBaseHandler.height, height);
+
+            return map;
+        }
+        return null;
+    }
 
     public static ArrayList<Double> handle_rs_double_list(ResultSet rs) {
         ArrayList<Double> list = new ArrayList<>();
@@ -93,7 +127,6 @@ public class Queries {
         }
         return list;
     }
-
 
 
 }
