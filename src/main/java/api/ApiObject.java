@@ -6,7 +6,6 @@ import charts.myChart.MyChartList;
 import dataBase.DataBaseService;
 import exp.ExpMonth;
 import exp.ExpWeek;
-import lists.ListsService;
 import logic.Logic;
 import myJson.IJsonData;
 import myJson.JsonStrings;
