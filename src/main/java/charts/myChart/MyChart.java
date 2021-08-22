@@ -203,10 +203,6 @@ public class MyChart {
             initListeners();
         }
 
-        private void initListeners() {
-
-        }
-
         private void can_i_start() {
             // Should load
             if (props.getBool(ChartPropsEnum.IS_LOAD_DB)) {
@@ -221,6 +217,7 @@ public class MyChart {
                     try {
                         // Sleep
                         Thread.sleep(500);
+                        boolean loaded = true;
 
                         // Is load each serie
                         for (MyTimeSeries serie : series) {
@@ -228,12 +225,8 @@ public class MyChart {
                                 loaded = false;
                             }
                         }
-
-                        System.out.println(loaded  + " My chart can i start " + series[0].getName());
-                        
                         // On Done
                         if (loaded) {
-                            System.out.println("Return " + series[0].getName());
                             return;
                         }
                     } catch (InterruptedException e) {
@@ -243,11 +236,17 @@ public class MyChart {
             }
         }
 
+        private void initListeners() {
+
+        }
+
         @Override
         public void run() {
 
             // Can start data updating
+            System.out.println(series[0].getName() + " Waiting to start " );
             can_i_start();
+            System.out.println(series[0].getName() + " Can start");
 
             // While loop
             while (isRun()) {

@@ -49,7 +49,6 @@ public class Queries {
         return MySql.select(query);
     }
 
-
     public static ResultSet get_serie_avg(String table_location) {
         String q = "select avg(value) as value " +
                 "from %s;";
@@ -82,7 +81,7 @@ public class Queries {
         }
         return 0;
     }
-    
+
     public static HashMap<String, Integer> get_bounds(String title) {
 
         ApiObject apiObject = ApiObject.getInstance();
@@ -127,6 +126,4 @@ public class Queries {
         }
         return list;
     }
-
-
 }
