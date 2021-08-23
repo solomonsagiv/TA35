@@ -17,12 +17,18 @@ public class DataBaseService extends MyBaseService {
     double delta_week_0 = 0;
     double delta_month_0 = 0;
     double ind_delta_0 = 0;
+    double index_0 = 0;
+    double fut_week_0 = 0;
+    double fut_month_0 = 0;
 
     ArrayList<MyTimeStampObject> bid_ask_counter_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> bid_ask_counter_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> delta_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> delta_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> ind_delta_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> index_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> fut_week_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> fut_month_timestamp = new ArrayList<>();
 
     public DataBaseService() {
         super();
@@ -43,6 +49,9 @@ public class DataBaseService extends MyBaseService {
         double bid_ask_counter_week = apiObject.getExpWeek().getOptions().getConBidAskCounter();
         double bid_ask_counter_month = apiObject.getExpMonth().getOptions().getConBidAskCounter();
         double ind_delta = apiObject.getStocksHandler().getDelta();
+        double index = apiObject.getIndex();
+        double fut_week = apiObject.getExpWeek().getOptions().getContract();
+        double fut_month = apiObject.getExpMonth().getOptions().getContract();
 
         // Delta week
         double change = delta_week - delta_week_0;
@@ -79,6 +88,27 @@ public class DataBaseService extends MyBaseService {
             ind_delta_timestamp.add(new MyTimeStampObject(Instant.now(), change));
         }
 
+        // Index
+        change = index - index_0;
+        if (change != 0) {
+            index_0 = index;
+            index_timestamp.add(new MyTimeStampObject(Instant.now(), index));
+        }
+
+        // Fut week
+        change = fut_week - fut_week_0;
+        if (change != 0) {
+            fut_week_0 = fut_week;
+            fut_week_timestamp.add(new MyTimeStampObject(Instant.now(), fut_week));
+        }
+
+        // Fut month
+        change = fut_month - fut_month_0;
+        if (change != 0) {
+            fut_month_0 = fut_month;
+            fut_month_timestamp.add(new MyTimeStampObject(Instant.now(), fut_month));
+        }
+
         // Grabb data and insert data
         if (sleepCount % 15000 == 0) {
             insert_data();
@@ -93,6 +123,9 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro(bid_ask_counter_week_timestamp, Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE);
             insert_data_retro(bid_ask_counter_month_timestamp, Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE);
             insert_data_retro(ind_delta_timestamp, Factories.Tables.INDEX_DELTA_TABLE);
+            insert_data_retro(index_timestamp, Factories.Tables.INDEX_TABLE);
+            insert_data_retro(fut_week_timestamp, Factories.Tables.FUT_WEEK_TABLE);
+            insert_data_retro(fut_month_timestamp, Factories.Tables.FUT_MONTH_TABLE);
         }).start();
     }
 
