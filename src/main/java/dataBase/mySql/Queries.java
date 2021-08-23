@@ -10,12 +10,6 @@ import java.util.HashMap;
 
 public class Queries {
 
-    public static ResultSet get_index_serie() {
-        String q = "SELECT time, index as value FROM %s WHERE time::date = now()::date ORDER BY time;";
-        String query = String.format(q, Factories.Tables.INDEX_TABLE);
-        return MySql.select(query);
-    }
-
     public static ResultSet get_serie(String table_location) {
         String q = "SELECT * FROM %s where time::date = now()::date ORDER BY time;";
         String query = String.format(q, table_location);
@@ -30,7 +24,7 @@ public class Queries {
     }
 
     public static ResultSet get_op_avg(String fut_table_location) {
-        String q = "select avg(f.futures - i.index) as value " +
+        String q = "select avg(f.value - i.value) as value " +
                 "from %s f " +
                 "inner join %s i on f.time = i.time " +
                 "where i.time::date = now()::date;";
@@ -40,7 +34,7 @@ public class Queries {
     }
 
     public static ResultSet get_op_avg(String fut_table_location, int min) {
-        String q = "select avg(f.futures - i.index) over (ORDER BY i.time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
+        String q = "select avg(f.value - i.value) over (ORDER BY i.time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s f " +
                 "inner join %s i on f.time = i.time " +
                 "where i.time::date = now()::date;";

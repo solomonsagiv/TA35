@@ -29,7 +29,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_index_serie();
+                        ResultSet rs = Queries.get_serie(Factories.Tables.INDEX_TABLE);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -154,7 +154,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() throws UnknownHostException {
-                        return apiObject.getExpWeek().getDelta_avg();
+                        return apiObject.getExpMonth().getDelta_avg();
                     }
 
                     @Override
@@ -173,7 +173,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() throws UnknownHostException {
-                        return apiObject.getExpWeek().getDelta_avg_60();
+                        return apiObject.getExpMonth().getDelta_avg_60();
                     }
 
                     @Override
@@ -192,7 +192,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() throws UnknownHostException {
-                        return apiObject.getExpWeek().getOp_avg();
+                        return apiObject.getExpMonth().getOp_avg();
                     }
 
                     @Override
@@ -212,7 +212,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() throws UnknownHostException {
-                        return apiObject.getExpWeek().getOp_avg_60();
+                        return apiObject.getExpMonth().getOp_avg_60();
                     }
 
                     @Override

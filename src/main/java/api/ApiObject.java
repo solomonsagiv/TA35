@@ -30,7 +30,6 @@ public class ApiObject implements IJsonData {
 	private double rando = 0;
 
 	private MyServiceHandler serviceHandler;
-	private DataBaseService dataBaseService;
 	private Logic logic;
 
 	private int bigConBidAskCounter = 0;
@@ -143,7 +142,6 @@ public class ApiObject implements IJsonData {
 		getServiceHandler().getHandler().start();
 
 		logic = new Logic();
-		dataBaseService = new DataBaseService();
 
 		// Options window table
 		optionsDataCalculator = new OptionsDataCalculator();
@@ -533,13 +531,6 @@ public class ApiObject implements IJsonData {
 			serviceHandler = new MyServiceHandler();
 		}
 		return serviceHandler;
-	}
-
-	public DataBaseService getDataBaseService() {
-		if (dataBaseService == null) {
-			dataBaseService = new DataBaseService();
-		}
-		return dataBaseService;
 	}
 
 	public Logic getLogic() {

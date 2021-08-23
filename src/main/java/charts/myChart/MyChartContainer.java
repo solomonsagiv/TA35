@@ -2,15 +2,15 @@ package charts.myChart;
 
 import api.ApiObject;
 import charts.MyChartPanel;
-import dataBase.DataBaseHandler;
 import dataBase.mySql.MySql;
-import dataBase.mySql.Queries;
-import gui.popupsFactory.PopupsMenuFactory;
-
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.util.HashMap;
+import java.awt.event.*;
+import java.lang.reflect.Field;
+import java.sql.ResultSet;
 
 public class MyChartContainer extends JFrame {
 
@@ -19,22 +19,26 @@ public class MyChartContainer extends JFrame {
     // Index series array
     MyChart[] charts;
 
-    ApiObject apiObject = ApiObject.getInstance();
     String name;
 
+    ApiObject apiObject;
+
     public MyChartContainer(MyChart[] charts, String name) {
+        this.apiObject = ApiObject.getInstance();
         this.charts = charts;
         this.name = name;
         init();
     }
 
-
+    @Override
     public String getName() {
         return name;
     }
 
     private void init() {
-        setTitle(name);
+
+        // Load bounds
+        loadBounds();
 
         // On Close
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -48,57 +52,132 @@ public class MyChartContainer extends JFrame {
 
         // Append charts
         appendCharts();
+
     }
 
     public void create() {
         pack();
         setVisible(true);
-        loadBounds(Queries.get_bounds(getTitle()));
-    }
-
-    private void loadBounds(HashMap<String, Integer> map) {
-        new Thread(() -> {
-            int x = 100;
-            int y = 100;
-            int width = 300;
-            int height = 300;
-            try {
-                setPreferredSize(new Dimension(map.get(DataBaseHandler.x), map.get(DataBaseHandler.y)));
-                x = map.get(DataBaseHandler.x);
-                y = map.get(DataBaseHandler.y);
-                width = map.get(DataBaseHandler.width);
-                height = map.get(DataBaseHandler.height);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            setBounds(x, y, width, height);
-        }).start();
     }
 
     private void appendCharts() {
         for (MyChart myChart : charts) {
             MyChartPanel chartPanel = new MyChartPanel(myChart.chart, myChart.getProps().getBool(ChartPropsEnum.IS_INCLUDE_TICKER));
-            chartPanel.setPopupMenu(PopupsMenuFactory.chartMenu(chartPanel, myChart));
             myChart.chartPanel = chartPanel;
+
+            initProps(chartPanel);
+            addPan(chartPanel);
+            mouseListener(chartPanel, myChart);
+            mouseWheel(chartPanel, myChart);
             add(chartPanel);
         }
     }
 
-    public void removeChart(MyChart chart) {
-        remove(chart.chartPanel);
+    private void initProps(MyChartPanel chartPanel) {
+        chartPanel.setMouseZoomable(true);
+        chartPanel.setMouseWheelEnabled(true);
+        chartPanel.setDomainZoomable(true);
+        chartPanel.setRangeZoomable(false);
+        chartPanel.setZoomTriggerDistance(Integer.MAX_VALUE);
+        chartPanel.setFillZoomRectangle(true);
+        chartPanel.setZoomAroundAnchor(true);
+    }
+
+    private void mouseWheel(MyChartPanel chartPanel, MyChart myChart) {
+        chartPanel.addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                myChart.getUpdater().updateChartRange();
+            }
+        });
+    }
+
+    private void mouseListener(MyChartPanel chartPanel, MyChart myChart) {
+
+        // 2 Clicks
+        chartPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (e.getClickCount() == 2) {
+                    DateAxis axis = (DateAxis) myChart.plot.getDomainAxis();
+                    NumberAxis rangeAxis = (NumberAxis) myChart.plot.getRangeAxis();
+
+                    rangeAxis.setAutoRange(true);
+                    axis.setAutoRange(true);
+                }
+            }
+        });
+
+        // Mouse release
+        chartPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
+                System.out.println("Mouse released");
+                myChart.getUpdater().updateChartRange();
+            }
+        });
+
+        chartPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    new ChartFilterWindow("Filter", myChart);
+                }
+            }
+        });
+    }
+
+    private void addPan(MyChartPanel chartPanel) {
+        try {
+            Field mask = ChartPanel.class.getDeclaredField("panMask");
+            mask.setAccessible(true);
+            mask.set(chartPanel, 0);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadBounds() {
+        new Thread(() -> {
+            try {
+                int width = 100, height = 100, x = 100, y = 100;
+
+                String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", apiObject.getName(), getName());
+                ResultSet rs = MySql.select(query);
+
+                while (rs.next()) {
+                    x = rs.getInt("x");
+                    y = rs.getInt("y");
+                    width = rs.getInt("width");
+                    height = rs.getInt("height");
+                }
+
+                setPreferredSize(new Dimension(width, height));
+                setBounds(x, y, width, height);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     public void onClose(WindowEvent e) {
+        // Update bound to database
+        insetOrUpdateBounds();
+
         for (MyChart myChart : charts) {
             myChart.getUpdater().getHandler().close();
         }
         dispose();
-        update_bounds();
     }
 
-    private void update_bounds() {
+    private void insetOrUpdateBounds() {
         try {
-            String query = String.format("SELECT sagiv.update_bounds('%s', '%s', %s, %s, %s, %s);", apiObject.getName(), getTitle(), getX(), getY(), getWidth(), getHeight());
+            String query = String.format("SELECT sagiv.update_bounds('%s', '%s', %s, %s, %s, %s);", apiObject.getName(), getName(), getX(), getY(), getWidth(), getHeight());
             MySql.select(query);
         } catch (Exception e) {
             e.printStackTrace();

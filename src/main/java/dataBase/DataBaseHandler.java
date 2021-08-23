@@ -23,7 +23,6 @@ public class DataBaseHandler {
     public static final String width = "width";
     public static final String height = "height";
 
-
     public void load_data() {
         ApiObject apiObject = ApiObject.getInstance();
 

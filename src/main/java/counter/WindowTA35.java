@@ -126,6 +126,7 @@ public class WindowTA35 {
 			// Back ground runner
 			backGroundRunner = new BackGroundRunner();
 			backGroundRunner.getHandler().start();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showConfirmDialog(frame, e.getMessage() + "\n" + e.getCause());

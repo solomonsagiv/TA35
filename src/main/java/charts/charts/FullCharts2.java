@@ -78,8 +78,7 @@ public class FullCharts2 extends MyChartCreator {
 		series[3] = delta_week_avg_60_serie;
 			
 		// Chart
-		MyChart deltaWeekChart = new MyChart(series, props);
-
+		MyChart deltaChart = new MyChart(series, props);
 
 		// -------------------- OP AVG ------------------ //
 		// Index
@@ -96,7 +95,7 @@ public class FullCharts2 extends MyChartCreator {
 		// -------------------- Chart -------------------- //
 
 		// ----- Charts ----- //
-		MyChart[] charts = { indexChart, deltaWeekChart, op_avg_chart };
+		MyChart[] charts = { indexChart, deltaChart, op_avg_chart };
 
 		// ----- Container ----- //
 		MyChartContainer chartContainer = new MyChartContainer(charts, "Delta chart");

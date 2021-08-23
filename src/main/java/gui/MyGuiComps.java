@@ -10,6 +10,8 @@ import locals.Themes;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
@@ -76,8 +78,6 @@ public class MyGuiComps {
             setPreferredSize(new Dimension(width, height));
         }
 
-        public abstract void onClose();
-
         public abstract void initListeners();
 
         public abstract void initialize();
@@ -91,6 +91,22 @@ public class MyGuiComps {
                 e.printStackTrace();
             }
         }
+
+        private void initOnClose() {
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e);
+                    onClose();
+                }
+            });
+        }
+
+        public void onClose() {
+            insetOrUpdateBounds();
+            dispose();
+        }
+
     }
 
 
