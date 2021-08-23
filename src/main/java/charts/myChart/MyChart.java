@@ -217,7 +217,6 @@ public class MyChart {
                     try {
                         // Sleep
                         Thread.sleep(500);
-                        boolean loaded = true;
 
                         // Is load each serie
                         for (MyTimeSeries serie : series) {
@@ -353,7 +352,6 @@ public class MyChart {
                                     }
                                 }
                             }
-
                             min = Collections.min(dots);
                             max = Collections.max(dots);
                         } else {
