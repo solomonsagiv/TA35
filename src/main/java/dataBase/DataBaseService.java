@@ -7,6 +7,7 @@ import exp.ExpMonth;
 import exp.ExpWeek;
 import service.MyBaseService;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class DataBaseService extends MyBaseService {
@@ -36,8 +37,6 @@ public class DataBaseService extends MyBaseService {
     }
 
     private void append_changed_data_to_lists() {
-
-        System.out.println("insert data is running");
 
         double delta_week = apiObject.getExpWeek().getOptions().getDelta();
         double delta_month = apiObject.getExpMonth().getOptions().getDelta();
@@ -85,8 +84,6 @@ public class DataBaseService extends MyBaseService {
             insert_data();
             grab_data();
         }
-
-
     }
 
     private void insert_data() {
@@ -101,17 +98,18 @@ public class DataBaseService extends MyBaseService {
 
     private void grab_data() {
         new Thread(() -> {
+            System.out.println("Grabbing data "  + LocalTime.now());
             double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
             double op_avg_week_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 60));
 
             double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE));
             double op_avg_month_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 60));
 
-            double delta_week_avg = Queries.handle_rs(Queries.get_serie_avg(Factories.Tables.DELTA_WEEK_TABLE));
-            double delta_week_avg_60 = Queries.handle_rs(Queries.get_serie_avg(Factories.Tables.DELTA_WEEK_TABLE, 60));
+            double delta_week_avg = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.DELTA_WEEK_TABLE));
+            double delta_week_avg_60 = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.DELTA_WEEK_TABLE, 60));
 
-            double delta_month_avg = Queries.handle_rs(Queries.get_serie_avg(Factories.Tables.DELTA_MONTH_TABLE));
-            double delta_month_avg_60 = Queries.handle_rs(Queries.get_serie_avg(Factories.Tables.DELTA_MONTH_TABLE, 60));
+            double delta_month_avg = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.DELTA_MONTH_TABLE));
+            double delta_month_avg_60 = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.DELTA_MONTH_TABLE, 60));
 
             ExpWeek expWeek = apiObject.getExpWeek();
             expWeek.setOp_avg(op_avg_week);
@@ -124,6 +122,8 @@ public class DataBaseService extends MyBaseService {
             expMonth.setOp_avg_60(op_avg_month_60);
             expMonth.setDelta_avg(delta_month_avg);
             expMonth.setDelta_avg_60(delta_month_avg_60);
+
+            System.out.println("Grabbing done " + LocalTime.now());
         }).start();
     }
 

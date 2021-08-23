@@ -79,8 +79,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     ask = apiObject.getIndex_ask();
                     current_time = LocalTime.now();
 
-                    System.out.println(" Running ");
-
                     // Wait for load
                     if (apiObject.isDbLoaded()) {
 

@@ -63,6 +63,29 @@ public class Queries {
         String query = String.format(q, table_location, min);
         return MySql.select(query);
     }
+    
+    public static ResultSet get_serie_avg_from_cdf(String table_location, int min) {
+        String q = "select avg(value) as value " +
+                "from ( " +
+                "select time, sum(value) over (ORDER BY t.time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
+                "from %s t " +
+                "where time::date = now()::date " +
+                ") cumu " +
+                "where time > now() - interval '%s min';";
+        String query = String.format(q, table_location, min);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_serie_avg_from_cdf(String table_location) {
+        String q = "select avg(value) as value " +
+                "from ( " +
+                "select time, sum(value) over (ORDER BY t.time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
+                "from %s t " +
+                "where time::date = now()::date " +
+                ") cumu";
+        String query = String.format(q, table_location);
+        return MySql.select(query);
+    }
 
     public static String insert(String table_location, double value) {
         String q = "INSERT INTO %s (time, value) VALUES ('now()', %s)";

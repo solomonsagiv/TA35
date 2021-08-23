@@ -238,9 +238,7 @@ class DataSheet {
 
         }
 
-        private void
-
-        calcStocksDelta() {
+        private void calcStocksDelta() {
 
             MiniStock[] miniStocks = apiObject.getStocksHandler().getStocks();
 

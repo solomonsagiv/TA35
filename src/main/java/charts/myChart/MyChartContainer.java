@@ -57,20 +57,22 @@ public class MyChartContainer extends JFrame {
     }
 
     private void loadBounds(HashMap<String, Integer> map) {
-        int x = 100;
-        int y = 100;
-        int width = 300;
-        int height = 300;
-        try {
-            setPreferredSize(new Dimension(map.get(DataBaseHandler.x), map.get(DataBaseHandler.y)));
-            x = map.get(DataBaseHandler.x);
-            y = map.get(DataBaseHandler.y);
-            width = map.get(DataBaseHandler.width);
-            height = map.get(DataBaseHandler.height);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        setBounds(x, y, width, height);
+        new Thread(() -> {
+            int x = 100;
+            int y = 100;
+            int width = 300;
+            int height = 300;
+            try {
+                setPreferredSize(new Dimension(map.get(DataBaseHandler.x), map.get(DataBaseHandler.y)));
+                x = map.get(DataBaseHandler.x);
+                y = map.get(DataBaseHandler.y);
+                width = map.get(DataBaseHandler.width);
+                height = map.get(DataBaseHandler.height);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            setBounds(x, y, width, height);
+        }).start();
     }
 
     private void appendCharts() {

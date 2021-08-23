@@ -21,15 +21,13 @@ public class ApiObject implements IJsonData {
 	private static ApiObject apiObject;
 
 	OptionsDataCalculator optionsDataCalculator;
-	ListsService listsService;
-	
+
 	private String status = null;
 	private String streamMarket = "stream";
 
 	private double interest = 0.006;
 	private boolean dbLoaded = false;
 	private double rando = 0;
-
 
 	private MyServiceHandler serviceHandler;
 	private DataBaseService dataBaseService;
@@ -146,10 +144,6 @@ public class ApiObject implements IJsonData {
 
 		logic = new Logic();
 		dataBaseService = new DataBaseService();
-
-		// Lists
-		listsService = new ListsService();
-
 
 		// Options window table
 		optionsDataCalculator = new OptionsDataCalculator();
