@@ -209,7 +209,7 @@ public class MyChart {
                 // Load each serie
                 for (MyTimeSeries serie : series) {
                     new Thread(() -> {
-                        serie.load_data();
+                        serie. load_data();
                     }).start();
                 }
 
@@ -251,6 +251,9 @@ public class MyChart {
             while (isRun()) {
                 try {
                     if (apiObject.isStarted()) {
+
+                        System.out.println(getName());
+
                         // Sleep
                         Thread.sleep((long) props.getProp(ChartPropsEnum.SLEEP));
 
@@ -304,7 +307,8 @@ public class MyChart {
                         serie.remove(0);
                     }
                     // Append data
-                    serie.add();
+                    double value = serie.add();
+                    System.out.println(value + " " + serie.getName());
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();

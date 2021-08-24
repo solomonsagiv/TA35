@@ -27,7 +27,7 @@ public class MyGuiComps {
             init();
             initialize();
             packAndFinish();
-            onClose();
+            initOnClose();
         }
 
         private void packAndFinish() {
@@ -82,7 +82,6 @@ public class MyGuiComps {
 
         public abstract void initialize();
 
-
         protected void insetOrUpdateBounds() {
             try {
                 String query = String.format("SELECT sagiv.update_bounds('%s', '%s', %s, %s, %s, %s);", client.getName(), getTitle(), getX(), getY(), getWidth(), getHeight());
@@ -106,9 +105,7 @@ public class MyGuiComps {
             insetOrUpdateBounds();
             dispose();
         }
-
     }
-
 
     // ---------- JPanel ---------- //
     public static class MyPanel extends JPanel {

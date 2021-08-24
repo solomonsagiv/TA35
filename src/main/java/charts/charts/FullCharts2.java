@@ -65,12 +65,14 @@ public class FullCharts2 extends MyChartCreator {
 		MyTimeSeries deltaMonthSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_SERIE);
 		deltaMonthSerie.setColor(Themes.GREEN);
 		deltaMonthSerie.setStokeSize(1.5f);
+		deltaMonthSerie.setVisible(true);
 
 		// Delta week
 		MyTimeSeries delta_month_avg_60_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_AVG_60_SERIE);
-		delta_month_avg_60_serie.setColor(Themes.PURPLE);
+		delta_month_avg_60_serie.setColor(Themes.BINANCE_ORANGE);
 		delta_month_avg_60_serie.setStokeSize(1.1f);
-		
+		delta_month_avg_60_serie.setVisible(true);
+
 		series = new MyTimeSeries[4];
 		series[0] = deltaWeekSerie;
 		series[1] = deltaMonthSerie;
@@ -86,8 +88,14 @@ public class FullCharts2 extends MyChartCreator {
 		op_avg_week_60.setColor(Themes.BLUE);
 		op_avg_week_60.setStokeSize(1.5f);
 
-		series = new MyTimeSeries[1];
+		// Index
+		MyTimeSeries op_avg_month_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE);
+		op_avg_month_60.setColor(Themes.LIGHT_BLUE_3);
+		op_avg_month_60.setStokeSize(1.5f);
+
+		series = new MyTimeSeries[2];
 		series[0] = op_avg_week_60;
+		series[1] = op_avg_month_60;
 
 		// Chart
 		MyChart op_avg_chart = new MyChart(series, props);

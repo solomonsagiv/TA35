@@ -57,7 +57,7 @@ public class Queries {
         String query = String.format(q, table_location, min);
         return MySql.select(query);
     }
-    
+
     public static ResultSet get_serie_avg_from_cdf(String table_location, int min) {
         String q = "select avg(value) as value " +
                 "from ( " +

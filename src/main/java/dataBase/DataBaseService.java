@@ -156,6 +156,16 @@ public class DataBaseService extends MyBaseService {
             expMonth.setDelta_avg(delta_month_avg);
             expMonth.setDelta_avg_60(delta_month_avg_60);
 
+//            System.out.println("Week op avg " + op_avg_week );
+//            System.out.println("Week op avg 60 " + op_avg_week_60 );
+//            System.out.println("Week delta avg " + delta_week_avg );
+//            System.out.println("Week delta avg 60 " + delta_week_avg_60 );
+//
+//            System.out.println("Month op avg " + op_avg_month );
+//            System.out.println("Month op avg 60 " + op_avg_month_60 );
+//            System.out.println("Month delta avg " + delta_month_avg );
+//            System.out.println("Month delta avg 60 " + delta_month_avg_60 );
+//
             System.out.println("Grabbing done " + LocalTime.now());
         }).start();
     }
