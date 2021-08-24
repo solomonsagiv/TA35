@@ -75,12 +75,30 @@ public class FullCharts2 extends MyChartCreator {
 
 		series = new MyTimeSeries[4];
 		series[0] = deltaWeekSerie;
-		series[1] = deltaMonthSerie;
-		series[2] = delta_month_avg_60_serie;
-		series[3] = delta_week_avg_60_serie;
-			
+		series[1] = delta_week_avg_60_serie;
+		series[2] = deltaMonthSerie;
+		series[3] = delta_month_avg_60_serie;
+
 		// Chart
 		MyChart deltaChart = new MyChart(series, props);
+
+		// -------------------- Bid ask counter ------------------ //
+		// Index
+		MyTimeSeries bid_ask_counter_week_avg_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE);
+		bid_ask_counter_week_avg_60.setColor(Themes.BLUE);
+		bid_ask_counter_week_avg_60.setStokeSize(1.5f);
+
+		// Index
+		MyTimeSeries bid_ask_counter_month_avg_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_SERIE);
+		bid_ask_counter_month_avg_60.setColor(Themes.LIGHT_BLUE_3);
+		bid_ask_counter_month_avg_60.setStokeSize(1.5f);
+
+		series = new MyTimeSeries[2];
+		series[0] = bid_ask_counter_week_avg_60;
+		series[1] = bid_ask_counter_month_avg_60;
+
+		// Chart
+		MyChart bid_ask_counter_chart = new MyChart(series, props);
 
 		// -------------------- OP AVG ------------------ //
 		// Index
@@ -103,7 +121,7 @@ public class FullCharts2 extends MyChartCreator {
 		// -------------------- Chart -------------------- //
 
 		// ----- Charts ----- //
-		MyChart[] charts = { indexChart, deltaChart, op_avg_chart };
+		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart, op_avg_chart };
 
 		// ----- Container ----- //
 		MyChartContainer chartContainer = new MyChartContainer(charts, "Delta chart");

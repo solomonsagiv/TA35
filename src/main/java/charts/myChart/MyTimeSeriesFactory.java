@@ -11,8 +11,6 @@ public class MyTimeSeriesFactory {
 
     public static MyTimeSeries get_serie(String serie_name) {
 
-        System.out.println(serie_name);
-
         switch (serie_name.toUpperCase()) {
             // INDEX
             case Factories.TimeSeries.INDEX_SERIE:
@@ -213,6 +211,44 @@ public class MyTimeSeriesFactory {
                     @Override
                     public double getData() throws UnknownHostException {
                         return apiObject.getExpMonth().getOp_avg_60();
+                    }
+
+                    @Override
+                    public void load() {
+//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
+//                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() throws UnknownHostException {
+                        return apiObject.getExpWeek().getBid_ask_counter_avg_60();
+                    }
+
+                    @Override
+                    public void load() {
+//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
+//                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.BID_ASK_COUNTER_MONTH_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() throws UnknownHostException {
+                        return apiObject.getExpMonth().getBid_ask_counter_avg_60();
                     }
 
                     @Override

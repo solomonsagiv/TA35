@@ -19,6 +19,7 @@ public abstract class Exp implements IJsonData {
 	private double op_avg = 0;
 	private double delta_avg = 0;
 	private double delta_avg_60 = 0;
+	private double bid_ask_counter_avg_60 = 0;
 
 	public Exp(ApiObject apiObject) {
 		this.apiObject = apiObject;
@@ -121,5 +122,13 @@ public abstract class Exp implements IJsonData {
 
 	public void setDelta_avg_60(double delta_avg_60) {
 		this.delta_avg_60 = delta_avg_60;
+	}
+
+	public double getBid_ask_counter_avg_60() {
+		return bid_ask_counter_avg_60;
+	}
+
+	public void setBid_ask_counter_avg_60(double bid_ask_counter_avg_60) {
+		this.bid_ask_counter_avg_60 = bid_ask_counter_avg_60;
 	}
 }

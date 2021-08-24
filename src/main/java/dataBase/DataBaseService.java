@@ -55,14 +55,14 @@ public class DataBaseService extends MyBaseService {
 
         // Delta week
         double change = delta_week - delta_week_0;
-        if (change != 0) {
+        if (change != 0 && change < 10000 && change > -10000) {
             delta_week_0 = delta_week;
             delta_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
         }
 
         // Delta month
         change = delta_month - delta_month_0;
-        if (change != 0) {
+        if (change != 0 && change < 10000 && change > -10000) {
             delta_month_0 = delta_month;
             delta_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
         }
@@ -131,7 +131,7 @@ public class DataBaseService extends MyBaseService {
 
     private void grab_data() {
         new Thread(() -> {
-            System.out.println("Grabbing data "  + LocalTime.now());
+
             double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
             double op_avg_week_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 60));
 
@@ -144,29 +144,23 @@ public class DataBaseService extends MyBaseService {
             double delta_month_avg = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.DELTA_MONTH_TABLE));
             double delta_month_avg_60 = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.DELTA_MONTH_TABLE, 60));
 
+            double bid_ask_counter_week_avg_60 = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE, 60));
+            double bid_ask_counter_month_avg_60 = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE, 60));
+
             ExpWeek expWeek = apiObject.getExpWeek();
             expWeek.setOp_avg(op_avg_week);
             expWeek.setOp_avg_60(op_avg_week_60);
             expWeek.setDelta_avg(delta_week_avg);
             expWeek.setDelta_avg_60(delta_week_avg_60);
+            expWeek.setBid_ask_counter_avg_60(bid_ask_counter_week_avg_60);
 
             ExpMonth expMonth = apiObject.getExpMonth();
             expMonth.setOp_avg(op_avg_month);
             expMonth.setOp_avg_60(op_avg_month_60);
             expMonth.setDelta_avg(delta_month_avg);
             expMonth.setDelta_avg_60(delta_month_avg_60);
+            expMonth.setBid_ask_counter_avg_60(bid_ask_counter_month_avg_60);
 
-//            System.out.println("Week op avg " + op_avg_week );
-//            System.out.println("Week op avg 60 " + op_avg_week_60 );
-//            System.out.println("Week delta avg " + delta_week_avg );
-//            System.out.println("Week delta avg 60 " + delta_week_avg_60 );
-//
-//            System.out.println("Month op avg " + op_avg_month );
-//            System.out.println("Month op avg 60 " + op_avg_month_60 );
-//            System.out.println("Month delta avg " + delta_month_avg );
-//            System.out.println("Month delta avg 60 " + delta_month_avg_60 );
-//
-            System.out.println("Grabbing done " + LocalTime.now());
         }).start();
     }
 

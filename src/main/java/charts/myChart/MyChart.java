@@ -195,8 +195,7 @@ public class MyChart {
         MyTimeSeries[] series;
         NumberAxis range;
         double min, max;
-        boolean loaded = true;
-
+    
         // Constructor
         public ChartUpdater(MyTimeSeries[] series) {
             this.series = series;
@@ -215,6 +214,9 @@ public class MyChart {
 
                 while (true) {
                     try {
+
+                         boolean loaded = true;
+
                         // Sleep
                         Thread.sleep(500);
 
@@ -243,16 +245,18 @@ public class MyChart {
         public void run() {
 
             // Can start data updating
-            System.out.println(series[0].getName() + " Waiting to start " );
+            System.out.println(series[0].getName() + " " + series.length + " Waiting to start " );
             can_i_start();
-            System.out.println(series[0].getName() + " Can start");
+            System.out.println(series[0].getName() + " " + series.length + " Can start");
 
             // While loop
             while (isRun()) {
                 try {
                     if (apiObject.isStarted()) {
 
-                        System.out.println(getName());
+                        for (MyTimeSeries serie: series) {
+                            System.out.println(serie.getName());
+                        }
 
                         // Sleep
                         Thread.sleep((long) props.getProp(ChartPropsEnum.SLEEP));

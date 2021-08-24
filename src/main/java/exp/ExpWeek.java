@@ -8,4 +8,5 @@ public class ExpWeek extends Exp {
 		super(apiObject);
 	}
 
+
 }

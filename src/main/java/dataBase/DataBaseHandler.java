@@ -32,7 +32,11 @@ public class DataBaseHandler {
         double ind_delta_month = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
         double baskets_exp_week = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS, EXP_WEEK, SUM_RESULT_TYPE));
         double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS, EXP_MONTH, SUM_RESULT_TYPE));
+        double start_exp_week = Queries.handle_rs(Queries.get_start_exp(EXP_WEEK));
+        double start_exp_month = Queries.handle_rs(Queries.get_start_exp(EXP_MONTH));
 
+        apiObject.getExpWeek().getExpData().setStart(start_exp_week);
+        apiObject.getExpMonth().getExpData().setStart(start_exp_month);
         apiObject.getExpWeek().getExpData().setDelta(exp_week_delta);
         apiObject.getExpMonth().getExpData().setDelta(exp_month_delta);
         apiObject.getExpWeek().getExpData().setIndDelta(ind_delta_week);

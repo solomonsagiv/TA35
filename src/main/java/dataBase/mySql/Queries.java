@@ -23,6 +23,14 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_start_exp(String exp) {
+        String q = "select value " +
+                "from sagiv.ta35_index " +
+                "where (select date from sagiv.ta35_exps where exp_type = '%s') = time::date order by time limit 1;";
+        String query = String.format(q, exp);
+        return MySql.select(query);
+    }
+
     public static ResultSet get_op_avg(String fut_table_location) {
         String q = "select avg(f.value - i.value) as value " +
                 "from %s f " +
