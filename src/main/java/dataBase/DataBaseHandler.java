@@ -68,10 +68,6 @@ public class DataBaseHandler {
         return MySql.select(query);
     }
 
-    public static void insert_or_update_bounds(int x, int y, int width, int height) {
-
-    }
-
     public static void loadSerieData(ResultSet rs, MyTimeSeries timeSeries) {
         while (true) {
             try {

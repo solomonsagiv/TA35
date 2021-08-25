@@ -4,7 +4,6 @@ import api.ApiObject;
 import charts.myChart.*;
 import dataBase.Factories;
 import locals.Themes;
-
 import java.awt.*;
 
 public class FullCharts2 extends MyChartCreator {
@@ -35,9 +34,6 @@ public class FullCharts2 extends MyChartCreator {
 		props.setProp(ChartPropsEnum.MARKER, 0);
 
 		// --------- Index ---------- //
-		MyProps bottomChartProps = (MyProps) props.clone();
-		bottomChartProps.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
-		
 		// Index
 		MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_SERIE);
 		indexSerie.setColor(Color.BLACK);
@@ -50,7 +46,6 @@ public class FullCharts2 extends MyChartCreator {
 		MyChart indexChart = new MyChart(series, props);
 
 		// --------- Deltas ---------- //
-
 		// Delta week
 		MyTimeSeries deltaWeekSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_WEEK_SERIE);
 		deltaWeekSerie.setColor(Themes.GREEN_LIGHT);
@@ -65,13 +60,11 @@ public class FullCharts2 extends MyChartCreator {
 		MyTimeSeries deltaMonthSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_SERIE);
 		deltaMonthSerie.setColor(Themes.GREEN);
 		deltaMonthSerie.setStokeSize(1.5f);
-		deltaMonthSerie.setVisible(true);
 
 		// Delta week
 		MyTimeSeries delta_month_avg_60_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_AVG_60_SERIE);
 		delta_month_avg_60_serie.setColor(Themes.BINANCE_ORANGE);
 		delta_month_avg_60_serie.setStokeSize(1.1f);
-		delta_month_avg_60_serie.setVisible(true);
 
 		series = new MyTimeSeries[4];
 		series[0] = deltaWeekSerie;
@@ -101,12 +94,12 @@ public class FullCharts2 extends MyChartCreator {
 		MyChart bid_ask_counter_chart = new MyChart(series, props);
 
 		// -------------------- OP AVG ------------------ //
-		// Index
+		//  Week 60
 		MyTimeSeries op_avg_week_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
 		op_avg_week_60.setColor(Themes.BLUE);
 		op_avg_week_60.setStokeSize(1.5f);
 
-		// Index
+		// Month 60
 		MyTimeSeries op_avg_month_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE);
 		op_avg_month_60.setColor(Themes.LIGHT_BLUE_3);
 		op_avg_month_60.setStokeSize(1.5f);

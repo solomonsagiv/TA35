@@ -33,7 +33,6 @@ public class ChartFilterWindow extends MyGuiComps.MyFrame {
     }
 
     private void initParams(MyChart myChart) {
-
         MyTimeSeries[] series = myChart.getSeries();
 
         int x = 10;
