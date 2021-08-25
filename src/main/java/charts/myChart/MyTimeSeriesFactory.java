@@ -4,6 +4,7 @@ import api.ApiObject;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.Queries;
+
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
 
@@ -45,8 +46,8 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.DELTA_WEEK_TABLE);
-                        DataBaseHandler.loadSerieData(rs, this);
+//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.DELTA_WEEK_TABLE);
+//                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
             case Factories.TimeSeries.DELTA_MONTH_SERIE:
@@ -63,8 +64,8 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.DELTA_MONTH_TABLE);
-                        DataBaseHandler.loadSerieData(rs, this);
+//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.DELTA_MONTH_TABLE);
+//                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
             case Factories.TimeSeries.DELTA_WEEK_AVG_SERIE:
@@ -200,7 +201,6 @@ public class MyTimeSeriesFactory {
                     }
                 };
 
-
             case Factories.TimeSeries.OP_AVG_MONTH_60_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE) {
                     @Override
@@ -229,7 +229,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() throws UnknownHostException {
-                        return apiObject.getExpWeek().getBid_ask_counter_avg_60();
+                        return apiObject.getExpWeek().getOptions().getConBidAskCounter();
                     }
 
                     @Override
@@ -241,6 +241,44 @@ public class MyTimeSeriesFactory {
 
             case Factories.TimeSeries.BID_ASK_COUNTER_MONTH_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() throws UnknownHostException {
+                        return apiObject.getExpMonth().getOptions().getConBidAskCounter();
+                    }
+
+                    @Override
+                    public void load() {
+//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
+//                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.BID_ASK_COUNTER_WEEK_AVG_60_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_AVG_60_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() throws UnknownHostException {
+                        return apiObject.getExpWeek().getBid_ask_counter_avg_60();
+                    }
+
+                    @Override
+                    public void load() {
+//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
+//                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.BID_ASK_COUNTER_MONTH_AVG_60_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_AVG_60_SERIE) {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         return null;

@@ -245,18 +245,12 @@ public class MyChart {
         public void run() {
 
             // Can start data updating
-            System.out.println(series[0].getName() + " " + series.length + " Waiting to start " );
             can_i_start();
-            System.out.println(series[0].getName() + " " + series.length + " Can start");
 
             // While loop
             while (isRun()) {
                 try {
                     if (apiObject.isStarted()) {
-
-                        for (MyTimeSeries serie: series) {
-                            System.out.println(serie.getName());
-                        }
 
                         // Sleep
                         Thread.sleep((long) props.getProp(ChartPropsEnum.SLEEP));
@@ -312,7 +306,6 @@ public class MyChart {
                     }
                     // Append data
                     double value = serie.add();
-                    System.out.println(value + " " + serie.getName());
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();

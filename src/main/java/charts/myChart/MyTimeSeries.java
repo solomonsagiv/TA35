@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 
 interface ITimeSeries {
     double getData() throws UnknownHostException;
+
     void load();
 }
 
@@ -167,12 +168,14 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
         // live data
         try {
             data = getData();
-            myValues.add(data);
-            addOrUpdate(getLastSeconde(), data);
+            if (data != 0.0) {
+                myValues.add(data);
+                addOrUpdate(getLastSeconde(), data);
+                lastSeconde = (Second) lastSeconde.next();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        lastSeconde = (Second) lastSeconde.next();
         return data;
     }
 
