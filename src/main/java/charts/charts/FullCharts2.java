@@ -17,7 +17,7 @@ public class FullCharts2 extends MyChartCreator {
 	public void createChart() throws CloneNotSupportedException {
 
 		MyTimeSeries[] series;
-
+		
 		// Props
 		props = new MyProps();
 		props.setProp(ChartPropsEnum.SECONDS, INFINITE);
@@ -30,7 +30,7 @@ public class FullCharts2 extends MyChartCreator {
 		props.setProp(ChartPropsEnum.SLEEP, 1000);
 		props.setProp(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS, (double) INFINITE);
 		props.setProp(ChartPropsEnum.SECONDS_ON_MESS, 10);
-		props.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, -1);
+		props.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
 		props.setProp(ChartPropsEnum.MARKER, 0);
 
 		// --------- Index ---------- //
@@ -53,7 +53,7 @@ public class FullCharts2 extends MyChartCreator {
 
 		// Delta week avg 60
 		MyTimeSeries delta_week_avg_60_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_WEEK_AVG_60_SERIE);
-		delta_week_avg_60_serie.setColor(Themes.BLUE4);
+		delta_week_avg_60_serie.setColor(Themes.GREEN_LIGHT);
 		delta_week_avg_60_serie.setStokeSize(1.1f);
 		
 		// Delta month
@@ -63,7 +63,7 @@ public class FullCharts2 extends MyChartCreator {
 
 		// Delta week
 		MyTimeSeries delta_month_avg_60_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_AVG_60_SERIE);
-		delta_month_avg_60_serie.setColor(Themes.BLUE4);
+		delta_month_avg_60_serie.setColor(Themes.GREEN);
 		delta_month_avg_60_serie.setStokeSize(1.1f);
 
 		series = new MyTimeSeries[4];
@@ -83,7 +83,7 @@ public class FullCharts2 extends MyChartCreator {
 
 		// Counter week avg 60
 		MyTimeSeries bid_ask_counter_week_avg_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_AVG_60_SERIE);
-		bid_ask_counter_week_avg_60.setColor(Themes.BLUE4);
+		bid_ask_counter_week_avg_60.setColor(Themes.BINANCE_ORANGE);
 		bid_ask_counter_week_avg_60.setStokeSize(1.1f);
 
 		// Counter month
@@ -93,7 +93,7 @@ public class FullCharts2 extends MyChartCreator {
 
 		// Counter month avg 60
 		MyTimeSeries bid_ask_counter_month_avg_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_AVG_60_SERIE);
-		bid_ask_counter_month_avg_60.setColor(Themes.BLUE4);
+		bid_ask_counter_month_avg_60.setColor(Themes.BINANCE_ORANGE_2);
 		bid_ask_counter_month_avg_60.setStokeSize(1.1f);
 
 		series = new MyTimeSeries[4];
@@ -108,12 +108,12 @@ public class FullCharts2 extends MyChartCreator {
 		// -------------------- OP AVG ------------------ //
 		//  Week 60
 		MyTimeSeries op_avg_week_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
-		op_avg_week_60.setColor(Themes.GREY_LIGHT);
+		op_avg_week_60.setColor(Themes.PINK_LIGHT_2);
 		op_avg_week_60.setStokeSize(1.5f);
 
 		// Month 60
 		MyTimeSeries op_avg_month_60 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE);
-		op_avg_month_60.setColor(Themes.BINANCE_RED_2);
+		op_avg_month_60.setColor(Themes.PINK_LIGHT);
 		op_avg_month_60.setStokeSize(1.5f);
 
 		series = new MyTimeSeries[2];
@@ -133,5 +133,4 @@ public class FullCharts2 extends MyChartCreator {
 		chartContainer.create();
 
 	}
-
 }
