@@ -101,12 +101,10 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
             }
 
             addOrUpdate(second, data);
-
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
     }
-
 
     public void load_data() {
         try {
@@ -168,11 +166,9 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
         // live data
         try {
             data = getData();
-            if (data != 0.0) {
-                myValues.add(data);
-                addOrUpdate(getLastSeconde(), data);
-                lastSeconde = (Second) lastSeconde.next();
-            }
+            myValues.add(data);
+            addOrUpdate(getLastSeconde(), data);
+            lastSeconde = (Second) lastSeconde.next();
         } catch (Exception e) {
             e.printStackTrace();
         }

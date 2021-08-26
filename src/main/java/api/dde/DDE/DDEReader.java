@@ -376,10 +376,10 @@ class OptionsSheet {
         this.ddeConnection = new DDEConnection(apiObject);
         this.calculator = new Calculator();
 
-//        weekRunner = new OptionsRunner(apiObject.getExpWeek(), weekPath);
+        weekRunner = new OptionsRunner(apiObject.getExpWeek(), weekPath);
         monthRunner = new OptionsRunner(apiObject.getExpMonth(), monthPath);
 
-//        weekRunner.getHandler().start();
+        weekRunner.getHandler().start();
         monthRunner.getHandler().start();
     }
 

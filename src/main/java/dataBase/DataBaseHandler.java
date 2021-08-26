@@ -28,12 +28,16 @@ public class DataBaseHandler {
 
         double exp_week_delta = Queries.handle_rs(get_exp_data(Factories.Tables.DELTA_WEEK_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
         double exp_month_delta = Queries.handle_rs(get_exp_data(Factories.Tables.DELTA_MONTH_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
+        double delta_week = Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.DELTA_WEEK_TABLE));
+        double delta_month = Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.DELTA_MONTH_TABLE));
         double ind_delta_week = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
         double ind_delta_month = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
-        double baskets_exp_week = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS, EXP_WEEK, SUM_RESULT_TYPE));
-        double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS, EXP_MONTH, SUM_RESULT_TYPE));
+        double baskets_exp_week = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
+        double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
         double start_exp_week = Queries.handle_rs(Queries.get_start_exp(EXP_WEEK));
         double start_exp_month = Queries.handle_rs(Queries.get_start_exp(EXP_MONTH));
+        int baskets_up = (int) Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE));
+        int baskets_down = (int) Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE));
 
         apiObject.getExpWeek().getExpData().setStart(start_exp_week);
         apiObject.getExpMonth().getExpData().setStart(start_exp_month);
@@ -45,6 +49,9 @@ public class DataBaseHandler {
         apiObject.getExpMonth().getExpData().setBaskets((int) baskets_exp_month);
         apiObject.getExpWeek().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE)));
         apiObject.getExpMonth().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE)));
+        apiObject.setBasketUp(baskets_up);
+        apiObject.setBasketDown(baskets_down);
+        apiObject.getExpWeek()
     }
 
     public ResultSet get_exp_data(String target_table_location, String exp, int result_type) {

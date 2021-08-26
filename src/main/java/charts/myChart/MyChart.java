@@ -90,7 +90,7 @@ public class MyChart {
         marker();
 
         // Range margin
-        range_margin();
+//        range_margin();
 
         // Renderer (Style series)
         renderer(data);
@@ -145,18 +145,17 @@ public class MyChart {
             renderer.setSeriesShapesVisible(i, false);
             renderer.setSeriesPaint(i, serie.getColor());
             renderer.setSeriesStroke(i, new BasicStroke(serie.getStokeSize()));
-
             i++;
         }
     }
 
-    private void range_margin() {
-        // Range unit
-        if (props.getProp(ChartPropsEnum.RANGE_MARGIN) > 0) {
-            ValueAxis range = plot.getRangeAxis();
-            ((NumberAxis) range).setTickUnit(new NumberTickUnit(props.getProp(ChartPropsEnum.RANGE_MARGIN)));
-        }
-    }
+//    private void range_margin() {
+//        // Range unit
+//        if (props.getProp(ChartPropsEnum.RANGE_MARGIN) > 0) {
+//            ValueAxis range = plot.getRangeAxis();
+//            ((NumberAxis) range).setTickUnit(new NumberTickUnit(props.getProp(ChartPropsEnum.RANGE_MARGIN)));
+//        }
+//    }
 
     public MyProps getProps() {
         return props;
@@ -214,7 +213,6 @@ public class MyChart {
 
                 while (true) {
                     try {
-
                          boolean loaded = true;
 
                         // Sleep
@@ -250,7 +248,7 @@ public class MyChart {
             // While loop
             while (isRun()) {
                 try {
-                    if (apiObject.isStarted()) {
+                    if (apiObject.isStarted() && apiObject.first_load) {
 
                         // Sleep
                         Thread.sleep((long) props.getProp(ChartPropsEnum.SLEEP));
@@ -305,7 +303,7 @@ public class MyChart {
                         serie.remove(0);
                     }
                     // Append data
-                    double value = serie.add();
+                    serie.add();
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
@@ -421,8 +419,12 @@ public class MyChart {
                     }
                 }
 
-                double min = Collections.min(dots) - props.getProp(ChartPropsEnum.MARGIN);
-                double max = Collections.max(dots) + props.getProp(ChartPropsEnum.MARGIN);
+                double min = Collections.min(dots);
+                double max = Collections.max(dots);
+
+                double range = (max - min) * 0.2;
+                min -= range;
+                max += range;
 
                 if (dots.size() > series.length * props.getProp(ChartPropsEnum.SECONDS_ON_MESS)) {
                     // If need to rearrange

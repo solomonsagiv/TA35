@@ -1,5 +1,6 @@
 package dataBase;
 
+import api.ApiObject;
 import api.Manifest;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
@@ -20,6 +21,7 @@ public class DataBaseService extends MyBaseService {
     double index_0 = 0;
     double fut_week_0 = 0;
     double fut_month_0 = 0;
+    double baskets_0 = 0;
 
     ArrayList<MyTimeStampObject> bid_ask_counter_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> bid_ask_counter_month_timestamp = new ArrayList<>();
@@ -29,6 +31,7 @@ public class DataBaseService extends MyBaseService {
     ArrayList<MyTimeStampObject> index_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_month_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
 
     public DataBaseService() {
         super();
@@ -52,6 +55,7 @@ public class DataBaseService extends MyBaseService {
         double index = apiObject.getIndex();
         double fut_week = apiObject.getExpWeek().getOptions().getContract();
         double fut_month = apiObject.getExpMonth().getOptions().getContract();
+        double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
 
         // Delta week
         double change = delta_week - delta_week_0;
@@ -109,6 +113,13 @@ public class DataBaseService extends MyBaseService {
             fut_month_timestamp.add(new MyTimeStampObject(Instant.now(), fut_month));
         }
 
+        // Baskets
+        change = baskets - baskets_0;
+        if (change != 0) {
+            baskets_0 = baskets;
+            baskets_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+        }
+
         // Grabb data and insert data
         if (sleepCount % 15000 == 0) {
             insert_data();
@@ -126,6 +137,7 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro(index_timestamp, Factories.Tables.INDEX_TABLE);
             insert_data_retro(fut_week_timestamp, Factories.Tables.FUT_WEEK_TABLE);
             insert_data_retro(fut_month_timestamp, Factories.Tables.FUT_MONTH_TABLE);
+            insert_data_retro(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
         }).start();
     }
 
@@ -160,6 +172,8 @@ public class DataBaseService extends MyBaseService {
             expMonth.setDelta_avg(delta_month_avg);
             expMonth.setDelta_avg_60(delta_month_avg_60);
             expMonth.setBid_ask_counter_avg_60(bid_ask_counter_month_avg_60);
+
+            apiObject.first_load = true;
 
         }).start();
     }

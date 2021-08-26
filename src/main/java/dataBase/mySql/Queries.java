@@ -3,6 +3,7 @@ package dataBase.mySql;
 import api.ApiObject;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -52,9 +53,16 @@ public class Queries {
         return MySql.select(query);
     }
 
-    public static ResultSet get_serie_avg(String table_location) {
+    public static ResultSet get_serie_avg_today(String table_location) {
         String q = "select avg(value) as value " +
-                "from %s;";
+                "from %s where time::date = now()::date;";
+        String query = String.format(q, table_location);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_serie_sum_today(String table_location) {
+        String q = "select sum(value) as value " +
+                "from %s where time::date = now()::date;";
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
@@ -94,6 +102,20 @@ public class Queries {
         String q = "INSERT INTO %s (time, value) VALUES ('now()', %s)";
         String query = String.format(q, table_location, value);
         return query;
+    }
+
+    public static ResultSet get_baskets_up_sum(String table_location) {
+        String q = "select sum(value) as value " +
+                "from %s where value = 1 and time::date = now()::date;";
+        String query = String.format(q, table_location);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_baskets_down_sum(String table_location) {
+        String q = "select sum(value) as value " +
+                "from %s where value = -1 and time::date = now()::date;";
+        String query = String.format(q, table_location);
+        return MySql.select(query);
     }
 
     public static double handle_rs(ResultSet rs) {

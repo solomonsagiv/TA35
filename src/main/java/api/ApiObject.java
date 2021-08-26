@@ -3,7 +3,6 @@ package api;
 import charts.charts.FullCharts2;
 import charts.charts.MainMonthWeekChart;
 import charts.myChart.MyChartList;
-import dataBase.DataBaseService;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import logic.Logic;
@@ -95,6 +94,8 @@ public class ApiObject implements IJsonData {
 
 	private boolean started;
 	private String name;
+
+	public boolean first_load = false;
 
 	// Private constructor
 	private ApiObject() {

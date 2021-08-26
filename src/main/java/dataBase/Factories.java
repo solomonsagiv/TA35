@@ -9,7 +9,7 @@ public class Factories {
         public static final String BID_ASK_COUNTER_WEEK_TABLE = "sagiv.ta35_bid_ask_counter_fut_week_cdf";
         public static final String BID_ASK_COUNTER_MONTH_TABLE = "sagiv.ta35_bid_ask_counter_fut_month_cdf";
         public static final String INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";
-        public static final String BASKETS = "sagiv.ta35_baskets_cdf";
+        public static final String BASKETS_TABLE = "sagiv.ta35_baskets_cdf";
         public static final String EXPS_TABLE = "sagiv.ta35_exps";
         public static final String FUT_WEEK_TABLE = "sagiv.ta35_future_week";
         public static final String FUT_MONTH_TABLE = "sagiv.ta35_future_month";
