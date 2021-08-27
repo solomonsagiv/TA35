@@ -7,7 +7,6 @@ import dataBase.mySql.Queries;
 import gui.listeners.MyListeners;
 import locals.L;
 import locals.Themes;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -91,7 +90,7 @@ public class MyGuiComps {
             }
         }
 
-        private void initOnClose() {
+        protected void initOnClose() {
             addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosed(WindowEvent e) {

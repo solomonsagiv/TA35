@@ -79,33 +79,13 @@ public class Updater extends MyThread implements Runnable {
 				text = floor(avg(), 10);
 				setColor(window.op_avg, text, lightGreen);
 
-				// RACES
-				window.conUpField.setText(String.valueOf(apiObject.getConUp()));
-				window.conDownField.setText(String.valueOf(apiObject.getConDown()));
-				window.indUpField.setText(String.valueOf(apiObject.getIndUp()));
-				window.indDownField.setText(String.valueOf(apiObject.getIndDown()));
-
-				// Future counter
-				setColorInt(window.conBidAskCounterMonthField, optionsWeek.getConBidAskCounter());
-				setColorInt(window.conBidAskCounterWeekField, optionsMonth.getConBidAskCounter());
-
-				// counts sum
-				setColorInt(window.conSumField, apiObject.getConUp() - apiObject.getConDown());
-				setColorInt(window.indSumField, apiObject.getIndUp() - apiObject.getIndDown());
-
 				// Optimi Pesimi move
 				window.pesimiBasketField.setText(str(apiObject.getPesimiLiveMove()));
-
-				setColor(window.optimiMoveField, floor(apiObject.getOptimiLiveMove(), 10), lightGreen);
-				setColor(window.pesimiMoveField, floor(apiObject.getPesimiLiveMove(), 10), lightGreen);
 
 				// Baskets
 				window.optimiBasketField.setText(str(apiObject.getBasketUp()));
 				window.pesimiBasketField.setText(str(apiObject.getBasketDown()));
 				setColorInt(window.basketsSumField, (apiObject.getBasketUp() - apiObject.getBasketDown()));
-
-				// EqualMove
-				setColor(window.equalMoveField, floor(apiObject.getEqualMove(), 10), lightGreen);
 
 				// Delta calc
 				// Month

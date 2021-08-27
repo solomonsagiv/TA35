@@ -100,7 +100,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
                             streamMarketBool = false;
                             randomallyBool = true;
                             startRando();
-                            apiObject.getServiceHandler().removeService(apiObject.getLogic());
                         }
 
                         // End of rando

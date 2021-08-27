@@ -5,7 +5,6 @@ import charts.charts.MainMonthWeekChart;
 import charts.myChart.MyChartList;
 import exp.ExpMonth;
 import exp.ExpWeek;
-import logic.Logic;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -13,6 +12,7 @@ import options.OptionsDataCalculator;
 import org.json.JSONObject;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
+
 import java.util.ArrayList;
 
 public class ApiObject implements IJsonData {
@@ -29,7 +29,6 @@ public class ApiObject implements IJsonData {
 	private double rando = 0;
 
 	private MyServiceHandler serviceHandler;
-	private Logic logic;
 
 	private int bigConBidAskCounter = 0;
 	private double bigConBid = 0;
@@ -141,8 +140,6 @@ public class ApiObject implements IJsonData {
 
 	public void start() {
 		getServiceHandler().getHandler().start();
-
-		logic = new Logic();
 
 		// Options window table
 		optionsDataCalculator = new OptionsDataCalculator();
@@ -532,13 +529,6 @@ public class ApiObject implements IJsonData {
 			serviceHandler = new MyServiceHandler();
 		}
 		return serviceHandler;
-	}
-
-	public Logic getLogic() {
-		if (logic == null) {
-			logic = new Logic();
-		}
-		return logic;
 	}
 
 	public synchronized void increasBigBidAskCounter() {

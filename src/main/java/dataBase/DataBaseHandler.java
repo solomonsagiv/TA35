@@ -51,7 +51,8 @@ public class DataBaseHandler {
         apiObject.getExpMonth().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE)));
         apiObject.setBasketUp(baskets_up);
         apiObject.setBasketDown(baskets_down);
-        apiObject.getExpWeek()
+        apiObject.getExpWeek().getOptions().setDelta(delta_week);
+        apiObject.getExpMonth().getOptions().setDelta(delta_month);
     }
 
     public ResultSet get_exp_data(String target_table_location, String exp, int result_type) {

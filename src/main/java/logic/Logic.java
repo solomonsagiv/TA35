@@ -1,18 +1,14 @@
 package logic;
 
-import java.awt.Color;
-import java.awt.Toolkit;
+import org.json.JSONException;
+import service.MyBaseService;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
-import javax.swing.JTextField;
-
-import org.json.JSONException;
-
-import counter.WindowTA35;
-import service.MyBaseService;
+import javax.swing.*;
+import java.awt.*;
 
 public class Logic extends MyBaseService {
 
@@ -128,7 +124,7 @@ public class Logic extends MyBaseService {
 							Hoze_Competition = false;
 							counter_Hoze += 1;
 							hoze_up_down = 0;
-							noisy(WindowTA35.conUpField);
+//							noisy(WindowTA35.conUpField);
 							f_up = 1;
 
 							hoze_0 = hoze;
@@ -162,7 +158,7 @@ public class Logic extends MyBaseService {
 							hoze_up_down = 0;
 
 							f_down = 1;
-							noisy(WindowTA35.conDownField);
+//							noisy(WindowTA35.conDownField);
 
 							hoze_0 = hoze;
 							stock_0 = stock;
@@ -200,7 +196,7 @@ public class Logic extends MyBaseService {
 							stock_up_down = 0;
 
 							index_up = 1;
-							noisy(WindowTA35.indUpField);
+//							noisy(WindowTA35.indUpField);
 							hoze_0 = hoze;
 							stock_0 = stock;
 						}
@@ -232,7 +228,7 @@ public class Logic extends MyBaseService {
 							stock_up_down = 0;
 
 							index_down = 1;
-							noisy(WindowTA35.indDownField);
+//							noisy(WindowTA35.indDownField);
 							hoze_0 = hoze;
 							stock_0 = stock;
 
@@ -343,39 +339,39 @@ public class Logic extends MyBaseService {
 			// coloring when competition start
 			Color grey_light = new Color(219, 243, 255);
 
-			if (hoze_up_down == 1) {
-				WindowTA35.conUpField.setBackground(grey_light);
-			}
-
-			if (hoze_up_down == 2) {
-				WindowTA35.conDownField.setBackground(grey_light);
-			}
-
-			if (stock_up_down == 1) {
-				WindowTA35.indUpField.setBackground(grey_light);
-			}
-
-			if (stock_up_down == 2) {
-				WindowTA35.indDownField.setBackground(grey_light);
-			}
-
-			// back to white
-			if (hoze_up_down == 0) {
-				WindowTA35.conUpField.setBackground(Color.white);
-				WindowTA35.conDownField.setBackground(Color.white);
-			}
-
-			if (stock_up_down == 0) {
-				WindowTA35.indUpField.setBackground(Color.white);
-				WindowTA35.indDownField.setBackground(Color.white);
-			}
-
-			if (competition_Number == 0) {
-				WindowTA35.indDownField.setBackground(Color.WHITE);
-				WindowTA35.indUpField.setBackground(Color.WHITE);
-				WindowTA35.conUpField.setBackground(Color.WHITE);
-				WindowTA35.conDownField.setBackground(Color.WHITE);
-			}
+//			if (hoze_up_down == 1) {
+//				WindowTA35.conUpField.setBackground(grey_light);
+//			}
+//
+//			if (hoze_up_down == 2) {
+//				WindowTA35.conDownField.setBackground(grey_light);
+//			}
+//
+//			if (stock_up_down == 1) {
+//				WindowTA35.indUpField.setBackground(grey_light);
+//			}
+//
+//			if (stock_up_down == 2) {
+//				WindowTA35.indDownField.setBackground(grey_light);
+//			}
+//
+//			 back to white
+//			if (hoze_up_down == 0) {
+//				WindowTA35.conUpField.setBackground(Color.white);
+//				WindowTA35.conDownField.setBackground(Color.white);
+//			}
+//
+//			if (stock_up_down == 0) {
+//				WindowTA35.indUpField.setBackground(Color.white);
+//				WindowTA35.indDownField.setBackground(Color.white);
+//			}
+//
+//			if (competition_Number == 0) {
+//				WindowTA35.indDownField.setBackground(Color.WHITE);
+//				WindowTA35.indUpField.setBackground(Color.WHITE);
+//				WindowTA35.conUpField.setBackground(Color.WHITE);
+//				WindowTA35.conDownField.setBackground(Color.WHITE);
+//			}
 
 			// SET TO LOCALS
 			apiObject.setConUp(apiObject.getConUp() + f_up);
@@ -392,12 +388,6 @@ public class Logic extends MyBaseService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			run = false;
-			System.out.println("Logic is stopped ");
-		} catch (LineUnavailableException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
