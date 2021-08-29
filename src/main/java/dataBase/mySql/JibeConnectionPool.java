@@ -12,7 +12,7 @@ import java.util.List;
 public class JibeConnectionPool implements IConnectionPool {
 	
 	private static final int MAX_POOL_SIZE = 25;
-	
+
 	// Instance
 	private static JibeConnectionPool jibeConnectionPool;
 	private static int INITIAL_POOL_SIZE = 15;
@@ -21,7 +21,7 @@ public class JibeConnectionPool implements IConnectionPool {
 	private static String password;
 	private static List<Connection> connections;
 	private static List<Connection> usedConnections = new ArrayList<>();
-	
+
 	private JibeConnectionPool(String url, String user, String password, List<Connection> connections) {
 		this.url = url;
 		this.user = user;
@@ -32,6 +32,7 @@ public class JibeConnectionPool implements IConnectionPool {
 	public static JibeConnectionPool getConnectionsPoolInstance() {
 		if (jibeConnectionPool == null) {
 			try {
+				Class.forName("org.postgresql.Driver");
 				// String url =
 				// "jdbc:mysql://sagivwork.ca16ljkfxgo3.us-east-2.rds.amazonaws.com:3306/ta35";
 				// String user = "sagivAwsMaster";
