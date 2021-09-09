@@ -3,12 +3,11 @@ package api.dde.DDE;
  * Copyright 2009 www.pretty-tools.com. All rights reserved.
  */
 
-import javax.swing.JOptionPane;
-
+import api.ApiObject;
 import com.pretty_tools.dde.DDEException;
 import com.pretty_tools.dde.client.DDEClientConversation;
 
-import api.ApiObject;
+import javax.swing.*;
 /**
  * Excel Example.
  *
@@ -16,8 +15,6 @@ import api.ApiObject;
  */
 public class DDEConnection {
 
-	DDEReader ddeReader;
-	DDECalculator ddeCalculator;
 	ApiObject apiObject;
 
 	// Get conversation instance
@@ -42,21 +39,6 @@ public class DDEConnection {
 		this.apiObject = apiObject;
 	}
 	
-	// Start all the threads
-	public void start() throws InterruptedException {
-		ddeReader = new DDEReader(this, apiObject);
-		ddeCalculator = new DDECalculator();
-
-		ddeReader.start();
-		ddeCalculator.start();
-	}
-
-	// Close all the threads and the disconnect the conversation
-	public void closeConnection() {
-		ddeReader.close();
-		ddeCalculator.close();
-	}
-
 	public double dbl(String s) {
 		return Double.parseDouble(s.replace(",", ""));
 	}

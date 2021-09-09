@@ -1,19 +1,7 @@
 package charts;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
-
+import api.ApiObject;
+import options.Options;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -26,10 +14,12 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
 
-import api.ApiObject;
-import api.Manifest;
-import counter.WindowTA35;
-import options.Options;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class ChartWindow extends JFrame {
 
@@ -65,9 +55,6 @@ public class ChartWindow extends JFrame {
 
 		// Build the window
 		init();
-
-		// Show on screen
-		WindowTA35.showOnScreen(Manifest.screen, this);
 
 		// Create the chart updater thread
 		freeUpdater = new JFreeUpdater(chartPanel, data, chart, future_series, index_series, index_bid_series,

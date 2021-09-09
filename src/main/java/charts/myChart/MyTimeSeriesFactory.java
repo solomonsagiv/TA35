@@ -1,6 +1,5 @@
 package charts.myChart;
 
-import api.ApiObject;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.Queries;
@@ -28,7 +27,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie(Factories.Tables.INDEX_TABLE);
+                        ResultSet rs = Queries.get_serie(Factories.Tables.SAGIV_INDEX_TABLE);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -124,7 +123,6 @@ public class MyTimeSeriesFactory {
 //                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-
             case Factories.TimeSeries.OP_AVG_WEEK_60_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE) {
                     @Override

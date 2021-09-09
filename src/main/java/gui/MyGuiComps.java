@@ -7,7 +7,9 @@ import dataBase.mySql.Queries;
 import gui.listeners.MyListeners;
 import locals.L;
 import locals.Themes;
+
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -25,6 +27,7 @@ public class MyGuiComps {
             super(title);
             init();
             initialize();
+            initListeners();
             packAndFinish();
             initOnClose();
         }
@@ -418,6 +421,41 @@ public class MyGuiComps {
         }
     }
 
+    public static abstract class MyTable extends JTable {
+
+        public MyTable(Object[][] data, Object[] headers) {
+            super(data, headers);
+            init();
+        }
+
+        private void init() {
+            setFont(Themes.VEDANA_12);
+
+            // Cell renderer
+            DefaultTableCellRenderer cell_renderer = get_cell_renderer();
+            cell_renderer.setHorizontalAlignment( JLabel.CENTER );
+            setDefaultRenderer(MyTable.class, cell_renderer);
+            for (int i = 0; i < getColumnModel().getColumnCount(); i++) {
+                getColumnModel().getColumn(i).setCellRenderer(cell_renderer);
+            }
+
+        }
+
+        public DefaultTableCellRenderer get_cell_renderer() {
+            return new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
+                    //Cells are by default rendered as a JLabel.
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+                    cell_change_listener(c, table, value, isSelected, hasFocus, row, col);
+                    return c;
+                }
+
+            };
+        }
+
+        protected abstract void cell_change_listener(Component c, JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col);
+    }
 
 }
 

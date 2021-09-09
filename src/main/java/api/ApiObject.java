@@ -8,18 +8,14 @@ import exp.ExpWeek;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
-import options.OptionsDataCalculator;
 import org.json.JSONObject;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
-
 import java.util.ArrayList;
 
 public class ApiObject implements IJsonData {
 	
 	private static ApiObject apiObject;
-
-	OptionsDataCalculator optionsDataCalculator;
 
 	private String status = null;
 	private String streamMarket = "stream";
@@ -64,13 +60,6 @@ public class ApiObject implements IJsonData {
 
 	private int basketUp = 0;
 	private int basketDown = 0;
-
-	private double optimiLiveMove = 0;
-	private double pesimiLiveMove = 0;
-	private ArrayList<Double> optimiMoveList = new ArrayList<>();
-	private ArrayList<Double> pesimiMoveList = new ArrayList<>();
-	private double optimiMoveFromOutSide = 0;
-	private double pesimiMoveFromOutSide = 0;
 
 	// Rcaes
 	private int conUp = 0;
@@ -140,10 +129,6 @@ public class ApiObject implements IJsonData {
 
 	public void start() {
 		getServiceHandler().getHandler().start();
-
-		// Options window table
-		optionsDataCalculator = new OptionsDataCalculator();
-		optionsDataCalculator.startRunner();
 
 		setStarted(true);
 
@@ -388,22 +373,6 @@ public class ApiObject implements IJsonData {
 		this.daysToExp = daysToExp;
 	}
 
-	public double getOptimiLiveMove() {
-		return floor(optimiLiveMove + optimiMoveFromOutSide);
-	}
-
-	public void setOptimiLiveMove(double optimiLiveMove) {
-		this.optimiLiveMove = optimiLiveMove;
-	}
-
-	public double getPesimiLiveMove() {
-		return floor(pesimiLiveMove + pesimiMoveFromOutSide);
-	}
-
-	public void setPesimiLiveMove(double pesimiLiveMove) {
-		this.pesimiLiveMove = pesimiLiveMove;
-	}
-
 	public double getInterest() {
 		return interest;
 	}
@@ -426,22 +395,6 @@ public class ApiObject implements IJsonData {
 
 	public void setStreamMarket(String streamMarket) {
 		this.streamMarket = streamMarket;
-	}
-
-	public ArrayList<Double> getOptimiMoveList() {
-		return optimiMoveList;
-	}
-
-	public void setOptimiMoveList(ArrayList<Double> optimiMoveList) {
-		this.optimiMoveList = optimiMoveList;
-	}
-
-	public ArrayList<Double> getPesimiMoveList() {
-		return pesimiMoveList;
-	}
-
-	public void setPesimiMoveList(ArrayList<Double> pesimiMoveList) {
-		this.pesimiMoveList = pesimiMoveList;
 	}
 
 	public ArrayList<Integer> getIndexBidAskCounterList() {
@@ -482,22 +435,6 @@ public class ApiObject implements IJsonData {
 
 	public void setFutureRatioList(ArrayList<Double> futureRatioList) {
 		this.futureRatioList = futureRatioList;
-	}
-
-	public double getOptimiMoveFromOutSide() {
-		return optimiMoveFromOutSide;
-	}
-
-	public void setOptimiMoveFromOutSide(double optimiMoveFromOutSide) {
-		this.optimiMoveFromOutSide = optimiMoveFromOutSide;
-	}
-
-	public double getPesimiMoveFromOutSide() {
-		return pesimiMoveFromOutSide;
-	}
-
-	public void setPesimiMoveFromOutSide(double pesimiMoveFromOutSide) {
-		this.pesimiMoveFromOutSide = pesimiMoveFromOutSide;
 	}
 
 	public double getEqualLiveMove() {
@@ -589,8 +526,6 @@ public class ApiObject implements IJsonData {
 		json.put(JsonStrings.conDown, apiObject.getConDown());
 		json.put(JsonStrings.indUp, apiObject.getIndUp());
 		json.put(JsonStrings.indDown, apiObject.getIndDown());
-		json.put(JsonStrings.optimiMove, apiObject.getOptimiLiveMove());
-		json.put(JsonStrings.pesimiMove, apiObject.getPesimiLiveMove());
 		json.put(JsonStrings.basketUp, apiObject.getBasketUp());
 		json.put(JsonStrings.basketDown, apiObject.getBasketDown());
 		json.put(JsonStrings.indBidAskCounter, apiObject.getIndBidAskCounter());
@@ -607,8 +542,6 @@ public class ApiObject implements IJsonData {
 		apiObject.setConDown(json.getInt(JsonStrings.conDown));
 		apiObject.setIndUp(json.getInt(JsonStrings.indUp));
 		apiObject.setIndDown(json.getInt(JsonStrings.indDown));
-		apiObject.setOptimiMoveFromOutSide(json.getDouble(JsonStrings.optimiMove));
-		apiObject.setPesimiMoveFromOutSide(json.getDouble(JsonStrings.pesimiMove));
 		apiObject.setBasketUp(json.getInt(JsonStrings.basketUp));
 		apiObject.setBasketDown(json.getInt(JsonStrings.basketDown));
 		apiObject.getStocksHandler().loadFromJson(new MyJson(json.getJSONObject(JsonStrings.stocks)));

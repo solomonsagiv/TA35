@@ -3,7 +3,13 @@ package counter;
 import api.ApiObject;
 import arik.Arik;
 import dataBase.DataBaseHandler;
+import dataBase.DataBaseService;
+import options.OptionsDataCalculator;
 import org.json.JSONArray;
+import service.BasketService;
+import service.DataReaderService;
+import service.IndDeltaService;
+import service.OptionsReaderService;
 import threads.MyThread;
 
 import javax.swing.*;
@@ -16,16 +22,20 @@ public class BackGroundRunner extends MyThread implements Runnable {
     double rando_start;
     double rando_end;
     double rando;
-    boolean Rando = false;
     double bid;
     double ask;
-    String status;
     LocalTime current_time;
 
     String preOpen = "preopen";
     String streamMarket = "stream";
     String randomally = "rando";
     String endMarket = "end";
+
+    OptionsDataCalculator optionsDataCalculator;
+
+    public static String weekPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Week";
+    public static String monthPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Month";
+    public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
 
     public static boolean preTradingBool = false;
     public static boolean streamMarketBool = false;
@@ -45,8 +55,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
     JSONArray j;
 
     ApiObject apiObject = ApiObject.getInstance();
-
-    Updater updater;
 
     public BackGroundRunner() {
         super();
@@ -85,12 +93,20 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         // Pre trading
                         if (apiObject.getStatus().contains(preOpen) && !preTradingBool) {
                             preTradingBool = true;
+                            // Data base service
+                            new DataBaseService();
+                            new OptionsReaderService(apiObject.getExpWeek(), weekPath);
+                            new OptionsReaderService(apiObject.getExpMonth(), monthPath);
                         }
 
                         // Auto start
                         if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
                             apiObject.setFutureOpen(apiObject.getExpMonth().getOptions().getContract());
                             apiObject.start();
+                            new OptionsDataCalculator();
+                            new BasketService();
+                            new IndDeltaService(BackGroundRunner.excelPath);
+                            new DataReaderService(BackGroundRunner.excelPath);
                             streamMarketBool = true;
                             System.out.println(" Started ");
                         }

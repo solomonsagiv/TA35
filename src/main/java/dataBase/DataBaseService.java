@@ -1,14 +1,13 @@
 package dataBase;
 
-import api.ApiObject;
 import api.Manifest;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import service.MyBaseService;
+
 import java.time.Instant;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class DataBaseService extends MyBaseService {
@@ -92,32 +91,20 @@ public class DataBaseService extends MyBaseService {
             ind_delta_timestamp.add(new MyTimeStampObject(Instant.now(), change));
         }
 
-        // Index
-        change = index - index_0;
-        if (change != 0) {
-            index_0 = index;
-            index_timestamp.add(new MyTimeStampObject(Instant.now(), index));
-        }
-
-        // Fut week
-        change = fut_week - fut_week_0;
-        if (change != 0) {
-            fut_week_0 = fut_week;
-            fut_week_timestamp.add(new MyTimeStampObject(Instant.now(), fut_week));
-        }
-
-        // Fut month
-        change = fut_month - fut_month_0;
-        if (change != 0) {
-            fut_month_0 = fut_month;
-            fut_month_timestamp.add(new MyTimeStampObject(Instant.now(), fut_month));
-        }
-
         // Baskets
         change = baskets - baskets_0;
         if (change != 0) {
             baskets_0 = baskets;
             baskets_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+        }
+
+        // Op avg week
+        if (sleepCount % 1000 == 0) {
+            Instant instant = Instant.now();
+
+            index_timestamp.add(new MyTimeStampObject(instant, index));
+            fut_week_timestamp.add(new MyTimeStampObject(instant, fut_week));
+            fut_month_timestamp.add(new MyTimeStampObject(instant, fut_month));
         }
 
         // Grabb data and insert data
@@ -134,9 +121,9 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro(bid_ask_counter_week_timestamp, Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE);
             insert_data_retro(bid_ask_counter_month_timestamp, Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE);
             insert_data_retro(ind_delta_timestamp, Factories.Tables.INDEX_DELTA_TABLE);
-            insert_data_retro(index_timestamp, Factories.Tables.INDEX_TABLE);
-            insert_data_retro(fut_week_timestamp, Factories.Tables.FUT_WEEK_TABLE);
-            insert_data_retro(fut_month_timestamp, Factories.Tables.FUT_MONTH_TABLE);
+            insert_data_retro(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
+            insert_data_retro(fut_week_timestamp, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
+            insert_data_retro(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
             insert_data_retro(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
         }).start();
     }
@@ -144,11 +131,11 @@ public class DataBaseService extends MyBaseService {
     private void grab_data() {
         new Thread(() -> {
 
-            double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
-            double op_avg_week_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 60));
+            double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE));
+            double op_avg_week_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE, 60));
 
-            double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE));
-            double op_avg_month_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 60));
+            double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE));
+            double op_avg_month_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE, 60));
 
             double delta_week_avg = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.DELTA_WEEK_TABLE));
             double delta_week_avg_60 = Queries.handle_rs(Queries.get_serie_avg_from_cdf(Factories.Tables.DELTA_WEEK_TABLE, 60));

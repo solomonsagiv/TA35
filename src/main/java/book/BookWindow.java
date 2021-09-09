@@ -1,37 +1,20 @@
 package book;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import api.ApiObject;
+import charts.OptionChartWindow;
+import counter.WindowTA35;
+import options.Option;
+import org.json.JSONObject;
+
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.time.LocalTime;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableCellRenderer;
-
-import org.json.JSONObject;
-
-import api.ApiObject;
-import api.Manifest;
-import charts.OptionChartWindow;
-import counter.WindowTA35;
-import options.Option;
 
 public class BookWindow {
 
@@ -100,9 +83,6 @@ public class BookWindow {
 		// Create the book updater thread
 		bookUpdater = new BookUpdater(high, low, last, base, table, lastPresent, bidAskCounterField, this);
 		bookUpdater.start();
-
-		// // Show on screen
-		 showOnScreen(Manifest.screen, frame);
 	}
 
 	public void openOption(String strike, boolean callOrPut) {

@@ -1,17 +1,11 @@
 package charts;
 
-import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridLayout;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
-
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
 
-import api.Manifest;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class MyFreeChart extends JFrame {
 
@@ -33,8 +27,6 @@ public class MyFreeChart extends JFrame {
 		
 		setPreferredSize(new Dimension(bounds[2], bounds[3]));
 
-		showOnScreen(Manifest.screen, this);
-		
 		// On Close
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent e) {

@@ -3,7 +3,7 @@ package dataBase;
 public class Factories {
 
     public static class Tables {
-        public static final String INDEX_TABLE = "sagiv.ta35_index";
+        public static final String SAGIV_INDEX_TABLE = "sagiv.ta35_index";
         public static final String DELTA_WEEK_TABLE = "sagiv.ta35_delta_week_2_cdf";
         public static final String DELTA_MONTH_TABLE = "sagiv.ta35_delta_month_2_cdf";
         public static final String BID_ASK_COUNTER_WEEK_TABLE = "sagiv.ta35_bid_ask_counter_fut_week_cdf";
@@ -11,8 +11,8 @@ public class Factories {
         public static final String INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";
         public static final String BASKETS_TABLE = "sagiv.ta35_baskets_cdf";
         public static final String EXPS_TABLE = "sagiv.ta35_exps";
-        public static final String FUT_WEEK_TABLE = "sagiv.ta35_future_week";
-        public static final String FUT_MONTH_TABLE = "sagiv.ta35_future_month";
+        public static final String SAGIV_FUT_WEEK_TABLE = "sagiv.ta35_future_week";
+        public static final String SAGIV_FUT_MONTH_TABLE = "sagiv.ta35_future_month";
     }
 
     public static class TimeSeries {

@@ -17,6 +17,9 @@ public class Option {
 	private int high = 0;
 	private int low = 0;
 	private int base = 0;
+	private int prem = 10;
+	private int pricing = -10;
+	private int open_pos = 0;
 	private double calcPrice = 0;
 	private int volume = 0;
 	private double stDev = 0;
@@ -317,11 +320,9 @@ public class Option {
 		return deltaCounter;
 	}
 
-
 	public void setDeltaCounter(int deltaCounter) {
 		this.deltaCounter = deltaCounter;
 	}
-
 
 	public ArrayList<Double> getDeltaCounterList() {
 		return deltaCounterList;
@@ -334,7 +335,31 @@ public class Option {
 	public void decreaseDeltaCounter() {
 		deltaCounter--;
 	}
-	
+
+	public int getPrem() {
+		return prem;
+	}
+
+	public void setPrem(int prem) {
+		this.prem = prem;
+	}
+
+	public void setPricing(int pricing) {
+		this.pricing = pricing;
+	}
+
+	public void setOpen_pos(int open_pos) {
+		this.open_pos = open_pos;
+	}
+
+	public int getPricing() {
+		return pricing;
+	}
+
+	public int getOpen_pos() {
+		return open_pos;
+	}
+
 	public void setDeltaCounterList(ArrayList<Double> deltaCounterList) {
 		this.deltaCounterList = deltaCounterList;
 	}

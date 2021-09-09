@@ -9,10 +9,8 @@ import exp.Exp;
 import locals.L;
 import options.Option;
 import options.Options;
-import options.OptionsDataUpdater;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,8 +41,6 @@ public class Setting {
 	private JTextField textField_4;
 	private JTextField expBasketsField;
 	private JTextField textField_6;
-	private JTextField optimiMoveField;
-	private JTextField pesimiMoveField;
 	private JTextField indexCounterField;
 	private JTextField toDayDeltaField;
 	private JTextField conBidAskCounterField;
@@ -335,33 +331,6 @@ public class Setting {
 		lblIndDelta_1.setBounds(370, 43, 67, 21);
 		panel_2.add(lblIndDelta_1);
 
-		JLabel lblTableMiddleStrike = new JLabel("Table middle strike");
-		lblTableMiddleStrike.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTableMiddleStrike.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
-		lblTableMiddleStrike.setBounds(699, 157, 129, 21);
-		setting_panel.add(lblTableMiddleStrike);
-
-		textField_6 = new JTextField();
-		textField_6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int strike;
-				try {
-					strike = Integer.parseInt(arg0.getActionCommand());
-					OptionsDataUpdater.updateStrikes(strike);
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-		});
-		textField_6.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_6.setForeground(new Color(0, 51, 153));
-		textField_6.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		textField_6.setColumns(10);
-		textField_6.setBorder(new LineBorder(Color.DARK_GRAY));
-		textField_6.setBackground(SystemColor.menu);
-		textField_6.setBounds(699, 189, 129, 22);
-		setting_panel.add(textField_6);
-
 		JButton resetOptionsButton = new JButton("Reset options");
 		resetOptionsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -414,13 +383,6 @@ public class Setting {
 				// Timers op
 				apiObject.setOptimiTimer(0);
 				apiObject.setPesimiTimer(0);
-
-				// Op move
-				apiObject.setOptimiLiveMove(0);
-				apiObject.setPesimiLiveMove(0);
-
-				apiObject.getOptimiMoveList().clear();
-				apiObject.getPesimiMoveList().clear();
 
 				// Op avg
 				optionsMonth.getOpChartList().clear();
@@ -703,56 +665,6 @@ public class Setting {
 		lblBaskets.setFont(new Font("Dubai Medium", Font.BOLD, 15));
 		lblBaskets.setBounds(146, 11, 59, 21);
 		panel_4.add(lblBaskets);
-
-		JLabel lblOptimiMive = new JLabel("Optimi");
-		lblOptimiMive.setBounds(247, 38, 50, 22);
-		panel_4.add(lblOptimiMive);
-		lblOptimiMive.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOptimiMive.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
-
-		optimiMoveField = new JTextField();
-		optimiMoveField.setBounds(307, 38, 56, 22);
-		panel_4.add(optimiMoveField);
-		optimiMoveField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				try {
-					apiObject.setOptimiMoveFromOutSide(Double.parseDouble(event.getActionCommand()));
-				} catch (Exception e) {
-					popup("Failed", e);
-				}
-			}
-		});
-		optimiMoveField.setHorizontalAlignment(SwingConstants.CENTER);
-		optimiMoveField.setForeground(new Color(0, 51, 153));
-		optimiMoveField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		optimiMoveField.setColumns(10);
-		optimiMoveField.setBorder(null);
-		optimiMoveField.setBackground(new Color(255, 255, 255));
-
-		JLabel lblPesimiMove = new JLabel("Pesimi");
-		lblPesimiMove.setBounds(247, 74, 50, 22);
-		panel_4.add(lblPesimiMove);
-		lblPesimiMove.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPesimiMove.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
-
-		pesimiMoveField = new JTextField();
-		pesimiMoveField.setBounds(307, 71, 56, 22);
-		panel_4.add(pesimiMoveField);
-		pesimiMoveField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				try {
-					apiObject.setPesimiMoveFromOutSide(Double.parseDouble(pesimiMoveField.getText()));
-				} catch (Exception e) {
-					popup("Failed", e);
-				}
-			}
-		});
-		pesimiMoveField.setHorizontalAlignment(SwingConstants.CENTER);
-		pesimiMoveField.setForeground(new Color(0, 51, 153));
-		pesimiMoveField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		pesimiMoveField.setColumns(10);
-		pesimiMoveField.setBorder(null);
-		pesimiMoveField.setBackground(new Color(255, 255, 255));
 
 		JLabel lblMove = new JLabel("Move");
 		lblMove.setForeground(new Color(0, 0, 128));

@@ -47,8 +47,8 @@ public class DataBaseHandler {
         apiObject.getExpMonth().getExpData().setIndDelta(ind_delta_month);
         apiObject.getExpWeek().getExpData().setBaskets((int) baskets_exp_week);
         apiObject.getExpMonth().getExpData().setBaskets((int) baskets_exp_month);
-        apiObject.getExpWeek().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE)));
-        apiObject.getExpMonth().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE)));
+        apiObject.getExpWeek().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE)));
+        apiObject.getExpMonth().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE)));
         apiObject.setBasketUp(baskets_up);
         apiObject.setBasketDown(baskets_down);
         apiObject.getExpWeek().getOptions().setDelta(delta_week);

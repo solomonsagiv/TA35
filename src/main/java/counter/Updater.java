@@ -79,12 +79,9 @@ public class Updater extends MyThread implements Runnable {
 				text = floor(avg(), 10);
 				setColor(window.op_avg, text, lightGreen);
 
-				// Optimi Pesimi move
-				window.pesimiBasketField.setText(str(apiObject.getPesimiLiveMove()));
-
 				// Baskets
-				window.optimiBasketField.setText(str(apiObject.getBasketUp()));
-				window.pesimiBasketField.setText(str(apiObject.getBasketDown()));
+				window.basket_up_field.setText(str(apiObject.getBasketUp()));
+				window.basket_down_field.setText(str(apiObject.getBasketDown()));
 				setColorInt(window.basketsSumField, (apiObject.getBasketUp() - apiObject.getBasketDown()));
 
 				// Delta calc

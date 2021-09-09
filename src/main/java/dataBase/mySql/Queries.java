@@ -3,12 +3,10 @@ package dataBase.mySql;
 import api.ApiObject;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Queries {
 
@@ -27,9 +25,9 @@ public class Queries {
 
     public static ResultSet get_start_exp(String exp) {
         String q = "select value " +
-                "from sagiv.ta35_index " +
+                "from %s " +
                 "where (select date from sagiv.ta35_exps where exp_type = '%s') = time::date order by time limit 1;";
-        String query = String.format(q, exp);
+        String query = String.format(q, Factories.Tables.SAGIV_INDEX_TABLE, exp);
         return MySql.select(query);
     }
 
@@ -39,7 +37,7 @@ public class Queries {
                 "inner join %s i on f.time = i.time " +
                 "where i.time::date = now()::date;";
 
-        String query = String.format(q, fut_table_location, Factories.Tables.INDEX_TABLE);
+        String query = String.format(q, fut_table_location, Factories.Tables.SAGIV_INDEX_TABLE);
         return MySql.select(query);
     }
 
@@ -49,7 +47,7 @@ public class Queries {
                 "inner join %s f on i.time = f.time " +
                 "where i.time > i.time - interval '%s min';";
 
-        String query = String.format(q, Factories.Tables.INDEX_TABLE, fut_table_location, min);
+        String query = String.format(q, Factories.Tables.SAGIV_INDEX_TABLE, fut_table_location, min);
         return MySql.select(query);
     }
 

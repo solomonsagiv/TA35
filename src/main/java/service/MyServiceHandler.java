@@ -86,8 +86,10 @@ public class MyServiceHandler extends MyThread implements Runnable {
 	}
 
 	private void executServices() {
+		System.out.println();
 		for (MyBaseService service : servies) {
 			service.execute(sleepCount);
+			System.out.println(service.getName());
 		}
 	}
 

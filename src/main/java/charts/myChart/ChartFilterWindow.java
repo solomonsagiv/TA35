@@ -10,9 +10,6 @@ import java.awt.event.ItemListener;
 
 public class ChartFilterWindow extends MyGuiComps.MyFrame {
 
-    public static void main(String[] args) {
-    }
-
     // Variables from constructor
     MyChart myChart;
 
