@@ -43,8 +43,8 @@ public class JibeConnectionPool implements IConnectionPool {
 //				String password = "Solomonsagivawsmaster12";
 
 				String url = "jdbc:postgresql://52.4.58.207:5432/jibe";
-				String user = "jibe_admin";
-				String password = "160633a0cd2ab5a9b82f088a77240cb68f9232a8";
+				String user = "sagiv";
+				String password = "f19add32-1141-4af5-9abd-4744487f3b51";
 
 				jibeConnectionPool = JibeConnectionPool.create(url, user, password);
 			} catch (Exception e) {
