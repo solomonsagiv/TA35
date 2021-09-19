@@ -4,6 +4,7 @@ import api.ApiObject;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
+import locals.L;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -45,14 +46,15 @@ public class DataBaseHandler {
         apiObject.getExpMonth().getExpData().setDelta(exp_month_delta);
         apiObject.getExpWeek().getExpData().setIndDelta(ind_delta_week);
         apiObject.getExpMonth().getExpData().setIndDelta(ind_delta_month);
-        apiObject.getExpWeek().getExpData().setBaskets((int) baskets_exp_week);
-        apiObject.getExpMonth().getExpData().setBaskets((int) baskets_exp_month);
+        apiObject.getExpWeek().getExpData().setBaskets((int) L.abs(baskets_exp_week));
+        apiObject.getExpMonth().getExpData().setBaskets((int) L.abs(baskets_exp_month));
         apiObject.getExpWeek().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE)));
         apiObject.getExpMonth().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE)));
-        apiObject.setBasketUp(baskets_up);
-        apiObject.setBasketDown(baskets_down);
+        apiObject.setBasketUp((int) L.abs(baskets_up));
+        apiObject.setBasketDown((int) L.abs(baskets_down));
         apiObject.getExpWeek().getOptions().setDelta(delta_week);
         apiObject.getExpMonth().getOptions().setDelta(delta_month);
+        apiObject.setDbLoaded(true);
     }
 
     public ResultSet get_exp_data(String target_table_location, String exp, int result_type) {
@@ -61,15 +63,15 @@ public class DataBaseHandler {
         // Serie
         if (result_type == SERIE_RESULT_TYPE) {
             q = "select * " +
-                    "from %s where time::date > (select date from %s where exp_type = '%s');";
+                    "from %s where time::date >= (select date from %s where exp_type = '%s');";
         } else if (result_type == SUM_RESULT_TYPE) {
             // Sum
             q = "select sum(value) as value " +
-                    "from %s where time::date > (select date from %s where exp_type = '%s');";
+                    "from %s where time::date >= (select date from %s where exp_type = '%s');";
         } else if (result_type == AVG_RESULT_TYPE) {
             q =  // Sum
                     q = "select avg(value) as value " +
-                            "from %s where time::date > (select date from %s where exp_type = '%s');";
+                            "from %s where time::date >= (select date from %s where exp_type = '%s');";
         }
 
         String query = String.format(q, target_table_location, Factories.Tables.EXPS_TABLE, exp.toUpperCase());

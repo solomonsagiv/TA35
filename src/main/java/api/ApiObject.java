@@ -128,8 +128,6 @@ public class ApiObject implements IJsonData {
 	}
 
 	public void start() {
-		getServiceHandler().getHandler().start();
-
 		setStarted(true);
 
 		if (Manifest.OPEN_CHART) {

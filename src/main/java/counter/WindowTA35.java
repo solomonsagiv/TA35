@@ -7,6 +7,7 @@ import charts.charts.FullCharts2;
 import charts.charts.MainMonthChart;
 import charts.charts.MainMonthWeekChart;
 import charts.charts.MainWeekChart;
+import dataBase.DataBaseHandler;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import options.optionsDataTable.OptionsTableWindow;
@@ -70,9 +71,13 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             // DDE connection
             ddeConnection = new DDEConnection(apiObject);
 
+            DataBaseHandler dataBaseHandler = new DataBaseHandler();
+            dataBaseHandler.load_data();
+
             // Back ground runner
             backGroundRunner = new BackGroundRunner();
             backGroundRunner.getHandler().start();
+            System.out.println("Load on start up ta35 window");
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showConfirmDialog(this, e.getMessage() + "\n" + e.getCause());
