@@ -16,7 +16,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 
 	@SuppressWarnings("serial")
 	@Override
-	public void createChart() throws CloneNotSupportedException {
+	public void init() throws CloneNotSupportedException {
 
 		// Props
 		props = new MyProps();

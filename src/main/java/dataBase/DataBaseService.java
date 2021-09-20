@@ -2,11 +2,13 @@ package dataBase;
 
 import api.Manifest;
 import arik.Arik;
+import counter.BackGroundRunner;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import service.MyBaseService;
+
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -103,7 +105,9 @@ public class DataBaseService extends MyBaseService {
         if (sleepCount % 1000 == 0) {
             Instant instant = Instant.now();
 
-            index_timestamp.add(new MyTimeStampObject(instant, index));
+            if (BackGroundRunner.streamMarketBool) {
+                index_timestamp.add(new MyTimeStampObject(instant, index));
+            }
             fut_week_timestamp.add(new MyTimeStampObject(instant, fut_week));
             fut_month_timestamp.add(new MyTimeStampObject(instant, fut_month));
         }

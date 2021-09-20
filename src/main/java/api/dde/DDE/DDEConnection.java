@@ -23,7 +23,6 @@ public class DDEConnection {
 		conversation.setTimeout(3000);
 		// Connect to the excel
 		try {
-			System.out.println(excelPath);
 			conversation.connect("Excel", excelPath);
 		} catch (DDEException e) {
 			JOptionPane.showConfirmDialog(null, e.getMessage() + "\n" + e.getCause());

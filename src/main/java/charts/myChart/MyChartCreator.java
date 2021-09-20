@@ -13,5 +13,15 @@ public abstract class MyChartCreator implements IChartCreator {
     public MyChartCreator( ApiObject client ) {
         this.apiObject = client;
     }
+
+    public void createChart() {
+        new Thread(() ->{
+            try {
+                init();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+    }
     
 }

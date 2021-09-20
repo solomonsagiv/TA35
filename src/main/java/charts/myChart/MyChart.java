@@ -8,7 +8,9 @@ import locals.L;
 import locals.Themes;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.*;
+import org.jfree.chart.axis.AxisLocation;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -19,6 +21,7 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.Layer;
 import org.jfree.ui.RectangleInsets;
 import threads.MyThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -51,23 +54,10 @@ public class MyChart {
 
         // Init
         init(series, props);
-        load_data();
 
         // Start updater
         updater = new ChartUpdater(series);
         updater.getHandler().start();
-    }
-
-    private void load_data() {
-        try {
-            new Thread(() -> {
-                for (MyTimeSeries serie : series) {
-                    serie.load();
-                }
-            }).start();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getStackTrace());
-        }
     }
 
     private void init(MyTimeSeries[] series, MyProps props) {
@@ -183,7 +173,7 @@ public class MyChart {
         MyTimeSeries[] series;
         NumberAxis range;
         double min, max;
-    
+
         // Constructor
         public ChartUpdater(MyTimeSeries[] series) {
             this.series = series;
@@ -193,16 +183,10 @@ public class MyChart {
         private void can_i_start() {
             // Should load
             if (props.getBool(ChartPropsEnum.IS_LOAD_DB)) {
-                // Load each serie
-                for (MyTimeSeries serie : series) {
-                    new Thread(() -> {
-                        serie. load_data();
-                    }).start();
-                }
 
                 while (true) {
                     try {
-                         boolean loaded = true;
+                        boolean loaded = true;
 
                         // Sleep
                         Thread.sleep(500);

@@ -11,7 +11,6 @@ import service.DataReaderService;
 import service.IndDeltaService;
 import service.OptionsReaderService;
 import threads.MyThread;
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
