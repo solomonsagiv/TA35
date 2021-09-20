@@ -4,10 +4,7 @@ import api.ApiObject;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
 import charts.charts.FullCharts2;
-import charts.charts.MainMonthChart;
 import charts.charts.MainMonthWeekChart;
-import charts.charts.MainWeekChart;
-import dataBase.DataBaseHandler;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import options.optionsDataTable.OptionsTableWindow;
@@ -26,14 +23,19 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     Color lightGreen = new Color(12, 135, 0);
     Color lightRed = new Color(229, 19, 0);
 
-    public JTextField op_avg;
-    public static JTextField rando;
+    public MyGuiComps.MyTextField op_avg;
+    public static MyGuiComps.MyTextField rando;
     public static JButton start;
-    private JPanel bottomPanel;
-    public JTextField monthStartExpField;
+    private MyGuiComps.MyPanel bottomPanel;
+    public MyGuiComps.MyTextField monthStartExpField;
     public static JTextArea log;
-    public JTextField monthDeltaField;
-    public JTextField weekDeltaField;
+    public MyGuiComps.MyTextField monthDeltaField;
+    public MyGuiComps.MyTextField weekDeltaField;
+
+    MyGuiComps.MyLabel v5_lbl;
+    MyGuiComps.MyLabel v6_lbl;
+    public MyGuiComps.MyTextField v5_field;
+    public MyGuiComps.MyTextField v6_field;
 
     public int updater_id = 0;
 
@@ -42,20 +44,19 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     // Threads
     Updater updater;
     BackGroundRunner backGroundRunner;
-    JTextField basket_down_field;
-    JTextField basket_up_field;
+    MyGuiComps.MyTextField basket_down_field;
+    MyGuiComps.MyTextField basket_up_field;
     public JTextField basketsSumField;
     DDEConnection ddeConnection;
-    public JTextField weekStartExpField;
-    public JTextField indexDeltaField;
-    private JButton btnDetails;
-    public JTextField expDeltaWeekField;
-    public JTextField expDeltaMonthField;
-    public JTextField expIndDeltaWeekField;
-    public JTextField expIndDeltaMonthField;
-    public JTextField expBasketsWeekField;
-    public JTextField expBasketsMonthField;
-    public JTextField indDeltaNoBasketsField;
+    public MyGuiComps.MyTextField weekStartExpField;
+    private MyGuiComps.MyButton btnDetails;
+    public MyGuiComps.MyTextField expDeltaWeekField;
+    public MyGuiComps.MyTextField expDeltaMonthField;
+    public MyGuiComps.MyTextField expIndDeltaWeekField;
+    public MyGuiComps.MyTextField expIndDeltaMonthField;
+    public MyGuiComps.MyTextField expBasketsWeekField;
+    public MyGuiComps.MyTextField expBasketsMonthField;
+    public MyGuiComps.MyTextField indDeltaNoBasketsField;
 
     // Constructor
     public WindowTA35() {
@@ -71,13 +72,9 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             // DDE connection
             ddeConnection = new DDEConnection(apiObject);
 
-            DataBaseHandler dataBaseHandler = new DataBaseHandler();
-            dataBaseHandler.load_data();
-
             // Back ground runner
             backGroundRunner = new BackGroundRunner();
             backGroundRunner.getHandler().start();
-            System.out.println("Load on start up ta35 window");
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showConfirmDialog(this, e.getMessage() + "\n" + e.getCause());
@@ -114,13 +111,12 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     @Override
     public void initialize() {
 
-        bottomPanel = new JPanel();
-        bottomPanel.setBackground(SystemColor.menu);
+        bottomPanel = new MyGuiComps.MyPanel();
         bottomPanel.setBounds(0, 129, 801, 38);
         getContentPane().add(bottomPanel);
         bottomPanel.setLayout(null);
 
-        start = new JButton("Start");
+        start = new MyGuiComps.MyButton("Start");
         start.setBorder(null);
         start.setBounds(248, 7, 72, 23);
         bottomPanel.add(start);
@@ -132,10 +128,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                 start.setEnabled(false);
             }
         });
-        
-        start.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JButton options = new JButton("Options");
+        MyGuiComps.MyButton options = new MyGuiComps.MyButton("Options");
         options.setBorder(null);
         options.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -151,12 +145,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             }
         });
         options.setForeground(new Color(0, 0, 51));
-        options.setFont(new Font("Arial", Font.BOLD, 12));
         options.setBackground(new Color(211, 211, 211));
         options.setBounds(166, 7, 78, 23);
         bottomPanel.add(options);
 
-        JButton settingBtn = new JButton("Setting");
+        MyGuiComps.MyButton settingBtn = new MyGuiComps.MyButton("Setting");
         settingBtn.setBorder(null);
         settingBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -165,12 +158,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             }
         });
         settingBtn.setForeground(new Color(0, 0, 51));
-        settingBtn.setFont(new Font("Arial", Font.BOLD, 12));
         settingBtn.setBackground(new Color(211, 211, 211));
         settingBtn.setBounds(10, 7, 72, 23);
         bottomPanel.add(settingBtn);
 
-        btnDetails = new JButton("Details");
+        btnDetails = new MyGuiComps.MyButton("Details");
         btnDetails.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 DetailsWindow detailsWindow = new DetailsWindow();
@@ -179,37 +171,19 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         });
         btnDetails.setBorder(null);
         btnDetails.setForeground(new Color(0, 0, 51));
-        btnDetails.setFont(new Font("Arial", Font.BOLD, 12));
         btnDetails.setBackground(new Color(211, 211, 211));
         btnDetails.setBounds(88, 7, 72, 23);
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Week", "Month", "Full chart 2", "Main month week", "Options window"});
+        JComboBox chartsCombo = new JComboBox(new String[]{ "Main chart", "Full chart 2", "Options window"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
-        chartsCombo.setBackground(SystemColor.menu);
         chartsCombo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (chartsCombo.getSelectedItem().toString()) {
-                    case "Month":
-                        try {
-                            MainMonthChart mainMonthChart = new MainMonthChart(apiObject);
-                            mainMonthChart.createChart();
-                        } catch (CloneNotSupportedException exception) {
-                            exception.printStackTrace();
-                        }
-                        break;
-                    case "Week":
-                        try {
-                            MainWeekChart mainWeekChart = new MainWeekChart(apiObject);
-                            mainWeekChart.createChart();
-                        } catch (CloneNotSupportedException exception) {
-                            exception.printStackTrace();
-                        }
-                        break;
                     case "Full chart 2":
                         try {
                             FullCharts2 chart = new FullCharts2(apiObject);
@@ -218,7 +192,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                             exception.printStackTrace();
                         }
                         break;
-                    case "Main month week":
+                    case "Main chart":
                         try {
                             MainMonthWeekChart chart = new MainMonthWeekChart(apiObject);
                             chart.createChart();
@@ -236,35 +210,27 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         chartsCombo.setForeground(new Color(0, 0, 51));
         chartsCombo.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
 
-        indDeltaNoBasketsField = new JTextField();
-        indDeltaNoBasketsField.setHorizontalAlignment(SwingConstants.CENTER);
-        indDeltaNoBasketsField.setFont(new Font("Arial", Font.PLAIN, 15));
-        indDeltaNoBasketsField.setBorder(null);
-        indDeltaNoBasketsField.setBounds(365, 7, 65, 23);
-        bottomPanel.add(indDeltaNoBasketsField);
+
 
         ((JLabel) chartsCombo.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
-        JPanel basketsPanel = new JPanel();
+        MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();
         basketsPanel.setLayout(null);
-        basketsPanel.setBackground(SystemColor.menu);
         basketsPanel.setBounds(0, 26, 55, 102);
         getContentPane().add(basketsPanel);
 
-        basket_down_field = new JTextField();
+        basket_down_field = new MyGuiComps.MyTextField();
         basket_down_field.setBorder(null);
         basket_down_field.setHorizontalAlignment(SwingConstants.CENTER);
         basket_down_field.setForeground(lightRed);
-        basket_down_field.setFont(new Font("Arial", Font.PLAIN, 15));
         basket_down_field.setColumns(10);
         basket_down_field.setBounds(5, 35, 45, 25);
         basketsPanel.add(basket_down_field);
 
-        basket_up_field = new JTextField();
+        basket_up_field = new MyGuiComps.MyTextField();
         basket_up_field.setBorder(null);
         basket_up_field.setHorizontalAlignment(SwingConstants.CENTER);
         basket_up_field.setForeground(lightGreen);
-        basket_up_field.setFont(new Font("Arial", Font.PLAIN, 15));
         basket_up_field.setColumns(10);
         basket_up_field.setBounds(5, 5, 45, 25);
         basketsPanel.add(basket_up_field);
@@ -273,81 +239,69 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         basketsSumField.setBorder(null);
         basketsSumField.setHorizontalAlignment(SwingConstants.CENTER);
         basketsSumField.setForeground(new Color(229, 19, 0));
-        basketsSumField.setFont(new Font("Arial", Font.PLAIN, 15));
         basketsSumField.setColumns(10);
         basketsSumField.setBounds(5, 70, 45, 25);
         basketsPanel.add(basketsSumField);
 
-        JPanel basket_header_panel = new JPanel();
+        MyGuiComps.MyPanel basket_header_panel = new MyGuiComps.MyPanel();
         basket_header_panel.setLayout(null);
-        basket_header_panel.setBackground(SystemColor.menu);
         basket_header_panel.setBounds(0, 0, 55, 25);
         getContentPane().add(basket_header_panel);
 
-        JLabel baskets_lbl = new JLabel("סלים");
+        MyGuiComps.MyLabel baskets_lbl = new MyGuiComps.MyLabel("סלים");
         baskets_lbl.setHorizontalAlignment(SwingConstants.CENTER);
         baskets_lbl.setForeground(new Color(0, 0, 51));
-        baskets_lbl.setFont(new Font("Arial", Font.BOLD, 15));
         baskets_lbl.setBounds(0, 0, 55, 26);
         basket_header_panel.add(baskets_lbl);
 
-        JPanel op_avg_header_panel = new JPanel();
+        MyGuiComps.MyPanel op_avg_header_panel = new MyGuiComps.MyPanel();
         op_avg_header_panel.setLayout(null);
-        op_avg_header_panel.setBackground(SystemColor.menu);
         op_avg_header_panel.setBounds(basket_header_panel.getX() + basket_header_panel.getWidth() + 1, 0, 64, 25);
         getContentPane().add(op_avg_header_panel);
 
-        JLabel move_lbl = new JLabel("ממוצע");
+        MyGuiComps.MyLabel move_lbl = new MyGuiComps.MyLabel("ממוצע");
         move_lbl.setHorizontalAlignment(SwingConstants.CENTER);
         move_lbl.setForeground(new Color(0, 0, 51));
-        move_lbl.setFont(new Font("Arial", Font.BOLD, 15));
         move_lbl.setBounds(0, 0, 68, 25);
         op_avg_header_panel.add(move_lbl);
 
-        JPanel op_avg_panel = new JPanel();
-        op_avg_panel.setBackground(SystemColor.menu);
+        MyGuiComps.MyPanel op_avg_panel = new MyGuiComps.MyPanel();
         op_avg_panel.setBounds(op_avg_header_panel.getX(), op_avg_header_panel.getY() + op_avg_header_panel.getHeight() + 1, 64, 102);
         getContentPane().add(op_avg_panel);
         op_avg_panel.setLayout(null);
 
-        op_avg = new JTextField();
+        op_avg = new MyGuiComps.MyTextField();
         op_avg.setBorder(null);
         op_avg.setBounds(7, 5, 49, 25);
         op_avg_panel.add(op_avg);
         op_avg.setHorizontalAlignment(SwingConstants.CENTER);
         op_avg.setForeground(Color.WHITE);
-        op_avg.setFont(new Font("Arial", Font.PLAIN, 15));
         op_avg.setColumns(10);
 
-        JPanel panel_18 = new JPanel();
+        MyGuiComps.MyPanel panel_18 = new MyGuiComps.MyPanel();
         panel_18.setLayout(null);
-        panel_18.setBackground(SystemColor.menu);
         panel_18.setBounds(0, 35, 64, 25);
         op_avg_panel.add(panel_18);
 
-        JLabel label_10 = new JLabel("רנדומלי");
+        MyGuiComps.MyLabel label_10 = new MyGuiComps.MyLabel("רנדומלי");
         label_10.setHorizontalAlignment(SwingConstants.CENTER);
         label_10.setForeground(new Color(0, 0, 51));
-        label_10.setFont(new Font("Arial", Font.BOLD, 15));
         label_10.setBounds(0, 0, 64, 25);
         panel_18.add(label_10);
 
-        rando = new JTextField();
+        rando = new MyGuiComps.MyTextField();
         rando.setBorder(null);
         rando.setBounds(7, 66, 49, 25);
         op_avg_panel.add(rando);
         rando.setHorizontalAlignment(SwingConstants.CENTER);
         rando.setForeground(new Color(255, 255, 255));
-        rando.setFont(new Font("Arial", Font.BOLD, 15));
         rando.setColumns(10);
 
-        JPanel deltaHeaderPanel = new JPanel();
+        MyGuiComps.MyPanel deltaHeaderPanel = new MyGuiComps.MyPanel();
         deltaHeaderPanel.setLayout(null);
         deltaHeaderPanel.setBounds(op_avg_header_panel.getX() + op_avg_header_panel.getWidth() + 1, op_avg_header_panel.getY(), 80, 25);
-        deltaHeaderPanel.setBackground(SystemColor.menu);
 
-        JLabel deltaLbl = new JLabel("דלתא");
-        deltaLbl.setFont(new Font("Arial", Font.BOLD, 15));
+        MyGuiComps.MyLabel deltaLbl = new MyGuiComps.MyLabel("דלתא");
         deltaLbl.setBounds(0, 0, deltaHeaderPanel.getWidth(), deltaHeaderPanel.getHeight());
         deltaLbl.setHorizontalAlignment(JLabel.CENTER);
         deltaLbl.setForeground(new Color(0, 0, 51));
@@ -355,36 +309,59 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         getContentPane().add(deltaHeaderPanel);
 
         // Delta panel
-        JPanel deltaPanel = new JPanel();
-        deltaPanel.setBackground(SystemColor.menu);
+        MyGuiComps.MyPanel deltaPanel = new MyGuiComps.MyPanel();
         deltaPanel.setLayout(null);
         deltaPanel.setBounds(deltaHeaderPanel.getX(), deltaHeaderPanel.getY() + deltaHeaderPanel.getHeight() + 1, 80, 102);
         getContentPane().add(deltaPanel);
 
         // Week delta
-        weekDeltaField = new JTextField();
+        weekDeltaField = new MyGuiComps.MyTextField();
         weekDeltaField.setBorder(null);
         weekDeltaField.setBounds(5, 5, 65, 25);
         weekDeltaField.setHorizontalAlignment(JTextField.CENTER);
-        weekDeltaField.setFont(new Font("Arial", Font.PLAIN, 15));
         deltaPanel.add(weekDeltaField);
 
         // Month delta
-        monthDeltaField = new JTextField();
+        monthDeltaField = new MyGuiComps.MyTextField();
         monthDeltaField.setBorder(null);
         monthDeltaField.setBounds(5, 35, 65, 25);
         monthDeltaField.setHorizontalAlignment(JTextField.CENTER);
-        monthDeltaField.setFont(new Font("Arial", Font.PLAIN, 15));
         deltaPanel.add(monthDeltaField);
 
-        indexDeltaField = new JTextField();
-        indexDeltaField.setBorder(null);
-        indexDeltaField.setHorizontalAlignment(SwingConstants.CENTER);
-        indexDeltaField.setFont(new Font("Arial", Font.PLAIN, 15));
-        indexDeltaField.setBounds(5, 66, 65, 25);
-        deltaPanel.add(indexDeltaField);
+        indDeltaNoBasketsField = new MyGuiComps.MyTextField();
+        indDeltaNoBasketsField.setHorizontalAlignment(SwingConstants.CENTER);
+        indDeltaNoBasketsField.setBorder(null);
+        indDeltaNoBasketsField.setBounds(5, 66, 65, 25);
+        deltaPanel.add(indDeltaNoBasketsField);
 
-        JPanel logPanel = new JPanel();
+
+        MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
+        decision_header_panel.setBounds(deltaHeaderPanel.getX() + deltaHeaderPanel.getWidth() + 1, deltaHeaderPanel.getY(), 80, 25);
+        getContentPane().add(decision_header_panel);
+
+        MyGuiComps.MyLabel decision_lbl = new MyGuiComps.MyLabel("מכונה");
+        decision_lbl.setBounds(0, 0, decision_header_panel.getWidth(), decision_header_panel.getHeight());
+        decision_header_panel.add(decision_lbl);
+
+        // Vs Panel
+        MyGuiComps.MyPanel decisions_panel = new MyGuiComps.MyPanel();
+        decisions_panel.setXY(decision_header_panel.getX(), decision_header_panel.getY() + decision_header_panel.getHeight() + 1);
+        decisions_panel.setWidth(80);
+        decisions_panel.setHeight(102);
+        getContentPane().add(decisions_panel);
+
+        // V5
+        v5_field = new MyGuiComps.MyTextField();
+        v5_field.setBounds(5, 5, 65, 25);
+        decisions_panel.add(v5_field);
+
+        // V6
+        v6_field = new MyGuiComps.MyTextField();
+        v6_field.setBounds(5, 35, 65, 25);
+        decisions_panel.add(v6_field);
+
+
+        MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
         logPanel.setBounds(897, 0, 147, 102);
         getContentPane().add(logPanel);
@@ -394,136 +371,119 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         log.setBounds(10, 11, 127, 80);
         logPanel.add(log);
 
-        JPanel exp_header_panel = new JPanel();
+        MyGuiComps.MyPanel exp_header_panel = new MyGuiComps.MyPanel();
         exp_header_panel.setLayout(null);
-        exp_header_panel.setBackground(SystemColor.menu);
-        exp_header_panel.setBounds(deltaHeaderPanel.getX() + deltaHeaderPanel.getWidth() + 1, 0, 362, 25);
+        exp_header_panel.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, 0, 362, 25);
         getContentPane().add(exp_header_panel);
 
-        JLabel label_2 = new JLabel("תנועה");
+        MyGuiComps.MyLabel label_2 = new MyGuiComps.MyLabel("תנועה");
         label_2.setBounds(66, 0, 68, 25);
         exp_header_panel.add(label_2);
         label_2.setHorizontalAlignment(SwingConstants.CENTER);
         label_2.setForeground(new Color(0, 0, 51));
-        label_2.setFont(new Font("Arial", Font.BOLD, 15));
 
-        JLabel label_13 = new JLabel("סלים");
+        MyGuiComps.MyLabel label_13 = new MyGuiComps.MyLabel("סלים");
         label_13.setBounds(139, 0, 72, 25);
         exp_header_panel.add(label_13);
         label_13.setHorizontalAlignment(SwingConstants.CENTER);
         label_13.setForeground(new Color(0, 0, 51));
-        label_13.setFont(new Font("Arial", Font.BOLD, 15));
 
-        JLabel label_11 = new JLabel("דלתא");
+        MyGuiComps.MyLabel label_11 = new MyGuiComps.MyLabel("דלתא");
         label_11.setBounds(212, 0, 68, 25);
         exp_header_panel.add(label_11);
         label_11.setHorizontalAlignment(SwingConstants.CENTER);
         label_11.setForeground(new Color(0, 0, 51));
-        label_11.setFont(new Font("Arial", Font.BOLD, 15));
 
-        JLabel label_1 = new JLabel("מניות");
+        MyGuiComps.MyLabel label_1 = new MyGuiComps.MyLabel("מניות");
         label_1.setBounds(284, 0, 68, 25);
         exp_header_panel.add(label_1);
         label_1.setHorizontalAlignment(SwingConstants.CENTER);
         label_1.setForeground(new Color(0, 0, 51));
-        label_1.setFont(new Font("Arial", Font.BOLD, 15));
 
-        JLabel exp_lbl = new JLabel("פקיעה");
+        MyGuiComps.MyLabel exp_lbl = new MyGuiComps.MyLabel("פקיעה");
         exp_lbl.setHorizontalAlignment(SwingConstants.CENTER);
         exp_lbl.setForeground(new Color(0, 0, 51));
-        exp_lbl.setFont(new Font("Arial", Font.BOLD, 15));
         exp_lbl.setBounds(0, 0, 68, 25);
         exp_header_panel.add(exp_lbl);
 
-        JPanel exp_panel = new JPanel();
-        exp_panel.setBackground(SystemColor.menu);
+        MyGuiComps.MyPanel exp_panel = new MyGuiComps.MyPanel();
         exp_panel.setBounds(exp_header_panel.getX(), exp_header_panel.getY() + exp_header_panel.getHeight() + 1, 362, 102);
         getContentPane().add(exp_panel);
         exp_panel.setLayout(null);
 
-        expDeltaWeekField = new JTextField();
+        expDeltaWeekField = new MyGuiComps.MyTextField();
         expDeltaWeekField.setHorizontalAlignment(SwingConstants.CENTER);
         expDeltaWeekField.setForeground(Color.WHITE);
-        expDeltaWeekField.setFont(new Font("Arial", Font.PLAIN, 15));
         expDeltaWeekField.setColumns(10);
         expDeltaWeekField.setBorder(null);
         expDeltaWeekField.setBounds(212, 11, 68, 25);
         exp_panel.add(expDeltaWeekField);
 
-        expDeltaMonthField = new JTextField();
+        expDeltaMonthField = new MyGuiComps.MyTextField();
         expDeltaMonthField.setHorizontalAlignment(SwingConstants.CENTER);
         expDeltaMonthField.setForeground(Color.WHITE);
-        expDeltaMonthField.setFont(new Font("Arial", Font.PLAIN, 15));
         expDeltaMonthField.setColumns(10);
         expDeltaMonthField.setBorder(null);
         expDeltaMonthField.setBounds(212, 41, 68, 25);
         exp_panel.add(expDeltaMonthField);
 
-        expBasketsWeekField = new JTextField();
+        expBasketsWeekField = new MyGuiComps.MyTextField();
         expBasketsWeekField.setHorizontalAlignment(SwingConstants.CENTER);
         expBasketsWeekField.setForeground(Color.WHITE);
-        expBasketsWeekField.setFont(new Font("Arial", Font.PLAIN, 15));
         expBasketsWeekField.setColumns(10);
         expBasketsWeekField.setBorder(null);
         expBasketsWeekField.setBounds(139, 11, 68, 25);
         exp_panel.add(expBasketsWeekField);
 
-        expBasketsMonthField = new JTextField();
+        expBasketsMonthField = new MyGuiComps.MyTextField();
         expBasketsMonthField.setHorizontalAlignment(SwingConstants.CENTER);
         expBasketsMonthField.setForeground(Color.WHITE);
-        expBasketsMonthField.setFont(new Font("Arial", Font.PLAIN, 15));
         expBasketsMonthField.setColumns(10);
         expBasketsMonthField.setBorder(null);
         expBasketsMonthField.setBounds(139, 41, 68, 25);
         exp_panel.add(expBasketsMonthField);
 
-        weekStartExpField = new JTextField();
+        weekStartExpField = new MyGuiComps.MyTextField();
         weekStartExpField.setBounds(66, 11, 68, 25);
         exp_panel.add(weekStartExpField);
         weekStartExpField.setBorder(null);
         weekStartExpField.setHorizontalAlignment(SwingConstants.CENTER);
         weekStartExpField.setForeground(Color.WHITE);
-        weekStartExpField.setFont(new Font("Arial", Font.PLAIN, 15));
         weekStartExpField.setColumns(10);
 
-        monthStartExpField = new JTextField();
+        monthStartExpField = new MyGuiComps.MyTextField();
         monthStartExpField.setBounds(66, 41, 68, 25);
         exp_panel.add(monthStartExpField);
         monthStartExpField.setBorder(null);
         monthStartExpField.setHorizontalAlignment(SwingConstants.CENTER);
         monthStartExpField.setForeground(Color.WHITE);
-        monthStartExpField.setFont(new Font("Arial", Font.PLAIN, 15));
         monthStartExpField.setColumns(10);
 
-        expIndDeltaWeekField = new JTextField();
+        expIndDeltaWeekField = new MyGuiComps.MyTextField();
         expIndDeltaWeekField.setBounds(284, 11, 68, 25);
         exp_panel.add(expIndDeltaWeekField);
         expIndDeltaWeekField.setHorizontalAlignment(SwingConstants.CENTER);
         expIndDeltaWeekField.setForeground(Color.WHITE);
-        expIndDeltaWeekField.setFont(new Font("Arial", Font.PLAIN, 15));
         expIndDeltaWeekField.setColumns(10);
         expIndDeltaWeekField.setBorder(null);
 
-        expIndDeltaMonthField = new JTextField();
+        expIndDeltaMonthField = new MyGuiComps.MyTextField();
         expIndDeltaMonthField.setBounds(284, 41, 68, 25);
         exp_panel.add(expIndDeltaMonthField);
         expIndDeltaMonthField.setHorizontalAlignment(SwingConstants.CENTER);
         expIndDeltaMonthField.setForeground(Color.WHITE);
-        expIndDeltaMonthField.setFont(new Font("Arial", Font.PLAIN, 15));
         expIndDeltaMonthField.setColumns(10);
         expIndDeltaMonthField.setBorder(null);
 
-        JLabel label_4 = new JLabel("שבועי");
+        MyGuiComps.MyLabel label_4 = new MyGuiComps.MyLabel("שבועי");
         label_4.setHorizontalAlignment(SwingConstants.CENTER);
         label_4.setForeground(new Color(0, 0, 51));
-        label_4.setFont(new Font("Arial", Font.BOLD, 15));
         label_4.setBounds(0, 11, 68, 25);
         exp_panel.add(label_4);
 
-        JLabel label_14 = new JLabel("חודשי");
+        MyGuiComps.MyLabel label_14 = new MyGuiComps.MyLabel("חודשי");
         label_14.setHorizontalAlignment(SwingConstants.CENTER);
         label_14.setForeground(new Color(0, 0, 51));
-        label_14.setFont(new Font("Arial", Font.BOLD, 15));
         label_14.setBounds(0, 41, 68, 25);
         exp_panel.add(label_14);
     }

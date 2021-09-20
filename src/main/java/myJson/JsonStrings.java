@@ -51,5 +51,7 @@ public class JsonStrings {
 	public static final String name = "name";
 	public static final String x = "x";
 	public static final String y = "y";
+	public static final String v5 = "v5";
+	public static final String v6 = "v6";
 	
 }

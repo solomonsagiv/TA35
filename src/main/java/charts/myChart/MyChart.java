@@ -89,9 +89,6 @@ public class MyChart {
         // Marker
         marker();
 
-        // Range margin
-//        range_margin();
-
         // Renderer (Style series)
         renderer(data);
 
@@ -149,14 +146,6 @@ public class MyChart {
         }
     }
 
-//    private void range_margin() {
-//        // Range unit
-//        if (props.getProp(ChartPropsEnum.RANGE_MARGIN) > 0) {
-//            ValueAxis range = plot.getRangeAxis();
-//            ((NumberAxis) range).setTickUnit(new NumberTickUnit(props.getProp(ChartPropsEnum.RANGE_MARGIN)));
-//        }
-//    }
-
     public MyProps getProps() {
         return props;
     }
@@ -166,7 +155,7 @@ public class MyChart {
         if (props.getProp(ChartPropsEnum.MARKER) != MyProps.p_null) {
             ValueMarker marker = new ValueMarker(props.getProp(ChartPropsEnum.MARKER));
             marker.setStroke(new BasicStroke(1.2f));
-            marker.setPaint(Color.BLACK);
+            marker.setPaint(Themes.GREY_2);
             marker.setValue(props.getProp(ChartPropsEnum.MARKER));
             plot.addRangeMarker(marker, Layer.BACKGROUND);
         }

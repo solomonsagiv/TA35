@@ -21,7 +21,6 @@ public class MainMonthChart extends MyChartCreator {
 		props = new MyProps();
 		props.setProp(ChartPropsEnum.SECONDS, 900);
 		props.setProp(ChartPropsEnum.IS_INCLUDE_TICKER, -1);
-		props.setProp(ChartPropsEnum.MARGIN, .17);
 		props.setProp(ChartPropsEnum.IS_GRID_VISIBLE, -1);
 		props.setProp(ChartPropsEnum.IS_LOAD_DB, -1);
 		props.setProp(ChartPropsEnum.IS_LIVE, 1);

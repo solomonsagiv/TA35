@@ -3,6 +3,7 @@ package api;
 import charts.charts.FullCharts2;
 import charts.charts.MainMonthWeekChart;
 import charts.myChart.MyChartList;
+import dataBase.DataBaseHandler;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import myJson.IJsonData;
@@ -11,6 +12,7 @@ import myJson.MyJson;
 import org.json.JSONObject;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
+
 import java.util.ArrayList;
 
 public class ApiObject implements IJsonData {
@@ -29,6 +31,9 @@ public class ApiObject implements IJsonData {
 	private int bigConBidAskCounter = 0;
 	private double bigConBid = 0;
 	private double bigConAsk = 0;
+
+	private int v5 = 0;
+	private int v6 = 0;
 
 	private double bid_ask_counter_avg_60 = 0;
 	private double bid_ask_counter_avg = 0;
@@ -87,8 +92,8 @@ public class ApiObject implements IJsonData {
 
 	// Private constructor
 	private ApiObject() {
-		expWeek = new ExpWeek(this);
-		expMonth = new ExpMonth(this);
+		expWeek = new ExpWeek(this, DataBaseHandler.EXP_WEEK);
+		expMonth = new ExpMonth(this, DataBaseHandler.EXP_MONTH);
 		stocksHandler = new StocksHandler();
 		this.name = "ta35";
 	}
@@ -514,6 +519,22 @@ public class ApiObject implements IJsonData {
 		return bid_ask_counter_avg_60;
 	}
 
+	public int getV5() {
+		return v5;
+	}
+
+	public void setV5(int v5) {
+		this.v5 = v5;
+	}
+
+	public int getV6() {
+		return v6;
+	}
+
+	public void setV6(int v6) {
+		this.v6 = v6;
+	}
+
 	@Override
 	public MyJson getAsJson() {
 		MyJson json = new MyJson();
@@ -528,6 +549,8 @@ public class ApiObject implements IJsonData {
 		json.put(JsonStrings.basketDown, apiObject.getBasketDown());
 		json.put(JsonStrings.indBidAskCounter, apiObject.getIndBidAskCounter());
 		json.put(JsonStrings.base, apiObject.getBase());
+		json.put(JsonStrings.v5, apiObject.getV5());
+		json.put(JsonStrings.v6, apiObject.getV6());
 		json.put(JsonStrings.stocks, apiObject.getStocksHandler().getAsJson());
 		json.put(JsonStrings.expWeek, getExpWeek().getAsJson());
 		json.put(JsonStrings.expMonth, getExpMonth().getAsJson());

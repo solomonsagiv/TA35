@@ -37,7 +37,7 @@ public class OptionsDataCalculator extends MyBaseService {
     }
 
     private void calculateStDev() {
-        for (Option option : optionsMonth.getOptionsList()) {
+        for (Option option : optionsMonth.getOptions_list()) {
             if (option.getStDev() == 0) {
                 initStDev(option);
             }
@@ -97,7 +97,7 @@ public class OptionsDataCalculator extends MyBaseService {
 
     private void calculators() {
         // For each option
-        for (Option option : optionsMonth.getOptionsList()) {
+        for (Option option : optionsMonth.getOptions_list()) {
             try {
                 // Bid Ask Counter
                 bdCounter(option);

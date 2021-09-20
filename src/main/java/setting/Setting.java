@@ -335,7 +335,7 @@ public class Setting {
 		resetOptionsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				for (Option option : optionsMonth.getOptionsList()) {
+				for (Option option : optionsMonth.getOptions_list()) {
 					option.setBidAskCounter(0);
 					option.setBidAskCalcCounter(0);
 					option.getBidAskCalcCounterList().clear();
@@ -417,7 +417,7 @@ public class Setting {
 				if (!toDayDeltaField.getText().isEmpty()) {
 					try {
 						double delta = L.dbl(toDayDeltaField.getText());
-						options.setDelta(delta);
+						options.setDelta_from_fix(delta);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						JOptionPane.showMessageDialog(frame, exception.getMessage());
@@ -515,7 +515,7 @@ public class Setting {
 				if (!optionsDeltaField.getText().isEmpty()) {
 					try {
 						double delta = L.dbl(optionsDeltaField.getText());
-						options.setDelta(delta);
+						options.setDelta_from_fix(delta);
 					} catch (Exception exception) {
 						JOptionPane.showMessageDialog(frame, exception.getMessage());
 					}

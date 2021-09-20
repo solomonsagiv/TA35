@@ -31,6 +31,8 @@ public class BackGroundRunner extends MyThread implements Runnable {
     String randomally = "rando";
     String endMarket = "end";
 
+    OptionsDataCalculator optionsDataCalculator;
+
     public static String weekPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Week";
     public static String monthPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Month";
     public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
@@ -76,10 +78,10 @@ public class BackGroundRunner extends MyThread implements Runnable {
                 end_rando = LocalTime.of(15, 50, 0);
             }
 
-            // Start service handler
+            // Start services
             apiObject.getServiceHandler().getHandler().start();
 
-            // Data
+            // Data reader
             new DataReaderService(BackGroundRunner.excelPath);
 
             while (true) {
@@ -94,15 +96,13 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     // Wait for load
                     if (apiObject.isDbLoaded()) {
 
-                        System.out.println("Enter after load status = " + apiObject.getStatus());
-
                         // Pre trading
                         if (apiObject.getStatus().contains(preOpen) && !preTradingBool) {
                             preTradingBool = true;
+                            // Data base service
                             pre_open_services();
-                            System.out.println("Pre open started");
                         }
-                        System.out.println("Back runner ");
+
                         // Auto start
                         if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
                             apiObject.setFutureOpen(apiObject.getExpMonth().getOptions().getContract());
@@ -134,6 +134,17 @@ public class BackGroundRunner extends MyThread implements Runnable {
                             endMarketBool = true;
                             exported = true;
                         }
+                    } else {
+                        try {
+                            System.out.println("Loading...");
+                            DataBaseHandler dataBaseHandler = new DataBaseHandler();
+                            dataBaseHandler.load_data();
+                            System.out.println("Loaded!!!");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Arik.getInstance().sendMessage(Arik.sagivID, "TA35 load data failed", null);
+                        }
+                        apiObject.setDbLoaded(true);
                     }
                 } catch (Exception e) {
                     // TODO: handle exception

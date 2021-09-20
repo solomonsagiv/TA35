@@ -86,20 +86,21 @@ public class Updater extends MyThread implements Runnable {
 
 				// Delta calc
 				// Month
-				colorForge(window.monthDeltaField, (int) optionsMonth.getDelta(), L.df());
+				colorForge(window.monthDeltaField, (int) optionsMonth.getTotal_delta(), L.df());
 				// Week
-				colorForge(window.weekDeltaField, (int) optionsWeek.getDelta(), L.df());
+				colorForge(window.weekDeltaField, (int) optionsWeek.getTotal_delta(), L.df());
 
 				// Ind baskets
 				double indDelta = apiObject.getStocksHandler().getDelta();
 				int baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
 				double indeDeltaNoBakets = indDelta + (baskets * -1000);
-				
-				// Ind delta
-				colorForge(window.indexDeltaField, (int) indDelta, L.df());
 
 				// Ind delta no baskets
 				colorForge(window.indDeltaNoBasketsField, (int) indeDeltaNoBakets, L.df());
+
+				// Decision func
+				window.v5_field.colorForge(apiObject.getV5());
+				window.v6_field.colorForge(apiObject.getV6());
 
 				// Exp
 				// Week

@@ -40,12 +40,15 @@ public class Option {
 
 	private ArrayList<Integer> bidStateList = new ArrayList<>();
 	private ArrayList<Integer> askStateList = new ArrayList<>();
-	
+
+	Options options;
+
 	// Constructor
-	public Option(String side, int strike) {
+	public Option(String side, int strike, Options options) {
 		this.side = side;
 		this.strike = strike;
 		this.name = side + String.valueOf(strike);
+		this.options = options;
 
 		levels = new HashMap<Integer, Level>();
 		levels.put(1, new Level(1));
@@ -308,11 +311,8 @@ public class Option {
 		return delta;
 	}
 
-	public void setDelta( double delta ) {
-		this.delta = delta;
-	}
-	
 	public void appendDelta( double delta ) {
+		options.appendDelta(delta);
 		this.delta += delta;
 	}
 
