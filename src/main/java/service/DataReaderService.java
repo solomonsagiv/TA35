@@ -33,7 +33,6 @@ public class DataReaderService extends MyBaseService {
 
     public void update() {
         try {
-
             String status = conversation.request(statusCell).replaceAll("\\s+", "");
 
             // Ticker datas
@@ -68,8 +67,6 @@ public class DataReaderService extends MyBaseService {
             e.printStackTrace();
         }
     }
-
-
 
     @Override
     public void go() {
