@@ -41,7 +41,7 @@ public class ExpData implements IJsonData {
 	}
 	
 	public double getTotalDelta() {
-		return delta + exp.getOptions().getDelta();
+		return delta + exp.getOptions().getTotal_delta();
 	}
 	
 	public double getTotalIndDelta() {

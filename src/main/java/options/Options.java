@@ -7,6 +7,7 @@ import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +23,12 @@ public class Options implements IJsonData {
     private int conBidAskCounter = 0;
     private ArrayList<Double> op_list;
 
-    private double delta = 0;
+    private double delta_from_fix = 0;
+    private double total_delta = 0;
 
     List<Strike> strikes;
     HashMap<Integer, Option> optionsMap;
+    ArrayList<Option> options_list;
 
     private MyChartList deltaChartList = new MyChartList();
     private MyChartList conBidAskCounterList = new MyChartList();
@@ -38,6 +41,7 @@ public class Options implements IJsonData {
         strikes = new ArrayList<Strike>();
         optionsMap = new HashMap<Integer, Option>();
         this.op_list = new ArrayList<>();
+        this.options_list = new ArrayList<>();
     }
 
     public Option getOption(String name) {
@@ -76,18 +80,6 @@ public class Options implements IJsonData {
             }
         }
         return null;
-    }
-
-    public ArrayList<Option> getOptionsList() {
-
-        ArrayList<Option> optionsList = new ArrayList<>();
-
-        for (Strike strike : strikes) {
-            optionsList.add(strike.getCall());
-            optionsList.add(strike.getPut());
-        }
-
-        return optionsList;
     }
 
     public Option getOption(String side, double targetStrike) {
@@ -160,6 +152,7 @@ public class Options implements IJsonData {
     public void setOption(Option option) {
         // HashMap
         optionsMap.put(option.getId(), option);
+        options_list.add(option);
 
         // Strikes list
         boolean callPut = option.getSide().toLowerCase().contains("c") ? true : false;
@@ -220,7 +213,7 @@ public class Options implements IJsonData {
     @Override
     public String toString() {
         return "Options [contractBid=" + contractBid + ", contractAsk=" + contractAsk + ", conBidAskCounter="
-                + conBidAskCounter + ", totalDelta=" + delta + ", contract=" + contract + "]";
+                + conBidAskCounter + ", totalDelta=" + total_delta + ", contract=" + contract + "]";
     }
 
 
@@ -303,16 +296,17 @@ public class Options implements IJsonData {
         return String.valueOf(o);
     }
 
-    public double getDelta() {
-        return delta;
-    }
-
     public void appendDelta(double delta) {
-        this.delta += delta;
+        this.total_delta += delta;
     }
 
-    public void setDelta(double totalDelta) {
-        this.delta = totalDelta;
+    public void setDelta_from_fix(double delta_from_fix) {
+        this.delta_from_fix = delta_from_fix;
+        total_delta = delta_from_fix;
+    }
+
+    public double getTotal_delta() {
+        return total_delta;
     }
 
     public double absolute(double d) {
@@ -339,12 +333,16 @@ public class Options implements IJsonData {
         return opChartList;
     }
 
+    public ArrayList<Option> getOptions_list() {
+        return options_list;
+    }
+
     @Override
     public MyJson getAsJson() {
         MyJson json = new MyJson();
         json.put(JsonStrings.op, getOp());
         json.put(JsonStrings.conBidAskCounter, getConBidAskCounter());
-        json.put(JsonStrings.delta, getDelta());
+        json.put(JsonStrings.delta, getTotal_delta());
         json.put(JsonStrings.con, getContract());
         return json;
     }
@@ -353,7 +351,7 @@ public class Options implements IJsonData {
     public void loadFromJson(MyJson json) {
         try {
             setConBidAskCounter(json.getInt(JsonStrings.conBidAskCounter));
-            setDelta(json.getDouble(JsonStrings.delta));
+            setDelta_from_fix(json.getDouble(JsonStrings.delta));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -373,5 +371,14 @@ public class Options implements IJsonData {
         getOpChartList().getValues().addAll(op_list);
     }
 
+    public void load_options_data(JSONObject json) {
+        for (Option option : options_list) {
+            JSONObject option_json = json.getJSONObject(option.getName());
+            double delta = option_json.getDouble("delta");
+            int open_pos = option_json.getInt("open_pos");
+            option.appendDelta(delta);
+            option.setOpen_pos(open_pos);
+        }
+    }
 }
 

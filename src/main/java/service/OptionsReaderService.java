@@ -5,11 +5,16 @@ import api.dde.DDE.DDEConnection;
 import api.deltaTest.Calculator;
 import com.pretty_tools.dde.DDEException;
 import com.pretty_tools.dde.client.DDEClientConversation;
+import dataBase.mySql.Queries;
 import exp.Exp;
 import locals.L;
 import options.Option;
 import options.Options;
 import options.Strike;
+import org.json.JSONObject;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class OptionsReaderService extends MyBaseService {
 
@@ -26,6 +31,21 @@ public class OptionsReaderService extends MyBaseService {
         this.calculator = new Calculator();
         this.exp = exp;
         setUpOptions(exp, conversation);
+        load_options_status();
+    }
+
+    private void load_options_status() {
+        ResultSet rs = Queries.get_options_status(exp.getExp_name());
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                JSONObject json = (JSONObject) rs.getObject("value");
+                exp.getOptions().load_options_data(json);
+                break;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 
     private void update() {
@@ -56,7 +76,7 @@ public class OptionsReaderService extends MyBaseService {
         last = requestInt(cell(row, 4));
         volume = requestInt(cell(row, 5));
         delta = requestDouble(cell(row, 6));
-        open_positions = (int) requestDouble(cell(row, 7));
+        open_positions = (int) requestDouble(cell(row, 9));
 
         if (apiObject.isDbLoaded()) {
             // Calc
@@ -73,7 +93,7 @@ public class OptionsReaderService extends MyBaseService {
         option.addBidState(bidPrice1);
         option.addAskState(askPrice1);
         option.setVolume(volume);
-        option.setDelta(delta);
+        option.appendDelta(delta);
         option.setOpen_pos(open_positions);
     }
 
@@ -101,8 +121,8 @@ public class OptionsReaderService extends MyBaseService {
             // Update the options map
             for (int strike = future0; strike <= future0 + 200; strike += 10) {
 
-                Option call = new Option("c", strike);
-                Option put = new Option("p", strike);
+                Option call = new Option("c", strike, options);
+                Option put = new Option("p", strike, options);
 
                 // Get the option cell
                 for (int row = 1; row < 150; row++) {

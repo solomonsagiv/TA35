@@ -40,7 +40,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() throws UnknownHostException {
-                        return apiObject.getExpWeek().getOptions().getDelta();
+                        return apiObject.getExpWeek().getOptions().getTotal_delta();
                     }
 
                     @Override
@@ -58,7 +58,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() throws UnknownHostException {
-                        return apiObject.getExpMonth().getOptions().getDelta();
+                        return apiObject.getExpMonth().getOptions().getTotal_delta();
                     }
 
                     @Override

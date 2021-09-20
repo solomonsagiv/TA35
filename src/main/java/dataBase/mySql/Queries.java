@@ -16,6 +16,12 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_serie(String table_location, String filter) {
+        String q = "SELECT * FROM %s where time::date = now()::date and %s ORDER BY time;";
+        String query = String.format(q, table_location, filter);
+        return MySql.select(query);
+    }
+
     public static ResultSet get_serie_cumulative(String table_location) {
         String q = "select time, sum(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time::date = now()::date ORDER BY time;";
@@ -38,6 +44,15 @@ public class Queries {
                 "where i.time::date = now()::date;";
 
         String query = String.format(q, fut_table_location, Factories.Tables.SAGIV_INDEX_TABLE);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_last_record_from_cdf(String table_location) {
+        String q = "select time, sum(value) over (order by time) as value " +
+                "from %s " +
+                "where time::date = now()::date order by time desc limit 1;";
+
+        String query = String.format(q, table_location);
         return MySql.select(query);
     }
 
@@ -172,4 +187,24 @@ public class Queries {
         }
         return list;
     }
+
+    public static void update_options_status(String value, String exp_name) {
+        String q = "UPDATE %s SET value = '%s' " +
+                "WHERE exp = '%s';";
+        String query = String.format(q, Factories.Tables.SAGIV_OPTIONS_STATUS_TABLE, value, exp_name);
+        MySql.update(query);
+    }
+
+    public static ResultSet get_options_status(String exp_name) {
+        String q = "select value " +
+                "from %s " +
+                "where exp = '%s';";
+        String query = String.format(q, Factories.Tables.SAGIV_OPTIONS_STATUS_TABLE, exp_name);
+        return MySql.select(query);
+    }
+
+    public static class Filters {
+        public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";
+    }
+
 }

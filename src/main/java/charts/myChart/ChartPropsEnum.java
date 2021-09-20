@@ -3,7 +3,6 @@ package charts.myChart;
 public class ChartPropsEnum {
     public static final String SECONDS = "SECONDS";
     public static final String IS_INCLUDE_TICKER = "IS_INCLUDE_TICKER";
-    public static final String MARGIN = "MARGIN";
 //    public static final String RANGE_MARGIN = "RANGE_MARGIN";
     public static final String IS_RANGE_GRID_VISIBLE = "IS_RANGE_GRID_VISIBLE";
     public static final String IS_DOMAIN_GRID_VISIBLE = "IS_DOMAIN_GRID_VISIBLE";

@@ -18,6 +18,8 @@ public class Themes {
 	public static Color OPEN_RACE = new Color(148, 201, 246);
 	
 	public static Color BLUE = new Color(0, 51, 102);
+
+    public static Color BLUE_4 = new Color(0, 0, 51);
 	
 	public static Color BLUE2 = new Color(66, 135, 245);
     public static Color BLUE4 = new Color(136, 166, 232);
@@ -31,6 +33,7 @@ public class Themes {
 	public static Color RED = new Color(229, 19, 0);
 	public static Color LIGHT_BLUE_3 = new Color(45, 130, 250);
 	public static Color LIGHT_BLUE_4 = new Color(34, 76, 135);
+    public static Color GREY_2 = new Color(160, 160, 160);
 	
 	public static Color RED_2 = new Color(171, 56, 75);
 	

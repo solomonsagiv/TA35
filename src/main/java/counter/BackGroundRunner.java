@@ -78,6 +78,12 @@ public class BackGroundRunner extends MyThread implements Runnable {
                 end_rando = LocalTime.of(15, 50, 0);
             }
 
+            // Start services
+            apiObject.getServiceHandler().getHandler().start();
+
+            // Data reader
+            new DataReaderService(BackGroundRunner.excelPath);
+
             while (true) {
                 try {
                     // Sleep
@@ -94,19 +100,17 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         if (apiObject.getStatus().contains(preOpen) && !preTradingBool) {
                             preTradingBool = true;
                             // Data base service
-                            new DataBaseService();
-                            new OptionsReaderService(apiObject.getExpWeek(), weekPath);
-                            new OptionsReaderService(apiObject.getExpMonth(), monthPath);
+                            pre_open_services();
                         }
 
                         // Auto start
                         if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
                             apiObject.setFutureOpen(apiObject.getExpMonth().getOptions().getContract());
                             apiObject.start();
-                            new OptionsDataCalculator();
-                            new BasketService();
-                            new IndDeltaService(BackGroundRunner.excelPath);
-                            new DataReaderService(BackGroundRunner.excelPath);
+
+                            pre_open_services();
+                            open_services();
+
                             streamMarketBool = true;
                             System.out.println(" Started ");
                         }
@@ -149,6 +153,18 @@ public class BackGroundRunner extends MyThread implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void pre_open_services() {
+        new OptionsDataCalculator();
+        new OptionsReaderService(apiObject.getExpWeek(), weekPath);
+        new OptionsReaderService(apiObject.getExpMonth(), monthPath);
+        new DataBaseService();
+    }
+
+    private void open_services() {
+        new BasketService();
+        new IndDeltaService(BackGroundRunner.excelPath);
     }
 
     private String str(Object o) {

@@ -24,7 +24,7 @@ public class Calculator {
 			if (newLast == option.getBid()) {
 				delta = quantity * newDelta * -1;
 			}
-
+			
 			// Append delta
 			option.appendDelta(delta);
 			options.appendDelta(delta);
