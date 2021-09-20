@@ -103,7 +103,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         }
     }
 
-
     @Override
     public void initListeners() {
 
@@ -133,7 +132,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                 start.setEnabled(false);
             }
         });
-
+        
         start.setFont(new Font("Arial", Font.BOLD, 12));
 
         JButton options = new JButton("Options");

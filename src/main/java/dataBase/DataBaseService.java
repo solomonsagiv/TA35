@@ -130,7 +130,6 @@ public class DataBaseService extends MyBaseService {
 
     private void grab_data() {
         new Thread(() -> {
-
             double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE));
             double op_avg_week_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE, 60));
 
@@ -161,7 +160,6 @@ public class DataBaseService extends MyBaseService {
             expMonth.setBid_ask_counter_avg_60(bid_ask_counter_month_avg_60);
 
             apiObject.first_load = true;
-
         }).start();
     }
 
