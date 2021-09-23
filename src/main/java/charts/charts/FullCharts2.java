@@ -14,7 +14,7 @@ public class FullCharts2 extends MyChartCreator {
 	}
 
 	@Override
-	public void createChart() throws CloneNotSupportedException {
+	public void init() throws CloneNotSupportedException {
 
 		MyTimeSeries[] series;
 

@@ -53,6 +53,17 @@ public class MyChartContainer extends JFrame {
         // Append charts
         appendCharts();
 
+        // Load series data
+        load_data();
+
+    }
+
+    private void load_data() {
+        for (MyChart chart : charts) {
+            for (MyTimeSeries serie: chart.getSeries()) {
+                serie.load_data();
+            }
+        }
     }
 
     public void create() {

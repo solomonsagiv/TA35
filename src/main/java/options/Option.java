@@ -1,9 +1,13 @@
 package options;
 
+import myJson.IJsonData;
+import myJson.JsonStrings;
+import myJson.MyJson;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Option {
+public class Option implements IJsonData {
 
 	private String name;
 	private int strike;
@@ -259,6 +263,8 @@ public class Option {
 				'}';
 	}
 
+
+
 	public int getBidAskCalcCounter() {
 		return bidAskCalcCounter;
 	}
@@ -364,4 +370,27 @@ public class Option {
 		this.deltaCounterList = deltaCounterList;
 	}
 
+	@Override
+	public MyJson getAsJson() {
+		MyJson json = new MyJson();
+		json.put(JsonStrings.delta, delta);
+		json.put(JsonStrings.open_pos, open_pos);
+		return json;
+	}
+
+	@Override
+	public void loadFromJson(MyJson json) {
+		appendDelta(json.getDouble(JsonStrings.delta));
+		setOpen_pos(json.getInt(JsonStrings.open_pos));
+	}
+
+	@Override
+	public MyJson getResetJson() {
+		return new MyJson();
+	}
+
+	@Override
+	public MyJson getFullResetJson() {
+		return null;
+	}
 }

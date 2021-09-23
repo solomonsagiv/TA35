@@ -185,20 +185,12 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             public void actionPerformed(ActionEvent e) {
                 switch (chartsCombo.getSelectedItem().toString()) {
                     case "Full chart 2":
-                        try {
                             FullCharts2 chart = new FullCharts2(apiObject);
                             chart.createChart();
-                        } catch (CloneNotSupportedException exception) {
-                            exception.printStackTrace();
-                        }
                         break;
                     case "Main chart":
-                        try {
-                            MainMonthWeekChart chart = new MainMonthWeekChart(apiObject);
-                            chart.createChart();
-                        } catch (CloneNotSupportedException exception) {
-                            exception.printStackTrace();
-                        }
+                            MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
+                            mainMonthWeekChart.createChart();
                     case "Options window":
                         new OptionsTableWindow("Options window", apiObject.getExpMonth());
                         break;

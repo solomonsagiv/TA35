@@ -1,18 +1,28 @@
 package options;
 
 import api.ApiObject;
+import api.dde.DDE.DDEConnection;
 import charts.myChart.MyChartList;
-import locals.L;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
+import service.OptionsReaderService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class Options implements IJsonData {
+
+    public static void main(String[] args) {
+
+        ApiObject apiObject = ApiObject.getInstance();
+        apiObject.getServiceHandler().getHandler().start();
+        new DDEConnection(apiObject);
+        new OptionsReaderService(apiObject.getExpMonth(), "C://Users/yosef/Desktop/[TA35.xlsm]Import Month");
+        System.out.println(ApiObject.getInstance().getExpMonth().getOptions().getData());
+    }
 
     public static final int MONTH = 0;
     public static final int WEEK = 1;
@@ -55,28 +65,6 @@ public class Options implements IJsonData {
                 } else {
                     return strike.getPut();
                 }
-            }
-        }
-        return null;
-    }
-
-    public Strike getStrikeInMoney(double index, int strikeFarLevel) {
-
-        double margin = 100000;
-        int returnIndex = 0;
-
-        List<Strike> strikes = getStrikes();
-
-        for (int i = 0; i < strikes.size(); i++) {
-
-            Strike strike = strikes.get(i);
-            double newMargin = absolute(strike.getStrike() - index);
-
-            if (newMargin < margin) {
-                margin = newMargin;
-                returnIndex = i;
-            } else {
-                return strikes.get(returnIndex + strikeFarLevel);
             }
         }
         return null;
@@ -209,49 +197,37 @@ public class Options implements IJsonData {
         return json;
     }
 
-
     @Override
     public String toString() {
         return "Options [contractBid=" + contractBid + ", contractAsk=" + contractAsk + ", conBidAskCounter="
                 + conBidAskCounter + ", totalDelta=" + total_delta + ", contract=" + contract + "]";
     }
 
+    public void load_options_data_from_json(MyJson json) {
+        for (String key : json.keySet()) {
+            MyJson json_option = json.getMyJson(key);
+            double delta = json_option.getDouble(JsonStrings.delta);
+            int open_pos = json_option.getInt(JsonStrings.open_pos);
+
+            Option option = optionsMap.get(key);
+            option.appendDelta(delta);
+            option.setOpen_pos(open_pos);
+        }
+    }
 
     public MyJson getData() {
+        // Main json
+        MyJson json = new MyJson();
 
-        MyJson obj = new MyJson();
-        MyJson strikeObj, callObj, putObj;
-
-        for (Strike strike : strikes) {
-
-
-            // Strike
-            strikeObj = new MyJson();
-
-            // Call
-            Option call = strike.getCall();
-            callObj = new MyJson();
-            callObj.put(JsonStrings.bid, call.getBid());
-            callObj.put(JsonStrings.ask, call.getAsk());
-            callObj.put(JsonStrings.last, call.getLast());
-            callObj.put(JsonStrings.theoretic, call.getCalcPrice());
-            callObj.put(JsonStrings.delta, call.getDelta());
-            strikeObj.put(JsonStrings.call, callObj);
-
-            // Put
-            Option put = strike.getPut();
-            putObj = new MyJson();
-            putObj.put(JsonStrings.bid, put.getBid());
-            putObj.put(JsonStrings.ask, put.getAsk());
-            putObj.put(JsonStrings.last, put.getLast());
-            putObj.put(JsonStrings.theoretic, put.getCalcPrice());
-            putObj.put(JsonStrings.delta, put.getDelta());
-            strikeObj.put(JsonStrings.put, putObj);
-
-            // Append to main obj
-            obj.put(L.str(strike.getStrike()), strikeObj);
+        for (Option option : options_list) {
+            // Json option
+            MyJson option_json = new MyJson();
+            option_json.put(JsonStrings.delta, option.getDelta());
+            option_json.put(JsonStrings.open_pos, option.getOpen_pos());
+            // Put option json
+            json.put(option.getName(), option_json);
         }
-        return obj;
+        return json;
     }
 
     public int getConBidAskCounter() {
@@ -346,6 +322,7 @@ public class Options implements IJsonData {
         json.put(JsonStrings.con, getContract());
         return json;
     }
+
 
     @Override
     public void loadFromJson(MyJson json) {
