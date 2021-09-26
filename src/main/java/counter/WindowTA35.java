@@ -9,7 +9,6 @@ import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import options.optionsDataTable.OptionsTableWindow;
 import setting.Setting;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

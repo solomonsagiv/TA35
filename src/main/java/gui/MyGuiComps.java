@@ -257,7 +257,7 @@ public class MyGuiComps {
         private void init() {
 
             setBounds(new Rectangle(60, 25));
-            setFont(Themes.VEDANA_12);
+            setFont(Themes.ARIEL_15);
             setForeground(Themes.BLUE);
             setHorizontalAlignment(JLabel.CENTER);
             setVerticalAlignment(JLabel.CENTER);

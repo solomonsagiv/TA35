@@ -8,6 +8,7 @@ import com.pretty_tools.dde.client.DDEClientConversation;
 import dataBase.mySql.Queries;
 import exp.Exp;
 import locals.L;
+import myJson.MyJson;
 import options.Option;
 import options.Options;
 import options.Strike;
@@ -23,6 +24,7 @@ public class OptionsReaderService extends MyBaseService {
     Calculator calculator;
     Exp exp;
     DDEClientConversation conversation;
+    Options options;
 
     public OptionsReaderService(Exp exp, String excelPath) {
         super();
@@ -32,6 +34,7 @@ public class OptionsReaderService extends MyBaseService {
         this.exp = exp;
         setUpOptions(exp, conversation);
         load_options_status();
+        this.options = exp.getOptions();
     }
 
     private void load_options_status() {
@@ -39,8 +42,10 @@ public class OptionsReaderService extends MyBaseService {
         while (true) {
             try {
                 if (!rs.next()) break;
-                JSONObject json = (JSONObject) rs.getObject("value");
-                exp.getOptions().load_options_data(json);
+                MyJson json = new MyJson(rs.getString("value"));
+                if (!json.isEmpty()) {
+                    exp.getOptions().load_options_data_from_json(json);
+                }
                 break;
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -60,7 +65,7 @@ public class OptionsReaderService extends MyBaseService {
             }
         }
     }
-    
+
     private void updateOptionData(Option option, Exp exp) throws DDEException {
         int row = option.getCellRow();
 
@@ -95,6 +100,9 @@ public class OptionsReaderService extends MyBaseService {
         option.setVolume(volume);
         option.appendDelta(delta);
         option.setOpen_pos(open_positions);
+
+        // Append delta to options object separate
+        options.appendDelta(delta);
     }
 
 
@@ -137,6 +145,8 @@ public class OptionsReaderService extends MyBaseService {
                 options.setOption(put);
 
             }
+
+            System.out.println("Dome set up options");
         } catch (Exception e) {
             e.printStackTrace();
         }

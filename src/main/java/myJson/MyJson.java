@@ -23,6 +23,10 @@ public class MyJson extends JSONObject {
     public MyJson() {
     }
 
+    public boolean isEmpty() {
+        return keySet().isEmpty();
+    }
+
     @Override
     public int getInt( String key ) throws JSONException {
         try {

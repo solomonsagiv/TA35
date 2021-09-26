@@ -318,7 +318,6 @@ public class Option implements IJsonData {
 	}
 
 	public void appendDelta( double delta ) {
-		options.appendDelta(delta);
 		this.delta += delta;
 	}
 
@@ -375,13 +374,19 @@ public class Option implements IJsonData {
 		MyJson json = new MyJson();
 		json.put(JsonStrings.delta, delta);
 		json.put(JsonStrings.open_pos, open_pos);
+		json.put(JsonStrings.bid, bid);
+		json.put(JsonStrings.ask, ask);
 		return json;
 	}
 
 	@Override
 	public void loadFromJson(MyJson json) {
-		appendDelta(json.getDouble(JsonStrings.delta));
-		setOpen_pos(json.getInt(JsonStrings.open_pos));
+		try {
+			appendDelta(json.getDouble(JsonStrings.delta));
+			setOpen_pos(json.getInt(JsonStrings.open_pos));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

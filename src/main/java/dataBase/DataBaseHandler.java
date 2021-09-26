@@ -4,7 +4,6 @@ import api.ApiObject;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -22,7 +21,7 @@ public class DataBaseHandler {
     public static final String y = "y";
     public static final String width = "width";
     public static final String height = "height";
-    
+
     public void load_data() {
         ApiObject apiObject = ApiObject.getInstance();
 
@@ -34,6 +33,8 @@ public class DataBaseHandler {
         double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
         double start_exp_week = Queries.handle_rs(Queries.get_start_exp(EXP_WEEK));
         double start_exp_month = Queries.handle_rs(Queries.get_start_exp(EXP_MONTH));
+        double week_delta = Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.SAGIV_DELTA_WEEK_TABLE));
+        double month_delta = Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.SAGIV_DELTA_MONTH_TABLE));
         int baskets_up = (int) Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE));
         int baskets_down = (int) Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE));
 
@@ -47,6 +48,8 @@ public class DataBaseHandler {
         apiObject.getExpMonth().getExpData().setBaskets((int) baskets_exp_month);
         apiObject.getExpWeek().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE)));
         apiObject.getExpMonth().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE)));
+        apiObject.getExpWeek().getOptions().setDelta_from_fix(week_delta);
+        apiObject.getExpMonth().getOptions().setDelta_from_fix(month_delta);
         apiObject.setBasketUp(baskets_up);
         apiObject.setBasketDown(baskets_down);
     }

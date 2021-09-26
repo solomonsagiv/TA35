@@ -77,12 +77,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
                 end_rando = LocalTime.of(15, 50, 0);
             }
 
-            // Start services
-            apiObject.getServiceHandler().getHandler().start();
-
-            // Data reader
-            new DataReaderService(BackGroundRunner.excelPath);
-
+            System.out.println("back runner startted");
             while (true) {
                 try {
                     // Sleep
@@ -91,6 +86,8 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     bid = apiObject.getIndex_bid();
                     ask = apiObject.getIndex_ask();
                     current_time = LocalTime.now();
+
+                    System.out.println(apiObject.getExpMonth().getOptions().getData());
 
                     // Wait for load
                     if (apiObject.isDbLoaded()) {

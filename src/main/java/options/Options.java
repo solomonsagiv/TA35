@@ -15,13 +15,16 @@ import java.util.List;
 
 public class Options implements IJsonData {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         ApiObject apiObject = ApiObject.getInstance();
         apiObject.getServiceHandler().getHandler().start();
         new DDEConnection(apiObject);
         new OptionsReaderService(apiObject.getExpMonth(), "C://Users/yosef/Desktop/[TA35.xlsm]Import Month");
-        System.out.println(ApiObject.getInstance().getExpMonth().getOptions().getData());
+
+        Thread.sleep(5000);
+
+        System.out.println("Data " + ApiObject.getInstance().getExpMonth().getOptions().getData());
     }
 
     public static final int MONTH = 0;
@@ -206,12 +209,9 @@ public class Options implements IJsonData {
     public void load_options_data_from_json(MyJson json) {
         for (String key : json.keySet()) {
             MyJson json_option = json.getMyJson(key);
-            double delta = json_option.getDouble(JsonStrings.delta);
-            int open_pos = json_option.getInt(JsonStrings.open_pos);
 
             Option option = optionsMap.get(key);
-            option.appendDelta(delta);
-            option.setOpen_pos(open_pos);
+            option.loadFromJson(json_option);
         }
     }
 
@@ -221,9 +221,8 @@ public class Options implements IJsonData {
 
         for (Option option : options_list) {
             // Json option
-            MyJson option_json = new MyJson();
-            option_json.put(JsonStrings.delta, option.getDelta());
-            option_json.put(JsonStrings.open_pos, option.getOpen_pos());
+            MyJson option_json = option.getAsJson();
+
             // Put option json
             json.put(option.getName(), option_json);
         }
@@ -348,14 +347,5 @@ public class Options implements IJsonData {
         getOpChartList().getValues().addAll(op_list);
     }
 
-    public void load_options_data(JSONObject json) {
-        for (Option option : options_list) {
-            JSONObject option_json = json.getJSONObject(option.getName());
-            double delta = option_json.getDouble("delta");
-            int open_pos = option_json.getInt("open_pos");
-            option.appendDelta(delta);
-            option.setOpen_pos(open_pos);
-        }
-    }
 }
 
