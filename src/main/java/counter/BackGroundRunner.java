@@ -77,7 +77,11 @@ public class BackGroundRunner extends MyThread implements Runnable {
                 end_rando = LocalTime.of(15, 50, 0);
             }
 
-            System.out.println("back runner startted");
+            // Data reader
+            new DataReaderService(BackGroundRunner.excelPath);
+            apiObject.getServiceHandler().getHandler().start();
+
+            System.out.println("back runner startteed");
             while (true) {
                 try {
                     // Sleep
