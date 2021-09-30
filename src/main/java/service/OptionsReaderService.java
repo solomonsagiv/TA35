@@ -25,16 +25,19 @@ public class OptionsReaderService extends MyBaseService {
     Exp exp;
     DDEClientConversation conversation;
     Options options;
+    int options_type;
 
-    public OptionsReaderService(Exp exp, String excelPath) {
+    public OptionsReaderService(int options_type, String excelPath) {
         super();
+        this.options_type = options_type;
         this.ddeConnection = new DDEConnection(apiObject);
         this.conversation = ddeConnection.createNewConversation(excelPath);
         this.calculator = new Calculator();
-        this.exp = exp;
+        this.exp = options_type == 0 ? apiObject.getExpWeek() : apiObject.getExpMonth();
         setUpOptions(exp, conversation);
         load_options_status();
         this.options = exp.getOptions();
+        System.out.println("Options dsdsaadlksahdklashdkasjhdaskjhdkasjhd"  + this.options);
     }
 
     private void load_options_status() {
@@ -67,48 +70,48 @@ public class OptionsReaderService extends MyBaseService {
     }
 
     private void updateOptionData(Option option, Exp exp) throws DDEException {
-        int row = option.getCellRow();
+        if (options != null) {
+            int row = option.getCellRow();
 
-        int bidPrice1 = 0;
-        int askPrice1 = 0;
-        int last = 0;
-        int volume = 0;
-        double delta = 0;
-        int open_positions = 0;
+            int bidPrice1 = 0;
+            int askPrice1 = 0;
+            int last = 0;
+            int volume = 0;
+            double delta = 0;
+            int open_positions = 0;
 
-        bidPrice1 = requestInt(cell(row, 2));
-        askPrice1 = requestInt(cell(row, 3));
-        last = requestInt(cell(row, 4));
-        volume = requestInt(cell(row, 5));
-        delta = requestDouble(cell(row, 6));
-        open_positions = (int) requestDouble(cell(row, 9));
+            bidPrice1 = requestInt(cell(row, 2));
+            askPrice1 = requestInt(cell(row, 3));
+            last = requestInt(cell(row, 4));
+            volume = requestInt(cell(row, 5));
+            delta = requestDouble(cell(row, 6));
+            open_positions = (int) requestDouble(cell(row, 9));
 
-        if (apiObject.isDbLoaded()) {
-            // Calc
-            calculator.calc(exp.getOptions(), option, last, volume, delta);
+            if (apiObject.isDbLoaded()) {
+                // Calc
+                calculator.calc(exp.getOptions(), option, last, volume, delta);
+            }
+
+            if (last != 0) {
+                option.setLast(last);
+            }
+
+            option.setBid(bidPrice1);
+            option.setAsk(askPrice1);
+            option.getLastList().add((bidPrice1 + askPrice1) / 2);
+            option.addBidState(bidPrice1);
+            option.addAskState(askPrice1);
+            option.setVolume(volume);
+            option.appendDelta(delta);
+            option.setOpen_pos(open_positions);
+
+            // Append delta to options object separate
+            options.appendDelta(delta);
         }
-
-        if (last != 0) {
-            option.setLast(last);
-        }
-
-        option.setBid(bidPrice1);
-        option.setAsk(askPrice1);
-        option.getLastList().add((bidPrice1 + askPrice1) / 2);
-        option.addBidState(bidPrice1);
-        option.addAskState(askPrice1);
-        option.setVolume(volume);
-        option.appendDelta(delta);
-        option.setOpen_pos(open_positions);
-
-        // Append delta to options object separate
-        options.appendDelta(delta);
     }
-
 
     private void setUpOptions(Exp exp, DDEClientConversation conversation) {
         try {
-
             Options options = exp.getOptions();
 
             // Wait for future to update
@@ -140,10 +143,11 @@ public class OptionsReaderService extends MyBaseService {
                         put.setCellRow(row + 1);
                     }
                 }
-
+                System.out.println(exp.getExp_name());
+                System.out.println(call);
+                System.out.println(put);
                 options.setOption(call);
                 options.setOption(put);
-
             }
 
             System.out.println("Dome set up options");

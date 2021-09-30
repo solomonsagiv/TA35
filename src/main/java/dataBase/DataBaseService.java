@@ -150,21 +150,19 @@ public class DataBaseService extends MyBaseService {
 
     private void grab_data() {
         new Thread(() -> {
-            double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE));
-            double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE));
-            int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_cdf(Factories.Tables.RESEARCH_V5_TABLE));
-            int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_cdf(Factories.Tables.RESEARCH_V6_TABLE));
-
-            // V5 V6
-            apiObject.setV5(v5);
-            apiObject.setV6(v6);
-
-            ExpWeek expWeek = apiObject.getExpWeek();
-            expWeek.setOp_avg(op_avg_week);
-
-            ExpMonth expMonth = apiObject.getExpMonth();
-            expMonth.setOp_avg(op_avg_month);
-
+//            int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_cdf(Factories.Tables.RESEARCH_V5_TABLE));
+//            int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_cdf(Factories.Tables.RESEARCH_V6_TABLE));
+//
+//             V5 V6
+//            apiObject.setV5(v5);
+//            apiObject.setV6(v6);
+//
+//            ExpWeek expWeek = apiObject.getExpWeek();
+//            expWeek.setOp_avg(op_avg_week);
+//
+//            ExpMonth expMonth = apiObject.getExpMonth();
+//            expMonth.setOp_avg(op_avg_month);
+//
             apiObject.first_load = true;
         }).start();
     }

@@ -131,7 +131,7 @@ public class OptionsDataCalculator extends MyBaseService {
             option.getBidAskCounterList().add(option.getBidAskCounter());
         }
     }
-
+    
     private void deltaCounter(Option option) {
         double preAvg = (option.pretBid() + option.preAsk()) / 2;
         // Bigger

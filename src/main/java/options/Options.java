@@ -15,20 +15,8 @@ import java.util.List;
 
 public class Options implements IJsonData {
 
-    public static void main(String[] args) throws InterruptedException {
-
-        ApiObject apiObject = ApiObject.getInstance();
-        apiObject.getServiceHandler().getHandler().start();
-        new DDEConnection(apiObject);
-        new OptionsReaderService(apiObject.getExpMonth(), "C://Users/yosef/Desktop/[TA35.xlsm]Import Month");
-
-        Thread.sleep(5000);
-
-        System.out.println("Data " + ApiObject.getInstance().getExpMonth().getOptions().getData());
-    }
-
-    public static final int MONTH = 0;
-    public static final int WEEK = 1;
+    public static final int MONTH = 1;
+    public static final int WEEK = 0;
 
     private double contract = 0;
     private double contractBid = 0;
@@ -208,10 +196,14 @@ public class Options implements IJsonData {
 
     public void load_options_data_from_json(MyJson json) {
         for (String key : json.keySet()) {
-            MyJson json_option = json.getMyJson(key);
+            try {
+                MyJson json_option = json.getMyJson(key);
 
-            Option option = optionsMap.get(key);
-            option.loadFromJson(json_option);
+                Option option = optionsMap.get(key);
+                option.loadFromJson(json_option);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -4,6 +4,8 @@ import api.ApiObject;
 import arik.Arik;
 import dataBase.DataBaseHandler;
 import dataBase.DataBaseService;
+import options.Option;
+import options.Options;
 import options.OptionsDataCalculator;
 import org.json.JSONArray;
 import service.BasketService;
@@ -30,8 +32,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
     String randomally = "rando";
     String endMarket = "end";
 
-    OptionsDataCalculator optionsDataCalculator;
-
     public static String weekPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Week";
     public static String monthPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Month";
     public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
@@ -41,7 +41,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
     public static boolean randomallyBool = false;
     public static boolean endMarketBool = false;
     boolean exported = false;
-    boolean reset = false;
 
     Color lightGreen = new Color(12, 135, 0);
     Color lightRed = new Color(229, 19, 0);
@@ -157,8 +156,8 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
     public void pre_open_services() {
         new OptionsDataCalculator();
-        new OptionsReaderService(apiObject.getExpWeek(), weekPath);
-        new OptionsReaderService(apiObject.getExpMonth(), monthPath);
+        new OptionsReaderService(Options.WEEK, weekPath);
+        new OptionsReaderService(Options.MONTH, monthPath);
         new DataBaseService();
     }
 
