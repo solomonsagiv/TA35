@@ -88,8 +88,6 @@ public class ApiObject implements IJsonData {
 	private boolean started;
 	private String name;
 
-	public boolean first_load = false;
-
 	// Private constructor
 	private ApiObject() {
 		expWeek = new ExpWeek(this, DataBaseHandler.EXP_WEEK);

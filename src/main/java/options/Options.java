@@ -1,13 +1,11 @@
 package options;
 
 import api.ApiObject;
-import api.dde.DDE.DDEConnection;
 import charts.myChart.MyChartList;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
-import service.OptionsReaderService;
 
 import java.util.ArrayList;
 import java.util.HashMap;

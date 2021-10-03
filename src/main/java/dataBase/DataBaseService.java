@@ -156,14 +156,6 @@ public class DataBaseService extends MyBaseService {
 //             V5 V6
 //            apiObject.setV5(v5);
 //            apiObject.setV6(v6);
-//
-//            ExpWeek expWeek = apiObject.getExpWeek();
-//            expWeek.setOp_avg(op_avg_week);
-//
-//            ExpMonth expMonth = apiObject.getExpMonth();
-//            expMonth.setOp_avg(op_avg_month);
-//
-            apiObject.first_load = true;
         }).start();
     }
 

@@ -221,7 +221,7 @@ public class MyChart {
             // While loop
             while (isRun()) {
                 try {
-                    if (apiObject.isStarted() && apiObject.first_load) {
+                    if (apiObject.isStarted()) {
 
                         // Sleep
                         Thread.sleep((long) props.getProp(ChartPropsEnum.SLEEP));
