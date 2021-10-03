@@ -168,7 +168,7 @@ public class DataBaseService extends MyBaseService {
     public int getSleep() {
         return 1000;
     }
-
+    
     void insert_data_retro(ArrayList<MyTimeStampObject> list, String table_location) {
         try {
             if (list.size() > 0) {

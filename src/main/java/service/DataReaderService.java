@@ -80,6 +80,6 @@ public class DataReaderService extends MyBaseService {
 
     @Override
     public int getSleep() {
-        return 1000;
+        return 200;
     }
 }

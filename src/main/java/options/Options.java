@@ -26,7 +26,7 @@ public class Options implements IJsonData {
     private double total_delta = 0;
 
     List<Strike> strikes;
-    HashMap<Integer, Option> optionsMap;
+    HashMap<String, Option> optionsMap;
     ArrayList<Option> options_list;
 
     private MyChartList deltaChartList = new MyChartList();
@@ -37,8 +37,8 @@ public class Options implements IJsonData {
 
     public Options(ApiObject apiObject) {
         this.apiObject = apiObject;
-        strikes = new ArrayList<Strike>();
-        optionsMap = new HashMap<Integer, Option>();
+        strikes = new ArrayList<>();
+        optionsMap = new HashMap<>();
         this.op_list = new ArrayList<>();
         this.options_list = new ArrayList<>();
     }
@@ -112,9 +112,7 @@ public class Options implements IJsonData {
 
     // Add strike to strikes arr
     public void addStrike(Strike strike) {
-
         boolean contains = getStrikePricesList().contains(strike.getStrike());
-
         // Not inside
         if (!contains) {
             strikes.add(strike);
@@ -128,7 +126,7 @@ public class Options implements IJsonData {
     // Set option in strikes arr
     public void setOption(Option option) {
         // HashMap
-        optionsMap.put(option.getId(), option);
+        optionsMap.put(option.getName(), option);
         options_list.add(option);
 
         // Strikes list
@@ -137,7 +135,6 @@ public class Options implements IJsonData {
         Strike strike = getStrike(option.getStrike());
 
         if (strike != null) {
-
             if (callPut) {
                 if (strike.getCall() == null) {
                     strike.setCall(option);
@@ -148,7 +145,6 @@ public class Options implements IJsonData {
                 }
             }
         } else {
-
             // Create new if doesn't exist
             strike = new Strike();
             strike.setStrike(option.getStrike());

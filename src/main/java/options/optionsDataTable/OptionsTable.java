@@ -27,10 +27,9 @@ public class OptionsTable extends MyGuiComps.MyTable {
     Updater updater;
     Exp exp;
 
-    public OptionsTable(Object[][] data, Object[] headers, Exp exp) {
+    public OptionsTable(Object[][] data, Object[] headers) {
         super(data, headers);
         apiObject = ApiObject.getInstance();
-        this.exp = exp;
         header_style();
         start();
     }
@@ -107,7 +106,8 @@ public class OptionsTable extends MyGuiComps.MyTable {
         private void update_data() {
             for (int i = 0; i < getRowCount(); i++) {
                 try {
-                    double strike_price = (double) getValueAt(i, strike_col);
+                    System.out.println(getValueAt(i, strike_col));
+                    int strike_price = (int) getValueAt(i, strike_col);
                     Strike strike = exp.getOptions().getStrike(strike_price);
                     Option call = strike.getCall();
                     Option put = strike.getPut();
@@ -120,6 +120,7 @@ public class OptionsTable extends MyGuiComps.MyTable {
                     setValueAt(put.getOpen_pos(), i, put_open_pos_col);
                     setValueAt(put.getPricing(), i, put_pricing_col);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         }

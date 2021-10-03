@@ -140,12 +140,14 @@ public class ApiObject implements IJsonData {
 
 	public void openCharts() {
 		try {
-			// Full charts
-			FullCharts2 fullCharts = new FullCharts2(apiObject);
-			fullCharts.createChart();
-			
 			MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
 			mainMonthWeekChart.createChart();
+
+			// Full charts
+//			FullCharts2 fullCharts = new FullCharts2(apiObject);
+//			fullCharts.createChart();
+			
+
 			
 		} catch (Exception e) {
 			e.printStackTrace();

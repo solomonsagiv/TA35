@@ -57,7 +57,6 @@ public class OptionsReaderService extends MyBaseService {
     }
 
     private void update() {
-
         // Options
         for (Strike strike : exp.getOptions().getStrikes()) {
             try {

@@ -5,6 +5,8 @@ import exp.Exp;
 import gui.MyGuiComps;
 import locals.L;
 import locals.Themes;
+import options.Options;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,21 +15,21 @@ import java.awt.event.ActionListener;
 public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
     public static void main(String[] args) {
-        new OptionsTableWindow("Options window", ApiObject.getInstance().getExpMonth());
+        ApiObject.getInstance();
+
+        new OptionsTableWindow("Options window",Options.MONTH );
     }
 
     MyGuiComps.MyPanel main_panel;
     JScrollPane scrollPane;
     OptionsTable table;
-    Exp exp;
     ApiObject apiObject;
     MyGuiComps.MyTextField start_strike_field;
 
     // Constructor
-    public OptionsTableWindow(String title, Exp exp) throws HeadlessException {
+    public OptionsTableWindow(String title) throws HeadlessException {
         super(title);
         apiObject = ApiObject.getInstance();
-        this.exp = exp;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         main_panel.add(start_strike_field);
 
         // My options table
-        table = new OptionsTable(get_data_table(), headers, exp);
+        table = new OptionsTable(get_data_table(), headers);
         scrollPane = new JScrollPane(table);
         scrollPane.setBounds(0, start_strike_field.getY() + start_strike_field.getHeight() + 5, main_panel.getWidth(), main_panel.getHeight());
         scrollPane.setBackground(Themes.BLUE);
