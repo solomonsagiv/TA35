@@ -200,9 +200,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         });
         chartsCombo.setForeground(new Color(0, 0, 51));
         chartsCombo.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
-
-
-
         ((JLabel) chartsCombo.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
 
         MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();

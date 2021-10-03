@@ -1,5 +1,6 @@
 package api;
 
+import charts.charts.FullCharts2;
 import charts.charts.MainMonthWeekChart;
 import charts.myChart.MyChartList;
 import dataBase.DataBaseHandler;
@@ -148,11 +149,8 @@ public class ApiObject implements IJsonData {
 			mainMonthWeekChart.createChart();
 
 			// Full charts
-//			FullCharts2 fullCharts = new FullCharts2(apiObject);
-//			fullCharts.createChart();
-			
-
-			
+			FullCharts2 fullCharts = new FullCharts2(apiObject);
+			fullCharts.createChart();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

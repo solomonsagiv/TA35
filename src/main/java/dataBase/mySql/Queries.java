@@ -63,12 +63,12 @@ public class Queries {
         return MySql.select(query);
     }
 
-    public static ResultSet get_last_record_from_decision_func(String table_location) {
-        String q = "select time, sum(value) over (order by time) as value " +
+    public static ResultSet get_last_record_from_decision_func(String table_location, int session, int version) {
+        String q = "select sum(delta) as value " +
                 "from %s " +
-                "where time::date = now()::date order by time desc limit 1;";
+                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) and session_id = %s and version = %s;";
 
-        String query = String.format(q, table_location);
+        String query = String.format(q, table_location, session, version);
         return MySql.select(query);
     }
 

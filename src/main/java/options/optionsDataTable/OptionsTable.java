@@ -21,8 +21,9 @@ public class OptionsTable extends MyGuiComps.MyTable {
     public static int call_delta_col = 2;
     public static int strike_col = 3;
     public static int put_delta_col = 4;
-    public static int put_pricing_col = 5;
-    public static int put_open_pos_col = 6;
+    public static int put_open_pos_col = 5;
+    public static int put_pricing_col = 6;
+
     ApiObject apiObject;
     Updater updater;
 

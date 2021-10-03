@@ -141,21 +141,21 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro(bid_ask_counter_week_timestamp, Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE);
             insert_data_retro(bid_ask_counter_month_timestamp, Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE);
             insert_data_retro(ind_delta_timestamp, Factories.Tables.INDEX_DELTA_TABLE);
-            insert_data_retro(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
             insert_data_retro(fut_week_timestamp, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
             insert_data_retro(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
             insert_data_retro(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
+            insert_data_retro(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
         }).start();
     }
 
     private void grab_data() {
         new Thread(() -> {
-//            int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_cdf(Factories.Tables.RESEARCH_V5_TABLE));
-//            int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_cdf(Factories.Tables.RESEARCH_V6_TABLE));
-//
-//             V5 V6
-//            apiObject.setV5(v5);
-//            apiObject.setV6(v6);
+            int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 5));
+            int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 6));
+
+            // V5 V6
+            apiObject.setV5(v5);
+            apiObject.setV6(v6);
         }).start();
     }
 

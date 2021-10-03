@@ -13,13 +13,7 @@ import java.awt.event.ActionListener;
 
 public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
-    int strikes_size = 14;
-
-    public static void main(String[] args) {
-        ApiObject.getInstance();
-
-        new OptionsTableWindow("Options window" );
-    }
+    static int strikes_size = 14;
 
     MyGuiComps.MyPanel main_panel;
     JScrollPane scrollPane;
@@ -30,7 +24,6 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     // Constructor
     public OptionsTableWindow(String title) throws HeadlessException {
         super(title);
-        apiObject = ApiObject.getInstance();
     }
 
     @Override
@@ -45,6 +38,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
     @Override
     public void initialize() {
+        this.apiObject = ApiObject.getInstance();
 
         String[] headers = {
                 "Pricing",
@@ -90,8 +84,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     }
 
     private Object[][] get_data_table() {
-
-        int rows = strikes_size * apiObject.getExp_list().size();
+        int size = apiObject.getExp_list().size();
+        int rows = strikes_size * size;
 
         Object[][] data = new Object[rows][7];
 
