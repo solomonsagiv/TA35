@@ -25,7 +25,6 @@ public class OptionsTable extends MyGuiComps.MyTable {
     public static int put_open_pos_col = 6;
     ApiObject apiObject;
     Updater updater;
-    Exp exp;
 
     public OptionsTable(Object[][] data, Object[] headers) {
         super(data, headers);
@@ -104,11 +103,20 @@ public class OptionsTable extends MyGuiComps.MyTable {
         }
 
         private void update_data() {
+
+            Exp exp;
+            String symbol;
+            int strike_price;
+            Strike strike;
+
             for (int i = 0; i < getRowCount(); i++) {
                 try {
-                    System.out.println(getValueAt(i, strike_col));
-                    int strike_price = (int) getValueAt(i, strike_col);
-                    Strike strike = exp.getOptions().getStrike(strike_price);
+                    String strike_name = L.str(getValueAt(i, strike_col));
+                    symbol = strike_name.substring(0, 1);
+                    strike_price = L.INT(strike_name.substring(1));
+                    exp = symbol.equals(Exp.WEEK_SYMBOL) ? apiObject.getExpWeek() : apiObject.getExpMonth();
+                    strike = exp.getOptions().getStrike(strike_price);
+
                     Option call = strike.getCall();
                     Option put = strike.getPut();
 

@@ -5,7 +5,6 @@ import exp.Exp;
 import gui.MyGuiComps;
 import locals.L;
 import locals.Themes;
-import options.Options;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +13,12 @@ import java.awt.event.ActionListener;
 
 public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
+    int strikes_size = 14;
+
     public static void main(String[] args) {
         ApiObject.getInstance();
 
-        new OptionsTableWindow("Options window",Options.MONTH );
+        new OptionsTableWindow("Options window" );
     }
 
     MyGuiComps.MyPanel main_panel;
@@ -89,10 +90,13 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     }
 
     private Object[][] get_data_table() {
-        Object[][] data = new Object[14][7];
+
+        int rows = strikes_size * apiObject.getExp_list().size();
+
+        Object[][] data = new Object[rows][7];
 
         // Set strikes in table for base data
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < rows; i++) {
             data[i][0] = 0;
             data[i][1] = 0;
             data[i][2] = 0;
@@ -105,12 +109,18 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     }
 
     public void set_strikes_in_table() {
-        int start_strike = L.INT(start_strike_field.getText());
-        int end_strike = start_strike + 140;
+
         int row = 0;
-        for (int i = start_strike; i < end_strike; i+= 10) {
-           table.setValueAt(i, row, OptionsTable.strike_col);
-           row++;
+
+        for (Exp exp : apiObject.getExp_list()) {
+            int start_strike = L.INT(start_strike_field.getText());
+            int end_strike = start_strike + strikes_size * 10;
+
+            for (int j = start_strike; j < end_strike; j += 10) {
+                String strike_name = exp.getSymbol() + j;
+                table.setValueAt(strike_name, row, OptionsTable.strike_col);
+                row++;
+            }
         }
     }
 }

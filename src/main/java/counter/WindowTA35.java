@@ -191,7 +191,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                             MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
                             mainMonthWeekChart.createChart();
                     case "Options window":
-                        new OptionsTableWindow("Options window", apiObject.getExpMonth());
+                        new OptionsTableWindow("Options window");
                         break;
                     default:
                         break;

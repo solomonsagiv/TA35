@@ -8,10 +8,14 @@ import options.Options;
 
 public abstract class Exp implements IJsonData {
 
+	public static final String WEEK_SYMBOL = "W";
+	public static final String MONTH_SYMBOL = "M";
+
 	protected ApiObject apiObject;
 	private Options options;
 	private ExpData expData;
 	private String exp_name;
+	private String symbol = "";
 
 	private int futureStartStrike = 0;
 	private int futureEndStrike = 0;
@@ -27,6 +31,7 @@ public abstract class Exp implements IJsonData {
 		this.exp_name = exp_name;
 		options = new Options(apiObject);
 		expData = new ExpData(apiObject, this);
+		this.symbol = exp_name.toLowerCase().contains("w") ? WEEK_SYMBOL : MONTH_SYMBOL;
 	}
 
 	public Options getOptions() {
@@ -140,5 +145,9 @@ public abstract class Exp implements IJsonData {
 
 	public void setBid_ask_counter_avg_60(double bid_ask_counter_avg_60) {
 		this.bid_ask_counter_avg_60 = bid_ask_counter_avg_60;
+	}
+
+	public String getSymbol() {
+		return symbol;
 	}
 }

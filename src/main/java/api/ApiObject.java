@@ -1,9 +1,9 @@
 package api;
 
-import charts.charts.FullCharts2;
 import charts.charts.MainMonthWeekChart;
 import charts.myChart.MyChartList;
 import dataBase.DataBaseHandler;
+import exp.Exp;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import myJson.IJsonData;
@@ -25,6 +25,8 @@ public class ApiObject implements IJsonData {
 	private double interest = 0.006;
 	private boolean dbLoaded = false;
 	private double rando = 0;
+
+	private ArrayList<Exp> exp_list = new ArrayList<>();
 
 	private MyServiceHandler serviceHandler;
 
@@ -92,6 +94,8 @@ public class ApiObject implements IJsonData {
 	private ApiObject() {
 		expWeek = new ExpWeek(this, DataBaseHandler.EXP_WEEK);
 		expMonth = new ExpMonth(this, DataBaseHandler.EXP_MONTH);
+		exp_list.add(expWeek);
+		exp_list.add(expMonth);
 		stocksHandler = new StocksHandler();
 		this.name = "ta35";
 	}
@@ -533,6 +537,10 @@ public class ApiObject implements IJsonData {
 
 	public void setV6(int v6) {
 		this.v6 = v6;
+	}
+
+	public ArrayList<Exp> getExp_list() {
+		return exp_list;
 	}
 
 	@Override
