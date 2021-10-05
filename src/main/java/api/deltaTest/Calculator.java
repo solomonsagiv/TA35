@@ -7,7 +7,7 @@ import options.Options;
 
 public class Calculator {
 
-	public static void calc(Options options, Option option, int newLast, int newVolume, double newDelta) {
+	public static double  calc(Option option, int newLast, int newVolume, double newDelta) {
 
 		// Volume check
 		if (newVolume > option.getVolume()) {
@@ -24,11 +24,11 @@ public class Calculator {
 			if (newLast == option.getBid()) {
 				delta = quantity * newDelta * -1;
 			}
-			
+
 			// Append delta
-			option.appendDelta(delta);
-			options.appendDelta(delta);
+			return delta;
 		}
+		return 0;
 	}
 	
 	public static double calcMiniStockDelta(MiniStock miniStock, int newLast, int newVolume) {

@@ -29,7 +29,7 @@ public class Option implements IJsonData {
 	private double stDev = 0;
 	private double delta = 0;
 	private ArrayList<Integer> cycleState = new ArrayList<>();
-	
+
 	private int bidAskCounter = 0;
 	private ArrayList<Integer> bidAskCounterList = new ArrayList<>();
 

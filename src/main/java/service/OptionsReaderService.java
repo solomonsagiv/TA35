@@ -86,9 +86,11 @@ public class OptionsReaderService extends MyBaseService {
             delta = requestDouble(cell(row, 6));
             open_positions = (int) requestDouble(cell(row, 9));
 
+            double delta_buy_sell = 0;
+
             if (apiObject.isDbLoaded()) {
                 // Calc
-                calculator.calc(exp.getOptions(), option, last, volume, delta);
+                 delta_buy_sell = calculator.calc(option, last, volume, delta);
             }
 
             if (last != 0) {
@@ -101,11 +103,11 @@ public class OptionsReaderService extends MyBaseService {
             option.addBidState(bidPrice1);
             option.addAskState(askPrice1);
             option.setVolume(volume);
-            option.appendDelta(delta);
+            option.appendDelta(delta_buy_sell);
             option.setOpen_pos(open_positions);
 
             // Append delta to options object separate
-            options.appendDelta(delta);
+            options.appendDelta(delta_buy_sell);
         }
     }
 

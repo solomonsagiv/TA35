@@ -150,12 +150,16 @@ public class DataBaseService extends MyBaseService {
 
     private void grab_data() {
         new Thread(() -> {
-            int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 5));
-            int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 6));
+            try {
+                int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 5));
+                int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 6));
 
-            // V5 V6
-            apiObject.setV5(v5);
-            apiObject.setV6(v6);
+                // V5 V6
+                apiObject.setV5(v5);
+                apiObject.setV6(v6);
+            } catch (Exception e ) {
+                e.printStackTrace();
+            }
         }).start();
     }
 

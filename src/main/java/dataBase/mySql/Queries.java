@@ -10,13 +10,6 @@ import java.util.HashMap;
 
 public class Queries {
 
-    public static void main(String[] args) {
-        double value = Queries.handle_rs(MySql.select("select sum(delta) as value " +
-                "from data.ta35_decision_func " +
-                "where time::date = now()::date and session_id = 2 and version = 5;"));
-        System.out.println(value);
-    }
-
     public static ResultSet get_serie(String table_location) {
         String q = "SELECT * FROM %s where time::date = now()::date ORDER BY time;";
         String query = String.format(q, table_location);
