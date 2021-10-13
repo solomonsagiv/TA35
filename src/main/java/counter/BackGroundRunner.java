@@ -1,6 +1,7 @@
 package counter;
 
 import api.ApiObject;
+import api.Manifest;
 import arik.Arik;
 import dataBase.DataBaseHandler;
 import dataBase.DataBaseService;
@@ -89,6 +90,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     ask = apiObject.getIndex_ask();
                     current_time = LocalTime.now();
 
+
                     // Wait for load
                     if (apiObject.isDbLoaded()) {
 
@@ -102,10 +104,14 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         // Auto start
                         if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
                             apiObject.setFutureOpen(apiObject.getExpMonth().getOptions().getContract());
-                            apiObject.start();
-
                             pre_open_services();
                             open_services();
+
+                            apiObject.start();
+
+                            if (Manifest.OPEN_CHART) {
+                                WindowTA35.openCharts();
+                            }
 
                             streamMarketBool = true;
                             System.out.println(" Started ");
@@ -160,6 +166,9 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
     private void open_services() {
         new BasketService();
+        new BasketService();
+        new BasketService();
+        new DataBaseService();
         new IndDeltaService(BackGroundRunner.excelPath);
     }
 

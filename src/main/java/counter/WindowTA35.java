@@ -45,7 +45,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     BackGroundRunner backGroundRunner;
     MyGuiComps.MyTextField basket_down_field;
     MyGuiComps.MyTextField basket_up_field;
-    public JTextField basketsSumField;
+    public MyGuiComps.MyTextField basketsSumField;
     DDEConnection ddeConnection;
     public MyGuiComps.MyTextField weekStartExpField;
     private MyGuiComps.MyButton btnDetails;
@@ -223,7 +223,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         basket_up_field.setBounds(5, 5, 45, 25);
         basketsPanel.add(basket_up_field);
 
-        basketsSumField = new JTextField();
+        basketsSumField = new MyGuiComps.MyTextField();
         basketsSumField.setBorder(null);
         basketsSumField.setHorizontalAlignment(SwingConstants.CENTER);
         basketsSumField.setForeground(new Color(229, 19, 0));
@@ -475,6 +475,20 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         label_14.setBounds(0, 41, 68, 25);
         exp_panel.add(label_14);
     }
+
+    public static void openCharts() {
+        try {
+            MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(ApiObject.getInstance());
+            mainMonthWeekChart.createChart();
+
+            // Full charts
+            FullCharts2 fullCharts = new FullCharts2(ApiObject.getInstance());
+            fullCharts.createChart();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // -------------------- function -------------------- //
 

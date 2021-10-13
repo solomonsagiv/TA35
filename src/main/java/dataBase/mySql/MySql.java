@@ -21,7 +21,7 @@ public class MySql {
 
                 // Execute
                 stmt.execute(query);
-
+                System.out.println(query);
             } catch (Exception e) {
                 e.printStackTrace();
                 Arik.getInstance().sendMessage(e.getMessage() + "\n" + e.getCause());

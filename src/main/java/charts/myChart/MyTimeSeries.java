@@ -16,7 +16,7 @@ import java.text.ParseException;
 import java.time.LocalDateTime;
 
 interface ITimeSeries {
-    double getData() throws UnknownHostException;
+    double getData();
 
     void load();
 }
@@ -90,20 +90,15 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
     }
 
     public void add(LocalDateTime time) {
-        try {
+        Second second = new Second(time.getSecond(), time.getMinute(), time.getHour(), time.getDayOfMonth(), time.getMonthValue(), time.getYear());
+        double data = getData();
+        getMyValues().add(data);
 
-            Second second = new Second(time.getSecond(), time.getMinute(), time.getHour(), time.getDayOfMonth(), time.getMonthValue(), time.getYear());
-            double data = getData();
-            getMyValues().add(data);
-
-            if (scaled) {
-                data = getMyValues().getLastValAsStd();
-            }
-
-            addOrUpdate(second, data);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+        if (scaled) {
+            data = getMyValues().getLastValAsStd();
         }
+
+        addOrUpdate(second, data);
     }
 
     public void load_data() {
@@ -164,14 +159,10 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
     public double add() {
         double data = 0;
         // live data
-        try {
-            data = getData();
-            myValues.add(data);
-            addOrUpdate(getLastSeconde(), data);
-            lastSeconde = (Second) lastSeconde.next();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        data = getData();
+        myValues.add(data);
+        addOrUpdate(getLastSeconde(), data);
+        lastSeconde = (Second) lastSeconde.next();
         return data;
     }
 

@@ -29,6 +29,8 @@ public class Factories {
         public static final String OP_AVG_MONTH_SERIE = "OP_AVG_MONTH";
         public static final String OP_AVG_WEEK_60_SERIE = "OP_AVG_WEEK_60";
         public static final String OP_AVG_MONTH_60_SERIE = "OP_AVG_MONTH_60";
+        public static final String OP_AVG_WEEK_30_SERIE = "OP_AVG_WEEK_30";
+        public static final String OP_AVG_MONTH_30_SERIE = "OP_AVG_MONTH_30";
         public static final String BID_ASK_COUNTER_WEEK_SERIE = "BID_ASK_COUNTER_WEEK";
         public static final String BID_ASK_COUNTER_MONTH_SERIE = "BID_ASK_COUNTER_MONTH";
         public static final String BID_ASK_COUNTER_WEEK_AVG_60_SERIE = "BID_ASK_COUNTER_WEEK_AVG_60";

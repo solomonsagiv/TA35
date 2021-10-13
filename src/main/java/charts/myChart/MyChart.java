@@ -105,7 +105,7 @@ public class MyChart {
 
     private void number_axis() {
         NumberAxis numberAxis = (NumberAxis) plot.getRangeAxis();
-        DecimalFormat df = new DecimalFormat("#0000.00");
+        DecimalFormat df = new DecimalFormat("#00000.00");
         df.setNegativePrefix("-");
         numberAxis.setNumberFormatOverride(df);
     }
@@ -423,9 +423,7 @@ public class MyChart {
 
             int i = 0;
             for (MyTimeSeries serie : series) {
-
                 oldVal = oldVals[i];
-
                 try {
                     newVal = serie.getData();
                 } catch (Exception e) {

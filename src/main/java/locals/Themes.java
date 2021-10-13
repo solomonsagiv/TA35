@@ -1,11 +1,11 @@
 package locals;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.util.Random;
 
 public class Themes {
-	
+
+
 	// Colors 
 	public static Color BINANCE_ORANGE = new Color(255, 204, 0);
     public static Color BINANCE_ORANGE_2 = new Color(241, 206, 125);
@@ -34,11 +34,11 @@ public class Themes {
 	public static Color LIGHT_BLUE_3 = new Color(45, 130, 250);
 	public static Color LIGHT_BLUE_4 = new Color(34, 76, 135);
     public static Color GREY_2 = new Color(160, 160, 160);
-	
+
 	public static Color RED_2 = new Color(171, 56, 75);
-	
+
 	// Fonts
-	public static Font ARIEL_15 = new Font("Ariel", Font.PLAIN, 15);
+	public static Font ARIEL_15 = new Font("Ariel", Font.BOLD, 15);
 	public static Font ARIEL_BOLD_15 = new Font("Ariel", Font.BOLD, 15);
 	
 	 // Colors

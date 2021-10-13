@@ -81,7 +81,7 @@ public class BasketService extends MyBaseService {
 
     @Override
     public String getName() {
-        return null;
+        return "Basket service";
     }
 
     @Override

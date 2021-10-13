@@ -21,10 +21,13 @@ public abstract class Exp implements IJsonData {
 	private int futureEndStrike = 0;
 
 	private double op_avg_60 = 0;
+	private double op_avg_30 = 0;
 	private double op_avg = 0;
 	private double delta_avg = 0;
 	private double delta_avg_60 = 0;
 	private double bid_ask_counter_avg_60 = 0;
+	private double delta_avg_30 = 0;
+	private double bid_ask_counter_avg_30 = 0;
 
 	public Exp(ApiObject apiObject, String exp_name) {
 		this.apiObject = apiObject;
@@ -123,6 +126,14 @@ public abstract class Exp implements IJsonData {
 		return delta_avg_60;
 	}
 
+	public double getDelta_avg_30() {
+		return delta_avg_30;
+	}
+
+	public void setDelta_avg_30(double delta_avg_30) {
+		this.delta_avg_30 = delta_avg_30;
+	}
+
 	public String getExp_name() {
 		return exp_name;
 	}
@@ -145,6 +156,14 @@ public abstract class Exp implements IJsonData {
 
 	public void setBid_ask_counter_avg_60(double bid_ask_counter_avg_60) {
 		this.bid_ask_counter_avg_60 = bid_ask_counter_avg_60;
+	}
+
+	public void setOp_avg_30(double op_avg_30) {
+		this.op_avg_30 = op_avg_30;
+	}
+
+	public double getOp_avg_30() {
+		return op_avg_30;
 	}
 
 	public String getSymbol() {

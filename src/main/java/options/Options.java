@@ -21,7 +21,7 @@ public class Options implements IJsonData {
     private double contractAsk = 0;
     private int conBidAskCounter = 0;
     private ArrayList<Double> op_list;
-
+    
     private double delta_from_fix = 0;
     private double total_delta = 0;
 

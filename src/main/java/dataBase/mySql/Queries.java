@@ -22,10 +22,24 @@ public class Queries {
         return MySql.select(query);
     }
 
-    public static ResultSet get_serie_cumulative(String table_location) {
+    public static ResultSet get_serie_cumulative_sum(String table_location) {
         String q = "select time, sum(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time::date = now()::date ORDER BY time;";
         String query = String.format(q, table_location);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_serie_cumulative_avg(String table_location) {
+        String q = "select time, avg(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
+                "from %s where time::date = now()::date ORDER BY time;";
+        String query = String.format(q, table_location);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_serie_cumulative_avg(String table_location, int min) {
+        String q = "select time, avg(value) over (order by i.time range between '%s min' preceding and current row) as value " +
+                "from %s where time::date = now()::date ORDER BY time;";
+        String query = String.format(q, table_location, min);
         return MySql.select(query);
     }
 
@@ -44,6 +58,22 @@ public class Queries {
                 "where i.time::date = now()::date;";
 
         String query = String.format(q, fut_table_location, Factories.Tables.SAGIV_INDEX_TABLE);
+        return MySql.select(query);
+    }
+
+    public static ResultSet op_avg_cumulative(String index_table, String fut_table, int min) {
+        String query = String.format("select i.time as time, avg(f.value - i.value) over (order by i.time range between '%s min' preceding and current row ) as value " +
+                "from %s i " +
+                "inner join %s f on i.time = f.time " +
+                "where i.time::date = now()::date;", min, index_table, fut_table);
+        return MySql.select(query);
+    }
+
+    public static ResultSet op_avg_cumulative(String index_table, String fut_table) {
+        String query = String.format("select i.time as time, avg(f.value - i.value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
+                "from %s i " +
+                "inner join %s f on i.time = f.time " +
+                "where i.time::date = now()::date;", index_table, fut_table);
         return MySql.select(query);
     }
 

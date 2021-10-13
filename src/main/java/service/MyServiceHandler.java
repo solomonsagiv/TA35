@@ -1,7 +1,6 @@
 package service;
 
 import threads.MyThread;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -27,7 +26,7 @@ public class MyServiceHandler extends MyThread implements Runnable {
 	}
 
 	private void init() {
-		
+
 		executor = Executors.newCachedThreadPool();
 
 		while (isRun()) {
@@ -63,15 +62,12 @@ public class MyServiceHandler extends MyThread implements Runnable {
 	}
 
 	public boolean isExist(MyBaseService newService) {
-		boolean exist = false;
-
 		for (MyBaseService service : servies) {
-			if (service.equals(newService)) {
-				exist = true;
-				break;
+			if (service.getName().equals(newService.getName())) {
+				return true;
 			}
 		}
-		return exist;
+		return false;
 	}
 
 	public void removeService(MyBaseService service) {

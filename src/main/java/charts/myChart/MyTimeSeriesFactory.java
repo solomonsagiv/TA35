@@ -3,7 +3,6 @@ package charts.myChart;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.Queries;
-
 import java.net.UnknownHostException;
 import java.sql.ResultSet;
 
@@ -21,7 +20,7 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getIndex();
                     }
 
@@ -39,14 +38,14 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpWeek().getOptions().getTotal_delta();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.DELTA_WEEK_TABLE);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.SAGIV_DELTA_WEEK_TABLE);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
             case Factories.TimeSeries.DELTA_MONTH_SERIE:
@@ -57,14 +56,14 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpMonth().getOptions().getTotal_delta();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.DELTA_MONTH_TABLE);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.SAGIV_DELTA_MONTH_TABLE);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
             case Factories.TimeSeries.DELTA_WEEK_AVG_SERIE:
@@ -75,14 +74,12 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpWeek().getDelta_avg();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -94,14 +91,12 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpWeek().getDelta_avg_60();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -113,14 +108,14 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpWeek().getOp_avg();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                        ResultSet rs = Queries.op_avg_cumulative(Factories.Tables.SAGIV_INDEX_TABLE, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
             case Factories.TimeSeries.OP_AVG_WEEK_60_SERIE:
@@ -131,14 +126,14 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpWeek().getOp_avg_60();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                        ResultSet rs = Queries.op_avg_cumulative(Factories.Tables.SAGIV_INDEX_TABLE, Factories.Tables.SAGIV_FUT_WEEK_TABLE, 60);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -150,14 +145,12 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpMonth().getDelta_avg();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -169,14 +162,50 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpMonth().getDelta_avg_60();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.OP_AVG_MONTH_30_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.OP_AVG_MONTH_30_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExpMonth().getOp_avg_30();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.op_avg_cumulative(Factories.Tables.SAGIV_INDEX_TABLE, Factories.Tables.SAGIV_FUT_MONTH_TABLE, 30);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.OP_AVG_WEEK_30_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_30_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExpWeek().getOp_avg_30();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.op_avg_cumulative(Factories.Tables.SAGIV_INDEX_TABLE, Factories.Tables.SAGIV_FUT_WEEK_TABLE, 30);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -188,14 +217,14 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpMonth().getOp_avg();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                        ResultSet rs = Queries.op_avg_cumulative(Factories.Tables.SAGIV_INDEX_TABLE, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -207,7 +236,7 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpMonth().getOp_avg_60();
                     }
 
@@ -226,14 +255,14 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpWeek().getOptions().getConBidAskCounter();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -245,14 +274,14 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpMonth().getOptions().getConBidAskCounter();
                     }
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -264,7 +293,7 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpWeek().getBid_ask_counter_avg_60();
                     }
 
@@ -283,7 +312,7 @@ public class MyTimeSeriesFactory {
                     }
 
                     @Override
-                    public double getData() throws UnknownHostException {
+                    public double getData() {
                         return apiObject.getExpMonth().getBid_ask_counter_avg_60();
                     }
 

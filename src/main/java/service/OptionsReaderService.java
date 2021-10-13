@@ -37,7 +37,6 @@ public class OptionsReaderService extends MyBaseService {
         setUpOptions(exp, conversation);
         load_options_status();
         this.options = exp.getOptions();
-        System.out.println("Options dsdsaadlksahdklashdkasjhdaskjhdkasjhd"  + this.options);
     }
 
     private void load_options_status() {

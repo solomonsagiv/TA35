@@ -14,196 +14,196 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Updater extends MyThread implements Runnable {
-	
-	ApiObject apiObject = ApiObject.getInstance();
 
-	// local variables
-	int count = 0;
+    ApiObject apiObject = ApiObject.getInstance();
 
-	LocalTime current_time;
+    // local variables
+    int count = 0;
 
-	// Avg list
-	public ArrayList<Double> avg_day = new ArrayList<>();
+    LocalTime current_time;
 
-	// test
-	double efresh;
-	double text;
-	boolean run = true;
+    // Avg list
+    public ArrayList<Double> avg_day = new ArrayList<>();
 
-	Color lightGreen = new Color(12, 135, 0);
-	Color lightRed = new Color(229, 19, 0);
+    // test
+    double efresh;
+    double text;
+    boolean run = true;
 
-	WindowTA35 window;
-	int sleep = 500;
+    Color lightGreen = new Color(12, 135, 0);
+    Color lightRed = new Color(229, 19, 0);
 
-	// Constructor
-	public Updater(WindowTA35 window) {
-		super();
-		this.window = window;
-		setRunnable(this);
-	}
+    WindowTA35 window;
+    int sleep = 500;
 
-	@Override
-	public void run() {
-		while (run) {
-			try {
-				// Write the data to the window
-				write();
-				Thread.sleep(sleep);
-			} catch (InterruptedException e) {
-				run = false;
-				System.out.println("Updater is stopped ");
-			}
-		}
-	}
+    // Constructor
+    public Updater(WindowTA35 window) {
+        super();
+        this.window = window;
+        setRunnable(this);
+    }
 
-	// Write the data to the window
-	private void write() throws InterruptedException {
+    @Override
+    public void run() {
+        while (run) {
+            try {
+                // Write the data to the window
+                write();
+                Thread.sleep(sleep);
+            } catch (InterruptedException e) {
+                run = false;
+                System.out.println("Updater is stopped ");
+            }
+        }
+    }
 
-		Exp expMonth = apiObject.getExpMonth();
-		Exp expWeek = apiObject.getExpWeek();
-		Options optionsMonth = expMonth.getOptions();
-		Options optionsWeek = expWeek.getOptions();
+    // Write the data to the window
+    private void write() throws InterruptedException {
 
-		try {
-			count++;
-			current_time = LocalTime.now();
+        Exp expMonth = apiObject.getExpMonth();
+        Exp expWeek = apiObject.getExpWeek();
+        Options optionsMonth = expMonth.getOptions();
+        Options optionsWeek = expWeek.getOptions();
 
-			// OP
-			efresh = expMonth.getOptions().getContract() - apiObject.getIndex();
-			text = floor(efresh, 100);
+        try {
+            count++;
+            current_time = LocalTime.now();
 
-			// After start trading
-			if (apiObject.isStarted()) {
-				// AVG OP
-				text = floor(avg(), 10);
-				setColor(window.op_avg, text, lightGreen);
+            // OP
+            efresh = expMonth.getOptions().getContract() - apiObject.getIndex();
+            text = floor(efresh, 100);
 
-				// Baskets
-				window.basket_up_field.setText(str(apiObject.getBasketUp()));
-				window.basket_down_field.setText(str(apiObject.getBasketDown()));
-				setColorInt(window.basketsSumField, (apiObject.getBasketUp() - apiObject.getBasketDown()));
+            // After start trading
+            if (apiObject.isStarted()) {
+                // AVG OP
+                text = floor(avg(), 10);
+                setColor(window.op_avg, text, lightGreen);
 
-				// Delta calc
-				// Month
-				colorForge(window.monthDeltaField, (int) optionsMonth.getTotal_delta(), L.df());
-				// Week
-				colorForge(window.weekDeltaField, (int) optionsWeek.getTotal_delta(), L.df());
+                // Baskets
+                window.basket_up_field.setText(str(apiObject.getBasketUp()));
+                window.basket_down_field.setText(str(apiObject.getBasketDown()));
+                setColorInt(window.basketsSumField, (apiObject.getBasketUp() - apiObject.getBasketDown()));
 
-				// Ind baskets
-				double indDelta = apiObject.getStocksHandler().getDelta();
-				int baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
-				double indeDeltaNoBakets = indDelta + (baskets * -1000);
+                // Delta calc
+                // Month
+                colorForge(window.monthDeltaField, (int) optionsMonth.getTotal_delta(), L.df());
+                // Week
+                colorForge(window.weekDeltaField, (int) optionsWeek.getTotal_delta(), L.df());
 
-				// Ind delta no baskets
-				colorForge(window.indDeltaNoBasketsField, (int) indeDeltaNoBakets, L.df());
+                // Ind baskets
+                double indDelta = apiObject.getStocksHandler().getDelta();
+                int baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
+                double indeDeltaNoBakets = indDelta + (baskets * -1000);
 
-				// Decision func
-				window.v5_field.colorForge(apiObject.getV5());
-				window.v6_field.colorForge(apiObject.getV6());
+                // Ind delta no baskets
+                colorForge(window.indDeltaNoBasketsField, (int) indeDeltaNoBakets, L.df());
 
-				// Exp
-				// Week
-				colorForge(window.expDeltaWeekField, (int) expWeek.getExpData().getTotalDelta(), L.df());
-				colorForge(window.expIndDeltaWeekField, (int) expWeek.getExpData().getTotalIndDelta(), L.df());
-				colorForge(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), L.df());
-				text = floor(
-						((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart())
-								* 100,
-						100);
-				setColorPresent(window.weekStartExpField, text);
+                // Decision func
+                window.v5_field.colorForge(apiObject.getV5());
+                window.v6_field.colorForge(apiObject.getV6());
 
-				// Month
-				colorForge(window.expDeltaMonthField, (int) expMonth.getExpData().getTotalDelta(), L.df());
-				colorForge(window.expIndDeltaMonthField, (int) expMonth.getExpData().getTotalIndDelta(), L.df());
-				colorForge(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), L.df());
-				text = floor(
-						((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart())
-								* 100,
-						100);
-				setColorPresent(window.monthStartExpField, text);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+                // Exp
+                // Week
+                colorForge(window.expDeltaWeekField, (int) expWeek.getExpData().getTotalDelta(), L.df());
+                colorForge(window.expIndDeltaWeekField, (int) expWeek.getExpData().getTotalIndDelta(), L.df());
+                colorForge(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), L.df());
+                text = floor(
+                        ((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart())
+                                * 100,
+                        100);
+                setColorPresent(window.weekStartExpField, text);
 
-	public void close() {
-		run = false;
-	}
+                // Month
+                colorForge(window.expDeltaMonthField, (int) expMonth.getExpData().getTotalDelta(), L.df());
+                colorForge(window.expIndDeltaMonthField, (int) expMonth.getExpData().getTotalIndDelta(), L.df());
+                colorForge(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), L.df());
+                text = floor(
+                        ((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart())
+                                * 100,
+                        100);
+                setColorPresent(window.monthStartExpField, text);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	private double avg() {
-		efresh = apiObject.getExpMonth().getOptions().getContract() - apiObject.getIndex();
-		avg_day.add(efresh);
-		double f = 0;
-		for (int i = 0; i < avg_day.size(); i++) {
-			f += avg_day.get(i);
-		}
-		return f / avg_day.size();
-	}
+    public void close() {
+        run = false;
+    }
 
-	// color setting function();
-	public void setColor(JTextField textField, double text, Color color) {
+    private double avg() {
+        efresh = apiObject.getExpMonth().getOptions().getContract() - apiObject.getIndex();
+        avg_day.add(efresh);
+        double f = 0;
+        for (int i = 0; i < avg_day.size(); i++) {
+            f += avg_day.get(i);
+        }
+        return f / avg_day.size();
+    }
 
-		if (text >= 0.0) {
-			textField.setForeground(color);
-			textField.setText(String.valueOf(text));
-		} else {
-			textField.setForeground(Color.red);
-			textField.setText(String.valueOf(text));
-		}
-	}
+    // color setting function();
+    public void setColor(JTextField textField, double text, Color color) {
 
-	// color setting function();
-	public void setColorInt(JTextField textField, int text) {
-		if (text >= 0.0) {
-			textField.setForeground(lightGreen);
-			textField.setText(String.valueOf(text));
-		} else {
-			textField.setForeground(lightRed);
-			textField.setText(String.valueOf(text));
-		}
-	}
+        if (text >= 0.0) {
+            textField.setForeground(color);
+            textField.setText(String.valueOf(text));
+        } else {
+            textField.setForeground(Color.red);
+            textField.setText(String.valueOf(text));
+        }
+    }
 
-	// color setting function();
-	public void setColorPresent(JTextField textField, double text) {
+    // color setting function();
+    public void setColorInt(JTextField textField, int text) {
+        if (text >= 0.0) {
+            textField.setForeground(lightGreen);
+            textField.setText(String.valueOf(text));
+        } else {
+            textField.setForeground(lightRed);
+            textField.setText(String.valueOf(text));
+        }
+    }
 
-		if (text >= 0.0) {
-			textField.setBackground(lightGreen);
-			textField.setText(String.valueOf(text) + "% ");
-		} else {
-			textField.setBackground(lightRed);
-			textField.setText(String.valueOf(text) + "% ");
-		}
-	}
+    // color setting function();
+    public void setColorPresent(JTextField textField, double text) {
 
-	public void colorForge(JTextField textField, int val, DecimalFormat format) {
-		if (val >= 0) {
-			textField.setForeground(Themes.GREEN);
-		} else {
-			textField.setForeground(Themes.RED);
-		}
+        if (text >= 0.0) {
+            textField.setBackground(lightGreen);
+            textField.setText(String.valueOf(text) + "% ");
+        } else {
+            textField.setBackground(lightRed);
+            textField.setText(String.valueOf(text) + "% ");
+        }
+    }
 
-		textField.setText(format.format(val));
-	}
+    public void colorForge(JTextField textField, int val, DecimalFormat format) {
+        if (val >= 0) {
+            textField.setForeground(Themes.GREEN);
+        } else {
+            textField.setForeground(Themes.RED);
+        }
 
-	// pars double function();
-	public double dbl(String string) {
-		return Double.parseDouble(string);
-	}
+        textField.setText(format.format(val));
+    }
 
-	// floor function();
-	public double floor(double d, int zeros) {
-		return Math.floor(d * zeros) / zeros;
-	}
+    // pars double function();
+    public double dbl(String string) {
+        return Double.parseDouble(string);
+    }
 
-	// To string
-	public String str(Object o) {
-		return String.valueOf(o);
-	}
+    // floor function();
+    public double floor(double d, int zeros) {
+        return Math.floor(d * zeros) / zeros;
+    }
 
-	@Override
-	public void initRunnable() {
-		setRunnable(this);
-	}
+    // To string
+    public String str(Object o) {
+        return String.valueOf(o);
+    }
+
+    @Override
+    public void initRunnable() {
+        setRunnable(this);
+    }
 }

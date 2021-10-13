@@ -125,7 +125,7 @@ public class OptionsTable extends MyGuiComps.MyTable {
                     setValueAt(call.getOpen_pos(), i, call_open_pos_col);
                     setValueAt(call.getPricing(), i, call_pricing_col);
                     setValueAt(call.getDelta(), i, call_delta_col);
-                    setValueAt(put.getDelta(), i, put_delta_col);
+                    setValueAt(put.getDelta() * -1, i, put_delta_col);
                     setValueAt(put.getOpen_pos(), i, put_open_pos_col);
                     setValueAt(put.getPricing(), i, put_pricing_col);
                 } catch (Exception e) {

@@ -137,24 +137,9 @@ public class ApiObject implements IJsonData {
 
 	public void start() {
 		setStarted(true);
-
-		if (Manifest.OPEN_CHART) {
-			openCharts();
-		}
 	}
 
-	public void openCharts() {
-		try {
-			MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
-			mainMonthWeekChart.createChart();
 
-			// Full charts
-			FullCharts2 fullCharts = new FullCharts2(apiObject);
-			fullCharts.createChart();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private void setStarted(boolean bool) {
 		this.started = bool;

@@ -37,7 +37,7 @@ public class DataBaseService extends MyBaseService {
 
     @Override
     public void go() {
-        if (Manifest.DB) {
+        if (Manifest.DB_UPLOAD) {
             //	 Day
             append_changed_data_to_lists();
         }
@@ -153,10 +153,18 @@ public class DataBaseService extends MyBaseService {
             try {
                 int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 5));
                 int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 6));
+                double op_avg_week_30 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE, 30));
+                double op_avg_month_30 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE, 30));
 
                 // V5 V6
                 apiObject.setV5(v5);
                 apiObject.setV6(v6);
+
+                // Op avg
+                apiObject.getExpWeek().setOp_avg_30(op_avg_week_30);
+                apiObject.getExpMonth().setOp_avg_30(op_avg_month_30);
+                apiObject.setDbLoaded(true);
+
             } catch (Exception e ) {
                 e.printStackTrace();
             }

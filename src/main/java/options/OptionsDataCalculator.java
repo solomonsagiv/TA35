@@ -12,6 +12,7 @@ public class OptionsDataCalculator extends MyBaseService {
     Options optionsWeek;
 
     public OptionsDataCalculator() {
+        super();
         apiObject = ApiObject.getInstance();
         optionsMonth = apiObject.getExpMonth().getOptions();
         optionsWeek = apiObject.getExpWeek().getOptions();
