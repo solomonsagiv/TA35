@@ -4,6 +4,8 @@ import api.ApiObject;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
+import locals.L;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -29,17 +31,17 @@ public class DataBaseHandler {
         double exp_month_delta = Queries.handle_rs(get_exp_data(Factories.Tables.SAGIV_DELTA_MONTH_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
         double ind_delta_week = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
         double ind_delta_month = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
-        double baskets_exp_week = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
-        double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
+        double baskets_exp_week = L.abs(Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_WEEK, SUM_RESULT_TYPE)));
+        double baskets_exp_month = L.abs(Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_MONTH, SUM_RESULT_TYPE)));
         double start_exp_week = Queries.handle_rs(Queries.get_start_exp(EXP_WEEK));
         double start_exp_month = Queries.handle_rs(Queries.get_start_exp(EXP_MONTH));
         double week_delta = Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.SAGIV_DELTA_WEEK_TABLE));
         double month_delta = Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.SAGIV_DELTA_MONTH_TABLE));
         int bid_ask_counter_week = (int) Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE));
         int bid_ask_counter_month = (int) Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE));
-        int baskets_up = (int) Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE));
-        int baskets_down = (int) Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE));
-        
+        int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE)));
+        int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE)));
+
         apiObject.getExpWeek().getExpData().setStart(start_exp_week);
         apiObject.getExpMonth().getExpData().setStart(start_exp_month);
         apiObject.getExpWeek().getExpData().setDelta(exp_week_delta);

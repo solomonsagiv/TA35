@@ -5,7 +5,6 @@ import java.util.Random;
 
 public class Themes {
 
-
 	// Colors 
 	public static Color BINANCE_ORANGE = new Color(255, 204, 0);
     public static Color BINANCE_ORANGE_2 = new Color(241, 206, 125);
@@ -24,8 +23,6 @@ public class Themes {
 	public static Color BLUE2 = new Color(66, 135, 245);
     public static Color BLUE4 = new Color(136, 166, 232);
 	public static Color BLUE3 = new Color(32, 92, 189);
-
-	
 	public static Color LIGHT_BLUE = new Color(176, 196, 222);
 	public static Color GREEN = new Color(0, 128, 0);
     public static Color GREEN_5 = new Color(2, 103, 2);
@@ -38,9 +35,9 @@ public class Themes {
 	public static Color RED_2 = new Color(171, 56, 75);
 
 	// Fonts
-	public static Font ARIEL_15 = new Font("Ariel", Font.BOLD, 15);
+	public static Font ARIEL_15 = new Font("Lucida Sans", Font.BOLD, 15);
 	public static Font ARIEL_BOLD_15 = new Font("Ariel", Font.BOLD, 15);
-	
+
 	 // Colors
     public static Color ORANGE = new Color(219, 158, 47);
     public static Color LIGHT_BLUE_2 = new Color( 0, 237, 255 );

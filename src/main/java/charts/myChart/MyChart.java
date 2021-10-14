@@ -3,6 +3,7 @@ package charts.myChart;
 
 import api.ApiObject;
 import charts.MyChartPanel;
+import charts.charts.FullCharts2;
 import dataBase.DataBaseHandler;
 import locals.L;
 import locals.Themes;
@@ -11,6 +12,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -32,6 +34,12 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 
 public class MyChart {
+
+
+    public static void main(String[] args) {
+        FullCharts2 fullCharts2 = new FullCharts2(ApiObject.getInstance());
+        fullCharts2.createChart();
+    }
 
     public XYPlot plot;
     public ChartUpdater updater;
@@ -92,10 +100,10 @@ public class MyChart {
         plot.setRangeGridlinesVisible(props.getBool(ChartPropsEnum.IS_RANGE_GRID_VISIBLE));
         plot.setDomainGridlinesVisible(props.getBool(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE));
         plot.setRangeGridlinePaint(Color.BLACK);
-        plot.setDomainGridlinePaint(Color.BLACK);
+        plot.setDomainGridlinePaint(Themes.LIGHT_BLUE);
         plot.setRangeAxisLocation(AxisLocation.BOTTOM_OR_RIGHT);
         plot.getDomainAxis().setVisible(props.getBool(ChartPropsEnum.INCLUDE_DOMAIN_AXIS));
-        plot.setAxisOffset(new RectangleInsets(5.0, 5.0, 5.0, 5.0));
+        plot.setAxisOffset(new RectangleInsets(0.0, 0.0, 0.0, 0.0));
         plot.setDomainPannable(false);
         plot.setRangePannable(false);
         plot.getRangeAxis().setAutoRange(true);
@@ -105,7 +113,7 @@ public class MyChart {
 
     private void number_axis() {
         NumberAxis numberAxis = (NumberAxis) plot.getRangeAxis();
-        DecimalFormat df = new DecimalFormat("#00000.00");
+        DecimalFormat df = new DecimalFormat("#00000.0");
         df.setNegativePrefix("-");
         numberAxis.setNumberFormatOverride(df);
     }

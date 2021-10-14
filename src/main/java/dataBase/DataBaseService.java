@@ -37,13 +37,14 @@ public class DataBaseService extends MyBaseService {
 
     @Override
     public void go() {
-        if (Manifest.DB_UPLOAD) {
+        if (Manifest.DB_UPLOAD && BackGroundRunner.streamMarketBool) {
             //	 Day
             append_changed_data_to_lists();
         }
     }
 
     private void append_changed_data_to_lists() {
+
 
         double delta_week = apiObject.getExpWeek().getOptions().getTotal_delta();
         double delta_month = apiObject.getExpMonth().getOptions().getTotal_delta();
@@ -104,10 +105,7 @@ public class DataBaseService extends MyBaseService {
         // Op avg week
         if (sleepCount % 1000 == 0) {
             Instant instant = Instant.now();
-
-            if (BackGroundRunner.streamMarketBool) {
-                index_timestamp.add(new MyTimeStampObject(instant, index));
-            }
+            index_timestamp.add(new MyTimeStampObject(instant, index));
             fut_week_timestamp.add(new MyTimeStampObject(instant, fut_week));
             fut_month_timestamp.add(new MyTimeStampObject(instant, fut_month));
         }
@@ -154,7 +152,7 @@ public class DataBaseService extends MyBaseService {
                 int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 5));
                 int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 6));
                 double op_avg_week_30 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE, 30));
-                double op_avg_month_30 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE, 30));
+                double op_avg_month_30 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE, 30));
 
                 // V5 V6
                 apiObject.setV5(v5);
@@ -165,7 +163,7 @@ public class DataBaseService extends MyBaseService {
                 apiObject.getExpMonth().setOp_avg_30(op_avg_month_30);
                 apiObject.setDbLoaded(true);
 
-            } catch (Exception e ) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }).start();
@@ -180,7 +178,7 @@ public class DataBaseService extends MyBaseService {
     public int getSleep() {
         return 1000;
     }
-    
+
     void insert_data_retro(ArrayList<MyTimeStampObject> list, String table_location) {
         try {
             if (list.size() > 0) {

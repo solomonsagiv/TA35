@@ -85,7 +85,7 @@ public class ChartFilterWindow extends MyGuiComps.MyFrame {
         titleLbl.setFont(Themes.ARIEL_BOLD_15);
         mainPanel.add(titleLbl);
     }
-
+    
     private class CheckBoxSeries extends JCheckBox {
 
         MyTimeSeries serie;
