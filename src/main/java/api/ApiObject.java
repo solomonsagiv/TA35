@@ -7,6 +7,7 @@ import dataBase.DataBaseHandler;
 import exp.Exp;
 import exp.ExpMonth;
 import exp.ExpWeek;
+import exp.Exps;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -27,7 +28,7 @@ public class ApiObject implements IJsonData {
 	private boolean dbLoaded = false;
 	private double rando = 0;
 
-	private ArrayList<Exp> exp_list = new ArrayList<>();
+	private Exps exps;
 
 	private MyServiceHandler serviceHandler;
 
@@ -54,8 +55,6 @@ public class ApiObject implements IJsonData {
 	private double index_bid = 0;
 	private double index_ask = 0;
 
-	private ExpWeek expWeek;
-	private ExpMonth expMonth;
 	private double equalLiveMove = 0;
 	private double equalMove = 0;
 
@@ -93,10 +92,7 @@ public class ApiObject implements IJsonData {
 
 	// Private constructor
 	private ApiObject() {
-		expWeek = new ExpWeek(this, DataBaseHandler.EXP_WEEK);
-		expMonth = new ExpMonth(this, DataBaseHandler.EXP_MONTH);
-		exp_list.add(expWeek);
-		exp_list.add(expMonth);
+		this.exps = new Exps(this);
 		stocksHandler = new StocksHandler();
 		this.name = "ta35";
 	}
@@ -395,14 +391,6 @@ public class ApiObject implements IJsonData {
 		this.indexBidAskCounterList = indexBidAskCounterList;
 	}
 
-	public ExpWeek getExpWeek() {
-		return expWeek;
-	}
-
-	public ExpMonth getExpMonth() {
-		return expMonth;
-	}
-
 	public boolean isDbLoaded() {
 		return dbLoaded;
 	}
@@ -522,8 +510,8 @@ public class ApiObject implements IJsonData {
 		this.v6 = v6;
 	}
 
-	public ArrayList<Exp> getExp_list() {
-		return exp_list;
+	public Exps getExps() {
+		return exps;
 	}
 
 	@Override
@@ -543,8 +531,8 @@ public class ApiObject implements IJsonData {
 		json.put(JsonStrings.v5, apiObject.getV5());
 		json.put(JsonStrings.v6, apiObject.getV6());
 		json.put(JsonStrings.stocks, apiObject.getStocksHandler().getAsJson());
-		json.put(JsonStrings.expWeek, getExpWeek().getAsJson());
-		json.put(JsonStrings.expMonth, getExpMonth().getAsJson());
+		json.put(JsonStrings.expWeek, exps.getWeek().getAsJson());
+		json.put(JsonStrings.expMonth, exps.getMonth().getAsJson());
 		return json;
 	}
 
@@ -558,15 +546,15 @@ public class ApiObject implements IJsonData {
 		apiObject.setBasketDown(json.getInt(JsonStrings.basketDown));
 		apiObject.getStocksHandler().loadFromJson(new MyJson(json.getJSONObject(JsonStrings.stocks)));
 		apiObject.setIndBidAskCounter(json.getInt(JsonStrings.indBidAskCounter));
-		apiObject.getExpWeek().loadFromJson(new MyJson(json.getJSONObject(JsonStrings.expWeek)));
-		apiObject.getExpMonth().loadFromJson(new MyJson(json.getJSONObject(JsonStrings.expMonth)));
+		apiObject.exps.getWeek().loadFromJson(new MyJson(json.getJSONObject(JsonStrings.expWeek)));
+		apiObject.exps.getMonth().loadFromJson(new MyJson(json.getJSONObject(JsonStrings.expMonth)));
 	}
 
 	@Override
 	public MyJson getResetJson() {
 		MyJson json = new MyJson();
-		json.put(JsonStrings.expWeek, getExpWeek().getResetJson());
-		json.put(JsonStrings.expMonth, getExpMonth().getResetJson());
+		json.put(JsonStrings.expWeek, exps.getWeek().getResetJson());
+		json.put(JsonStrings.expMonth, exps.getMonth().getResetJson());
 		return json;
 	}
 

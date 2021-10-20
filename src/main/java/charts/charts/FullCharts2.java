@@ -56,9 +56,15 @@ public class FullCharts2 extends MyChartCreator {
 		delta_month_serie.setColor(Themes.GREEN_5);
 		delta_month_serie.setStokeSize(1.2f);
 
-		series = new MyTimeSeries[2];
+		// Delta mix
+		MyTimeSeries delta_mixserie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MIX_SERIE);
+		delta_mixserie.setColor(Themes.LIGHT_BLUE_3);
+		delta_mixserie.setStokeSize(1.2f);
+
+		series = new MyTimeSeries[3];
 		series[0] = delta_week_serie;
 		series[1] = delta_month_serie;
+		series[2] = delta_mixserie;
 
 		// Chart
 		MyChart deltaChart = new MyChart(series, props);

@@ -20,19 +20,27 @@ public class DataBaseService extends MyBaseService {
     double delta_month_0 = 0;
     double ind_delta_0 = 0;
     double baskets_0 = 0;
+    double delta_mix_0 = 0;
 
     ArrayList<MyTimeStampObject> bid_ask_counter_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> bid_ask_counter_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> delta_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> delta_month_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> delta_mix_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> ind_delta_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> index_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
 
+
+    ExpWeek week;
+    ExpMonth month;
+
     public DataBaseService() {
         super();
+        week = apiObject.getExpWeek();
+        month = apiObject.getExpMonth();
     }
 
     @Override
@@ -45,15 +53,15 @@ public class DataBaseService extends MyBaseService {
 
     private void append_changed_data_to_lists() {
 
-
-        double delta_week = apiObject.getExpWeek().getOptions().getTotal_delta();
-        double delta_month = apiObject.getExpMonth().getOptions().getTotal_delta();
-        double bid_ask_counter_week = apiObject.getExpWeek().getOptions().getConBidAskCounter();
-        double bid_ask_counter_month = apiObject.getExpMonth().getOptions().getConBidAskCounter();
+        double delta_week = week.getOptions().getTotal_delta();
+        double delta_month = month.getOptions().getTotal_delta();
+        double delta_mix = month.getOptions().getTotal_delta() + week.getOptions().getTotal_delta();
+        double bid_ask_counter_week = week.getOptions().getConBidAskCounter();
+        double bid_ask_counter_month = month.getOptions().getConBidAskCounter();
         double ind_delta = apiObject.getStocksHandler().getDelta();
         double index = apiObject.getIndex();
-        double fut_week = apiObject.getExpWeek().getOptions().getContract();
-        double fut_month = apiObject.getExpMonth().getOptions().getContract();
+        double fut_week = week.getOptions().getContract();
+        double fut_month = month.getOptions().getContract();
         double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
 
         // Delta week
@@ -72,6 +80,15 @@ public class DataBaseService extends MyBaseService {
                 delta_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
             }
             delta_month_0 = delta_month;
+        }
+
+        // Delta mix
+        change = delta_mix - delta_mix_0;
+        if (change != 0) {
+            if (change < 10000 && change > -10000) {
+                delta_mix_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+            }
+            delta_mix_0 = delta_mix;
         }
 
         // Bid ask counter week
@@ -143,6 +160,7 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
             insert_data_retro(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
             insert_data_retro(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
+            insert_data_retro(index_timestamp, Factories.Tables.DELTA_MIX_TABLE);
         }).start();
     }
 
@@ -162,7 +180,6 @@ public class DataBaseService extends MyBaseService {
                 apiObject.getExpWeek().setOp_avg_30(op_avg_week_30);
                 apiObject.getExpMonth().setOp_avg_30(op_avg_month_30);
                 apiObject.setDbLoaded(true);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

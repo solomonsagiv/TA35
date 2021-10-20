@@ -39,7 +39,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpWeek().getOptions().getTotal_delta();
+                        return apiObject.getExps().getWeek().getOptions().getTotal_delta();
                     }
 
                     @Override
@@ -57,7 +57,26 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpMonth().getOptions().getTotal_delta();
+                        return apiObject.getExps().getMonth().getOptions().getTotal_delta();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.SAGIV_DELTA_MONTH_TABLE);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.DELTA_MIX_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.DELTA_MIX_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().;
                     }
 
                     @Override
@@ -75,14 +94,30 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpWeek().getDelta_avg();
+                        return apiObject.getExps().getWeek().getDelta_avg();
                     }
 
                     @Override
                     public void load() {
                     }
                 };
+            case Factories.TimeSeries.DELTA_WEEK_MONTH_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.DELTA_WEEK_MONTH_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
 
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().get_delta();
+                    }
+                    
+                    @Override
+                    public void load() {
+
+                    }
+                };
             case Factories.TimeSeries.DELTA_WEEK_AVG_60_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_WEEK_AVG_60_SERIE) {
                     @Override
@@ -92,7 +127,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpWeek().getDelta_avg_60();
+                        return apiObject.getExps().getWeek().getDelta_avg_60();
                     }
 
                     @Override
@@ -109,7 +144,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpWeek().getOp_avg();
+                        return apiObject.getExps().getWeek().getOp_avg();
                     }
 
                     @Override
@@ -127,7 +162,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpWeek().getOp_avg_60();
+                        return apiObject.getExps().getWeek().getOp_avg_60();
                     }
 
                     @Override
@@ -146,7 +181,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpMonth().getDelta_avg();
+                        return apiObject.getExps().getMonth().getDelta_avg();
                     }
 
                     @Override
@@ -163,7 +198,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpMonth().getDelta_avg_60();
+                        return apiObject.getExps().getMonth().getDelta_avg_60();
                     }
 
                     @Override
@@ -180,7 +215,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpMonth().getOp_avg_30();
+                        return apiObject.getExps().getMonth().getOp_avg_30();
                     }
 
                     @Override
@@ -199,7 +234,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpWeek().getOp_avg_30();
+                        return apiObject.getExps().getWeek().getOp_avg_30();
                     }
 
                     @Override
@@ -218,7 +253,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpMonth().getOp_avg();
+                        return apiObject.getExps().getMonth().getOp_avg();
                     }
 
                     @Override
@@ -237,7 +272,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpMonth().getOp_avg_60();
+                        return apiObject.getExps().getMonth().getOp_avg_60();
                     }
 
                     @Override
@@ -256,7 +291,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpWeek().getOptions().getConBidAskCounter();
+                        return apiObject.getExps().getWeek().getOptions().getConBidAskCounter();
                     }
 
                     @Override
@@ -275,7 +310,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpMonth().getOptions().getConBidAskCounter();
+                        return apiObject.getExps().getMonth().getOptions().getConBidAskCounter();
                     }
 
                     @Override
@@ -294,7 +329,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpWeek().getBid_ask_counter_avg_60();
+                        return apiObject.getExps().getWeek().getBid_ask_counter_avg_60();
                     }
 
                     @Override
@@ -313,7 +348,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExpMonth().getBid_ask_counter_avg_60();
+                        return apiObject.getExps().getMonth().getBid_ask_counter_avg_60();
                     }
 
                     @Override

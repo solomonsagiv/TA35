@@ -68,15 +68,15 @@ public class DataBaseHandler {
         // Serie
         if (result_type == SERIE_RESULT_TYPE) {
             q = "select * " +
-                    "from %s where time::date > (select date from %s where exp_type = '%s');";
+                    "from %s where time::date >= (select date from %s where exp_type = '%s');";
         } else if (result_type == SUM_RESULT_TYPE) {
             // Sum
             q = "select sum(value) as value " +
-                    "from %s where time::date > (select date from %s where exp_type = '%s');";
+                    "from %s where time::date >= (select date from %s where exp_type = '%s');";
         } else if (result_type == AVG_RESULT_TYPE) {
             q =  // Sum
                     q = "select avg(value) as value " +
-                            "from %s where time::date > (select date from %s where exp_type = '%s');";
+                            "from %s where time::date >= (select date from %s where exp_type = '%s');";
         }
 
         String query = String.format(q, target_table_location, Factories.Tables.EXPS_TABLE, exp.toUpperCase());

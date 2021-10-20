@@ -15,6 +15,7 @@ public class Factories {
         public static final String SAGIV_FUT_MONTH_TABLE = "sagiv.ta35_future_month";
         public static final String RESEARCH_TABLE = "data.ta35_decision_func";
         public static final String SAGIV_OPTIONS_STATUS_TABLE = "sagiv.ta35_options_status";
+        public static final String DELTA_MIX_TABLE = "data.ta35_delta_mix";
     }
 
     public static class TimeSeries {
@@ -35,6 +36,8 @@ public class Factories {
         public static final String BID_ASK_COUNTER_MONTH_SERIE = "BID_ASK_COUNTER_MONTH";
         public static final String BID_ASK_COUNTER_WEEK_AVG_60_SERIE = "BID_ASK_COUNTER_WEEK_AVG_60";
         public static final String BID_ASK_COUNTER_MONTH_AVG_60_SERIE = "BID_ASK_COUNTER_MONTH_AVG_60";
+        public static final String DELTA_WEEK_MONTH_SERIE = "DELTA_WEEK_MONTH";
+        public static final String DELTA_MIX_SERIE = "DELTA_MIX";
     }
 
 }
