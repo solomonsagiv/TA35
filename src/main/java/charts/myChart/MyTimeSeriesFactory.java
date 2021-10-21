@@ -76,12 +76,12 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExps().;
+                        return apiObject.getExps().get_delta();
                     }
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.SAGIV_DELTA_MONTH_TABLE);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.DELTA_MIX_TABLE);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };

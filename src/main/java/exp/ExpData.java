@@ -19,7 +19,7 @@ public class ExpData implements IJsonData {
 		this.apiObject = apiObject;
 		this.exp = exp;
 	}
-	
+
 	public void setStart(double start) {
 		this.start = start;
 	}
@@ -31,7 +31,7 @@ public class ExpData implements IJsonData {
 	public void setBaskets(int baskets) {
 		this.baskets = baskets;
 	}
-	
+
 	public void setDelta(double delta) {
 		this.delta = delta;
 	}

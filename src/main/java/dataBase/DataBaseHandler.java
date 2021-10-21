@@ -4,6 +4,8 @@ import api.ApiObject;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
+import exp.ExpMonth;
+import exp.ExpWeek;
 import locals.L;
 
 import java.sql.ResultSet;
@@ -15,10 +17,8 @@ public class DataBaseHandler {
     public static final int SERIE_RESULT_TYPE = 0;
     public static final int SUM_RESULT_TYPE = 1;
     public static final int AVG_RESULT_TYPE = 2;
-
     public static final String EXP_WEEK = "WEEK";
     public static final String EXP_MONTH = "MONTH";
-
     public static final String x = "x";
     public static final String y = "y";
     public static final String width = "width";
@@ -42,20 +42,23 @@ public class DataBaseHandler {
         int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE)));
         int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE)));
 
-        apiObject.getExpWeek().getExpData().setStart(start_exp_week);
-        apiObject.getExpMonth().getExpData().setStart(start_exp_month);
-        apiObject.getExpWeek().getExpData().setDelta(exp_week_delta);
-        apiObject.getExpMonth().getExpData().setDelta(exp_month_delta);
-        apiObject.getExpWeek().getExpData().setIndDelta(ind_delta_week);
-        apiObject.getExpMonth().getExpData().setIndDelta(ind_delta_month);
-        apiObject.getExpWeek().getExpData().setBaskets((int) baskets_exp_week);
-        apiObject.getExpMonth().getExpData().setBaskets((int) baskets_exp_month);
-        apiObject.getExpWeek().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE)));
-        apiObject.getExpMonth().getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE)));
-        apiObject.getExpWeek().getOptions().setDelta_from_fix(week_delta);
-        apiObject.getExpMonth().getOptions().setDelta_from_fix(month_delta);
-        apiObject.getExpWeek().getOptions().setConBidAskCounter(bid_ask_counter_week);
-        apiObject.getExpMonth().getOptions().setConBidAskCounter(bid_ask_counter_month);
+        ExpWeek week = apiObject.getExps().getWeek();
+        ExpMonth month = apiObject.getExps().getMonth();
+
+        week.getExpData().setStart(start_exp_week);
+        month.getExpData().setStart(start_exp_month);
+        week.getExpData().setDelta(exp_week_delta);
+        month.getExpData().setDelta(exp_month_delta);
+        week.getExpData().setIndDelta(ind_delta_week);
+        month.getExpData().setIndDelta(ind_delta_month);
+        week.getExpData().setBaskets((int) baskets_exp_week);
+        month.getExpData().setBaskets((int) baskets_exp_month);
+        week.getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE)));
+        month.getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE)));
+        week.getOptions().setDelta_from_fix(week_delta);
+        month.getOptions().setDelta_from_fix(month_delta);
+        week.getOptions().setConBidAskCounter(bid_ask_counter_week);
+        month.getOptions().setConBidAskCounter(bid_ask_counter_month);
         apiObject.setBasketUp(baskets_up);
         apiObject.setBasketDown(baskets_down);
 
