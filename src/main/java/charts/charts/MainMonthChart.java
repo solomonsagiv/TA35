@@ -98,7 +98,7 @@ public class MainMonthChart extends MyChartCreator {
 
 			@Override
 			public double getData() {
-				return apiObject.getExpMonth().getOptions().getContract();
+				return apiObject.getExps().getMonth().getOptions().getContract();
 			}
 
 			@Override

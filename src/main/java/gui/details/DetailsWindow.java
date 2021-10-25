@@ -145,8 +145,8 @@ public class DetailsWindow {
 			text.append(JibeConnectionPool.getAsJson().toString(4));
 			
 			textArea.setText(text.toString());
-			optionsWeekArea.setText(apiObject.getExpWeek().getOptions().getOptionsWithDataAsJson().toString(4));
-			optionsMonthArea.setText(apiObject.getExpMonth().getOptions().getOptionsWithDataAsJson().toString(4));
+			optionsWeekArea.setText(apiObject.getExps().getWeek().getOptions().getOptionsWithDataAsJson().toString(4));
+			optionsMonthArea.setText(apiObject.getExps().getMonth().getOptions().getOptionsWithDataAsJson().toString(4));
 			indStocksArea.setText(apiObject.getStocksHandler().getData().toString(4));
 		}
 

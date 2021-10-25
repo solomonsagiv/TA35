@@ -36,7 +36,7 @@ public class MyBlackScholes {
 	static double[] findSTDEV(Option option) throws Exception {
 		
 		// TEST DATA -- trade 106005
-		double targetPrice = apiObject.getExpMonth().getOptions().getContract();
+		double targetPrice = apiObject.getExps().getMonth().getOptions().getContract();
 		double timeToExp = apiObject.getDaysToExp() / 365.0;
 		double stDev = 0.001;
 		double bid = option.lastBid() / 100;
@@ -86,20 +86,20 @@ public class MyBlackScholes {
 
 			String opositeName = option.getName().replace("c", "p");
 
-			return apiObject.getExpMonth().getOptions().getOption(opositeName);
+			return apiObject.getExps().getMonth().getOptions().getOption(opositeName);
 
 		} else {
 
 			String opositeName = option.getName().replace("p", "c");
 
-			return  apiObject.getExpMonth().getOptions().getOption(opositeName);
+			return  apiObject.getExps().getMonth().getOptions().getOption(opositeName);
 
 		}
 	}
 
 	static double[] getStDevByOption(Option option, double stDev) {
 
-		double targetPrice = apiObject.getExpMonth().getOptions().getContract();
+		double targetPrice = apiObject.getExps().getMonth().getOptions().getContract();
 		double interest = apiObject.getInterest();
 		double timeToExp = apiObject.getDaysToExp() / 365.0;
 

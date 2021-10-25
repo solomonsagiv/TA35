@@ -202,7 +202,7 @@ class JFreeUpdater extends Thread {
 	// Update data
 	private void updateChart() {
 
-		Options optionsMonth = apiObject.getExpMonth().getOptions();
+		Options optionsMonth = apiObject.getExps().getMonth().getOptions();
 		
 		if (optionsMonth.getContract() != 0 && apiObject.getIndex() != 0 && apiObject.getIndex_bid() != 0
 				&& apiObject.getIndex_ask() != 0) { // Add to the dots

@@ -12,7 +12,6 @@ import myJson.MyJson;
 import options.Option;
 import options.Options;
 import options.Strike;
-import org.json.JSONObject;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +32,7 @@ public class OptionsReaderService extends MyBaseService {
         this.ddeConnection = new DDEConnection(apiObject);
         this.conversation = ddeConnection.createNewConversation(excelPath);
         this.calculator = new Calculator();
-        this.exp = options_type == 0 ? apiObject.getExpWeek() : apiObject.getExpMonth();
+        this.exp = options_type == 0 ? apiObject.getExps().getWeek() : apiObject.getExps().getMonth();
         setUpOptions(exp, conversation);
         load_options_status();
         this.options = exp.getOptions();

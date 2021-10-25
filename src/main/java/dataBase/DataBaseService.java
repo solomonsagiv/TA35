@@ -39,8 +39,8 @@ public class DataBaseService extends MyBaseService {
 
     public DataBaseService() {
         super();
-        week = apiObject.getExpWeek();
-        month = apiObject.getExpMonth();
+        week = apiObject.getExps().getWeek();
+        month = apiObject.getExps().getMonth();
     }
 
     @Override
@@ -141,8 +141,8 @@ public class DataBaseService extends MyBaseService {
 
     private void update_options_status() {
         new Thread(() -> {
-            ExpWeek expWeek = apiObject.getExpWeek();
-            ExpMonth expMonth = apiObject.getExpMonth();
+            ExpWeek expWeek = apiObject.getExps().getWeek();
+            ExpMonth expMonth = apiObject.getExps().getMonth();
 
             Queries.update_options_status(expWeek.getAsJson().toString(), DataBaseHandler.EXP_MONTH);
             Queries.update_options_status(expMonth.getAsJson().toString(), DataBaseHandler.EXP_WEEK);
@@ -177,8 +177,8 @@ public class DataBaseService extends MyBaseService {
                 apiObject.setV6(v6);
 
                 // Op avg
-                apiObject.getExpWeek().setOp_avg_30(op_avg_week_30);
-                apiObject.getExpMonth().setOp_avg_30(op_avg_month_30);
+                apiObject.getExps().getWeek().setOp_avg_30(op_avg_week_30);
+                apiObject.getExps().getMonth().setOp_avg_30(op_avg_month_30);
                 apiObject.setDbLoaded(true);
             } catch (Exception e) {
                 e.printStackTrace();

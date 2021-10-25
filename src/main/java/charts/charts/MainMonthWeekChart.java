@@ -99,7 +99,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 
 			@Override
 			public double getData() {
-				return apiObject.getExpMonth().getOptions().getContract();
+				return apiObject.getExps().getMonth().getOptions().getContract();
 			}
 
 			@Override
@@ -119,7 +119,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 
 			@Override
 			public double getData() {
-				return apiObject.getExpWeek().getOptions().getContract();
+				return apiObject.getExps().getWeek().getOptions().getContract();
 			}
 
 			@Override

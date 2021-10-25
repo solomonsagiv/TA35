@@ -5,7 +5,6 @@ import api.Manifest;
 import arik.Arik;
 import dataBase.DataBaseHandler;
 import dataBase.DataBaseService;
-import options.Option;
 import options.Options;
 import options.OptionsDataCalculator;
 import org.json.JSONArray;
@@ -14,6 +13,7 @@ import service.DataReaderService;
 import service.IndDeltaService;
 import service.OptionsReaderService;
 import threads.MyThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -103,7 +103,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
                         // Auto start
                         if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
-                            apiObject.setFutureOpen(apiObject.getExpMonth().getOptions().getContract());
+                            apiObject.setFutureOpen(apiObject.getExps().getMonth().getOptions().getContract());
                             pre_open_services();
                             open_services();
 

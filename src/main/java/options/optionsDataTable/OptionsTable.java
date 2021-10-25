@@ -115,7 +115,7 @@ public class OptionsTable extends MyGuiComps.MyTable {
                     String strike_name = L.str(getValueAt(i, strike_col));
                     symbol = strike_name.substring(0, 1);
                     strike_price = L.INT(strike_name.substring(1));
-                    exp = symbol.equals(Exp.WEEK_SYMBOL) ? apiObject.getExpWeek() : apiObject.getExpMonth();
+                    exp = symbol.equals(Exp.WEEK_SYMBOL) ? apiObject.getExps().getWeek() : apiObject.getExps().getMonth();
                     strike = exp.getOptions().getStrike(strike_price);
 
                     Option call = strike.getCall();

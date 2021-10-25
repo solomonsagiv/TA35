@@ -488,7 +488,7 @@ class BookUpdater extends Thread {
 	// Update the book window with the data
 	private void update_window() {
 
-		Option option = apiObject.getExpMonth().getOptions().getOption(optionName);
+		Option option = apiObject.getExps().getMonth().getOptions().getOption(optionName);
 
 		if (!last.getText().isEmpty()) {
 			int text_last = Integer.parseInt(last.getText());

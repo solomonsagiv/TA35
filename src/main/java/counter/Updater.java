@@ -60,8 +60,8 @@ public class Updater extends MyThread implements Runnable {
     // Write the data to the window
     private void write() throws InterruptedException {
 
-        Exp expMonth = apiObject.getExpMonth();
-        Exp expWeek = apiObject.getExpWeek();
+        Exp expMonth = apiObject.getExps().getMonth();
+        Exp expWeek = apiObject.getExps().getWeek();
         Options optionsMonth = expMonth.getOptions();
         Options optionsWeek = expWeek.getOptions();
 
@@ -133,7 +133,7 @@ public class Updater extends MyThread implements Runnable {
     }
 
     private double avg() {
-        efresh = apiObject.getExpMonth().getOptions().getContract() - apiObject.getIndex();
+        efresh = apiObject.getExps().getMonth().getOptions().getContract() - apiObject.getIndex();
         avg_day.add(efresh);
         double f = 0;
         for (int i = 0; i < avg_day.size(); i++) {

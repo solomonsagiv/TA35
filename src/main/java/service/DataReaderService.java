@@ -40,8 +40,8 @@ public class DataReaderService extends MyBaseService {
 
             if (apiObject.getStatus() != "preopen") {
 
-                Options optionsWeek = apiObject.getExpWeek().getOptions();
-                Options optionsMonth = apiObject.getExpMonth().getOptions();
+                Options optionsWeek = apiObject.getExps().getWeek().getOptions();
+                Options optionsMonth = apiObject.getExps().getMonth().getOptions();
 
                 apiObject.setDaysToExp(L.dbl(conversation.request(daysToExpCell)));
                 optionsMonth.setContract(L.dbl(conversation.request(futureCell)));

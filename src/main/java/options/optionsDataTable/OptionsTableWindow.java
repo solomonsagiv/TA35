@@ -84,7 +84,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     }
 
     private Object[][] get_data_table() {
-        int size = apiObject.getExp_list().size();
+        int size = apiObject.getExps().getExps_list().size();
         int rows = strikes_size * size;
 
         Object[][] data = new Object[rows][7];
@@ -106,7 +106,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
         int row = 0;
 
-        for (Exp exp : apiObject.getExp_list()) {
+        for (Exp exp : apiObject.getExps().getExps_list()) {
             int start_strike = L.INT(start_strike_field.getText());
             int end_strike = start_strike + strikes_size * 10;
 

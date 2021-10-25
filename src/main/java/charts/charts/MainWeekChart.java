@@ -98,7 +98,7 @@ public class MainWeekChart extends MyChartCreator {
 
             @Override
             public double getData() {
-                return apiObject.getExpWeek().getOptions().getContract();
+                return apiObject.getExps().getWeek().getOptions().getContract();
             }
 
             @Override

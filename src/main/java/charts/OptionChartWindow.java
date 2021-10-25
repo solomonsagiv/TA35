@@ -1,31 +1,9 @@
 package charts;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.logging.Logger;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.plaf.ColorUIResource;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartMouseEvent;
-import org.jfree.chart.ChartMouseListener;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
+import api.ApiObject;
+import logger.MyLogger;
+import options.Option;
+import org.jfree.chart.*;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
@@ -39,9 +17,13 @@ import org.jfree.ui.Layer;
 import org.jfree.ui.RectangleInsets;
 import org.jsoup.select.Elements;
 
-import api.ApiObject;
-import logger.MyLogger;
-import options.Option;
+import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
+import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.logging.Logger;
 
 public class OptionChartWindow extends JFrame {
 
@@ -278,7 +260,7 @@ class OptionChartUpdater extends Thread {
 	// Get the data from the api
 	private void getDataFromApi() {
 		try {
-			Option option = apiObject.getExpMonth().getOptions().getOption(option_name);
+			Option option = apiObject.getExps().getMonth().getOptions().getOption(option_name);
 			last = option.getLast();
 		} catch (Exception e) {
 			logger.info(e.getCause().toString());
@@ -289,7 +271,7 @@ class OptionChartUpdater extends Thread {
 	// Reload history lists
 	public void reloadData() {
 		
-		ArrayList<Integer> list = apiObject.getExpMonth().getOptions().getOption(option_name).getLastList();
+		ArrayList<Integer> list = apiObject.getExps().getMonth().getOptions().getOption(option_name).getLastList();
 		if (list != null) {
 			x = list.size() + 1;
 			for (int i = 0; i < list.size(); i++) {

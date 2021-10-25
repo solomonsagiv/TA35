@@ -93,8 +93,8 @@ public class Setting {
 
 	private void initialize() {
 		
-		expWeek = apiObject.getExpWeek();
-		expMonth = apiObject.getExpMonth();
+		expWeek = apiObject.getExps().getWeek();
+		expMonth = apiObject.getExps().getMonth();
 		
 		optionsWeek = expWeek.getOptions();
 		optionsMonth = expMonth.getOptions();
