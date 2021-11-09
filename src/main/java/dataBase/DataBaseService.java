@@ -33,7 +33,6 @@ public class DataBaseService extends MyBaseService {
     ArrayList<MyTimeStampObject> fut_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
 
-
     ExpWeek week;
     ExpMonth month;
 
