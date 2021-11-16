@@ -8,7 +8,6 @@ import myJson.MyJson;
 import org.json.JSONObject;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
-
 import java.util.ArrayList;
 
 public class ApiObject implements IJsonData {
@@ -32,6 +31,8 @@ public class ApiObject implements IJsonData {
 
     private int v5 = 0;
     private int v6 = 0;
+    private int pre_v5 = 0;
+    private int pre_v6 = 0;
 
     private double bid_ask_counter_avg_60 = 0;
     private double bid_ask_counter_avg = 0;
@@ -439,6 +440,22 @@ public class ApiObject implements IJsonData {
         return serviceHandler;
     }
 
+    public int getPre_v5() {
+        return pre_v5;
+    }
+
+    public void setPre_v5(int pre_v5) {
+        this.pre_v5 = pre_v5;
+    }
+
+    public int getPre_v6() {
+        return pre_v6;
+    }
+
+    public void setPre_v6(int pre_v6) {
+        this.pre_v6 = pre_v6;
+    }
+
     public synchronized void increasBigBidAskCounter() {
         this.bigConBidAskCounter++;
     }
@@ -491,9 +508,10 @@ public class ApiObject implements IJsonData {
         return v5;
     }
 
-    public void setV5(int v5) {
-        if (v5 != 0) {
-            this.v5 = v5;
+    public void setV5(int new_v5) {
+        if (new_v5 != 0 && this.v5 != new_v5) {
+            setPre_v5(this.v5);
+            this.v5 = new_v5;
         }
     }
 
@@ -501,9 +519,10 @@ public class ApiObject implements IJsonData {
         return v6;
     }
 
-    public void setV6(int v6) {
-        if (v6 != 0) {
-            this.v6 = v6;
+    public void setV6(int new_v6) {
+        if (new_v6 != 0 && this.v6 != new_v6) {
+            setPre_v6(this.v6);
+            this.v6 = new_v6;
         }
     }
 

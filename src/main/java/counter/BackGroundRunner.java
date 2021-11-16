@@ -2,7 +2,7 @@ package counter;
 
 import api.ApiObject;
 import api.Manifest;
-import arik.AlertsHandler;
+import arik.ArikPositionsAlerts;
 import arik.Arik;
 import dataBase.DataBaseHandler;
 import dataBase.DataBaseService;
@@ -171,7 +171,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
         new BasketService();
         new DataBaseService();
         new IndDeltaService(BackGroundRunner.excelPath);
-        new AlertsHandler();
+        new ArikPositionsAlerts();
     }
 
     private String str(Object o) {
