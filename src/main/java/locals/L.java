@@ -17,6 +17,12 @@ public class L {
 
 	public static DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 
+
+	public static void main(String[] args) {
+		double d = -105090;
+		System.out.println(L.format_int_2(d));
+	}
+
 	public static double modulu(double value) {
 		while (true) {
 			if (value % 10 == 0) {
@@ -48,6 +54,17 @@ public class L {
 		} else {
 			return 0;
 		}
+	}
+
+	public static String format_int(double val) {
+		DecimalFormat df = new DecimalFormat("#,##0;-#,##0");
+		df.setNegativePrefix("-");
+		return df.format(val);
+	}
+
+	public static String format_int_2(double val) {
+		DecimalFormat df = new DecimalFormat("#,##0;(#,##0)");
+		return df.format(val);
 	}
 
 	public static String coma(double d) {

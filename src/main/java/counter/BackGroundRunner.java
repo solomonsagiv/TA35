@@ -2,7 +2,6 @@ package counter;
 
 import api.ApiObject;
 import api.Manifest;
-import arik.ArikPositionsAlerts;
 import arik.Arik;
 import dataBase.DataBaseHandler;
 import dataBase.DataBaseService;
@@ -14,7 +13,6 @@ import service.DataReaderService;
 import service.IndDeltaService;
 import service.OptionsReaderService;
 import threads.MyThread;
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;

@@ -11,34 +11,34 @@ import java.util.HashMap;
 public class Queries {
 
     public static ResultSet get_serie(String table_location) {
-        String q = "SELECT * FROM %s where time::date = now()::date ORDER BY time;";
+        String q = "SELECT * FROM %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
 
     public static ResultSet get_serie(String table_location, String filter) {
-        String q = "SELECT * FROM %s where time::date = now()::date and %s ORDER BY time;";
+        String q = "SELECT * FROM %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) and %s ORDER BY time;";
         String query = String.format(q, table_location, filter);
         return MySql.select(query);
     }
 
     public static ResultSet get_serie_cumulative_sum(String table_location) {
         String q = "select time, sum(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
-                "from %s where time::date = now()::date ORDER BY time;";
+                "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
 
     public static ResultSet get_serie_cumulative_avg(String table_location) {
         String q = "select time, avg(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
-                "from %s where time::date = now()::date ORDER BY time;";
+                "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
 
     public static ResultSet get_serie_cumulative_avg(String table_location, int min) {
         String q = "select time, avg(value) over (order by i.time range between '%s min' preceding and current row) as value " +
-                "from %s where time::date = now()::date ORDER BY time;";
+                "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
         String query = String.format(q, table_location, min);
         return MySql.select(query);
     }
@@ -55,7 +55,7 @@ public class Queries {
         String q = "select avg(f.value - i.value) as value " +
                 "from %s f " +
                 "inner join %s i on f.time = i.time " +
-                "where i.time::date = now()::date;";
+                "where i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
 
         String query = String.format(q, fut_table_location, Factories.Tables.SAGIV_INDEX_TABLE);
         return MySql.select(query);
@@ -65,7 +65,7 @@ public class Queries {
         String query = String.format("select i.time as time, avg(f.value - i.value) over (order by i.time range between '%s min' preceding and current row ) as value " +
                 "from %s i " +
                 "inner join %s f on i.time = f.time " +
-                "where i.time::date = now()::date;", min, index_table, fut_table);
+                "where i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);", min, index_table, fut_table);
         return MySql.select(query);
     }
 
@@ -73,14 +73,14 @@ public class Queries {
         String query = String.format("select i.time as time, avg(f.value - i.value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s i " +
                 "inner join %s f on i.time = f.time " +
-                "where i.time::date = now()::date;", index_table, fut_table);
+                "where  i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);", index_table, fut_table);
         return MySql.select(query);
     }
 
     public static ResultSet get_last_record_from_cdf(String table_location) {
         String q = "select time, sum(value) over (order by time) as value " +
                 "from %s " +
-                "where time::date = now()::date order by time desc limit 1;";
+                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) order by time desc limit 1;";
 
         String query = String.format(q, table_location);
         return MySql.select(query);
@@ -107,14 +107,14 @@ public class Queries {
 
     public static ResultSet get_serie_avg_today(String table_location) {
         String q = "select avg(value) as value " +
-                "from %s where time::date = now()::date;";
+                "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
 
     public static ResultSet get_serie_sum_today(String table_location) {
         String q = "select sum(value) as value " +
-                "from %s where time::date = now()::date;";
+                "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
@@ -132,7 +132,7 @@ public class Queries {
                 "from ( " +
                 "select time, sum(value) over (ORDER BY t.time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s t " +
-                "where time::date = now()::date " +
+                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) " +
                 ") cumu " +
                 "where time > now() - interval '%s min';";
         String query = String.format(q, table_location, min);
@@ -144,7 +144,7 @@ public class Queries {
                 "from ( " +
                 "select time, sum(value) over (ORDER BY t.time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s t " +
-                "where time::date = now()::date " +
+                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) " +
                 ") cumu";
         String query = String.format(q, table_location);
         return MySql.select(query);
@@ -158,14 +158,14 @@ public class Queries {
 
     public static ResultSet get_baskets_up_sum(String table_location) {
         String q = "select sum(value) as value " +
-                "from %s where value = 1 and time::date = now()::date;";
+                "from %s where value = 1 and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
 
     public static ResultSet get_baskets_down_sum(String table_location) {
         String q = "select sum(value) as value " +
-                "from %s where value = -1 and time::date = now()::date;";
+                "from %s where value = -1 and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
