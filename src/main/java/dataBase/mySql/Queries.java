@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 public class Queries {
 
+    public static final int START_OF_THE_DAY_MIN = 600;
+
     public static ResultSet get_serie(String table_location) {
         String q = "SELECT * FROM %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
         String query = String.format(q, table_location);
@@ -90,6 +92,16 @@ public class Queries {
         String q = "select sum(delta) as value " +
                 "from %s " +
                 "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) and session_id = %s and version = %s;";
+
+        String query = String.format(q, table_location, session, version);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_last_x_min_record_from_decision_func(String table_location, int session, int version, int min) {
+        String q = "select i.time as time, avg(f.value - i.value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
+                "from %s i " +
+                "inner join %s f on i.time = f.time " +
+                "where  i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
 
         String query = String.format(q, table_location, session, version);
         return MySql.select(query);

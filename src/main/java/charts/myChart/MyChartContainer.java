@@ -37,6 +37,9 @@ public class MyChartContainer extends JFrame {
 
     private void init() {
 
+        // Set title
+        setTitle(name);
+
         // Load bounds
         loadBounds();
 

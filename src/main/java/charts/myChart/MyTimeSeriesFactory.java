@@ -3,7 +3,7 @@ package charts.myChart;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.Queries;
-import java.net.UnknownHostException;
+
 import java.sql.ResultSet;
 
 public class MyTimeSeriesFactory {
@@ -66,6 +66,47 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
+            case Factories.TimeSeries.DF_V_4_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.DF_V_4_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        String table_location = Factories.Tables.DF_TABLE;
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 162, 4, minuts);
+                        return rs;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getV4();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 162, 4, Queries.START_OF_THE_DAY_MIN);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.DF_V_8_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.DF_V_4_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        String table_location = Factories.Tables.DF_TABLE;
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 162, 8, minuts);
+                        return rs;
+                    }
+                    
+                    @Override
+                    public double getData() {
+                        return apiObject.getV8();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 162, 8, Queries.START_OF_THE_DAY_MIN);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
 
             case Factories.TimeSeries.DELTA_MIX_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_MIX_SERIE) {
@@ -112,7 +153,7 @@ public class MyTimeSeriesFactory {
                     public double getData() {
                         return apiObject.getExps().get_delta();
                     }
-                    
+
                     @Override
                     public void load() {
 
@@ -134,7 +175,6 @@ public class MyTimeSeriesFactory {
                     public void load() {
                     }
                 };
-
             case Factories.TimeSeries.OP_AVG_WEEK_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_WEEK_AVG_60_SERIE) {
                     @Override
@@ -171,7 +211,6 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-
             case Factories.TimeSeries.DELTA_MONTH_AVG_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_MONTH_AVG_SERIE) {
                     @Override
@@ -188,7 +227,6 @@ public class MyTimeSeriesFactory {
                     public void load() {
                     }
                 };
-
             case Factories.TimeSeries.DELTA_MONTH_AVG_60_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_MONTH_AVG_60_SERIE) {
                     @Override
@@ -205,7 +243,6 @@ public class MyTimeSeriesFactory {
                     public void load() {
                     }
                 };
-
             case Factories.TimeSeries.OP_AVG_MONTH_30_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_MONTH_30_SERIE) {
                     @Override
@@ -224,7 +261,6 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-
             case Factories.TimeSeries.OP_AVG_WEEK_30_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_30_SERIE) {
                     @Override
@@ -243,7 +279,6 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-
             case Factories.TimeSeries.OP_AVG_MONTH_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_MONTH_SERIE) {
                     @Override
@@ -281,7 +316,6 @@ public class MyTimeSeriesFactory {
 //                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-
             case Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE) {
                     @Override

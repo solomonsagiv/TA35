@@ -33,6 +33,10 @@ public class ApiObject implements IJsonData {
     private int v6 = 0;
     private int pre_v5 = 0;
     private int pre_v6 = 0;
+    private int v4 = 0;
+    private int v8 = 0;
+    private int pre_v4 = 0;
+    private int pre_v8 = 0;
 
     private double bid_ask_counter_avg_60 = 0;
     private double bid_ask_counter_avg = 0;
@@ -525,6 +529,45 @@ public class ApiObject implements IJsonData {
             this.v6 = new_v6;
         }
     }
+
+    public int getPre_v4() {
+        return pre_v4;
+    }
+
+    public void setPre_v4(int pre_v4) {
+        this.pre_v4 = pre_v4;
+    }
+
+    public int getPre_v8() {
+        return pre_v8;
+    }
+
+    public void setPre_v8(int pre_v8) {
+        this.pre_v8 = pre_v8;
+    }
+
+    public int getV4() {
+        return v4;
+    }
+
+    public void setV4(int new_v4) {
+        if (new_v4 != 0 && this.v4 != new_v4) {
+            setPre_v4(this.v4);
+            this.v4 = new_v4;
+        }
+    }
+
+    public int getV8() {
+        return v8;
+    }
+
+    public void setV8(int new_v8) {
+        if (new_v8 != 0 && this.v8 != new_v8) {
+            setPre_v8(this.v8);
+            this.v8 = new_v8;
+        }
+    }
+
 
     public Exps getExps() {
         return exps;
