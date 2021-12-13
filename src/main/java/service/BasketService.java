@@ -42,6 +42,7 @@ public class BasketService extends MyBaseService {
             // Up
             if (index_to_ask_margin < index_to_bid_margin) {
                 apiObject.incrementBasketUp();
+            // Down
             } else {
                 apiObject.incrementBasketDown();
             }

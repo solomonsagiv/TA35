@@ -40,7 +40,7 @@ public class DataBaseHandler {
         int bid_ask_counter_month = (int) Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE));
         int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE)));
         int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE)));
-
+        
         ExpWeek week = apiObject.getExps().getWeek();
         ExpMonth month = apiObject.getExps().getMonth();
 

@@ -71,7 +71,7 @@ public class MyTimeSeriesFactory {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         String table_location = Factories.Tables.DF_TABLE;
-                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 162, 4, minuts);
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 2, 4, minuts);
                         return rs;
                     }
 
@@ -82,7 +82,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 162, 4, Queries.START_OF_THE_DAY_MIN);
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 4, Queries.START_OF_THE_DAY_MIN);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -92,7 +92,7 @@ public class MyTimeSeriesFactory {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         String table_location = Factories.Tables.DF_TABLE;
-                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 162, 8, minuts);
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 2, 8, minuts);
                         return rs;
                     }
                     
@@ -103,7 +103,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 162, 8, Queries.START_OF_THE_DAY_MIN);
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 8, Queries.START_OF_THE_DAY_MIN);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };

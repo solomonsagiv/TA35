@@ -7,6 +7,11 @@ import locals.Themes;
 
 public class Decision_Chart extends MyChartCreator {
 
+	public static void main(String[] args) {
+		Decision_Chart decision_chart = new Decision_Chart(ApiObject.getInstance());
+		decision_chart.createChart();
+	}
+
 	// Constructor
 	public Decision_Chart(ApiObject apiObject) {
 		super(apiObject);
@@ -36,7 +41,7 @@ public class Decision_Chart extends MyChartCreator {
 		v4_serie.setColor(Themes.BLUE);
 
 
-		MyTimeSeries v8_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DF_V_4_SERIE);
+		MyTimeSeries v8_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DF_V_8_SERIE);
 		v8_serie.setStokeSize(2.25f);
 		v8_serie.setColor(Themes.GREEN_5);
 

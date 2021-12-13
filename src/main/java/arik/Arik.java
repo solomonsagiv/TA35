@@ -25,8 +25,7 @@ public class Arik {
 
     private Arik() {
         bot = TelegramBotAdapter.build("400524449:AAHFddGoUjTo2fwAyDc-ocX927fb49Oahn0");
-        load_from_db();
-
+//        load_from_db();
     }
 
     // Get instance

@@ -98,12 +98,13 @@ public class Queries {
     }
 
     public static ResultSet get_last_x_min_record_from_decision_func(String table_location, int session, int version, int min) {
-        String q = "select i.time as time, avg(f.value - i.value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
-                "from %s i " +
-                "inner join %s f on i.time = f.time " +
-                "where  i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
+        String q = "select time, sum(delta) over (ORDER BY time RANGE BETWEEN '%s min' PRECEDING AND CURRENT ROW) as value " +
+                "from %s " +
+                "where version = %s " +
+                "and session_id = %s " +
+                "and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
 
-        String query = String.format(q, table_location, session, version);
+        String query = String.format(q, min, table_location, version, session);
         return MySql.select(query);
     }
 

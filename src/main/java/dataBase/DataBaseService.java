@@ -133,9 +133,9 @@ public class DataBaseService extends MyBaseService {
         }
 
         // Options status
-        if (sleepCount % 60000 == 0) {
-            update_options_status();
-        }
+//        if (sleepCount % 60000 == 0) {
+//            update_options_status();
+//        }
     }
 
     private void update_options_status() {

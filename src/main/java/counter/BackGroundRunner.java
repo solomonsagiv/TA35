@@ -41,7 +41,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
     public static boolean randomallyBool = false;
     public static boolean endMarketBool = false;
     boolean exported = false;
-
+    
     Color lightGreen = new Color(12, 135, 0);
     Color lightRed = new Color(229, 19, 0);
 
@@ -88,7 +88,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     bid = apiObject.getIndex_bid();
                     ask = apiObject.getIndex_ask();
                     current_time = LocalTime.now();
-
 
                     // Wait for load
                     if (apiObject.isDbLoaded()) {
@@ -160,16 +159,15 @@ public class BackGroundRunner extends MyThread implements Runnable {
         new OptionsDataCalculator();
         new OptionsReaderService(Options.WEEK, weekPath);
         new OptionsReaderService(Options.MONTH, monthPath);
-        new DataBaseService();
+//        new DataBaseService();
     }
 
     private void open_services() {
         new BasketService();
         new BasketService();
         new BasketService();
-        new DataBaseService();
+//        new DataBaseService();
         new IndDeltaService(BackGroundRunner.excelPath);
-        new ArikPositionsAlerts();
     }
 
     private String str(Object o) {

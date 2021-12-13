@@ -65,6 +65,7 @@ public class MyChartContainer extends JFrame {
         for (MyChart chart : charts) {
             for (MyTimeSeries serie: chart.getSeries()) {
                 serie.load_data();
+                System.out.println("Loadinn" + " " + serie.getName());
             }
         }
     }

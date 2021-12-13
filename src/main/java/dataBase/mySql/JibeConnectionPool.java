@@ -28,7 +28,7 @@ public class JibeConnectionPool implements IConnectionPool {
 		this.password = password;
 		this.connections = connections;
 	}
-	
+
 	public static JibeConnectionPool getConnectionsPoolInstance() {
 		if (jibeConnectionPool == null) {
 			try {
