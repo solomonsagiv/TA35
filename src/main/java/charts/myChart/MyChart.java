@@ -12,7 +12,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.ValueMarker;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -228,8 +227,9 @@ public class MyChart {
 
             // While loop
             while (isRun()) {
+                System.out.println("Run " + getName());
                 try {
-                    if (apiObject.isStarted()) {
+                    if (true) {
 
                         // Sleep
                         Thread.sleep((long) props.getProp(ChartPropsEnum.SLEEP));

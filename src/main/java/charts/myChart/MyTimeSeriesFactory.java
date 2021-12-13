@@ -5,6 +5,7 @@ import dataBase.Factories;
 import dataBase.mySql.Queries;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class MyTimeSeriesFactory {
 
@@ -72,6 +73,16 @@ public class MyTimeSeriesFactory {
                     public ResultSet load_last_x_time(int minuts) {
                         String table_location = Factories.Tables.DF_TABLE;
                         ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 2, 4, minuts);
+
+                        while (true) {
+                            try {
+                                if (!rs.next()) break;
+
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        }
+
                         return rs;
                     }
 
@@ -82,8 +93,8 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 4, Queries.START_OF_THE_DAY_MIN);
-                        DataBaseHandler.loadSerieData(rs, this);
+//                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 4, Queries.START_OF_THE_DAY_MIN);
+//                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -103,8 +114,8 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 8, Queries.START_OF_THE_DAY_MIN);
-                        DataBaseHandler.loadSerieData(rs, this);
+//                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 8, Queries.START_OF_THE_DAY_MIN);
+//                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
