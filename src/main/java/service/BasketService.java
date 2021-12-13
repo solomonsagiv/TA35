@@ -1,18 +1,13 @@
 package service;
 
 import counter.WindowTA35;
+import locals.L;
 import miniStocks.MiniStock;
 
 public class BasketService extends MyBaseService {
 
-    double ind_0 = 0;
-
     public BasketService() {
         super();
-    }
-
-    private void resetVariables() {
-        ind_0 = apiObject.getIndex();
     }
 
     private void findBasket() {
@@ -34,23 +29,25 @@ public class BasketService extends MyBaseService {
             stock.setPreVolume(volume);
         }
 
-        // More then 30 changes
+        // More then 28 changes
         if (changesCount > 28) {
 
             double ind = apiObject.getIndex();
+            double ind_bid = apiObject.getIndex_bid();
+            double ind_ask = apiObject.getIndex_ask();
+
+            double index_to_ask_margin = L.abs(ind - ind_ask);
+            double index_to_bid_margin = L.abs(ind - ind_bid);
 
             // Up
-            if (ind > ind_0) {
+            if (index_to_ask_margin < index_to_bid_margin) {
                 apiObject.incrementBasketUp();
-            }
-
-            // Down
-            if (ind < ind_0) {
+            } else {
                 apiObject.incrementBasketDown();
             }
         }
         try {
-            WindowTA35.log.setText("Changed: " + changesCount + " \n " + ind_0);
+            WindowTA35.log.setText("Changed: " + changesCount + " \n ");
         } catch (Exception e) {
 
         }
@@ -76,7 +73,6 @@ public class BasketService extends MyBaseService {
     @Override
     public void go() {
         findBasket();
-        resetVariables();
     }
 
     @Override
