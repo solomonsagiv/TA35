@@ -77,12 +77,11 @@ public class MyTimeSeriesFactory {
                         while (true) {
                             try {
                                 if (!rs.next()) break;
-
+                                System.out.println(rs.getString("time") + ", " + rs.getDouble("value"));
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
                         }
-
                         return rs;
                     }
 

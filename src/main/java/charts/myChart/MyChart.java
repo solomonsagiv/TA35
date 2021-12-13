@@ -34,12 +34,6 @@ import java.util.NoSuchElementException;
 
 public class MyChart {
 
-
-    public static void main(String[] args) {
-        FullCharts2 fullCharts2 = new FullCharts2(ApiObject.getInstance());
-        fullCharts2.createChart();
-    }
-
     public XYPlot plot;
     public ChartUpdater updater;
     // Variables
@@ -227,7 +221,6 @@ public class MyChart {
 
             // While loop
             while (isRun()) {
-                System.out.println("Run " + getName());
                 try {
                     if (true) {
 
