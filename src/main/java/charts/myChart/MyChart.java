@@ -220,7 +220,6 @@ public class MyChart {
 
             // While loop
             while (isRun()) {
-                System.out.println("Run " + getName());
                 try {
                     if (true) {
 
