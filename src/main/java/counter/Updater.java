@@ -115,6 +115,8 @@ public class Updater extends MyThread implements Runnable {
                         100);
                 setColorPresent(window.weekStartExpField, text);
 
+
+
                 // Month
                 colorForge(window.expDeltaMonthField, (int) expMonth.getExpData().getTotalDelta(), L.df());
                 colorForge(window.expIndDeltaMonthField, (int) expMonth.getExpData().getTotalIndDelta(), L.df());
