@@ -161,7 +161,7 @@ public class MyGuiComps {
 
         private void init() {
             setBounds(new Rectangle(65, 25));
-            setFont(Themes.VEDANA_12);
+            setFont(Themes.ARIEL_BOLD_12);
             setForeground(Color.BLACK);
             setHorizontalAlignment(JTextField.CENTER);
             setBackground(Themes.GREY_VERY_LIGHT);

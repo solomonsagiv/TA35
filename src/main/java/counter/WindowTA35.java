@@ -36,6 +36,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     MyGuiComps.MyLabel v6_lbl;
     public MyGuiComps.MyTextField v5_field;
     public MyGuiComps.MyTextField v6_field;
+    public MyGuiComps.MyTextField v5_speed_field;
+    public MyGuiComps.MyTextField v6_speed_field;
 
     public int updater_id = 0;
 
@@ -328,18 +330,25 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         deltaPanel.add(indDeltaNoBasketsField);
 
 
+        // ---------------- Decision ---------------- //
+        // ------- Header ------- //
         MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
-        decision_header_panel.setBounds(deltaHeaderPanel.getX() + deltaHeaderPanel.getWidth() + 1, deltaHeaderPanel.getY(), 80, 25);
+        decision_header_panel.setBounds(deltaHeaderPanel.getX() + deltaHeaderPanel.getWidth() + 1, deltaHeaderPanel.getY(), 145, 25);
         getContentPane().add(decision_header_panel);
 
         MyGuiComps.MyLabel decision_lbl = new MyGuiComps.MyLabel("מכונה");
-        decision_lbl.setBounds(0, 0, decision_header_panel.getWidth(), decision_header_panel.getHeight());
+        decision_lbl.setBounds(3, 0, 65, 25);
         decision_header_panel.add(decision_lbl);
+
+        MyGuiComps.MyLabel speed_lbl = new MyGuiComps.MyLabel("מהירות");
+        speed_lbl.setBounds(decision_lbl.getX() + decision_lbl.getWidth() + 3, decision_lbl.getY(), decision_lbl.getWidth(), decision_lbl.getHeight());
+        decision_header_panel.add(speed_lbl);
+
 
         // Vs Panel
         MyGuiComps.MyPanel decisions_panel = new MyGuiComps.MyPanel();
         decisions_panel.setXY(decision_header_panel.getX(), decision_header_panel.getY() + decision_header_panel.getHeight() + 1);
-        decisions_panel.setWidth(80);
+        decisions_panel.setWidth(145);
         decisions_panel.setHeight(102);
         getContentPane().add(decisions_panel);
 
@@ -352,6 +361,20 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         v6_field = new MyGuiComps.MyTextField();
         v6_field.setBounds(5, 35, 65, 25);
         decisions_panel.add(v6_field);
+
+
+        // V5 speed
+        v5_speed_field = new MyGuiComps.MyTextField();
+        v5_speed_field.setBounds(v5_field.getX() + v5_field.getWidth() + 3, v5_field.getY(), 65, 25);
+        v5_speed_field.setForeground(Color.BLACK);
+        decisions_panel.add(v5_speed_field);
+
+        // V6 speed
+        v6_speed_field = new MyGuiComps.MyTextField();
+        v6_speed_field.setBounds(v6_field.getX() + v6_field.getWidth() + 3, v6_field.getY(), 65, 25);
+        v6_speed_field.setForeground(Color.BLACK);
+        decisions_panel.add(v6_speed_field);
+
 
 
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();

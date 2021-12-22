@@ -119,6 +119,38 @@ public class MyTimeSeriesFactory {
                     }
                 };
 
+            case Factories.TimeSeries.DF_V_5_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.DF_V_4_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        String table_location = Factories.Tables.DF_TABLE;
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 2, 4, minuts);
+
+                        while (true) {
+                            try {
+                                if (!rs.next()) break;
+
+                            } catch (SQLException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        }
+
+                        return rs;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getV4();
+                    }
+
+                    @Override
+                    public void load() {
+//                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 4, Queries.START_OF_THE_DAY_MIN);
+//                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+
             case Factories.TimeSeries.DELTA_MIX_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_MIX_SERIE) {
                     @Override

@@ -101,6 +101,8 @@ public class Updater extends MyThread implements Runnable {
                 // Decision func
                 window.v5_field.colorForge(apiObject.getV5());
                 window.v6_field.colorForge(apiObject.getV6());
+                window.v5_speed_field.colorForge(apiObject.getV5_speed_300());
+                window.v6_speed_field.colorForge(apiObject.getV6_speed_300());
 
                 // Exp
                 // Week

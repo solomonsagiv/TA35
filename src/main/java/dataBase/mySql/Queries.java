@@ -97,6 +97,13 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_last_record(String table_location) {
+        String q = "select * from %s order by time desc limit 1";
+        
+        String query = String.format(q, table_location);
+        return MySql.select(query);
+    }
+
     public static ResultSet get_last_x_min_record_from_decision_func(String table_location, int session, int version, int min) {
         String q = "select time, sum(delta) over (ORDER BY time RANGE BETWEEN '%s min' PRECEDING AND CURRENT ROW) as value " +
                 "from %s " +

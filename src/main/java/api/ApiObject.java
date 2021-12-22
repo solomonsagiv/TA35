@@ -37,6 +37,10 @@ public class ApiObject implements IJsonData {
     private int v8 = 0;
     private int pre_v4 = 0;
     private int pre_v8 = 0;
+    private int v5_speed_300 = 0;
+    private int v6_speed_300 = 0;
+    private int pre_df_n_speed_300 = 0;
+    private int pre_df_speed_300 = 0;
 
     private double bid_ask_counter_avg_60 = 0;
     private double bid_ask_counter_avg = 0;
@@ -519,6 +523,44 @@ public class ApiObject implements IJsonData {
         }
     }
 
+    public int getV6_speed_300() {
+        return v6_speed_300;
+    }
+
+    public int getV5_speed_300() {
+        return v5_speed_300;
+    }
+
+    public void setV5_speed_300(int new_val) {
+        if (new_val != 0 && this.v5_speed_300 != new_val) {
+            setPre_df_n_speed_300(this.v5_speed_300);
+            this.v5_speed_300 = new_val;
+        }
+    }
+
+    public void setV6_speed_300(int new_val) {
+            if (new_val != 0 && this.v6_speed_300 != new_val) {
+                setPre_df_speed_300(this.v6_speed_300);
+                this.v6_speed_300 = new_val;
+            }
+    }
+
+    public int getPre_df_n_speed_300() {
+        return pre_df_n_speed_300;
+    }
+
+    public int getPre_df_speed_300() {
+        return pre_df_speed_300;
+    }
+
+    public void setPre_df_n_speed_300(int pre_df_n_speed_300) {
+        this.pre_df_n_speed_300 = pre_df_n_speed_300;
+    }
+
+    public void setPre_df_speed_300(int pre_df_speed_300) {
+        this.pre_df_speed_300 = pre_df_speed_300;
+    }
+
     public int getV6() {
         return v6;
     }
@@ -567,7 +609,6 @@ public class ApiObject implements IJsonData {
             this.v8 = new_v8;
         }
     }
-
 
     public Exps getExps() {
         return exps;

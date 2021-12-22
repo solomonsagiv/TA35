@@ -3,7 +3,6 @@ package charts.myChart;
 
 import api.ApiObject;
 import charts.MyChartPanel;
-import charts.charts.FullCharts2;
 import dataBase.DataBaseHandler;
 import locals.L;
 import locals.Themes;
@@ -33,12 +32,6 @@ import java.util.Collections;
 import java.util.NoSuchElementException;
 
 public class MyChart {
-
-
-    public static void main(String[] args) {
-        FullCharts2 fullCharts2 = new FullCharts2(ApiObject.getInstance());
-        fullCharts2.createChart();
-    }
 
     public XYPlot plot;
     public ChartUpdater updater;

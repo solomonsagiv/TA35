@@ -2,8 +2,12 @@ package charts.charts;
 
 import api.ApiObject;
 import charts.myChart.*;
+import dataBase.DataBaseHandler;
 import dataBase.Factories;
+import dataBase.mySql.Queries;
 import locals.Themes;
+
+import java.sql.ResultSet;
 
 public class Decision_Chart extends MyChartCreator {
 
@@ -23,30 +27,63 @@ public class Decision_Chart extends MyChartCreator {
 
 		// Props
 		props = new MyProps();
-		props.setProp(ChartPropsEnum.SECONDS, 36);
+		props.setProp(ChartPropsEnum.SECONDS, INFINITE);
 		props.setProp(ChartPropsEnum.IS_INCLUDE_TICKER, -1);
-		props.setProp(ChartPropsEnum.IS_RANGE_GRID_VISIBLE, -1);
-		props.setProp(ChartPropsEnum.IS_LOAD_DB, -1);
+		props.setProp(ChartPropsEnum.IS_GRID_VISIBLE, 1);
+		props.setProp(ChartPropsEnum.IS_LOAD_DB, 1);
 		props.setProp(ChartPropsEnum.IS_LIVE, -1);
-		props.setProp(ChartPropsEnum.SLEEP, 60000);
-		props.setProp(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS, INFINITE);
+		props.setProp(ChartPropsEnum.SLEEP, 1000);
+		props.setProp(ChartPropsEnum.IS_RANGE_GRID_VISIBLE, -1);
+		props.setProp(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS, (double) INFINITE);
 		props.setProp(ChartPropsEnum.SECONDS_ON_MESS, 10);
-		props.setProp(ChartPropsEnum.MARKER, 0);
 		props.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
-		props.setProp(ChartPropsEnum.RETRO_MINS, 60);
+		props.setProp(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE, 1);
+		props.setProp(ChartPropsEnum.MARKER, 0);
 
 		// ----- Chart 1 ----- //
-		MyTimeSeries v4_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DF_V_4_SERIE);
-		v4_serie.setStokeSize(2.25f);
-		v4_serie.setColor(Themes.BLUE);
+		MyTimeSeries v5_serie = new MyTimeSeries("V5") {
+			@Override
+			public ResultSet load_last_x_time(int minuts) {
+				return null;
+			}
+
+			@Override
+			public double getData() {
+				return apiObject.getV5();
+			}
+
+			@Override
+			public void load() {
+				ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 5, Queries.START_OF_THE_DAY_MIN);
+				DataBaseHandler.loadSerieData(rs, this);
+			}
+		};
+		v5_serie.setStokeSize(2.25f);
+		v5_serie.setColor(Themes.BLUE);
 
 
-		MyTimeSeries v8_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DF_V_8_SERIE);
-		v8_serie.setStokeSize(2.25f);
-		v8_serie.setColor(Themes.GREEN_5);
+		MyTimeSeries v6_serie = new MyTimeSeries("V6") {
+			@Override
+			public ResultSet load_last_x_time(int minuts) {
+				return null;
+			}
+
+			@Override
+			public double getData() {
+				return apiObject.getV6();
+			}
+
+			@Override
+			public void load() {
+				ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 2, 6, Queries.START_OF_THE_DAY_MIN);
+				DataBaseHandler.loadSerieData(rs, this);
+			}
+		};
+		v6_serie.setStokeSize(2.25f);
+		v6_serie.setColor(Themes.GREEN_5);
 
 
-		MyTimeSeries[] series = { v4_serie, v8_serie };
+		MyTimeSeries[] series = { v5_serie, v6_serie };
 
 		// Chart
 		MyChart chart = new MyChart(series, props);
@@ -55,7 +92,7 @@ public class Decision_Chart extends MyChartCreator {
 		MyChart[] charts = { chart };
 
 		// ----- Container ----- //
-		MyChartContainer chartContainer = new MyChartContainer(charts, "Decision v4, v8");
+		MyChartContainer chartContainer = new MyChartContainer(charts, "Decision v5, v6");
 		chartContainer.create();
 	}
 

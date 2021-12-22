@@ -168,12 +168,16 @@ public class DataBaseService extends MyBaseService {
             try {
                 int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 5));
                 int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 6));
+                int df_n_speed_300 = (int) Queries.handle_rs(Queries.get_last_record(Factories.Tables.DF_N_SPEED_300));
+                int df_speed_300 = (int) Queries.handle_rs(Queries.get_last_record(Factories.Tables.DF_SPEED_300));
                 double op_avg_week_30 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_WEEK_TABLE, 30));
                 double op_avg_month_30 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.SAGIV_FUT_MONTH_TABLE, 30));
 
                 // V5 V6
                 apiObject.setV5(v5);
                 apiObject.setV6(v6);
+                apiObject.setV5_speed_300(df_n_speed_300);
+                apiObject.setV6_speed_300(df_speed_300);
 
                 // Op avg
                 apiObject.getExps().getWeek().setOp_avg_30(op_avg_week_30);

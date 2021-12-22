@@ -17,6 +17,8 @@ public class Factories {
         public static final String SAGIV_OPTIONS_STATUS_TABLE = "sagiv.ta35_options_status";
         public static final String DELTA_MIX_TABLE = "data.ta35_delta_mix";
         public static final String DF_TABLE = "data.ta35_decision_func";
+        public static final String DF_N_SPEED_300 = "data.research_ta35_df5_speed_300";
+        public static final String DF_SPEED_300 = "data.research_ta35_df6_speed_300";
     }
 
     public static class TimeSeries {
@@ -41,6 +43,8 @@ public class Factories {
         public static final String DELTA_MIX_SERIE = "DELTA_MIX";
         public static final String DF_V_4_SERIE = "DF_V_4";
         public static final String DF_V_8_SERIE = "DF_V_8";
+        public static final String DF_V_5_SERIE = "DF_V_5";
+        public static final String DF_V_6_SERIE = "DF_V_6";
     }
 
 }
