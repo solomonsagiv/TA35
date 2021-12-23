@@ -61,7 +61,6 @@ public class Decision_Chart extends MyChartCreator {
 		v5_serie.setStokeSize(2.25f);
 		v5_serie.setColor(Themes.BLUE);
 
-
 		MyTimeSeries v6_serie = new MyTimeSeries("V6") {
 			@Override
 			public ResultSet load_last_x_time(int minuts) {

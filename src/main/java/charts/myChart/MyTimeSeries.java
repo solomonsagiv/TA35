@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 
 interface ITimeSeries {
     double getData();
-
     void load();
 }
 
@@ -90,15 +89,14 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
     }
 
     public void add(LocalDateTime time) {
-        Second second = new Second(time.getSecond(), time.getMinute(), time.getHour(), time.getDayOfMonth(), time.getMonthValue(), time.getYear());
-        double data = getData();
-        getMyValues().add(data);
 
-        if (scaled) {
-            data = getMyValues().getLastValAsStd();
+        double data = getData();
+        if (data != 0.0) {
+            Second second = new Second(time.getSecond(), time.getMinute(), time.getHour(), time.getDayOfMonth(), time.getMonthValue(), time.getYear());
+            getMyValues().add(data);
+            addOrUpdate(second, data);
         }
 
-        addOrUpdate(second, data);
     }
 
     public void load_data() {

@@ -7,6 +7,7 @@ import dataBase.mySql.Queries;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import locals.L;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -40,7 +41,7 @@ public class DataBaseHandler {
         int bid_ask_counter_month = (int) Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE));
         int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE)));
         int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE)));
-        
+
         ExpWeek week = apiObject.getExps().getWeek();
         ExpMonth month = apiObject.getExps().getMonth();
 
@@ -86,15 +87,17 @@ public class DataBaseHandler {
     }
 
     public static void loadSerieData(ResultSet rs, MyTimeSeries timeSeries) {
-        while (true) {
-            try {
+        try {
+            while (true) {
                 if (!rs.next()) break;
                 Timestamp timestamp = rs.getTimestamp(1);
                 double value = rs.getDouble("value");
                 timeSeries.add(timestamp.toLocalDateTime(), value);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+
+                System.out.println(timeSeries.getName() + " " + timestamp + " " + value);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -137,7 +137,6 @@ public class MyGuiComps {
 
     }
 
-
     // ---------- JTextField ---------- //
     public static class MyTextField extends JTextField {
 
@@ -161,7 +160,7 @@ public class MyGuiComps {
 
         private void init() {
             setBounds(new Rectangle(65, 25));
-            setFont(Themes.ARIEL_BOLD_12);
+            setFont(Themes.ARIEL_15);
             setForeground(Color.BLACK);
             setHorizontalAlignment(JTextField.CENTER);
             setBackground(Themes.GREY_VERY_LIGHT);

@@ -183,7 +183,6 @@ public class MyChart {
         private void can_i_start() {
             // Should load
             if (props.getBool(ChartPropsEnum.IS_LOAD_DB)) {
-
                 while (true) {
                     try {
                         boolean loaded = true;
@@ -347,7 +346,6 @@ public class MyChart {
 
                     range = (NumberAxis) plot.getRangeAxis();
                     range.setRange(min, max);
-
                 }
             } catch (NoSuchElementException | ParseException e) {
                 e.printStackTrace();

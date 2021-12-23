@@ -35,7 +35,7 @@ public class Themes {
 	public static Color RED_2 = new Color(171, 56, 75);
 
 	// Fonts
-	public static Font ARIEL_15 = new Font("Lucida Sans", Font.BOLD, 15);
+	public static Font ARIEL_15 = new Font("Ariel", Font.PLAIN, 15);
 	public static Font ARIEL_BOLD_15 = new Font("Ariel", Font.BOLD, 15);
 
 	 // Colors

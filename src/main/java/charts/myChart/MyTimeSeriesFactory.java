@@ -123,7 +123,7 @@ public class MyTimeSeriesFactory {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         String table_location = Factories.Tables.DF_TABLE;
-                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 2, 4, minuts);
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 2, 5, minuts);
 
                         while (true) {
                             try {
