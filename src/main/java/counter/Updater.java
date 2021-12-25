@@ -29,7 +29,7 @@ public class Updater extends MyThread implements Runnable {
     double efresh;
     double text;
     boolean run = true;
-
+    
     Color lightGreen = new Color(12, 135, 0);
     Color lightRed = new Color(229, 19, 0);
 
@@ -99,10 +99,10 @@ public class Updater extends MyThread implements Runnable {
                 colorForge(window.indDeltaNoBasketsField, (int) indeDeltaNoBakets, L.df());
 
                 // Decision func
-                window.v5_field.colorForge(apiObject.getV5());
-                window.v6_field.colorForge(apiObject.getV6());
-                window.v5_speed_field.colorForge(apiObject.getV5_speed_300());
-                window.v6_speed_field.colorForge(apiObject.getV6_speed_300());
+                window.v5_field.colorForge(apiObject.getV5(), L.df());
+                window.v6_field.colorForge(apiObject.getV6(), L.df());
+                window.v5_speed_field.colorForge(apiObject.getV5_speed_300(), L.df());
+                window.v6_speed_field.colorForge(apiObject.getV6_speed_300(), L.df());
 
                 // Exp
                 // Week
@@ -114,8 +114,6 @@ public class Updater extends MyThread implements Runnable {
                                 * 100,
                         100);
                 setColorPresent(window.weekStartExpField, text);
-
-
 
                 // Month
                 colorForge(window.expDeltaMonthField, (int) expMonth.getExpData().getTotalDelta(), L.df());
