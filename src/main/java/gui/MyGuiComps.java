@@ -244,7 +244,6 @@ public class MyGuiComps {
 
     }
 
-
     // ---------- JLabel ---------- //
     public static class MyLabel extends JLabel {
 

@@ -54,12 +54,12 @@ public class Queries {
     }
 
     public static ResultSet get_op_avg(String fut_table_location) {
-        String q = "select avg(f.value - i.value) as value " +
-                "from %s f " +
-                "inner join %s i on f.time = i.time " +
+        String q = "select avg(f.futures - ((i.ask + i.bid) / 2)) " +
+                "from %s i " +
+                "inner join %s f on i.time = f.time " +
                 "where i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
 
-        String query = String.format(q, fut_table_location, Factories.Tables.SAGIV_INDEX_TABLE);
+        String query = String.format(q, Factories.Tables.SAGIV_INDEX_TABLE, fut_table_location);
         return MySql.select(query);
     }
 
@@ -116,11 +116,10 @@ public class Queries {
     }
 
     public static ResultSet get_op_avg(String fut_table_location, int min) {
-        String q = "select avg(f.value - i.value) as value " +
+        String q = "select avg(f.futures - ((i.ask + i.bid) / 2)) " +
                 "from %s i " +
                 "inner join %s f on i.time = f.time " +
-                "where i.time > now() - interval '%s min';";
-
+                "where i.time = now() - interval '%s min';";
         String query = String.format(q, Factories.Tables.SAGIV_INDEX_TABLE, fut_table_location, min);
         return MySql.select(query);
     }

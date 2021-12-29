@@ -329,7 +329,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         indDeltaNoBasketsField.setBounds(5, 66, 65, 25);
         deltaPanel.add(indDeltaNoBasketsField);
 
-
         // ---------------- Decision ---------------- //
         // ------- Header ------- //
         MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
