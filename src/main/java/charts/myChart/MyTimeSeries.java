@@ -89,14 +89,12 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
     }
 
     public void add(LocalDateTime time) {
-
         double data = getData();
-        if (data != 0.0) {
+        if (data != 0) {
             Second second = new Second(time.getSecond(), time.getMinute(), time.getHour(), time.getDayOfMonth(), time.getMonthValue(), time.getYear());
             getMyValues().add(data);
             addOrUpdate(second, data);
         }
-
     }
 
     public void load_data() {
@@ -130,9 +128,11 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
 
     public void add(LocalDateTime dateTime, double value) {
         try {
-            lastSeconde = new Second(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
-            myValues.add(value);
-            addOrUpdate(lastSeconde, value);
+            if (value != 0) {
+                lastSeconde = new Second(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
+                myValues.add(value);
+                addOrUpdate(lastSeconde, value);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -158,9 +158,11 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
         double data = 0;
         // live data
         data = getData();
-        myValues.add(data);
-        addOrUpdate(getLastSeconde(), data);
-        lastSeconde = (Second) lastSeconde.next();
+        if (data != 0) {
+            myValues.add(data);
+            addOrUpdate(getLastSeconde(), data);
+            lastSeconde = (Second) lastSeconde.next();
+        }
         return data;
     }
 

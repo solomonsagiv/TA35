@@ -126,6 +126,8 @@ public class DataBaseService extends MyBaseService {
             fut_month_timestamp.add(new MyTimeStampObject(instant, fut_month));
         }
 
+        System.out.println("Stream merket " + BackGroundRunner.streamMarketBool);
+
         // Grabb data and insert data
         if (sleepCount % 15000 == 0) {
             insert_data();
@@ -166,6 +168,7 @@ public class DataBaseService extends MyBaseService {
     private void grab_data() {
         new Thread(() -> {
             try {
+                System.out.println("Grabbing...");
                 int v5 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 5));
                 int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 6));
                 int df_n_speed_300 = (int) Queries.handle_rs(Queries.get_last_record(Factories.Tables.DF_N_SPEED_300));
@@ -183,6 +186,9 @@ public class DataBaseService extends MyBaseService {
                 apiObject.getExps().getWeek().setOp_avg_30(op_avg_week_30);
                 apiObject.getExps().getMonth().setOp_avg_30(op_avg_month_30);
                 apiObject.setDbLoaded(true);
+
+                System.out.println("Grabbed");
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
