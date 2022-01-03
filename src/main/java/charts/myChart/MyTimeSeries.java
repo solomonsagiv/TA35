@@ -8,7 +8,6 @@ import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesDataItem;
-
 import java.awt.*;
 import java.sql.ResultSet;
 import java.text.ParseException;
@@ -133,7 +132,6 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
             e.printStackTrace();
         }
     }
-
 
     private void base_add(LocalDateTime dateTime, double value) {
         if (value != 0) {

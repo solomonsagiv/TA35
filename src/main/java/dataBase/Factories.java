@@ -4,6 +4,7 @@ public class Factories {
 
     public static class Tables {
         public static final String SAGIV_INDEX_TABLE = "sagiv.ta35_index";
+        public static final String INDEX_TABLE = "data.ta35_index";
         public static final String SAGIV_DELTA_WEEK_TABLE = "sagiv.ta35_delta_week_2_cdf";
         public static final String SAGIV_DELTA_MONTH_TABLE = "sagiv.ta35_delta_month_2_cdf";
         public static final String BID_ASK_COUNTER_WEEK_TABLE = "sagiv.ta35_bid_ask_counter_fut_week_cdf";
@@ -19,6 +20,7 @@ public class Factories {
         public static final String DF_TABLE = "data.ta35_decision_func";
         public static final String DF_N_SPEED_300 = "data.research_ta35_df5_speed_300";
         public static final String DF_SPEED_300 = "data.research_ta35_df6_speed_300";
+
     }
 
     public static class TimeSeries {

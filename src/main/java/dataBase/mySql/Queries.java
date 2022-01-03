@@ -120,7 +120,7 @@ public class Queries {
                 "from %s i " +
                 "inner join %s f on i.time = f.time " +
                 "where i.time = now() - interval '%s min';";
-        String query = String.format(q, Factories.Tables.SAGIV_INDEX_TABLE, fut_table_location, min);
+        String query = String.format(q, Factories.Tables.INDEX_TABLE, fut_table_location, min);
         return MySql.select(query);
     }
 
