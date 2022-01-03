@@ -54,7 +54,7 @@ public class Queries {
     }
 
     public static ResultSet get_op_avg(String fut_table_location) {
-        String q = "select avg(f.futures - ((i.ask + i.bid) / 2)) " +
+        String q = "select avg(f.futures - ((i.ask + i.bid) / 2)) as value " +
                 "from %s i " +
                 "inner join %s f on i.time = f.time " +
                 "where i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
