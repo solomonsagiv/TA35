@@ -119,14 +119,27 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
 
     public void add(LocalDateTime dateTime) {
         try {
-            double data = getData();
-            if (data != 0) {
-                lastSeconde = new Second(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
-                myValues.add(data);
-                addOrUpdate(lastSeconde, data);
-            }
+            double value = getData();
+            base_add(dateTime, value);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void add(LocalDateTime dateTime, double value) {
+        try {
+            base_add(dateTime, value);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void base_add(LocalDateTime dateTime, double value) {
+        if (value != 0) {
+            lastSeconde = new Second(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
+            myValues.add(value);
+            addOrUpdate(lastSeconde, value);
         }
     }
 
@@ -140,7 +153,6 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
 //            lastSeconde = (Second) lastSeconde.next();
 //        }
 //        return data;
-//     }
 
     public void remove(int index) {
         delete(index, index);
