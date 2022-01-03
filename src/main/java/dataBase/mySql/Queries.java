@@ -59,7 +59,7 @@ public class Queries {
                 "inner join %s f on i.time = f.time " +
                 "where i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
 
-        String query = String.format(q, Factories.Tables.SAGIV_INDEX_TABLE, fut_table_location);
+        String query = String.format(q, Factories.Tables.INDEX_TABLE, fut_table_location);
         return MySql.select(query);
     }
 
