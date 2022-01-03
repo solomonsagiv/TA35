@@ -117,7 +117,7 @@ public class DataBaseService extends MyBaseService {
             baskets_0 = baskets;
             baskets_timestamp.add(new MyTimeStampObject(Instant.now(), change));
         }
-        
+
         // Op avg week
         if (sleepCount % 1000 == 0) {
             Instant instant = Instant.now();

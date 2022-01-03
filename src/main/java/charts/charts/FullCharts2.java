@@ -89,31 +89,13 @@ public class FullCharts2 extends MyChartCreator {
 		MyProps props_2 = (MyProps) props.clone();
 		props_2.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
 
-		// ----------------------------------------- OP AVG ----------------------------------------- //
-		//  Week op avg 60
-		MyTimeSeries op_avg_week_30 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_30_SERIE);
-		op_avg_week_30.setColor(Themes.GREEN_6);
-		op_avg_week_30.setStokeSize(2.5f);
-
-		// Month op avg 60
-		MyTimeSeries op_avg_month_30 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_30_SERIE);
-		op_avg_month_30.setColor(Themes.GREEN_5);
-		op_avg_month_30.setStokeSize(2.5f);
-
-		series = new MyTimeSeries[2];
-		series[0] = op_avg_week_30;
-		series[1] = op_avg_month_30;
-
-		// Chart
-		MyChart op_avg_chart = new MyChart(series, props_2);
-
 		// ----------------------------------------- Chart ----------------------------------------- //
 
 		// ----- Charts ----- //
-		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart, op_avg_chart };
+		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart };
 
 		// ----------------------------------------- Container ----------------------------------------- //
-		MyChartContainer chartContainer = new MyChartContainer(charts, "Delta chart");
+		MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
 		chartContainer.create();
 
 	}

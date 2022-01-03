@@ -27,6 +27,7 @@ import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.NoSuchElementException;
@@ -275,7 +276,7 @@ public class MyChart {
                         serie.remove(0);
                     }
                     // Append data
-                    serie.add();
+                    serie.add(LocalDateTime.now());
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();

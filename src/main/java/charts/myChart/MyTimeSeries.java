@@ -10,13 +10,13 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesDataItem;
 
 import java.awt.*;
-import java.net.UnknownHostException;
 import java.sql.ResultSet;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 
 interface ITimeSeries {
     double getData();
+
     void load();
 }
 
@@ -88,15 +88,6 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
         return getDataItem(getItemCount() - 1);
     }
 
-    public void add(LocalDateTime time) {
-        double data = getData();
-        if (data != 0) {
-            Second second = new Second(time.getSecond(), time.getMinute(), time.getHour(), time.getDayOfMonth(), time.getMonthValue(), time.getYear());
-            getMyValues().add(data);
-            addOrUpdate(second, data);
-        }
-    }
-
     public void load_data() {
         try {
             load();
@@ -126,26 +117,11 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
         }
     }
 
-    public void add(LocalDateTime dateTime, double value) {
+    public void add(LocalDateTime dateTime) {
         try {
-            if (value != 0) {
+            double data = getData();
+            if (data != 0) {
                 lastSeconde = new Second(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
-                myValues.add(value);
-                addOrUpdate(lastSeconde, value);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void add(MyJson json) {
-        try {
-            if (!json.getString(JsonStrings.x).isEmpty()) {
-
-                LocalDateTime dateTime = LocalDateTime.parse(json.getString(JsonStrings.x));
-                lastSeconde = new Second(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
-
-                double data = json.getDouble(JsonStrings.y);
                 myValues.add(data);
                 addOrUpdate(lastSeconde, data);
             }
@@ -154,17 +130,17 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
         }
     }
 
-    public double add() {
-        double data = 0;
-        // live data
-        data = getData();
-        if (data != 0) {
-            myValues.add(data);
-            addOrUpdate(getLastSeconde(), data);
-            lastSeconde = (Second) lastSeconde.next();
-        }
-        return data;
-    }
+//    public double add() {
+//        double data = 0;
+//        // live data
+//        data = getData();
+//        if (data != 0) {
+//            myValues.add(data);
+//            addOrUpdate(getLastSeconde(), data);
+//            lastSeconde = (Second) lastSeconde.next();
+//        }
+//        return data;
+//     }
 
     public void remove(int index) {
         delete(index, index);
