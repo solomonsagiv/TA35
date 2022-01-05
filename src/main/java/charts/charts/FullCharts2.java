@@ -8,6 +8,11 @@ import java.awt.*;
 
 public class FullCharts2 extends MyChartCreator {
 
+	public static void main(String[] args) {
+		FullCharts2 fullCharts2 = new FullCharts2(ApiObject.getInstance());
+		fullCharts2.createChart();
+	}
+
 	// Constructor
 	public FullCharts2(ApiObject apiObject) {
 		super(apiObject);
@@ -89,10 +94,22 @@ public class FullCharts2 extends MyChartCreator {
 		MyProps props_2 = (MyProps) props.clone();
 		props_2.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
 
+		// ----------------------------------------- Index delta ----------------------------------------- //
+		// Index delta
+		MyTimeSeries index_delta_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_DELTA_SERIE);
+		index_delta_serie.setColor(Themes.BLUE_2);
+		index_delta_serie.setStokeSize(1.2f);
+
+		series = new MyTimeSeries[1];
+		series[0] = index_delta_serie;
+
+		// Chart
+		MyChart index_delta_chart = new MyChart(series, props);
+
 		// ----------------------------------------- Chart ----------------------------------------- //
 
 		// ----- Charts ----- //
-		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart };
+		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart, index_delta_chart };
 
 		// ----------------------------------------- Container ----------------------------------------- //
 		MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");

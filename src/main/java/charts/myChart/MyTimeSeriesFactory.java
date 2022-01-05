@@ -253,6 +253,26 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
+
+            case Factories.TimeSeries.INDEX_DELTA_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.INDEX_DELTA_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getStocksHandler().getDelta();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.INDEX_DELTA_TABLE);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
             case Factories.TimeSeries.DELTA_MONTH_AVG_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_MONTH_AVG_SERIE) {
                     @Override

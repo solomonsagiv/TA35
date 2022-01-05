@@ -103,15 +103,15 @@ public class Updater extends MyThread implements Runnable {
 
                 // Exp
                 // Week
-                colorForge(window.exp_v4_field, (int) expWeek.getExpData().getV4(), L.df());
-                colorForge(window.exp_v8_field, (int) expWeek.getExpData().getV8(), L.df());
+                colorForge(window.exp_v4_field, (int) expWeek.getExpData().getV4() + apiObject.getV4(), L.df());
+                colorForge(window.exp_v8_field, (int) expWeek.getExpData().getV8() + apiObject.getV8(), L.df());
                 colorForge(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), L.df());
                 text = floor(((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.weekStartExpField, text);
 
                 // Month
-                colorForge(window.exp_v5_field, (int) expMonth.getExpData().getV5(), L.df());
-                colorForge(window.exp_v6_field, (int) expMonth.getExpData().getV6(), L.df());
+                colorForge(window.exp_v5_field, (int) expMonth.getExpData().getV5() + apiObject.getV5(), L.df());
+                colorForge(window.exp_v6_field, (int) expMonth.getExpData().getV6() + apiObject.getV6(), L.df());
                 colorForge(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), L.df());
                 text = floor(((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.monthStartExpField, text);

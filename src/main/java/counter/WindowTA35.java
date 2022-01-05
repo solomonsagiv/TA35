@@ -332,8 +332,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         main_decision_lbl.setBounds(3, 0, 65, 25);
         decision_header_panel.add(main_decision_lbl);
 
-        MyGuiComps.MyLabel secondary_decision_lbl = new MyGuiComps.MyLabel("Secondary");
-        secondary_decision_lbl.setBounds(main_decision_lbl.getX() + main_decision_lbl.getWidth() + 3, main_decision_lbl.getY(), main_decision_lbl.getWidth(), main_decision_lbl.getHeight());
+        MyGuiComps.MyLabel secondary_decision_lbl = new MyGuiComps.MyLabel("Sec");
+        secondary_decision_lbl.setBounds(main_decision_lbl.getX() + main_decision_lbl.getWidth(), main_decision_lbl.getY(), main_decision_lbl.getWidth(), main_decision_lbl.getHeight());
         decision_header_panel.add(secondary_decision_lbl);
 
         // Vs Panel
@@ -387,19 +387,19 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         label_2.setForeground(new Color(0, 0, 51));
 
         MyGuiComps.MyLabel label_13 = new MyGuiComps.MyLabel("Baskets");
-        label_13.setBounds(139, 0, 72, 25);
+        label_13.setBounds(130, 0, 72, 25);
         exp_header_panel.add(label_13);
         label_13.setHorizontalAlignment(SwingConstants.CENTER);
         label_13.setForeground(new Color(0, 0, 51));
 
         MyGuiComps.MyLabel label_11 = new MyGuiComps.MyLabel("Main");
-        label_11.setBounds(212, 0, 68, 25);
+        label_11.setBounds(200, 0, 68, 25);
         exp_header_panel.add(label_11);
         label_11.setHorizontalAlignment(SwingConstants.CENTER);
         label_11.setForeground(new Color(0, 0, 51));
 
-        MyGuiComps.MyLabel label_1 = new MyGuiComps.MyLabel("Secondary");
-        label_1.setBounds(284, 0, 68, 25);
+        MyGuiComps.MyLabel label_1 = new MyGuiComps.MyLabel("Sec");
+        label_1.setBounds(270, 0, 68, 25);
         exp_header_panel.add(label_1);
         label_1.setHorizontalAlignment(SwingConstants.CENTER);
         label_1.setForeground(new Color(0, 0, 51));
@@ -409,7 +409,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_lbl.setForeground(new Color(0, 0, 51));
         exp_lbl.setBounds(0, 0, 68, 25);
         exp_header_panel.add(exp_lbl);
-
 
         // -------------------------- EXP -------------------------- //
         MyGuiComps.MyPanel exp_panel = new MyGuiComps.MyPanel();
