@@ -72,11 +72,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     private void load_on_startup() {
         try {
             // DDE connection
-//            ddeConnection = new DDEConnection(apiObject);
+            ddeConnection = new DDEConnection(apiObject);
 
             // Back ground runner
-//            backGroundRunner = new BackGroundRunner();
-//            backGroundRunner.getHandler().start();
+            backGroundRunner = new BackGroundRunner();
+            backGroundRunner.getHandler().start();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showConfirmDialog(this, e.getMessage() + "\n" + e.getCause());
@@ -343,27 +343,28 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         decisions_panel.setHeight(102);
         getContentPane().add(decisions_panel);
 
+
+        // V4
+        v4_field = new MyGuiComps.MyTextField();
+        v4_field.setBounds(5, 5, 65, 25);
+        v4_field.setForeground(Color.BLACK);
+        decisions_panel.add(v4_field);
+
+        // V8
+        v8_field = new MyGuiComps.MyTextField();
+        v8_field.setBounds(v4_field.getX() + v4_field.getWidth() + 1, v4_field.getY(), 65, 25);
+        v8_field.setForeground(Color.BLACK);
+        decisions_panel.add(v8_field);
+
         // V5
         v5_field = new MyGuiComps.MyTextField();
-        v5_field.setBounds(5, 5, 65, 25);
+        v5_field.setBounds(v4_field.getX(), v4_field.getY() + v4_field.getHeight() + 3, 65, 25);
         decisions_panel.add(v5_field);
 
         // V6
         v6_field = new MyGuiComps.MyTextField();
         v6_field.setBounds(v5_field.getX() + v5_field.getWidth() + 1, v5_field.getY(), 65, 25);
         decisions_panel.add(v6_field);
-
-        // V4
-        v4_field = new MyGuiComps.MyTextField();
-        v4_field.setBounds(v5_field.getX(), v5_field.getY() + v5_field.getHeight() + 3, 65, 25);
-        v4_field.setForeground(Color.BLACK);
-        decisions_panel.add(v4_field);
-
-        // V8
-        v8_field = new MyGuiComps.MyTextField();
-        v8_field.setBounds(v6_field.getX(), v6_field.getY() + v6_field.getHeight() + 3, 65, 25);
-        v8_field.setForeground(Color.BLACK);
-        decisions_panel.add(v8_field);
 
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
