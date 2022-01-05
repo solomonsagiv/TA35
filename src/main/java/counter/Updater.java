@@ -29,7 +29,7 @@ public class Updater extends MyThread implements Runnable {
     double efresh;
     double text;
     boolean run = true;
-    
+
     Color lightGreen = new Color(12, 135, 0);
     Color lightRed = new Color(229, 19, 0);
 
@@ -76,8 +76,10 @@ public class Updater extends MyThread implements Runnable {
             // After start trading
             if (apiObject.isStarted()) {
                 // AVG OP
-                text = floor(avg(), 10);
-                setColor(window.op_avg, text, lightGreen);
+                text = floor(expWeek.getOp_avg(), 10);
+                setColor(window.op_avg_week, text, lightGreen);
+                text = floor(expMonth.getOp_avg(), 10);
+                setColor(window.op_avg_month, text, lightGreen);
 
                 // Baskets
                 window.basket_up_field.setText(str(apiObject.getBasketUp()));
@@ -91,38 +93,27 @@ public class Updater extends MyThread implements Runnable {
                 colorForge(window.weekDeltaField, (int) optionsWeek.getTotal_delta(), L.df());
 
                 // Ind baskets
-                double indDelta = apiObject.getStocksHandler().getDelta();
-                int baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
-                double indeDeltaNoBakets = indDelta + (baskets * -1000);
-
-                // Ind delta no baskets
-                colorForge(window.indDeltaNoBasketsField, (int) indeDeltaNoBakets, L.df());
+                colorForge(window.indDeltaNoBasketsField, (int) apiObject.getStocksHandler().getDelta(), L.df());
 
                 // Decision func
                 window.v5_field.colorForge(apiObject.getV5(), L.df());
                 window.v6_field.colorForge(apiObject.getV6(), L.df());
-                window.v5_speed_field.colorForge(apiObject.getV5_speed_300(), L.df());
-                window.v6_speed_field.colorForge(apiObject.getV6_speed_300(), L.df());
+                window.v4_field.colorForge(apiObject.getV4(), L.df());
+                window.v8_field.colorForge(apiObject.getV8(), L.df());
 
                 // Exp
                 // Week
-                colorForge(window.expDeltaWeekField, (int) expWeek.getExpData().getTotalDelta(), L.df());
-                colorForge(window.expIndDeltaWeekField, (int) expWeek.getExpData().getTotalIndDelta(), L.df());
+                colorForge(window.exp_v4_field, (int) expWeek.getExpData().getV4(), L.df());
+                colorForge(window.exp_v8_field, (int) expWeek.getExpData().getV8(), L.df());
                 colorForge(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), L.df());
-                text = floor(
-                        ((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart())
-                                * 100,
-                        100);
+                text = floor(((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.weekStartExpField, text);
 
                 // Month
-                colorForge(window.expDeltaMonthField, (int) expMonth.getExpData().getTotalDelta(), L.df());
-                colorForge(window.expIndDeltaMonthField, (int) expMonth.getExpData().getTotalIndDelta(), L.df());
+                colorForge(window.exp_v5_field, (int) expMonth.getExpData().getV5(), L.df());
+                colorForge(window.exp_v6_field, (int) expMonth.getExpData().getV6(), L.df());
                 colorForge(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), L.df());
-                text = floor(
-                        ((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart())
-                                * 100,
-                        100);
+                text = floor(((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.monthStartExpField, text);
             }
         } catch (Exception e) {
@@ -132,16 +123,6 @@ public class Updater extends MyThread implements Runnable {
 
     public void close() {
         run = false;
-    }
-
-    private double avg() {
-        efresh = apiObject.getExps().getMonth().getOptions().getContract() - apiObject.getIndex();
-        avg_day.add(efresh);
-        double f = 0;
-        for (int i = 0; i < avg_day.size(); i++) {
-            f += avg_day.get(i);
-        }
-        return f / avg_day.size();
     }
 
     // color setting function();

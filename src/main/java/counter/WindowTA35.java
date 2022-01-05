@@ -4,12 +4,14 @@ import api.ApiObject;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
 import charts.charts.Decision_Chart;
+import charts.charts.Exp_Chart;
 import charts.charts.FullCharts2;
 import charts.charts.MainMonthWeekChart;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import options.optionsDataTable.OptionsTableWindow;
 import setting.Setting;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -23,8 +25,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     Color lightGreen = new Color(12, 135, 0);
     Color lightRed = new Color(229, 19, 0);
 
-    public MyGuiComps.MyTextField op_avg;
-    public static MyGuiComps.MyTextField rando;
+    public MyGuiComps.MyTextField op_avg_week;
+    public MyGuiComps.MyTextField op_avg_month;
     public static JButton start;
     private MyGuiComps.MyPanel bottomPanel;
     public MyGuiComps.MyTextField monthStartExpField;
@@ -32,12 +34,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField monthDeltaField;
     public MyGuiComps.MyTextField weekDeltaField;
 
-    MyGuiComps.MyLabel v5_lbl;
-    MyGuiComps.MyLabel v6_lbl;
     public MyGuiComps.MyTextField v5_field;
     public MyGuiComps.MyTextField v6_field;
-    public MyGuiComps.MyTextField v5_speed_field;
-    public MyGuiComps.MyTextField v6_speed_field;
+    public MyGuiComps.MyTextField v4_field;
+    public MyGuiComps.MyTextField v8_field;
 
     public int updater_id = 0;
 
@@ -52,10 +52,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     DDEConnection ddeConnection;
     public MyGuiComps.MyTextField weekStartExpField;
     private MyGuiComps.MyButton btnDetails;
-    public MyGuiComps.MyTextField expDeltaWeekField;
-    public MyGuiComps.MyTextField expDeltaMonthField;
-    public MyGuiComps.MyTextField expIndDeltaWeekField;
-    public MyGuiComps.MyTextField expIndDeltaMonthField;
+    public MyGuiComps.MyTextField exp_v5_field;
+    public MyGuiComps.MyTextField exp_v6_field;
+    public MyGuiComps.MyTextField exp_v4_field;
+    public MyGuiComps.MyTextField exp_v8_field;
     public MyGuiComps.MyTextField expBasketsWeekField;
     public MyGuiComps.MyTextField expBasketsMonthField;
     public MyGuiComps.MyTextField indDeltaNoBasketsField;
@@ -72,11 +72,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     private void load_on_startup() {
         try {
             // DDE connection
-            ddeConnection = new DDEConnection(apiObject);
+//            ddeConnection = new DDEConnection(apiObject);
 
             // Back ground runner
-            backGroundRunner = new BackGroundRunner();
-            backGroundRunner.getHandler().start();
+//            backGroundRunner = new BackGroundRunner();
+//            backGroundRunner.getHandler().start();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showConfirmDialog(this, e.getMessage() + "\n" + e.getCause());
@@ -178,7 +178,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{ "Main chart", "Full chart 2", "Options window", "Decision_Chart", "Decision v4, v8"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart 2", "Options window", "Decision_Chart", "Decision v4, v8", "Exp week v4, v8"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -187,18 +187,22 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             public void actionPerformed(ActionEvent e) {
                 switch (chartsCombo.getSelectedItem().toString()) {
                     case "Full chart 2":
-                            FullCharts2 chart = new FullCharts2(apiObject);
-                            chart.createChart();
+                        FullCharts2 chart = new FullCharts2(apiObject);
+                        chart.createChart();
                         break;
                     case "Main chart":
-                            MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
-                            mainMonthWeekChart.createChart();
+                        MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
+                        mainMonthWeekChart.createChart();
                     case "Options window":
                         new OptionsTableWindow("Options window");
                         break;
                     case "Decision v4, v8":
                         Decision_Chart decision_chart = new Decision_Chart(apiObject);
                         decision_chart.createChart();
+                        break;
+                    case "Exp week v4, v8":
+                        Exp_Chart exp_chart = new Exp_Chart(apiObject);
+                        exp_chart.createChart();
                         break;
                     default:
                         break;
@@ -243,7 +247,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         basket_header_panel.setBounds(0, 0, 55, 25);
         getContentPane().add(basket_header_panel);
 
-        MyGuiComps.MyLabel baskets_lbl = new MyGuiComps.MyLabel("סלים");
+        MyGuiComps.MyLabel baskets_lbl = new MyGuiComps.MyLabel("Baskets");
         baskets_lbl.setHorizontalAlignment(SwingConstants.CENTER);
         baskets_lbl.setForeground(new Color(0, 0, 51));
         baskets_lbl.setBounds(0, 0, 55, 26);
@@ -254,7 +258,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         op_avg_header_panel.setBounds(basket_header_panel.getX() + basket_header_panel.getWidth() + 1, 0, 64, 25);
         getContentPane().add(op_avg_header_panel);
 
-        MyGuiComps.MyLabel move_lbl = new MyGuiComps.MyLabel("ממוצע");
+        MyGuiComps.MyLabel move_lbl = new MyGuiComps.MyLabel("Avg");
         move_lbl.setHorizontalAlignment(SwingConstants.CENTER);
         move_lbl.setForeground(new Color(0, 0, 51));
         move_lbl.setBounds(0, 0, 68, 25);
@@ -265,38 +269,27 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         getContentPane().add(op_avg_panel);
         op_avg_panel.setLayout(null);
 
-        op_avg = new MyGuiComps.MyTextField();
-        op_avg.setBorder(null);
-        op_avg.setBounds(7, 5, 49, 25);
-        op_avg_panel.add(op_avg);
-        op_avg.setHorizontalAlignment(SwingConstants.CENTER);
-        op_avg.setForeground(Color.WHITE);
-        op_avg.setColumns(10);
+        op_avg_week = new MyGuiComps.MyTextField();
+        op_avg_week.setBorder(null);
+        op_avg_week.setBounds(7, 5, 49, 25);
+        op_avg_panel.add(op_avg_week);
+        op_avg_week.setHorizontalAlignment(SwingConstants.CENTER);
+        op_avg_week.setForeground(Color.WHITE);
+        op_avg_week.setColumns(10);
 
-        MyGuiComps.MyPanel panel_18 = new MyGuiComps.MyPanel();
-        panel_18.setLayout(null);
-        panel_18.setBounds(0, 35, 64, 25);
-        op_avg_panel.add(panel_18);
-
-        MyGuiComps.MyLabel label_10 = new MyGuiComps.MyLabel("רנדומלי");
-        label_10.setHorizontalAlignment(SwingConstants.CENTER);
-        label_10.setForeground(new Color(0, 0, 51));
-        label_10.setBounds(0, 0, 64, 25);
-        panel_18.add(label_10);
-
-        rando = new MyGuiComps.MyTextField();
-        rando.setBorder(null);
-        rando.setBounds(7, 66, 49, 25);
-        op_avg_panel.add(rando);
-        rando.setHorizontalAlignment(SwingConstants.CENTER);
-        rando.setForeground(new Color(255, 255, 255));
-        rando.setColumns(10);
+        op_avg_month = new MyGuiComps.MyTextField();
+        op_avg_month.setBorder(null);
+        op_avg_month.setBounds(op_avg_week.getX(), op_avg_week.getY() + op_avg_week.getHeight() + 3, 49, 25);
+        op_avg_panel.add(op_avg_month);
+        op_avg_month.setHorizontalAlignment(SwingConstants.CENTER);
+        op_avg_month.setForeground(new Color(255, 255, 255));
+        op_avg_month.setColumns(10);
 
         MyGuiComps.MyPanel deltaHeaderPanel = new MyGuiComps.MyPanel();
         deltaHeaderPanel.setLayout(null);
         deltaHeaderPanel.setBounds(op_avg_header_panel.getX() + op_avg_header_panel.getWidth() + 1, op_avg_header_panel.getY(), 80, 25);
 
-        MyGuiComps.MyLabel deltaLbl = new MyGuiComps.MyLabel("דלתא");
+        MyGuiComps.MyLabel deltaLbl = new MyGuiComps.MyLabel("Delta");
         deltaLbl.setBounds(0, 0, deltaHeaderPanel.getWidth(), deltaHeaderPanel.getHeight());
         deltaLbl.setHorizontalAlignment(JLabel.CENTER);
         deltaLbl.setForeground(new Color(0, 0, 51));
@@ -335,14 +328,13 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         decision_header_panel.setBounds(deltaHeaderPanel.getX() + deltaHeaderPanel.getWidth() + 1, deltaHeaderPanel.getY(), 145, 25);
         getContentPane().add(decision_header_panel);
 
-        MyGuiComps.MyLabel decision_lbl = new MyGuiComps.MyLabel("מכונה");
-        decision_lbl.setBounds(3, 0, 65, 25);
-        decision_header_panel.add(decision_lbl);
+        MyGuiComps.MyLabel main_decision_lbl = new MyGuiComps.MyLabel("Main");
+        main_decision_lbl.setBounds(3, 0, 65, 25);
+        decision_header_panel.add(main_decision_lbl);
 
-        MyGuiComps.MyLabel speed_lbl = new MyGuiComps.MyLabel("מהירות");
-        speed_lbl.setBounds(decision_lbl.getX() + decision_lbl.getWidth() + 3, decision_lbl.getY(), decision_lbl.getWidth(), decision_lbl.getHeight());
-        decision_header_panel.add(speed_lbl);
-
+        MyGuiComps.MyLabel secondary_decision_lbl = new MyGuiComps.MyLabel("Secondary");
+        secondary_decision_lbl.setBounds(main_decision_lbl.getX() + main_decision_lbl.getWidth() + 3, main_decision_lbl.getY(), main_decision_lbl.getWidth(), main_decision_lbl.getHeight());
+        decision_header_panel.add(secondary_decision_lbl);
 
         // Vs Panel
         MyGuiComps.MyPanel decisions_panel = new MyGuiComps.MyPanel();
@@ -358,23 +350,20 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         // V6
         v6_field = new MyGuiComps.MyTextField();
-        v6_field.setBounds(5, 35, 65, 25);
+        v6_field.setBounds(v5_field.getX() + v5_field.getWidth() + 1, v5_field.getY(), 65, 25);
         decisions_panel.add(v6_field);
 
+        // V4
+        v4_field = new MyGuiComps.MyTextField();
+        v4_field.setBounds(v5_field.getX(), v5_field.getY() + v5_field.getHeight() + 3, 65, 25);
+        v4_field.setForeground(Color.BLACK);
+        decisions_panel.add(v4_field);
 
-        // V5 speed
-        v5_speed_field = new MyGuiComps.MyTextField();
-        v5_speed_field.setBounds(v5_field.getX() + v5_field.getWidth() + 3, v5_field.getY(), 65, 25);
-        v5_speed_field.setForeground(Color.BLACK);
-        decisions_panel.add(v5_speed_field);
-
-        // V6 speed
-        v6_speed_field = new MyGuiComps.MyTextField();
-        v6_speed_field.setBounds(v6_field.getX() + v6_field.getWidth() + 3, v6_field.getY(), 65, 25);
-        v6_speed_field.setForeground(Color.BLACK);
-        decisions_panel.add(v6_speed_field);
-
-
+        // V8
+        v8_field = new MyGuiComps.MyTextField();
+        v8_field.setBounds(v6_field.getX(), v6_field.getY() + v6_field.getHeight() + 3, 65, 25);
+        v8_field.setForeground(Color.BLACK);
+        decisions_panel.add(v8_field);
 
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
@@ -391,73 +380,44 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_header_panel.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, 0, 362, 25);
         getContentPane().add(exp_header_panel);
 
-        MyGuiComps.MyLabel label_2 = new MyGuiComps.MyLabel("תנועה");
+        MyGuiComps.MyLabel label_2 = new MyGuiComps.MyLabel("Move");
         label_2.setBounds(66, 0, 68, 25);
         exp_header_panel.add(label_2);
         label_2.setHorizontalAlignment(SwingConstants.CENTER);
         label_2.setForeground(new Color(0, 0, 51));
 
-        MyGuiComps.MyLabel label_13 = new MyGuiComps.MyLabel("סלים");
+        MyGuiComps.MyLabel label_13 = new MyGuiComps.MyLabel("Baskets");
         label_13.setBounds(139, 0, 72, 25);
         exp_header_panel.add(label_13);
         label_13.setHorizontalAlignment(SwingConstants.CENTER);
         label_13.setForeground(new Color(0, 0, 51));
 
-        MyGuiComps.MyLabel label_11 = new MyGuiComps.MyLabel("דלתא");
+        MyGuiComps.MyLabel label_11 = new MyGuiComps.MyLabel("Main");
         label_11.setBounds(212, 0, 68, 25);
         exp_header_panel.add(label_11);
         label_11.setHorizontalAlignment(SwingConstants.CENTER);
         label_11.setForeground(new Color(0, 0, 51));
 
-        MyGuiComps.MyLabel label_1 = new MyGuiComps.MyLabel("מניות");
+        MyGuiComps.MyLabel label_1 = new MyGuiComps.MyLabel("Secondary");
         label_1.setBounds(284, 0, 68, 25);
         exp_header_panel.add(label_1);
         label_1.setHorizontalAlignment(SwingConstants.CENTER);
         label_1.setForeground(new Color(0, 0, 51));
 
-        MyGuiComps.MyLabel exp_lbl = new MyGuiComps.MyLabel("פקיעה");
+        MyGuiComps.MyLabel exp_lbl = new MyGuiComps.MyLabel("Exp");
         exp_lbl.setHorizontalAlignment(SwingConstants.CENTER);
         exp_lbl.setForeground(new Color(0, 0, 51));
         exp_lbl.setBounds(0, 0, 68, 25);
         exp_header_panel.add(exp_lbl);
 
+
+        // -------------------------- EXP -------------------------- //
         MyGuiComps.MyPanel exp_panel = new MyGuiComps.MyPanel();
         exp_panel.setBounds(exp_header_panel.getX(), exp_header_panel.getY() + exp_header_panel.getHeight() + 1, 362, 102);
         getContentPane().add(exp_panel);
         exp_panel.setLayout(null);
 
-        expDeltaWeekField = new MyGuiComps.MyTextField();
-        expDeltaWeekField.setHorizontalAlignment(SwingConstants.CENTER);
-        expDeltaWeekField.setForeground(Color.WHITE);
-        expDeltaWeekField.setColumns(10);
-        expDeltaWeekField.setBorder(null);
-        expDeltaWeekField.setBounds(212, 11, 68, 25);
-        exp_panel.add(expDeltaWeekField);
-
-        expDeltaMonthField = new MyGuiComps.MyTextField();
-        expDeltaMonthField.setHorizontalAlignment(SwingConstants.CENTER);
-        expDeltaMonthField.setForeground(Color.WHITE);
-        expDeltaMonthField.setColumns(10);
-        expDeltaMonthField.setBorder(null);
-        expDeltaMonthField.setBounds(212, 41, 68, 25);
-        exp_panel.add(expDeltaMonthField);
-
-        expBasketsWeekField = new MyGuiComps.MyTextField();
-        expBasketsWeekField.setHorizontalAlignment(SwingConstants.CENTER);
-        expBasketsWeekField.setForeground(Color.WHITE);
-        expBasketsWeekField.setColumns(10);
-        expBasketsWeekField.setBorder(null);
-        expBasketsWeekField.setBounds(139, 11, 68, 25);
-        exp_panel.add(expBasketsWeekField);
-
-        expBasketsMonthField = new MyGuiComps.MyTextField();
-        expBasketsMonthField.setHorizontalAlignment(SwingConstants.CENTER);
-        expBasketsMonthField.setForeground(Color.WHITE);
-        expBasketsMonthField.setColumns(10);
-        expBasketsMonthField.setBorder(null);
-        expBasketsMonthField.setBounds(139, 41, 68, 25);
-        exp_panel.add(expBasketsMonthField);
-
+        // Start
         weekStartExpField = new MyGuiComps.MyTextField();
         weekStartExpField.setBounds(66, 11, 68, 25);
         exp_panel.add(weekStartExpField);
@@ -474,29 +434,64 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         monthStartExpField.setForeground(Color.WHITE);
         monthStartExpField.setColumns(10);
 
-        expIndDeltaWeekField = new MyGuiComps.MyTextField();
-        expIndDeltaWeekField.setBounds(284, 11, 68, 25);
-        exp_panel.add(expIndDeltaWeekField);
-        expIndDeltaWeekField.setHorizontalAlignment(SwingConstants.CENTER);
-        expIndDeltaWeekField.setForeground(Color.WHITE);
-        expIndDeltaWeekField.setColumns(10);
-        expIndDeltaWeekField.setBorder(null);
+        // Baskets
+        expBasketsWeekField = new MyGuiComps.MyTextField();
+        expBasketsWeekField.setHorizontalAlignment(SwingConstants.CENTER);
+        expBasketsWeekField.setForeground(Color.WHITE);
+        expBasketsWeekField.setColumns(10);
+        expBasketsWeekField.setBorder(null);
+        expBasketsWeekField.setBounds(weekStartExpField.getX() + weekStartExpField.getWidth() + 1, weekStartExpField.getY(), 68, 25);
+        exp_panel.add(expBasketsWeekField);
 
-        expIndDeltaMonthField = new MyGuiComps.MyTextField();
-        expIndDeltaMonthField.setBounds(284, 41, 68, 25);
-        exp_panel.add(expIndDeltaMonthField);
-        expIndDeltaMonthField.setHorizontalAlignment(SwingConstants.CENTER);
-        expIndDeltaMonthField.setForeground(Color.WHITE);
-        expIndDeltaMonthField.setColumns(10);
-        expIndDeltaMonthField.setBorder(null);
+        expBasketsMonthField = new MyGuiComps.MyTextField();
+        expBasketsMonthField.setHorizontalAlignment(SwingConstants.CENTER);
+        expBasketsMonthField.setForeground(Color.WHITE);
+        expBasketsMonthField.setColumns(10);
+        expBasketsMonthField.setBorder(null);
+        expBasketsMonthField.setBounds(monthStartExpField.getX() + monthStartExpField.getWidth() + 1, monthStartExpField.getY(), 68, 25);
+        exp_panel.add(expBasketsMonthField);
 
-        MyGuiComps.MyLabel label_4 = new MyGuiComps.MyLabel("שבועי");
+        // V4 V8 (WEEK)
+        exp_v4_field = new MyGuiComps.MyTextField();
+        exp_v4_field.setBounds(expBasketsWeekField.getX() + expBasketsWeekField.getWidth() + 1, expBasketsWeekField.getY(), 68, 25);
+        exp_panel.add(exp_v4_field);
+        exp_v4_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v4_field.setForeground(Color.WHITE);
+        exp_v4_field.setColumns(10);
+        exp_v4_field.setBorder(null);
+
+        exp_v8_field = new MyGuiComps.MyTextField();
+        exp_v8_field.setBounds(exp_v4_field.getX() + exp_v4_field.getWidth() + 1, exp_v4_field.getY(), 68, 25);
+        exp_panel.add(exp_v8_field);
+        exp_v8_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v8_field.setForeground(Color.WHITE);
+        exp_v8_field.setColumns(10);
+        exp_v8_field.setBorder(null);
+
+        // V5 V6 (MONTH)
+        exp_v5_field = new MyGuiComps.MyTextField();
+        exp_v5_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v5_field.setForeground(Color.WHITE);
+        exp_v5_field.setColumns(10);
+        exp_v5_field.setBorder(null);
+        exp_v5_field.setBounds(expBasketsMonthField.getX() + expBasketsMonthField.getWidth() + 1, expBasketsMonthField.getY(), 68, 25);
+        exp_panel.add(exp_v5_field);
+
+        exp_v6_field = new MyGuiComps.MyTextField();
+        exp_v6_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v6_field.setForeground(Color.WHITE);
+        exp_v6_field.setColumns(10);
+        exp_v6_field.setBorder(null);
+        exp_v6_field.setBounds(exp_v5_field.getX() + exp_v5_field.getWidth() + 1, exp_v5_field.getY(), 68, 25);
+        exp_panel.add(exp_v6_field);
+
+        MyGuiComps.MyLabel label_4 = new MyGuiComps.MyLabel("Week");
         label_4.setHorizontalAlignment(SwingConstants.CENTER);
         label_4.setForeground(new Color(0, 0, 51));
         label_4.setBounds(0, 11, 68, 25);
         exp_panel.add(label_4);
 
-        MyGuiComps.MyLabel label_14 = new MyGuiComps.MyLabel("חודשי");
+        MyGuiComps.MyLabel label_14 = new MyGuiComps.MyLabel("Month");
         label_14.setHorizontalAlignment(SwingConstants.CENTER);
         label_14.setForeground(new Color(0, 0, 51));
         label_14.setBounds(0, 41, 68, 25);

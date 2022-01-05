@@ -29,6 +29,8 @@ public abstract class Exp implements IJsonData {
 	private double delta_avg_30 = 0;
 	private double bid_ask_counter_avg_30 = 0;
 
+
+
 	public Exp(ApiObject apiObject, String exp_name) {
 		this.apiObject = apiObject;
 		this.exp_name = exp_name;
@@ -169,4 +171,5 @@ public abstract class Exp implements IJsonData {
 	public String getSymbol() {
 		return symbol;
 	}
+
 }

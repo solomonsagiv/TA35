@@ -22,7 +22,6 @@ public class Factories {
         public static final String DF_TABLE = "data.ta35_decision_func";
         public static final String DF_N_SPEED_300 = "data.research_ta35_df5_speed_300";
         public static final String DF_SPEED_300 = "data.research_ta35_df6_speed_300";
-
     }
 
     public static class TimeSeries {

@@ -187,7 +187,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
         rando_end = apiObject.getLast();
         rando = floorDouble(((rando_end - rando_start) / rando_end) * 100);
         apiObject.setRando(rando);
-        setColorPresent(WindowTA35.rando, floorDouble(rando));
     }
 
     public double dbl(String string) {

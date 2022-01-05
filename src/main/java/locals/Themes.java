@@ -36,6 +36,7 @@ public class Themes {
 
     // Fonts
     public static Font ARIEL_15 = new Font("Ariel", Font.PLAIN, 15);
+    public static Font ARIEL_14 = new Font("Ariel", Font.PLAIN, 14);
     public static Font ARIEL_BOLD_15 = new Font("Ariel", Font.BOLD, 15);
 
     // Colors

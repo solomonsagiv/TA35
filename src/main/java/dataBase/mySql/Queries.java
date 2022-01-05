@@ -3,6 +3,7 @@ package dataBase.mySql;
 import api.ApiObject;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -71,6 +72,19 @@ public class Queries {
         return MySql.select(query);
     }
 
+
+    public static ResultSet get_decision_exp(String exp, String decisio_table_location, int session, int vesrion) {
+        String q = "select sum(delta) as value " +
+                "from %s " +
+                "where session_id = %s " +
+                "and version = %s " +
+                "and time between date_trunc('day', (select date from sagiv.ta35_exps " +
+                "where exp_type = '%s')) and date_trunc('day', now());";
+        String query = String.format(q, decisio_table_location, session, vesrion, exp);
+
+        return MySql.select(query);
+    }
+
     public static ResultSet op_avg_cumulative(String index_table, String fut_table) {
         String query = String.format("select i.time as time, avg(f.value - i.value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s i " +
@@ -99,7 +113,7 @@ public class Queries {
 
     public static ResultSet get_last_record(String table_location) {
         String q = "select * from %s order by time desc limit 1";
-        
+
         String query = String.format(q, table_location);
         return MySql.select(query);
     }
@@ -189,6 +203,37 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_exp_decision_function(int session, int version, String exp, int steps) {
+        String modulu = "%";
+        String q = "select * " +
+                "from (select time, " +
+                "sum(delta) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value, " +
+                "row_number() over (order by time) as row " +
+                "from %s " +
+                "where session_id = %s " +
+                "and version = %s " +
+                "and time between date_trunc('day', (select date " +
+                "from sagiv.ta35_exps " +
+                "where exp_type = '%s')) and date_trunc('day', now())) a " +
+                "where row %s %s = 0;";
+        String query = String.format(q, Factories.Tables.DF_TABLE, session, version, exp, modulu, steps);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_exp_serie(String table_location, String exp, int steps) {
+        String modulu = "%";
+        String q = "select * " +
+                "from ( " +
+                "select time, index as value, row_number() over (order by time) as row " +
+                "from %s " +
+                "where time between date_trunc('day', (select date " +
+                "from sagiv.ta35_exps " +
+                "where exp_type = '%s')) and date_trunc('day', now())) a " +
+                "where row %s %s = 0;";
+        String query = String.format(q, table_location, exp, modulu, steps);
+        return MySql.select(query);
+    }
+
     public static double handle_rs(ResultSet rs) {
         while (true) {
             try {
@@ -260,6 +305,7 @@ public class Queries {
         String query = String.format(q, Factories.Tables.SAGIV_OPTIONS_STATUS_TABLE, exp_name);
         return MySql.select(query);
     }
+
 
     public static class Filters {
         public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";

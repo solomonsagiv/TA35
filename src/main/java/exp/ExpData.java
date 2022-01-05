@@ -11,6 +11,10 @@ public class ExpData implements IJsonData {
 	private double delta = 0;
 	private int baskets = 0;
 	private double indDelta = 0;
+	private double v4 = 0;
+	private double v8 = 0;
+	private double v6 = 0;
+	private double v5 = 0;
 
 	ApiObject apiObject;
 	Exp exp;
@@ -51,7 +55,39 @@ public class ExpData implements IJsonData {
 	public int getTotalBaskets() {
 		return baskets + (apiObject.getBasketUp() - apiObject.getBasketDown());
 	}
-	
+
+	public double getV4() {
+		return v4;
+	}
+
+	public void setV4(double v4) {
+		this.v4 = v4;
+	}
+
+	public double getV8() {
+		return v8;
+	}
+
+	public void setV8(double v8) {
+		this.v8 = v8;
+	}
+
+	public double getV6() {
+		return v6;
+	}
+
+	public void setV6(double v6) {
+		this.v6 = v6;
+	}
+
+	public double getV5() {
+		return v5;
+	}
+
+	public void setV5(double v5) {
+		this.v5 = v5;
+	}
+
 	@Override
 	public MyJson getAsJson() {
 		MyJson json = new MyJson();
