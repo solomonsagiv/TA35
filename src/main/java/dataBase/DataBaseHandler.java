@@ -52,8 +52,8 @@ public class DataBaseHandler {
 
             week.getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE)));
             month.getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE)));
-            week.getOptions().setDelta_from_fix(week_delta);
-            month.getOptions().setDelta_from_fix(month_delta);
+            week.getOptions().setTotal_delta(week_delta);
+            month.getOptions().setTotal_delta(month_delta);
             week.getOptions().setConBidAskCounter(bid_ask_counter_week);
             month.getOptions().setConBidAskCounter(bid_ask_counter_month);
             apiObject.setBasketUp(baskets_up);

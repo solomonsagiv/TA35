@@ -85,7 +85,7 @@ public class Updater extends MyThread implements Runnable {
                 window.basket_up_field.setText(str(apiObject.getBasketUp()));
                 window.basket_down_field.setText(str(apiObject.getBasketDown()));
                 setColorInt(window.basketsSumField, (apiObject.getBasketUp() - apiObject.getBasketDown()));
-
+                
                 // Delta calc
                 // Month
                 colorForge(window.monthDeltaField, (int) optionsMonth.getTotal_delta(), L.df());

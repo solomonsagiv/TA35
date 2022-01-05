@@ -270,6 +270,10 @@ public class Options implements IJsonData {
         return total_delta;
     }
 
+    public void setTotal_delta(double total_delta) {
+        this.total_delta = total_delta;
+    }
+
     public double absolute(double d) {
         return Math.abs(d);
     }
@@ -313,7 +317,6 @@ public class Options implements IJsonData {
     public void loadFromJson(MyJson json) {
         try {
             setConBidAskCounter(json.getInt(JsonStrings.conBidAskCounter));
-            setDelta_from_fix(json.getDouble(JsonStrings.delta));
         } catch (Exception e) {
             e.printStackTrace();
         }
