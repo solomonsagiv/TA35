@@ -7,7 +7,6 @@ import dataBase.mySql.Queries;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import locals.L;
-
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
@@ -36,7 +35,6 @@ public class DataBaseHandler {
         // Set loaded
         apiObject.setDbLoaded(true);
     }
-
 
     public void load_today_data(ApiObject apiObject) {
         try {

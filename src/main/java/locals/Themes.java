@@ -38,7 +38,7 @@ public class Themes {
     public static Font ARIEL_17 = new Font("Ariel", Font.PLAIN, 17);
     public static Font ARIEL_14 = new Font("Ariel", Font.PLAIN, 14);
     public static Font ARIEL_BOLD_15 = new Font("Ariel", Font.BOLD, 15);
-    public static Font VERDANA_BOLD_15 = new Font("Verdana", Font.BOLD, 12);
+    public static Font VERDANA_PLAIN_12 = new Font("Verdana", Font.PLAIN, 12);
 
     // Colors
     public static Color ORANGE = new Color(219, 158, 47);

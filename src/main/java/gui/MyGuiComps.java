@@ -7,7 +7,6 @@ import dataBase.mySql.Queries;
 import gui.listeners.MyListeners;
 import locals.L;
 import locals.Themes;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -160,7 +159,7 @@ public class MyGuiComps {
 
         private void init() {
             setBounds(new Rectangle(65, 25));
-            setFont(Themes.VERDANA_BOLD_15);
+            setFont(Themes.VERDANA_PLAIN_12);
             setForeground(Color.BLACK);
             setHorizontalAlignment(JTextField.CENTER);
             setBackground(Themes.GREY_VERY_LIGHT);

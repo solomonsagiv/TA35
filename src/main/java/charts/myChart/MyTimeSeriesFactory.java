@@ -3,14 +3,15 @@ package charts.myChart;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.Queries;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MyTimeSeriesFactory {
 
-    public static MyTimeSeries get_serie(String serie_name) {
+    public static int step_second = 5;
 
+    public static MyTimeSeries get_serie(String serie_name) {
+        
         switch (serie_name.toUpperCase()) {
             // INDEX
             case Factories.TimeSeries.INDEX_SERIE:
@@ -27,7 +28,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie(Factories.Tables.SAGIV_INDEX_TABLE);
+                        ResultSet rs = Queries.get_serie(Factories.Tables.SAGIV_INDEX_TABLE, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -45,7 +46,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.SAGIV_DELTA_WEEK_TABLE);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.SAGIV_DELTA_WEEK_TABLE, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -63,7 +64,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.SAGIV_DELTA_MONTH_TABLE);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.SAGIV_DELTA_MONTH_TABLE, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -96,7 +97,6 @@ public class MyTimeSeriesFactory {
 //                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-
             case Factories.TimeSeries.DF_V_8_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DF_V_4_SERIE) {
                     @Override
@@ -124,16 +124,13 @@ public class MyTimeSeriesFactory {
                     public ResultSet load_last_x_time(int minuts) {
                         String table_location = Factories.Tables.DF_TABLE;
                         ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 2, 5, minuts);
-
                         while (true) {
                             try {
                                 if (!rs.next()) break;
-
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
                             }
                         }
-
                         return rs;
                     }
 
@@ -164,7 +161,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.DELTA_MIX_TABLE);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.DELTA_MIX_TABLE, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -268,7 +265,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.INDEX_DELTA_TABLE);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.INDEX_DELTA_TABLE, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -392,7 +389,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -411,7 +408,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE);
+                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -458,5 +455,4 @@ public class MyTimeSeriesFactory {
         }
         return null;
     }
-
 }

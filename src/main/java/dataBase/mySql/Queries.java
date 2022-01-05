@@ -25,10 +25,35 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_serie(String table_location, int step_second) {
+        String modulu = "%";
+        String q = "select * " +
+                "from ( " +
+                "SELECT *, row_number() over (order by time) as row " +
+                "FROM %s " +
+                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) " +
+                ") a " +
+                "where row %s %s = 0;";
+        String query = String.format(q, table_location, modulu, step_second);
+        return MySql.select(query);
+    }
+
     public static ResultSet get_serie_cumulative_sum(String table_location) {
         String q = "select time, sum(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
         String query = String.format(q, table_location);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_serie_cumulative_sum(String table_location, int step_second) {
+        String modulu = "%";
+        String q = "select * " +
+                "from ( " +
+                "select time, sum(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value, row_number() over ( ORDER BY time ) as row " +
+                "from %s " +
+                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)) a " +
+                "where row %s %s = 0;";
+        String query = String.format(q, table_location, modulu, step_second);
         return MySql.select(query);
     }
 

@@ -21,7 +21,6 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.Layer;
 import org.jfree.ui.RectangleInsets;
 import threads.MyThread;
-
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;

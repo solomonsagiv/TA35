@@ -30,7 +30,7 @@ public class FullCharts2 extends MyChartCreator {
 		props.setProp(ChartPropsEnum.IS_GRID_VISIBLE, 1);
 		props.setProp(ChartPropsEnum.IS_LOAD_DB, 1);
 		props.setProp(ChartPropsEnum.IS_LIVE, -1);
-		props.setProp(ChartPropsEnum.SLEEP, 1000);
+		props.setProp(ChartPropsEnum.SLEEP, 5000);
 		props.setProp(ChartPropsEnum.IS_RANGE_GRID_VISIBLE, -1);
 		props.setProp(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS, (double) INFINITE);
 		props.setProp(ChartPropsEnum.SECONDS_ON_MESS, 10);

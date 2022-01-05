@@ -315,11 +315,6 @@ public class Options implements IJsonData {
 
     @Override
     public void loadFromJson(MyJson json) {
-        try {
-            setConBidAskCounter(json.getInt(JsonStrings.conBidAskCounter));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

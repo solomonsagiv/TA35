@@ -6,7 +6,6 @@ import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.Queries;
 import locals.Themes;
-
 import java.awt.*;
 import java.sql.ResultSet;
 

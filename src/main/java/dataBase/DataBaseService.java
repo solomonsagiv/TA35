@@ -93,22 +93,28 @@ public class DataBaseService extends MyBaseService {
         // Bid ask counter week
         change = bid_ask_counter_week - bid_ask_counter_week_0;
         if (change != 0) {
-            bid_ask_counter_week_0 = bid_ask_counter_week;
-            bid_ask_counter_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+            if (change < 20 && change > -20) {
+                bid_ask_counter_week_0 = bid_ask_counter_week;
+                bid_ask_counter_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+            }
         }
 
         // Delta month
         change = bid_ask_counter_month - bid_ask_counter_month_0;
         if (change != 0) {
-            bid_ask_counter_month_0 = bid_ask_counter_month;
-            bid_ask_counter_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+            if (change < 20 && change > -20) {
+                bid_ask_counter_month_0 = bid_ask_counter_month;
+                bid_ask_counter_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+            }
         }
 
         // Index delta
         change = ind_delta - ind_delta_0;
         if (change != 0) {
-            ind_delta_0 = ind_delta;
-            ind_delta_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+            if (change < 10000 && change > -10000) {
+                ind_delta_0 = ind_delta;
+                ind_delta_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+            }
         }
 
         // Baskets
