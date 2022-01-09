@@ -117,7 +117,6 @@ public class FullCharts2 extends MyChartCreator {
 		opavg_15_month.setVisible(false);
 		opavg_15_month.setStokeSize(1.2f);
 
-
 		series = new MyTimeSeries[4];
 		series[0] = opavg_60_week;
 		series[1] = opavg_15_week;
@@ -125,12 +124,12 @@ public class FullCharts2 extends MyChartCreator {
 		series[3] = opavg_60_month;
 
 		// Chart
-		MyChart index_delta_chart = new MyChart(series, props);
+		MyChart op_avg_chart = new MyChart(series, props);
 
 		// ----------------------------------------- Chart ----------------------------------------- //
 
 		// ----- Charts ----- //
-		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart, index_delta_chart };
+		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart, op_avg_chart };
 
 		// ----------------------------------------- Container ----------------------------------------- //
 		MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");

@@ -170,10 +170,10 @@ public class Queries {
     }
 
     public static ResultSet get_op_avg(String fut_table_location, int min) {
-        String q = "select avg(f.futures - ((i.ask + i.bid) / 2)) " +
+        String q = "select avg(f.futures - ((i.ask + i.bid) / 2)) as value " +
                 "from %s i " +
                 "inner join %s f on i.time = f.time " +
-                "where i.time = now() - interval '%s min';";
+                "where i.time > now() - interval '%s min' and bid is not null and ask is not null;";
         String query = String.format(q, Factories.Tables.INDEX_TABLE, fut_table_location, min);
         return MySql.select(query);
     }

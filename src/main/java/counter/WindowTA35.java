@@ -345,7 +345,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         decisions_panel.setHeight(102);
         getContentPane().add(decisions_panel);
 
-
         // V4
         v4_field = new MyGuiComps.MyTextField();
         v4_field.setBounds(5, 5, 65, 25);

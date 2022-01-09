@@ -106,7 +106,7 @@ public class DataBaseService extends MyBaseService {
         // Bid ask counter week
         change = bid_ask_counter_week - bid_ask_counter_week_0;
         if (change != 0) {
-            if (change < 20 && change > -20) {
+            if (change < 100 && change > -100) {
                 bid_ask_counter_week_0 = bid_ask_counter_week;
                 bid_ask_counter_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
             }
@@ -115,7 +115,7 @@ public class DataBaseService extends MyBaseService {
         // Delta month
         change = bid_ask_counter_month - bid_ask_counter_month_0;
         if (change != 0) {
-            if (change < 20 && change > -20) {
+            if (change < 100 && change > -100) {
                 bid_ask_counter_month_0 = bid_ask_counter_month;
                 bid_ask_counter_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
             }
@@ -199,7 +199,6 @@ public class DataBaseService extends MyBaseService {
                 double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE));
                 double op_avg_month_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 60));
                 double op_avg_month_15 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 15));
-
 
                 // V5 V6 V4 V8
                 apiObject.setV5(v5);

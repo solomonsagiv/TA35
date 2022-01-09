@@ -218,7 +218,6 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-
             case Factories.TimeSeries.INDEX_DELTA_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.INDEX_DELTA_SERIE) {
                     @Override
