@@ -21,15 +21,8 @@ public abstract class Exp implements IJsonData {
 	private int futureEndStrike = 0;
 
 	private double op_avg_60 = 0;
-	private double op_avg_30 = 0;
+	private double op_avg15 = 0;
 	private double op_avg = 0;
-	private double delta_avg = 0;
-	private double delta_avg_60 = 0;
-	private double bid_ask_counter_avg_60 = 0;
-	private double delta_avg_30 = 0;
-	private double bid_ask_counter_avg_30 = 0;
-
-
 
 	public Exp(ApiObject apiObject, String exp_name) {
 		this.apiObject = apiObject;
@@ -46,7 +39,7 @@ public abstract class Exp implements IJsonData {
 	public ExpData getExpData() {
 		return expData;
 	}
-	
+
 	@Override
 	public MyJson getAsJson() {
 		MyJson json = new MyJson();
@@ -54,20 +47,20 @@ public abstract class Exp implements IJsonData {
 		json.put(JsonStrings.options, options.getAsJson());
 		return json;
 	}
-	
+
 	@Override
 	public void loadFromJson(MyJson json) {
 		getExpData().loadFromJson(new MyJson(json.getJSONObject(JsonStrings.expData)));
 		getOptions().loadFromJson(new MyJson(json.getJSONObject(JsonStrings.options)));
 	}
-	
+
 	@Override
 	public MyJson getResetJson() {
 		MyJson json = new MyJson();
 		json.put(JsonStrings.expData, getExpData().getResetJson());
 		return json;
 	}
-	
+
 	public MyJson getFullResetJson() {
 		return new MyJson();
 	}
@@ -120,21 +113,6 @@ public abstract class Exp implements IJsonData {
 		this.op_avg = op_avg;
 	}
 
-	public double getDelta_avg() {
-		return delta_avg;
-	}
-
-	public double getDelta_avg_60() {
-		return delta_avg_60;
-	}
-
-	public double getDelta_avg_30() {
-		return delta_avg_30;
-	}
-
-	public void setDelta_avg_30(double delta_avg_30) {
-		this.delta_avg_30 = delta_avg_30;
-	}
 
 	public String getExp_name() {
 		return exp_name;
@@ -144,28 +122,12 @@ public abstract class Exp implements IJsonData {
 		this.exp_name = exp_name;
 	}
 
-	public void setDelta_avg(double delta_avg) {
-		this.delta_avg = delta_avg;
+	public void setOp_avg15(double op_avg15) {
+		this.op_avg15 = op_avg15;
 	}
 
-	public void setDelta_avg_60(double delta_avg_60) {
-		this.delta_avg_60 = delta_avg_60;
-	}
-
-	public double getBid_ask_counter_avg_60() {
-		return bid_ask_counter_avg_60;
-	}
-
-	public void setBid_ask_counter_avg_60(double bid_ask_counter_avg_60) {
-		this.bid_ask_counter_avg_60 = bid_ask_counter_avg_60;
-	}
-
-	public void setOp_avg_30(double op_avg_30) {
-		this.op_avg_30 = op_avg_30;
-	}
-
-	public double getOp_avg_30() {
-		return op_avg_30;
+	public double getOp_avg15() {
+		return op_avg15;
 	}
 
 	public String getSymbol() {

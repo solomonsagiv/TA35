@@ -57,6 +57,22 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet ta35_op_avg_with_bid_ask(String fut_table, int min, int step_seconds) {
+        String modulu = "%";
+        String q = "select * " +
+                "from ( " +
+                "select i.time, " +
+                "avg(f.futures - ((i.bid + i.ask) / 2)) " +
+                "over (ORDER BY i.time RANGE BETWEEN INTERVAL '%s min' PRECEDING AND CURRENT ROW) as value, " +
+                "row_number() over (order by i.time)                                              as row " +
+                "from data.ta35_index i " +
+                "inner join %s f on i.time = f.time " +
+                "where i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)) a " +
+                "where row %s %s = 0;";
+        String query = String.format(q, min, fut_table, modulu, step_seconds);
+        return MySql.select(query);
+    }
+
     public static ResultSet get_serie_cumulative_avg(String table_location) {
         String q = "select time, avg(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
@@ -96,7 +112,6 @@ public class Queries {
                 "where i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);", min, index_table, fut_table);
         return MySql.select(query);
     }
-
 
     public static ResultSet get_decision_exp(String exp, String decisio_table_location, int session, int vesrion) {
         String q = "select sum(delta) as value " +

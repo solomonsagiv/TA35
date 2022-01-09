@@ -21,6 +21,7 @@ public class DataBaseService extends MyBaseService {
     double ind_delta_0 = 0;
     double baskets_0 = 0;
     double delta_mix_0 = 0;
+    double ind_bid_ask_counter_0 = 0;
 
     ArrayList<MyTimeStampObject> bid_ask_counter_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> bid_ask_counter_month_timestamp = new ArrayList<>();
@@ -32,6 +33,7 @@ public class DataBaseService extends MyBaseService {
     ArrayList<MyTimeStampObject> fut_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> ind_bid_ask_counter_timestamp = new ArrayList<>();
 
     ExpWeek week;
     ExpMonth month;
@@ -62,9 +64,20 @@ public class DataBaseService extends MyBaseService {
         double fut_week = week.getOptions().getContract();
         double fut_month = month.getOptions().getContract();
         double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
+        double ind_bid_ask_counter = apiObject.getIndBidAskCounter();
+
+
+        // Index bid ask counter
+        double change = ind_bid_ask_counter - ind_bid_ask_counter_0;
+        if (change != 0) {
+            if (change < 10000 && change > -10000) {
+                ind_bid_ask_counter_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+            }
+            ind_bid_ask_counter_0 = ind_bid_ask_counter;
+        }
 
         // Delta week
-        double change = delta_week - delta_week_0;
+        change = delta_week - delta_week_0;
         if (change != 0) {
             if (change < 10000 && change > -10000) {
                 delta_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
@@ -167,7 +180,8 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
             insert_data_retro(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
             insert_data_retro(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
-            insert_data_retro(index_timestamp, Factories.Tables.DELTA_MIX_TABLE);
+            insert_data_retro(delta_mix_timestamp, Factories.Tables.DELTA_MIX_TABLE);
+            insert_data_retro(ind_bid_ask_counter_timestamp, Factories.Tables.INDEX_BID_ASK_COUNTER);
         }).start();
     }
 
@@ -180,7 +194,12 @@ public class DataBaseService extends MyBaseService {
                 int v4 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 4));
                 int v8 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 8));
                 double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
+                double op_avg_week_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 60));
+                double op_avg_week_15 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 15));
                 double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE));
+                double op_avg_month_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 60));
+                double op_avg_month_15 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 15));
+
 
                 // V5 V6 V4 V8
                 apiObject.setV5(v5);
@@ -190,7 +209,12 @@ public class DataBaseService extends MyBaseService {
 
                 // Op avg
                 apiObject.getExps().getWeek().setOp_avg(op_avg_week);
+                apiObject.getExps().getWeek().setOp_avg15(op_avg_week_15);
+                apiObject.getExps().getWeek().setOp_avg_60(op_avg_week_60);
+
                 apiObject.getExps().getMonth().setOp_avg(op_avg_month);
+                apiObject.getExps().getMonth().setOp_avg15(op_avg_month_15);
+                apiObject.getExps().getMonth().setOp_avg_60(op_avg_month_60);
                 apiObject.setDbLoaded(true);
 
                 System.out.println("Grabbed");

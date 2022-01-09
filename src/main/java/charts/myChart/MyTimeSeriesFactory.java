@@ -165,22 +165,6 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-            case Factories.TimeSeries.DELTA_WEEK_AVG_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.DELTA_WEEK_AVG_SERIE) {
-                    @Override
-                    public ResultSet load_last_x_time(int minuts) {
-                        return null;
-                    }
-
-                    @Override
-                    public double getData() {
-                        return apiObject.getExps().getWeek().getDelta_avg();
-                    }
-
-                    @Override
-                    public void load() {
-                    }
-                };
             case Factories.TimeSeries.DELTA_WEEK_MONTH_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_WEEK_MONTH_SERIE) {
                     @Override
@@ -196,22 +180,6 @@ public class MyTimeSeriesFactory {
                     @Override
                     public void load() {
 
-                    }
-                };
-            case Factories.TimeSeries.DELTA_WEEK_AVG_60_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.DELTA_WEEK_AVG_60_SERIE) {
-                    @Override
-                    public ResultSet load_last_x_time(int minuts) {
-                        return null;
-                    }
-
-                    @Override
-                    public double getData() {
-                        return apiObject.getExps().getWeek().getDelta_avg_60();
-                    }
-
-                    @Override
-                    public void load() {
                     }
                 };
             case Factories.TimeSeries.OP_AVG_WEEK_SERIE:
@@ -246,7 +214,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.op_avg_cumulative(Factories.Tables.SAGIV_INDEX_TABLE, Factories.Tables.SAGIV_FUT_WEEK_TABLE, 60);
+                        ResultSet rs = Queries.ta35_op_avg_with_bid_ask(Factories.Tables.FUT_WEEK_TABLE, 60, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -269,9 +237,8 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-
-            case Factories.TimeSeries.DELTA_MONTH_AVG_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.DELTA_MONTH_AVG_SERIE) {
+            case Factories.TimeSeries.OP_AVG_WEEK_15_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_15_SERIE) {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         return null;
@@ -279,62 +246,12 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExps().getMonth().getDelta_avg();
+                        return apiObject.getExps().getWeek().getOp_avg15();
                     }
 
                     @Override
                     public void load() {
-                    }
-                };
-            case Factories.TimeSeries.DELTA_MONTH_AVG_60_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.DELTA_MONTH_AVG_60_SERIE) {
-                    @Override
-                    public ResultSet load_last_x_time(int minuts) {
-                        return null;
-                    }
-
-                    @Override
-                    public double getData() {
-                        return apiObject.getExps().getMonth().getDelta_avg_60();
-                    }
-
-                    @Override
-                    public void load() {
-                    }
-                };
-            case Factories.TimeSeries.OP_AVG_MONTH_30_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.OP_AVG_MONTH_30_SERIE) {
-                    @Override
-                    public ResultSet load_last_x_time(int minuts) {
-                        return null;
-                    }
-
-                    @Override
-                    public double getData() {
-                        return apiObject.getExps().getMonth().getOp_avg_30();
-                    }
-
-                    @Override
-                    public void load() {
-                        ResultSet rs = Queries.op_avg_cumulative(Factories.Tables.SAGIV_INDEX_TABLE, Factories.Tables.SAGIV_FUT_MONTH_TABLE, 30);
-                        DataBaseHandler.loadSerieData(rs, this);
-                    }
-                };
-            case Factories.TimeSeries.OP_AVG_WEEK_30_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_30_SERIE) {
-                    @Override
-                    public ResultSet load_last_x_time(int minuts) {
-                        return null;
-                    }
-
-                    @Override
-                    public double getData() {
-                        return apiObject.getExps().getWeek().getOp_avg_30();
-                    }
-
-                    @Override
-                    public void load() {
-                        ResultSet rs = Queries.op_avg_cumulative(Factories.Tables.SAGIV_INDEX_TABLE, Factories.Tables.SAGIV_FUT_WEEK_TABLE, 30);
+                        ResultSet rs = Queries.ta35_op_avg_with_bid_ask(Factories.Tables.FUT_WEEK_TABLE, 15, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -371,8 +288,27 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
+                         ResultSet rs = Queries.ta35_op_avg_with_bid_ask(Factories.Tables.FUT_MONTH_TABLE, 60, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.OP_AVG_MONTH_15_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().getMonth().getOp_avg15();
+                    }
+
+                    @Override
+                    public void load() {
+                         ResultSet rs = Queries.ta35_op_avg_with_bid_ask(Factories.Tables.FUT_MONTH_TABLE, 15, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
             case Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE:
@@ -413,43 +349,7 @@ public class MyTimeSeriesFactory {
                     }
                 };
 
-            case Factories.TimeSeries.BID_ASK_COUNTER_WEEK_AVG_60_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_AVG_60_SERIE) {
-                    @Override
-                    public ResultSet load_last_x_time(int minuts) {
-                        return null;
-                    }
 
-                    @Override
-                    public double getData() {
-                        return apiObject.getExps().getWeek().getBid_ask_counter_avg_60();
-                    }
-
-                    @Override
-                    public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
-                    }
-                };
-
-            case Factories.TimeSeries.BID_ASK_COUNTER_MONTH_AVG_60_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_AVG_60_SERIE) {
-                    @Override
-                    public ResultSet load_last_x_time(int minuts) {
-                        return null;
-                    }
-
-                    @Override
-                    public double getData() {
-                        return apiObject.getExps().getMonth().getBid_ask_counter_avg_60();
-                    }
-
-                    @Override
-                    public void load() {
-//                        ResultSet rs = Queries.get_serie_cumulative(Factories.Tables.);
-//                        DataBaseHandler.loadSerieData(rs, this);
-                    }
-                };
             default:
                 break;
         }

@@ -94,14 +94,35 @@ public class FullCharts2 extends MyChartCreator {
 		MyProps props_2 = (MyProps) props.clone();
 		props_2.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
 
-		// ----------------------------------------- Index delta ----------------------------------------- //
-		// Index delta
-		MyTimeSeries index_delta_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_DELTA_SERIE);
-		index_delta_serie.setColor(Themes.BLUE_2);
-		index_delta_serie.setStokeSize(1.2f);
+		// ----------------------------------------- Op avg 60 15 ----------------------------------------- //
+		// Op avg 60
+		MyTimeSeries opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
+		opavg_60_week.setColor(Themes.BLUE_2);
+		opavg_60_week.setStokeSize(1.2f);
 
-		series = new MyTimeSeries[1];
-		series[0] = index_delta_serie;
+		// Op avg 15
+		MyTimeSeries opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_15_SERIE);
+		opavg_15_week.setColor(Themes.GREEN);
+		opavg_15_week.setStokeSize(1.2f);
+
+		// Op avg 60
+		MyTimeSeries opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE);
+		opavg_60_month.setColor(Themes.BLUE_2);
+		opavg_60_month.setVisible(false);
+		opavg_60_month.setStokeSize(1.2f);
+
+		// Op avg 15
+		MyTimeSeries opavg_15_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_15_SERIE);
+		opavg_15_month.setColor(Themes.GREEN);
+		opavg_15_month.setVisible(false);
+		opavg_15_month.setStokeSize(1.2f);
+
+
+		series = new MyTimeSeries[4];
+		series[0] = opavg_60_week;
+		series[1] = opavg_15_week;
+		series[2] = opavg_15_month;
+		series[3] = opavg_60_month;
 
 		// Chart
 		MyChart index_delta_chart = new MyChart(series, props);

@@ -3,10 +3,7 @@ package counter;
 import api.ApiObject;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
-import charts.charts.Decision_Chart;
-import charts.charts.Exp_Chart;
-import charts.charts.FullCharts2;
-import charts.charts.MainMonthWeekChart;
+import charts.charts.*;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import options.optionsDataTable.OptionsTableWindow;
@@ -178,7 +175,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart 2", "Options window", "Decision_Chart", "Decision v4, v8", "Exp week v4, v8"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart 2", "Full charts 30", "Options window", "Decision_Chart", "Decision v4, v8", "Exp week v4, v8"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -204,6 +201,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                         Exp_Chart exp_chart = new Exp_Chart(apiObject);
                         exp_chart.createChart();
                         break;
+                    case "Full charts 30":
+                        FullChartsShort fullChartsShort = new FullChartsShort(apiObject);
+                        fullChartsShort.createChart();
+                        break;
+
                     default:
                         break;
                 }

@@ -79,9 +79,8 @@ public class DataBaseHandler {
             double ind_delta_month = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
             double v4_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_WEEK, Factories.Tables.DF_TABLE, 2, 4));
             double v8_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_WEEK, Factories.Tables.DF_TABLE, 2, 8));
-            double v5_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_WEEK, Factories.Tables.DF_TABLE, 2, 5));
-            double v6_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_WEEK, Factories.Tables.DF_TABLE, 2, 6));
-
+            double v5_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_MONTH, Factories.Tables.DF_TABLE, 2, 5));
+            double v6_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_MONTH, Factories.Tables.DF_TABLE, 2, 6));
 
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
