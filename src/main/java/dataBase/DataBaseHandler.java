@@ -49,12 +49,12 @@ public class DataBaseHandler {
             ExpWeek week = apiObject.getExps().getWeek();
             ExpMonth month = apiObject.getExps().getMonth();
 
-            week.getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE)));
-            month.getOptions().load_op_avg(Queries.handle_rs_double_list(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE)));
             week.getOptions().setTotal_delta(week_delta);
-            month.getOptions().setTotal_delta(month_delta);
             week.getOptions().setConBidAskCounter(bid_ask_counter_week);
+
+            month.getOptions().setTotal_delta(month_delta);
             month.getOptions().setConBidAskCounter(bid_ask_counter_month);
+
             apiObject.getStocksHandler().setDelta(index_delta);
             apiObject.setBasketUp(baskets_up);
             apiObject.setBasketDown(baskets_down);
@@ -62,7 +62,6 @@ public class DataBaseHandler {
             e.printStackTrace();
         }
     }
-
 
     public void load_exp_data(ApiObject apiObject) {
         try {
@@ -81,7 +80,7 @@ public class DataBaseHandler {
             double v8_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_WEEK, Factories.Tables.DF_TABLE, 2, 8));
             double v5_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_MONTH, Factories.Tables.DF_TABLE, 2, 5));
             double v6_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_MONTH, Factories.Tables.DF_TABLE, 2, 6));
-
+            
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
             week.getExpData().setDelta(exp_week_delta);

@@ -4,136 +4,164 @@ import api.ApiObject;
 import charts.myChart.*;
 import dataBase.Factories;
 import locals.Themes;
+
 import java.awt.*;
 
 public class FullCharts2 extends MyChartCreator {
 
-	public static void main(String[] args) {
-		FullCharts2 fullCharts2 = new FullCharts2(ApiObject.getInstance());
-		fullCharts2.createChart();
-	}
+    public static void main(String[] args) {
+        FullCharts2 fullCharts2 = new FullCharts2(ApiObject.getInstance());
+        fullCharts2.createChart();
+    }
 
-	// Constructor
-	public FullCharts2(ApiObject apiObject) {
-		super(apiObject);
-	}
+    // Constructor
+    public FullCharts2(ApiObject apiObject) {
+        super(apiObject);
+    }
 
-	@Override
-	public void init() throws CloneNotSupportedException {
+    @Override
+    public void init() throws CloneNotSupportedException {
 
-		MyTimeSeries[] series;
+        MyTimeSeries[] series;
 
-		// Props
-		props = new MyProps();
-		props.setProp(ChartPropsEnum.SECONDS, INFINITE);
-		props.setProp(ChartPropsEnum.IS_INCLUDE_TICKER, -1);
-		props.setProp(ChartPropsEnum.IS_GRID_VISIBLE, 1);
-		props.setProp(ChartPropsEnum.IS_LOAD_DB, 1);
-		props.setProp(ChartPropsEnum.IS_LIVE, -1);
-		props.setProp(ChartPropsEnum.SLEEP, 5000);
-		props.setProp(ChartPropsEnum.IS_RANGE_GRID_VISIBLE, -1);
-		props.setProp(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS, (double) INFINITE);
-		props.setProp(ChartPropsEnum.SECONDS_ON_MESS, 10);
-		props.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
-		props.setProp(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE, 1);
-		props.setProp(ChartPropsEnum.MARKER, 0);
+        // Props
+        props = new MyProps();
+        props.setProp(ChartPropsEnum.SECONDS, INFINITE);
+        props.setProp(ChartPropsEnum.IS_INCLUDE_TICKER, -1);
+        props.setProp(ChartPropsEnum.IS_GRID_VISIBLE, 1);
+        props.setProp(ChartPropsEnum.IS_LOAD_DB, 1);
+        props.setProp(ChartPropsEnum.IS_LIVE, -1);
+        props.setProp(ChartPropsEnum.SLEEP, 5000);
+        props.setProp(ChartPropsEnum.IS_RANGE_GRID_VISIBLE, -1);
+        props.setProp(ChartPropsEnum.CHART_MAX_HEIGHT_IN_DOTS, (double) INFINITE);
+        props.setProp(ChartPropsEnum.SECONDS_ON_MESS, 10);
+        props.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
+        props.setProp(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE, 1);
+        props.setProp(ChartPropsEnum.MARKER, 0);
 
-		// ----------------------------------------- Index ----------------------------------------- //
-		// Index
-		MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_SERIE);
-		indexSerie.setColor(Color.BLACK);
-		indexSerie.setStokeSize(1.2f);
+        // ----------------------------------------- Index ----------------------------------------- //
+        // Index
+        MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_SERIE);
+        indexSerie.setColor(Color.BLACK);
+        indexSerie.setStokeSize(1.2f);
 
-		series = new MyTimeSeries[1];
-		series[0] = indexSerie;
-		
-		// Chart
-		MyChart indexChart = new MyChart(series, props);
+        series = new MyTimeSeries[1];
+        series[0] = indexSerie;
 
-		// ----------------------------------------- Deltas ----------------------------------------- //
-		// Delta week
-		MyTimeSeries delta_week_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_WEEK_SERIE);
-		delta_week_serie.setColor(Themes.GREEN_6);
-		delta_week_serie.setStokeSize(1.2f);
+        // Chart
+        MyChart indexChart = new MyChart(series, props);
 
-		// Delta month
-		MyTimeSeries delta_month_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_SERIE);
-		delta_month_serie.setColor(Themes.GREEN_5);
-		delta_month_serie.setStokeSize(1.2f);
+        // ----------------------------------------- Deltas ----------------------------------------- //
+        // Delta week
+        MyTimeSeries delta_week_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_WEEK_SERIE);
+        delta_week_serie.setColor(Themes.GREEN_6);
+        delta_week_serie.setStokeSize(1.2f);
 
-		// Delta mix
-		MyTimeSeries delta_mixserie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MIX_SERIE);
-		delta_mixserie.setColor(Themes.LIGHT_BLUE_3);
-		delta_mixserie.setStokeSize(1.2f);
+        // Delta month
+        MyTimeSeries delta_month_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_SERIE);
+        delta_month_serie.setColor(Themes.GREEN_5);
+        delta_month_serie.setStokeSize(1.2f);
 
-		series = new MyTimeSeries[3];
-		series[0] = delta_week_serie;
-		series[1] = delta_month_serie;
-		series[2] = delta_mixserie;
+        // Delta mix
+        MyTimeSeries delta_mixserie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MIX_SERIE);
+        delta_mixserie.setColor(Themes.LIGHT_BLUE_3);
+        delta_mixserie.setStokeSize(1.2f);
 
-		// Chart
-		MyChart deltaChart = new MyChart(series, props);
+        series = new MyTimeSeries[3];
+        series[0] = delta_week_serie;
+        series[1] = delta_month_serie;
+        series[2] = delta_mixserie;
 
-		// ----------------------------------------- Bid ask counter ----------------------------------------- //
-		// Counter week
-		MyTimeSeries bid_ask_counter_week_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE);
-		bid_ask_counter_week_serie.setColor(Themes.GREEN_6);
-		bid_ask_counter_week_serie.setStokeSize(1.2f);
+        // Chart
+        MyChart deltaChart = new MyChart(series, props);
 
-		// Counter month
-		MyTimeSeries bid_ask_counter_month_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_SERIE);
-		bid_ask_counter_month_serie.setColor(Themes.GREEN_5);
-		bid_ask_counter_month_serie.setStokeSize(1.2f);
+        // ----------------------------------------- Bid ask counter ----------------------------------------- //
+        // Counter week
+        MyTimeSeries bid_ask_counter_week_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE);
+        bid_ask_counter_week_serie.setColor(Themes.GREEN_6);
+        bid_ask_counter_week_serie.setStokeSize(1.2f);
 
-		series = new MyTimeSeries[2];
-		series[0] = bid_ask_counter_week_serie;
-		series[1] = bid_ask_counter_month_serie;
+        // Counter month
+        MyTimeSeries bid_ask_counter_month_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_SERIE);
+        bid_ask_counter_month_serie.setColor(Themes.GREEN_5);
+        bid_ask_counter_month_serie.setStokeSize(1.2f);
 
-		// Chart
-		MyChart bid_ask_counter_chart = new MyChart(series, props);
-		MyProps props_2 = (MyProps) props.clone();
-		props_2.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
+        series = new MyTimeSeries[2];
+        series[0] = bid_ask_counter_week_serie;
+        series[1] = bid_ask_counter_month_serie;
 
-		// ----------------------------------------- Op avg 60 15 ----------------------------------------- //
-		// Op avg 60
-		MyTimeSeries opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
-		opavg_60_week.setColor(Themes.BLUE_2);
-		opavg_60_week.setStokeSize(1.2f);
+        // Chart
+        MyChart bid_ask_counter_chart = new MyChart(series, props);
+        MyProps props_2 = (MyProps) props.clone();
+        props_2.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
 
-		// Op avg 15
-		MyTimeSeries opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_15_SERIE);
-		opavg_15_week.setColor(Themes.GREEN);
-		opavg_15_week.setStokeSize(1.2f);
+        // ----------------------------------------- Op avg 60 15 ----------------------------------------- //
+        // --------------- WEEK --------------- //
+        // Op avg 60
+        MyTimeSeries opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
+        opavg_60_week.setColor(Themes.BLUE_2);
+        opavg_60_week.setStokeSize(1.2f);
 
-		// Op avg 60
-		MyTimeSeries opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE);
-		opavg_60_month.setColor(Themes.BLUE_2);
-		opavg_60_month.setVisible(false);
-		opavg_60_month.setStokeSize(1.2f);
+        // Op avg 15
+        MyTimeSeries opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_15_SERIE);
+        opavg_15_week.setColor(Themes.GREEN);
+        opavg_15_week.setStokeSize(1.2f);
 
-		// Op avg 15
-		MyTimeSeries opavg_15_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_15_SERIE);
-		opavg_15_month.setColor(Themes.GREEN);
-		opavg_15_month.setVisible(false);
-		opavg_15_month.setStokeSize(1.2f);
+        // Op avg 60 yesterday
+        MyTimeSeries yesterday_opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_60_SERIE);
+        yesterday_opavg_60_week.setColor(Themes.LIGHT_BLUE_3);
+        yesterday_opavg_60_week.setStokeSize(1.2f);
 
-		series = new MyTimeSeries[4];
-		series[0] = opavg_60_week;
-		series[1] = opavg_15_week;
-		series[2] = opavg_15_month;
-		series[3] = opavg_60_month;
+        // Op avg 240 yesterday
+        MyTimeSeries yesterday_opavg_240_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_240_SERIE);
+        yesterday_opavg_240_week.setColor(Themes.BINANCE_ORANGE);
+        yesterday_opavg_240_week.setStokeSize(1.2f);
 
-		// Chart
-		MyChart op_avg_chart = new MyChart(series, props);
+        // --------------- MONTH --------------- //
+        // Op avg 60
+        MyTimeSeries opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE);
+        opavg_60_month.setColor(Themes.BLUE_2);
+        opavg_60_month.setVisible(false);
+        opavg_60_month.setStokeSize(1.2f);
 
-		// ----------------------------------------- Chart ----------------------------------------- //
+        // Op avg 15
+        MyTimeSeries opavg_15_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_15_SERIE);
+        opavg_15_month.setColor(Themes.GREEN);
+        opavg_15_month.setVisible(false);
+        opavg_15_month.setStokeSize(1.2f);
 
-		// ----- Charts ----- //
-		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart, op_avg_chart };
+        // Op avg 60 yesterday
+        MyTimeSeries yesterday_opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_60_SERIE);
+        yesterday_opavg_60_month.setColor(Themes.LIGHT_BLUE_3);
+        yesterday_opavg_60_month.setStokeSize(1.2f);
 
-		// ----------------------------------------- Container ----------------------------------------- //
-		MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
-		chartContainer.create();
+        // Op avg 240 yesterday
+        MyTimeSeries yesterday_opavg_240_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_240_SERIE);
+        yesterday_opavg_240_month.setColor(Themes.BINANCE_ORANGE);
+        yesterday_opavg_240_month.setStokeSize(1.2f);
 
-	}
+        series = new MyTimeSeries[8];
+        series[0] = opavg_60_week;
+        series[1] = opavg_15_week;
+        series[2] = opavg_15_month;
+        series[3] = opavg_60_month;
+        series[4] = yesterday_opavg_60_week;
+        series[5] = yesterday_opavg_240_week;
+        series[6] = yesterday_opavg_60_month;
+        series[7] = yesterday_opavg_240_month;
+
+
+        // Chart
+        MyChart op_avg_chart = new MyChart(series, props);
+
+        // ----------------------------------------- Chart ----------------------------------------- //
+
+        // ----- Charts ----- //
+        MyChart[] charts = {indexChart, op_avg_chart, bid_ask_counter_chart, deltaChart};
+
+        // ----------------------------------------- Container ----------------------------------------- //
+        MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
+        chartContainer.create();
+
+    }
 }

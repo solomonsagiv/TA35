@@ -5,6 +5,7 @@ import arik.Arik;
 import counter.BackGroundRunner;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
+import exp.Exp;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import service.MyBaseService;
@@ -66,7 +67,6 @@ public class DataBaseService extends MyBaseService {
         double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
         double ind_bid_ask_counter = apiObject.getIndBidAskCounter();
 
-
         // Index bid ask counter
         double change = ind_bid_ask_counter - ind_bid_ask_counter_0;
         if (change != 0) {
@@ -112,7 +112,7 @@ public class DataBaseService extends MyBaseService {
             }
         }
 
-        // Delta month
+        // Bid ask counter month
         change = bid_ask_counter_month - bid_ask_counter_month_0;
         if (change != 0) {
             if (change < 100 && change > -100) {
@@ -196,9 +196,14 @@ public class DataBaseService extends MyBaseService {
                 double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
                 double op_avg_week_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 60));
                 double op_avg_week_15 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 15));
+                double yesterday_op_avg_week_60 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 3600));
+                double yesterday_op_avg_week_240 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 14400));
+
                 double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE));
                 double op_avg_month_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 60));
                 double op_avg_month_15 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 15));
+                double yesterday_op_avg_month_60 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_MONTH_TABLE, 3600));
+                double yesterday_op_avg_month_240 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_MONTH_TABLE, 14400));
 
                 // V5 V6 V4 V8
                 apiObject.setV5(v5);
@@ -206,14 +211,21 @@ public class DataBaseService extends MyBaseService {
                 apiObject.setV4(v4);
                 apiObject.setV8(v8);
 
-                // Op avg
-                apiObject.getExps().getWeek().setOp_avg(op_avg_week);
-                apiObject.getExps().getWeek().setOp_avg15(op_avg_week_15);
-                apiObject.getExps().getWeek().setOp_avg_60(op_avg_week_60);
+                Exp week = apiObject.getExps().getWeek();
+                Exp month = apiObject.getExps().getMonth();
 
-                apiObject.getExps().getMonth().setOp_avg(op_avg_month);
-                apiObject.getExps().getMonth().setOp_avg15(op_avg_month_15);
-                apiObject.getExps().getMonth().setOp_avg_60(op_avg_month_60);
+                // Op avg
+                week.setOp_avg(op_avg_week);
+                week.setOp_avg15(op_avg_week_15);
+                week.setOp_avg_60(op_avg_week_60);
+                week.setYesterday_op_avg_60(yesterday_op_avg_week_60);
+                week.setYesterday_op_avg_240(yesterday_op_avg_week_240);
+
+                month.setOp_avg(op_avg_month);
+                month.setOp_avg15(op_avg_month_15);
+                month.setOp_avg_60(op_avg_month_60);
+                month.setYesterday_op_avg_60(yesterday_op_avg_month_60);
+                month.setYesterday_op_avg_240(yesterday_op_avg_month_240);
                 apiObject.setDbLoaded(true);
 
                 System.out.println("Grabbed");

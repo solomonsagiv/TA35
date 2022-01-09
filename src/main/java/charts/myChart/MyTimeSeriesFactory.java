@@ -146,6 +146,82 @@ public class MyTimeSeriesFactory {
                     }
                 };
 
+            case Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_60_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_60_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().getWeek().getYesterday_op_avg_60();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 3600, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+
+            case Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_240_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_240_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().getWeek().getYesterday_op_avg_240();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 14000, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_60_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_60_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().getMonth().getYesterday_op_avg_60();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 3600, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_240_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_240_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().getMonth().getYesterday_op_avg_240();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 14000, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
 
             case Factories.TimeSeries.DELTA_MIX_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DELTA_MIX_SERIE) {

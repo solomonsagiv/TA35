@@ -73,6 +73,33 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_op_avg_last_x_rows(String table_location, int rows) {
+      String q = "select avg(f.futures - i.index) as value " +
+              "from data.ta35_index i " +
+              "         inner join %s f on f.time = i.time" +
+              "order by time desc limit %s;";
+
+      String query = String.format(q, table_location, rows);
+      return MySql.select(query);
+    };
+    
+    public static ResultSet get_op_avg_last_x_rows_serie(String table_location, int rows, int step_count) {
+        String modulu = "%";
+        String q = "select * " +
+                "from ( " +
+                "select i.time, " +
+                "avg(f.futures - ((i.bid + i.ask) / 2)) " +
+                "over (ORDER BY i.time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value, " +
+                "row_number() over (order by i.time desc) as row " +
+                "from data.ta35_index i " +
+                "inner join %s f on f.time = i.time " +
+                "order by i.time desc limit %s " +
+                ") a " +
+                "where a.row %s %s = 0 and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day;";
+        String query = String.format(q, table_location, rows, modulu, step_count);
+        return MySql.select(query);
+    };
+
     public static ResultSet get_serie_cumulative_avg(String table_location) {
         String q = "select time, avg(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";

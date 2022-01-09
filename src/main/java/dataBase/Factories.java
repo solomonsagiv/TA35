@@ -35,10 +35,11 @@ public class Factories {
         public static final String DELTA_MONTH_AVG_60_SERIE = "DELTA_MONTH_AVG_60";
         public static final String OP_AVG_WEEK_SERIE = "OP_AVG_WEEK";
         public static final String OP_AVG_MONTH_SERIE = "OP_AVG_MONTH";
+
         public static final String OP_AVG_WEEK_60_SERIE = "OP_AVG_WEEK_60";
         public static final String OP_AVG_MONTH_60_SERIE = "OP_AVG_MONTH_60";
-        public static final String OP_AVG_WEEK_15_SERIE = "OP_AVG_WEEK_30";
-        public static final String OP_AVG_MONTH_30_SERIE = "OP_AVG_MONTH_30";
+        public static final String OP_AVG_WEEK_15_SERIE = "OP_AVG_WEEK_15";
+        public static final String OP_AVG_MONTH_15_SERIE = "OP_AVG_MONTH_15";
         public static final String BID_ASK_COUNTER_WEEK_SERIE = "BID_ASK_COUNTER_WEEK";
         public static final String BID_ASK_COUNTER_MONTH_SERIE = "BID_ASK_COUNTER_MONTH";
         public static final String BID_ASK_COUNTER_WEEK_AVG_60_SERIE = "BID_ASK_COUNTER_WEEK_AVG_60";
@@ -50,7 +51,11 @@ public class Factories {
         public static final String DF_V_5_SERIE = "DF_V_5";
         public static final String DF_V_6_SERIE = "DF_V_6";
         public static final String INDEX_DELTA_SERIE = "INDEX_DELTA";
-        public static final String OP_AVG_MONTH_15_SERIE = "OP_AVG_MONTH_15";
+        public static final String YESTERDAY_OP_AVG_WEEK_60_SERIE = "YESTERDAY_OP_AVG_WEEK_60_SERIE";
+        public static final String YESTERDAY_OP_AVG_WEEK_240_SERIE = "YESTERDAY_OP_AVG_WEEK_240_SERIE";
+        public static final String YESTERDAY_OP_AVG_MONTH_60_SERIE = "YESTERDAY_OP_AVG_MONTH_60_SERIE";
+        public static final String YESTERDAY_OP_AVG_MONTH_240_SERIE = "YESTERDAY_OP_AVG_MONTH_240_SERIE";
+
     }
 
 }

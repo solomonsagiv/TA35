@@ -220,7 +220,7 @@ public class Options implements IJsonData {
     }
 
     public void setContractBid(double newBid) {
-        if (contractBid != 0 && newBid > contractBid && apiObject.getStatus().contains(apiObject.getStreamMarket())) {
+        if (contractBid != 0 && newBid > contractBid) {
             increasFutureCounter();
         }
         this.contractBid = newBid;
@@ -235,7 +235,7 @@ public class Options implements IJsonData {
     }
 
     public void setContractAsk(double newAsk) {
-        if (contractAsk != 0 && newAsk < contractAsk && apiObject.getStatus().contains(apiObject.getStreamMarket())) {
+        if (contractAsk != 0 && newAsk < contractAsk) {
             decreasFutureCounter();
         }
         this.contractAsk = newAsk;
@@ -325,10 +325,6 @@ public class Options implements IJsonData {
     @Override
     public MyJson getFullResetJson() {
         return new MyJson();
-    }
-
-    public void load_op_avg(ArrayList<Double> op_list) {
-        getOpChartList().getValues().addAll(op_list);
     }
 
 }

@@ -273,9 +273,10 @@ public class MyChart {
                     // If bigger then target Seconds
                     if (serie.getItemCount() > props.getProp(ChartPropsEnum.SECONDS)) {
                         serie.remove(0);
+
                     }
                     // Append data
-                    serie.add(LocalDateTime.now());
+                    serie.add();
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();

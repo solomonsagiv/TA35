@@ -20,6 +20,8 @@ public abstract class Exp implements IJsonData {
 	private int futureStartStrike = 0;
 	private int futureEndStrike = 0;
 
+	private double yesterday_op_avg_60 = 0;
+	private double yesterday_op_avg_240 = 0;
 	private double op_avg_60 = 0;
 	private double op_avg15 = 0;
 	private double op_avg = 0;
@@ -128,6 +130,22 @@ public abstract class Exp implements IJsonData {
 
 	public double getOp_avg15() {
 		return op_avg15;
+	}
+
+	public double getYesterday_op_avg_60() {
+		return yesterday_op_avg_60;
+	}
+
+	public void setYesterday_op_avg_60(double yesterday_op_avg_60) {
+		this.yesterday_op_avg_60 = yesterday_op_avg_60;
+	}
+
+	public double getYesterday_op_avg_240() {
+		return yesterday_op_avg_240;
+	}
+
+	public void setYesterday_op_avg_240(double yesterday_op_avg_240) {
+		this.yesterday_op_avg_240 = yesterday_op_avg_240;
 	}
 
 	public String getSymbol() {

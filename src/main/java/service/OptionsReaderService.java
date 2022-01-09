@@ -12,7 +12,6 @@ import myJson.MyJson;
 import options.Option;
 import options.Options;
 import options.Strike;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 

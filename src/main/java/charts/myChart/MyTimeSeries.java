@@ -8,6 +8,7 @@ import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesDataItem;
+
 import java.awt.*;
 import java.sql.ResultSet;
 import java.text.ParseException;
@@ -133,6 +134,15 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
         }
     }
 
+    public void add() {
+        double data = getData();
+        if (data != 0) {
+            getMyValues().add(data);
+            addOrUpdate(getLastSeconde(), data);
+            lastSeconde = (Second) lastSeconde.next();
+        }
+    }
+
     private void base_add(LocalDateTime dateTime, double value) {
         if (value != 0) {
             lastSeconde = new Second(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
@@ -140,6 +150,7 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
             addOrUpdate(lastSeconde, value);
         }
     }
+
 
 //    public double add() {
 //        double data = 0;
