@@ -129,7 +129,7 @@ public class FullCharts2 extends MyChartCreator {
 		// ----------------------------------------- Chart ----------------------------------------- //
 
 		// ----- Charts ----- //
-		MyChart[] charts = { indexChart, deltaChart, bid_ask_counter_chart, op_avg_chart };
+		MyChart[] charts = { indexChart, op_avg_chart, deltaChart, bid_ask_counter_chart };
 
 		// ----------------------------------------- Container ----------------------------------------- //
 		MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
