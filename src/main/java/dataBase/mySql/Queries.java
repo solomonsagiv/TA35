@@ -74,10 +74,12 @@ public class Queries {
     }
 
     public static ResultSet get_op_avg_last_x_rows(String table_location, int rows) {
-      String q = "select avg(f.futures - i.index) as value " +
-              "from data.ta35_index i " +
-              "         inner join %s f on f.time = i.time" +
-              "order by time desc limit %s;";
+      String q = "select avg(futures - ((bid + ask ) / 2)) as value\n" +
+              "from (\n" +
+              "select *\n" +
+              "              from data.ta35_index i\n" +
+              "                       inner join %s f on f.time = i.time\n" +
+              "              order by i.time desc limit %s) a;";
 
       String query = String.format(q, table_location, rows);
       return MySql.select(query);
