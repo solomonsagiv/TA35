@@ -141,11 +141,13 @@ public class FullCharts2 extends MyChartCreator {
         MyTimeSeries yesterday_opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_60_SERIE);
         yesterday_opavg_60_month.setColor(Themes.LIGHT_BLUE_3);
         yesterday_opavg_60_month.setStokeSize(1.2f);
+		yesterday_opavg_60_month.setVisible(false);
 
         // Op avg 240 yesterday
         MyTimeSeries yesterday_opavg_240_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_240_SERIE);
         yesterday_opavg_240_month.setColor(Themes.BINANCE_ORANGE);
         yesterday_opavg_240_month.setStokeSize(1.2f);
+		yesterday_opavg_240_month.setVisible(false);
 
         series = new MyTimeSeries[8];
         series[0] = opavg_60_week;

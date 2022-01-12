@@ -55,95 +55,95 @@ public class DataBaseService extends MyBaseService {
 
     private void append_changed_data_to_lists() {
 
-        double delta_week = week.getOptions().getTotal_delta();
-        double delta_month = month.getOptions().getTotal_delta();
-        double delta_mix = month.getOptions().getTotal_delta() + week.getOptions().getTotal_delta();
-        double bid_ask_counter_week = week.getOptions().getConBidAskCounter();
-        double bid_ask_counter_month = month.getOptions().getConBidAskCounter();
-        double ind_delta = apiObject.getStocksHandler().getDelta();
-        double index = apiObject.getIndex();
-        double fut_week = week.getOptions().getContract();
-        double fut_month = month.getOptions().getContract();
-        double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
-        double ind_bid_ask_counter = apiObject.getIndBidAskCounter();
-
-        // Index bid ask counter
-        double change = ind_bid_ask_counter - ind_bid_ask_counter_0;
-        if (change != 0) {
-            if (change < 10000 && change > -10000) {
-                ind_bid_ask_counter_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-            ind_bid_ask_counter_0 = ind_bid_ask_counter;
-        }
-
-        // Delta week
-        change = delta_week - delta_week_0;
-        if (change != 0) {
-            if (change < 10000 && change > -10000) {
-                delta_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-            delta_week_0 = delta_week;
-        }
-
-        // Delta month
-        change = delta_month - delta_month_0;
-        if (change != 0) {
-            if (change < 10000 && change > -10000) {
-                delta_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-            delta_month_0 = delta_month;
-        }
-
-        // Delta mix
-        change = delta_mix - delta_mix_0;
-        if (change != 0) {
-            if (change < 10000 && change > -10000) {
-                delta_mix_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-            delta_mix_0 = delta_mix;
-        }
-
-        // Bid ask counter week
-        change = bid_ask_counter_week - bid_ask_counter_week_0;
-        if (change != 0) {
-            if (change < 100 && change > -100) {
-                bid_ask_counter_week_0 = bid_ask_counter_week;
-                bid_ask_counter_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-        }
-
-        // Bid ask counter month
-        change = bid_ask_counter_month - bid_ask_counter_month_0;
-        if (change != 0) {
-            if (change < 100 && change > -100) {
-                bid_ask_counter_month_0 = bid_ask_counter_month;
-                bid_ask_counter_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-        }
-
-        // Index delta
-        change = ind_delta - ind_delta_0;
-        if (change != 0) {
-            if (change < 10000 && change > -10000) {
-                ind_delta_0 = ind_delta;
-                ind_delta_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-        }
-
-        // Baskets
-        change = baskets - baskets_0;
-        if (change != 0) {
-            baskets_0 = baskets;
-            baskets_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-        }
-
-        // Op avg week
-        if (sleepCount % 1000 == 0) {
-            Instant instant = Instant.now();
-            index_timestamp.add(new MyTimeStampObject(instant, index));
-            fut_week_timestamp.add(new MyTimeStampObject(instant, fut_week));
-            fut_month_timestamp.add(new MyTimeStampObject(instant, fut_month));
-        }
+//        double delta_week = week.getOptions().getTotal_delta();
+//        double delta_month = month.getOptions().getTotal_delta();
+//        double delta_mix = month.getOptions().getTotal_delta() + week.getOptions().getTotal_delta();
+//        double bid_ask_counter_week = week.getOptions().getConBidAskCounter();
+//        double bid_ask_counter_month = month.getOptions().getConBidAskCounter();
+//        double ind_delta = apiObject.getStocksHandler().getDelta();
+//        double index = apiObject.getIndex();
+//        double fut_week = week.getOptions().getContract();
+//        double fut_month = month.getOptions().getContract();
+//        double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
+//        double ind_bid_ask_counter = apiObject.getIndBidAskCounter();
+//
+//        // Index bid ask counter
+//        double change = ind_bid_ask_counter - ind_bid_ask_counter_0;
+//        if (change != 0) {
+//            if (change < 10000 && change > -10000) {
+//                ind_bid_ask_counter_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+//            }
+//            ind_bid_ask_counter_0 = ind_bid_ask_counter;
+//        }
+//
+//        // Delta week
+//        change = delta_week - delta_week_0;
+//        if (change != 0) {
+//            if (change < 10000 && change > -10000) {
+//                delta_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+//            }
+//            delta_week_0 = delta_week;
+//        }
+//
+//        // Delta month
+//        change = delta_month - delta_month_0;
+//        if (change != 0) {
+//            if (change < 10000 && change > -10000) {
+//                delta_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+//            }
+//            delta_month_0 = delta_month;
+//        }
+//
+//        // Delta mix
+//        change = delta_mix - delta_mix_0;
+//        if (change != 0) {
+//            if (change < 10000 && change > -10000) {
+//                delta_mix_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+//            }
+//            delta_mix_0 = delta_mix;
+//        }
+//
+//        // Bid ask counter week
+//        change = bid_ask_counter_week - bid_ask_counter_week_0;
+//        if (change != 0) {
+//            if (change < 100 && change > -100) {
+//                bid_ask_counter_week_0 = bid_ask_counter_week;
+//                bid_ask_counter_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+//            }
+//        }
+//
+//        // Bid ask counter month
+//        change = bid_ask_counter_month - bid_ask_counter_month_0;
+//        if (change != 0) {
+//            if (change < 100 && change > -100) {
+//                bid_ask_counter_month_0 = bid_ask_counter_month;
+//                bid_ask_counter_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+//            }
+//        }
+//
+//        // Index delta
+//        change = ind_delta - ind_delta_0;
+//        if (change != 0) {
+//            if (change < 10000 && change > -10000) {
+//                ind_delta_0 = ind_delta;
+//                ind_delta_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+//            }
+//        }
+//
+//        // Baskets
+//        change = baskets - baskets_0;
+//        if (change != 0) {
+//            baskets_0 = baskets;
+//            baskets_timestamp.add(new MyTimeStampObject(Instant.now(), change));
+//        }
+//
+//        // Op avg week
+//        if (sleepCount % 1000 == 0) {
+//            Instant instant = Instant.now();
+//            index_timestamp.add(new MyTimeStampObject(instant, index));
+//            fut_week_timestamp.add(new MyTimeStampObject(instant, fut_week));
+//            fut_month_timestamp.add(new MyTimeStampObject(instant, fut_month));
+//        }
 
         System.out.println("Stream merket " + BackGroundRunner.streamMarketBool);
 
