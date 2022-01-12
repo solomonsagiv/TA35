@@ -68,6 +68,27 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
+
+            case Factories.TimeSeries.INDEX_WITH_BID_ASK_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.INDEX_WITH_BID_ASK_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        double ind_with_bid_ask = (apiObject.getIndex_ask() + apiObject.getIndex_bid()) / 2;
+                        return ind_with_bid_ask;
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_index_with_bid_ask_series(step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
             case Factories.TimeSeries.DF_V_4_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.DF_V_4_SERIE) {
                     @Override
@@ -160,7 +181,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 3600, step_second);
+                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 3600, 1, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -180,7 +201,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 14000, step_second);
+                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 14000, 4, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -199,7 +220,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 3600, step_second);
+                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_MONTH_TABLE, 3600, 1, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -218,7 +239,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_WEEK_TABLE, 14000, step_second);
+                        ResultSet rs = Queries.get_op_avg_last_x_rows_serie(Factories.Tables.FUT_MONTH_TABLE, 14000, 4, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };

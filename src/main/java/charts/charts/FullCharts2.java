@@ -43,10 +43,17 @@ public class FullCharts2 extends MyChartCreator {
         // Index
         MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_SERIE);
         indexSerie.setColor(Color.BLACK);
+        indexSerie.setVisible(false);
         indexSerie.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[1];
+        // Index
+        MyTimeSeries index_with_bid_ask_Serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_WITH_BID_ASK_SERIE);
+        index_with_bid_ask_Serie.setColor(Color.BLACK);
+        index_with_bid_ask_Serie.setStokeSize(1.2f);
+
+        series = new MyTimeSeries[2];
         series[0] = indexSerie;
+        series[1] = index_with_bid_ask_Serie;
 
         // Chart
         MyChart indexChart = new MyChart(series, props);

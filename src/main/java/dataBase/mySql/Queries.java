@@ -83,20 +83,33 @@ public class Queries {
       return MySql.select(query);
     };
     
-    public static ResultSet get_op_avg_last_x_rows_serie(String table_location, int rows, int step_count) {
+    public static ResultSet get_op_avg_last_x_rows_serie(String table_location, int rows, int hours, int step_count) {
         String modulu = "%";
-        String q = "select * " +
-                "from ( " +
-                "select i.time, " +
-                "avg(f.futures - ((i.bid + i.ask) / 2)) " +
-                "over (ORDER BY i.time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value, " +
-                "row_number() over (order by i.time desc) as row " +
-                "from data.ta35_index i " +
-                "inner join %s f on f.time = i.time " +
-                "order by i.time desc limit %s " +
-                ") a " +
-                "where a.row %s %s = 0 and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day;";
-        String query = String.format(q, table_location, rows, modulu, step_count);
+        String q = "select *\n" +
+                "from (\n" +
+                "         select *\n" +
+                "         from (\n" +
+                "                  select time,\n" +
+                "                         avg(futures - ((bid + index) / 2))\n" +
+                "                         over (ORDER BY row RANGE BETWEEN %s PRECEDING AND CURRENT ROW) as value,\n" +
+                "                         row\n" +
+                "                  from (\n" +
+                "                           select i.time as time, bid, ask, index, futures, row_number() over (order by i.time) as row\n" +
+                "                           from data.ta35_index i\n" +
+                "                                    inner join %s f on f.time = i.time\n" +
+                "                           where (\n" +
+                "                                         i.time > (\n" +
+                "                                                      select time\n" +
+                "                                                      from data.ta35_index\n" +
+                "                                                      where time::date < now()::date\n" +
+                "                                                      order by time desc\n" +
+                "                                                      limit 1) - interval '%s hours')\n" +
+                "                           order by i.time) a\n" +
+                "              ) b\n" +
+                "         where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)\n" +
+                "     ) b\n" +
+                "where row %s %s = 0;";
+        String query = String.format(q, rows, table_location, hours, modulu, step_count);
         return MySql.select(query);
     };
 
@@ -370,6 +383,19 @@ public class Queries {
                 "from %s " +
                 "where exp = '%s';";
         String query = String.format(q, Factories.Tables.SAGIV_OPTIONS_STATUS_TABLE, exp_name);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_index_with_bid_ask_series(int step_second) {
+        String modulu = "%";
+        String q = "select * " +
+                "from ( " +
+                "select time, (bid + ask) / 2 as value, row_number() over (order by time) as row " +
+                "from data.ta35_index " +
+                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) " +
+                "order by time) a " +
+                "where row %s %s = 0;";
+        String query = String.format(q, modulu, step_second);
         return MySql.select(query);
     }
 

@@ -50,6 +50,26 @@ public class MainMonthWeekChart extends MyChartCreator {
 		index.setColor(Color.BLACK);
 		index.setStokeSize(2.25f);
 
+		// Index
+		MyTimeSeries index_bid_ask = new MyTimeSeries("Index bid ask avg") {
+			@Override
+			public ResultSet load_last_x_time(int minuts) {
+				return null;
+			}
+
+			@Override
+			public double getData() {
+				return (apiObject.getIndex_bid() + apiObject.getIndex_ask()) / 2;
+			}
+
+			@Override
+			public void load() {
+
+			}
+		};
+		index_bid_ask.setColor(Themes.GREY_2);
+		index_bid_ask.setStokeSize(2.25f);
+
 		// Bid
 		MyTimeSeries bid = new MyTimeSeries("Bid") {
 			@Override

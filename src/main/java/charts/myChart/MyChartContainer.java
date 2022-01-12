@@ -62,10 +62,47 @@ public class MyChartContainer extends JFrame {
     }
 
     private void load_data() {
+        // Load each serie
         for (MyChart chart : charts) {
-            for (MyTimeSeries serie: chart.getSeries()) {
-                serie.load_data();
-                System.out.println("Loadinn" + " " + serie.getName());
+            for (MyTimeSeries serie : chart.getSeries()) {
+                new Thread(() -> {
+                    serie.load_data();
+                }).start();
+            }
+        }
+
+        // Check load
+        check_load();
+    }
+
+
+    private void check_load() {
+
+        while (true) {
+
+            try {
+                // Sleep
+                Thread.sleep(1000);
+
+                boolean load = true;
+
+                // Check for load = true
+                for (MyChart chart : charts) {
+                    for (MyTimeSeries serie : chart.getSeries()) {
+                        if (!serie.isLoad()) {
+                            load = false;
+                        }
+                        System.out.println(serie.getName() + " Load " + serie.isLoad());
+                    }
+                }
+
+                // Is load
+                if (load) {
+                    break;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

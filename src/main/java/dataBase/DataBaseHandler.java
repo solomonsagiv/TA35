@@ -129,7 +129,7 @@ public class DataBaseHandler {
                 double value = rs.getDouble("value");
                 timeSeries.add(timestamp.toLocalDateTime(), value);
 
-                System.out.println(timeSeries.getName() + " " + timestamp + " " + value);
+//                System.out.println(timeSeries.getName() + " " + timestamp + " " + value);
             }
         } catch (Exception e) {
             e.printStackTrace();
