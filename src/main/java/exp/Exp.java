@@ -115,7 +115,6 @@ public abstract class Exp implements IJsonData {
 		this.op_avg = op_avg;
 	}
 
-
 	public String getExp_name() {
 		return exp_name;
 	}
