@@ -83,6 +83,11 @@ public class OptionsReaderService extends MyBaseService {
             delta = requestDouble(cell(row, 6));
             open_positions = (int) requestDouble(cell(row, 9));
 
+//            if (option.getName().equals("c2070")) {
+//                System.out.println(option);
+//            }
+
+
             double delta_buy_sell = 0;
 
             if (apiObject.isDbLoaded()) {
@@ -134,7 +139,7 @@ public class OptionsReaderService extends MyBaseService {
                 Option put = new Option("p", strike, options);
 
                 // Get the option cell
-                for (int row = 1; row < 150; row++) {
+                for (int row = 1; row < 500; row++) {
                     String currentStrike = conversation.request(String.format(cell, row, 7));
                     if (currentStrike.contains(String.valueOf(strike))) {
                         call.setCellRow(row);

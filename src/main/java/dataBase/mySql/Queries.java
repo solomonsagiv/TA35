@@ -375,7 +375,7 @@ public class Queries {
 
     public static ResultSet get_options_status(String exp_name) {
         String q = "select value " +
-                "from %s " +
+                "from ta35_options_status " +
                 "where exp = '%s';";
         String query = String.format(q, Factories.Tables.SAGIV_OPTIONS_STATUS_TABLE, exp_name);
         return MySql.select(query);
