@@ -40,20 +40,14 @@ public class FullCharts2 extends MyChartCreator {
         props.setProp(ChartPropsEnum.MARKER, 0);
 
         // ----------------------------------------- Index ----------------------------------------- //
-        // Index
-        MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_SERIE);
-        indexSerie.setColor(Color.BLACK);
-        indexSerie.setVisible(false);
-        indexSerie.setStokeSize(1.2f);
 
         // Index
         MyTimeSeries index_with_bid_ask_Serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_WITH_BID_ASK_SERIE);
         index_with_bid_ask_Serie.setColor(Color.BLACK);
         index_with_bid_ask_Serie.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[2];
-        series[0] = indexSerie;
-        series[1] = index_with_bid_ask_Serie;
+        series = new MyTimeSeries[1];
+        series[0] = index_with_bid_ask_Serie;
 
         // Chart
         MyChart indexChart = new MyChart(series, props);
@@ -104,60 +98,46 @@ public class FullCharts2 extends MyChartCreator {
 
         // ----------------------------------------- Op avg 60 15 ----------------------------------------- //
         // --------------- WEEK --------------- //
-        // Op avg 60
-        MyTimeSeries opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
-        opavg_60_week.setColor(Themes.BLUE_2);
-        opavg_60_week.setStokeSize(1.2f);
-
-        // Op avg 15
-        MyTimeSeries opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_15_SERIE);
-        opavg_15_week.setColor(Themes.GREEN);
-        opavg_15_week.setStokeSize(1.2f);
+        // Op avg 15 yesterday
+        MyTimeSeries continue_opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_15_SERIE);
+        continue_opavg_15_week.setColor(Themes.GREEN);
+        continue_opavg_15_week.setStokeSize(1.2f);
 
         // Op avg 60 yesterday
-        MyTimeSeries yesterday_opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_60_SERIE);
-        yesterday_opavg_60_week.setColor(Themes.LIGHT_BLUE_3);
-        yesterday_opavg_60_week.setStokeSize(1.2f);
+        MyTimeSeries continue_opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_60_SERIE);
+        continue_opavg_60_week.setColor(Themes.BLUE);
+        continue_opavg_60_week.setStokeSize(1.2f);
 
         // Op avg 240 yesterday
-        MyTimeSeries yesterday_opavg_240_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_240_SERIE);
-        yesterday_opavg_240_week.setColor(Themes.BINANCE_ORANGE);
-        yesterday_opavg_240_week.setStokeSize(1.2f);
+        MyTimeSeries continue_opavg_240_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE);
+        continue_opavg_240_week.setColor(Themes.ORANGE);
+        continue_opavg_240_week.setStokeSize(1.2f);
 
         // --------------- MONTH --------------- //
-        // Op avg 60
-        MyTimeSeries opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_60_SERIE);
-        opavg_60_month.setColor(Themes.BLUE_2);
-        opavg_60_month.setVisible(false);
-        opavg_60_month.setStokeSize(1.2f);
-
-        // Op avg 15
-        MyTimeSeries opavg_15_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH_15_SERIE);
-        opavg_15_month.setColor(Themes.GREEN);
-        opavg_15_month.setVisible(false);
-        opavg_15_month.setStokeSize(1.2f);
+        // Op avg 60 yesterday
+        MyTimeSeries continue_opavg_15_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_15_SERIE);
+        continue_opavg_15_month.setColor(Themes.GREEN);
+        continue_opavg_15_month.setStokeSize(1.2f);
 
         // Op avg 60 yesterday
-        MyTimeSeries yesterday_opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_60_SERIE);
-        yesterday_opavg_60_month.setColor(Themes.LIGHT_BLUE_3);
-        yesterday_opavg_60_month.setStokeSize(1.2f);
-        yesterday_opavg_60_month.setVisible(false);
+        MyTimeSeries continue_opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_60_SERIE);
+        continue_opavg_60_month.setColor(Themes.BLUE);
+        continue_opavg_60_month.setStokeSize(1.2f);
+        continue_opavg_60_month.setVisible(false);
 
         // Op avg 240 yesterday
-        MyTimeSeries yesterday_opavg_240_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_240_SERIE);
-        yesterday_opavg_240_month.setColor(Themes.BINANCE_ORANGE);
-        yesterday_opavg_240_month.setStokeSize(1.2f);
-        yesterday_opavg_240_month.setVisible(false);
+        MyTimeSeries continue_opavg_240_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_240_SERIE);
+        continue_opavg_240_month.setColor(Themes.ORANGE);
+        continue_opavg_240_month.setStokeSize(1.2f);
+        continue_opavg_240_month.setVisible(false);
 
-        series = new MyTimeSeries[8];
-        series[0] = opavg_60_week;
-        series[1] = opavg_15_week;
-        series[2] = opavg_15_month;
-        series[3] = opavg_60_month;
-        series[4] = yesterday_opavg_60_week;
-        series[5] = yesterday_opavg_240_week;
-        series[6] = yesterday_opavg_60_month;
-        series[7] = yesterday_opavg_240_month;
+        series = new MyTimeSeries[4];
+        series[0] = continue_opavg_60_week;
+        series[1] = continue_opavg_240_week;
+        series[2] = continue_opavg_60_month;
+        series[3] = continue_opavg_240_month;
+        series[4] = continue_opavg_15_month;
+        series[5] = continue_opavg_15_week;
 
         // Chart
         MyChart op_avg_chart = new MyChart(series, props);

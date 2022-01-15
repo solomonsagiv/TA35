@@ -83,11 +83,6 @@ public class OptionsReaderService extends MyBaseService {
             delta = requestDouble(cell(row, 6));
             open_positions = (int) requestDouble(cell(row, 9));
 
-//            if (option.getName().equals("c2070")) {
-//                System.out.println(option);
-//            }
-
-
             double delta_buy_sell = 0;
 
             if (apiObject.isDbLoaded()) {

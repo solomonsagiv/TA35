@@ -165,8 +165,8 @@ public class MyTimeSeriesFactory {
 //                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-            case Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_60_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_60_SERIE) {
+            case Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_60_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_60_SERIE) {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         return null;
@@ -174,7 +174,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExps().getWeek().getYesterday_op_avg_60();
+                        return apiObject.getExps().getWeek().getContinue_op_avg_60();
                     }
 
                     @Override
@@ -183,8 +183,9 @@ public class MyTimeSeriesFactory {
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
-            case Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_240_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.YESTERDAY_OP_AVG_WEEK_240_SERIE) {
+
+            case Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_15_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_15_SERIE) {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         return null;
@@ -192,18 +193,19 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExps().getWeek().getYesterday_op_avg_240();
+                        return apiObject.getExps().getWeek().getContinue_op_avg_15();
                     }
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.op_avg_continue_serie(Factories.Tables.FUT_WEEK_TABLE, 11000, step_second);
+                        ResultSet rs = Queries.op_avg_continue_serie(Factories.Tables.FUT_WEEK_TABLE, 900, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
-            case Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_60_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_60_SERIE) {
+
+            case Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_15_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_15_SERIE) {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         return null;
@@ -211,7 +213,44 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExps().getMonth().getYesterday_op_avg_60();
+                        return apiObject.getExps().getMonth().getContinue_op_avg_15();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.op_avg_continue_serie(Factories.Tables.FUT_MONTH_TABLE, 900, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+            case Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().getWeek().getContinue_op_avg_240();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.op_avg_continue_serie(Factories.Tables.FUT_WEEK_TABLE, 14000, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_60_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_60_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().getMonth().getContinue_op_avg_60();
                     }
 
                     @Override
@@ -221,8 +260,8 @@ public class MyTimeSeriesFactory {
                     }
                 };
 
-            case Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_240_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.YESTERDAY_OP_AVG_MONTH_240_SERIE) {
+            case Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_240_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_240_SERIE) {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         return null;
@@ -230,12 +269,12 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getExps().getMonth().getYesterday_op_avg_240();
+                        return apiObject.getExps().getMonth().getContinue_op_avg_240();
                     }
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.op_avg_continue_serie(Factories.Tables.FUT_MONTH_TABLE, 11000, step_second);
+                        ResultSet rs = Queries.op_avg_continue_serie(Factories.Tables.FUT_MONTH_TABLE, 14000, step_second);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
                 };

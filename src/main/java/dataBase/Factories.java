@@ -51,10 +51,12 @@ public class Factories {
         public static final String DF_V_5_SERIE = "DF_V_5";
         public static final String DF_V_6_SERIE = "DF_V_6";
         public static final String INDEX_DELTA_SERIE = "INDEX_DELTA";
-        public static final String YESTERDAY_OP_AVG_WEEK_60_SERIE = "YESTERDAY_OP_AVG_WEEK_60_SERIE";
-        public static final String YESTERDAY_OP_AVG_WEEK_240_SERIE = "YESTERDAY_OP_AVG_WEEK_240_SERIE";
-        public static final String YESTERDAY_OP_AVG_MONTH_60_SERIE = "YESTERDAY_OP_AVG_MONTH_60_SERIE";
-        public static final String YESTERDAY_OP_AVG_MONTH_240_SERIE = "YESTERDAY_OP_AVG_MONTH_240_SERIE";
+        public static final String CONTINUE_OP_AVG_WEEK_15_SERIE = "YESTERDAY_OP_AVG_WEEK_15_SERIE";
+        public static final String CONTINUE_OP_AVG_MONTH_15_SERIE = "YESTERDAY_OP_AVG_MONTH_15_SERIE";
+        public static final String CONTINUE_OP_AVG_WEEK_60_SERIE = "YESTERDAY_OP_AVG_WEEK_60_SERIE";
+        public static final String CONTINUE_OP_AVG_WEEK_240_SERIE = "YESTERDAY_OP_AVG_WEEK_240_SERIE";
+        public static final String CONTINUE_OP_AVG_MONTH_60_SERIE = "YESTERDAY_OP_AVG_MONTH_60_SERIE";
+        public static final String CONTINUE_OP_AVG_MONTH_240_SERIE = "YESTERDAY_OP_AVG_MONTH_240_SERIE";
         public static final String INDEX_WITH_BID_ASK_SERIE = "INDEX_WITH_BID_ASK_SERIE";
     }
 
