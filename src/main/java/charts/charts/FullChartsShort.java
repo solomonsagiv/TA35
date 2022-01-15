@@ -42,7 +42,7 @@ public class FullChartsShort extends MyChartCreator {
 
         // ----------------------------------------- Index ----------------------------------------- //
         // Index
-        MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_SERIE);
+        MyTimeSeries indexSerie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_WITH_BID_ASK_SERIE);
         indexSerie.setColor(Color.BLACK);
         indexSerie.setStokeSize(1.2f);
 
@@ -242,12 +242,12 @@ public class FullChartsShort extends MyChartCreator {
         series[3] = opavg_60_month;
 
         // Chart
-        MyChart index_delta_chart = new MyChart(series, props);
+        MyChart opavg_chart = new MyChart(series, props);
 
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, deltaChart, bid_ask_counter_chart, index_delta_chart};
+        MyChart[] charts = {indexChart, opavg_chart, bid_ask_counter_chart, deltaChart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");

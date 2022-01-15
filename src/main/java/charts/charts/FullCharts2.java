@@ -159,7 +159,6 @@ public class FullCharts2 extends MyChartCreator {
         series[6] = yesterday_opavg_60_month;
         series[7] = yesterday_opavg_240_month;
 
-
         // Chart
         MyChart op_avg_chart = new MyChart(series, props);
 

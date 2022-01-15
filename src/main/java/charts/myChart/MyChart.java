@@ -265,7 +265,7 @@ public class MyChart {
             // Ticker
             setTickerData();
         }
-
+        
         // Append data to series
         private void appendDataToSeries() {
             try {
