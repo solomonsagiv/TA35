@@ -276,7 +276,7 @@ public class MyChart {
 
                     }
                     // Append data
-                    serie.add();
+                    serie.add(LocalDateTime.now());
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();

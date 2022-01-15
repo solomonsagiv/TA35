@@ -85,40 +85,28 @@ public class Queries {
 
         String query = String.format(q, table_location, rows);
         return MySql.select(query);
-    };
+    }
 
-    public static ResultSet get_op_avg_last_x_rows_serie(String table_location, int rows, int hours, int step_count) {
+    public static ResultSet op_avg_continue_serie(String table_location, int rows, int step_count) {
         String modulu = "%";
         String q = "select *\n" +
                 "from (\n" +
-                "         select *\n" +
+                "         select time, \n" +
+                "                avg(op) over (ORDER BY row RANGE BETWEEN %s PRECEDING AND CURRENT ROW) as value,\n" +
+                "                row\n" +
                 "         from (\n" +
-                "                  select time,\n" +
-                "                         avg(futures - ((bid + ask) / 2))\n" +
-                "                         over (ORDER BY row RANGE BETWEEN %s PRECEDING AND CURRENT ROW) as value,\n" +
-                "                         row\n" +
-                "                  from (\n" +
-                "                           select i.time as time, bid, ask, index, futures, row_number() over (order by i.time) as row\n" +
-                "                           from data.ta35_index i\n" +
-                "                                    inner join %s f on f.time = i.time\n" +
-                "                           where (\n" +
-                "                                         i.time > (\n" +
-                "                                                      select time\n" +
-                "                                                      from data.ta35_index\n" +
-                "                                                      where time::date < now()::date\n" +
-                "                                                      order by time desc\n" +
-                "                                                      limit 1) - interval '%s hours')\n" +
-                "                           order by i.time) a\n" +
-                "where bid is not null and ask is not null" +
-                "              ) b\n" +
-                "         where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)\n" +
-                "     ) b\n" +
+                "                  select i.time                              as time,\n" +
+                "                         f.futures - ((i.bid + i.ask) / 2)   as op,\n" +
+                "                         row_number() over (order by i.time) as row\n" +
+                "                  from data.ta35_index i\n" +
+                "                           inner join %s f on i.time = f.time\n" +
+                "                  where i.time >= date_trunc('day', now() - interval '1' day)\n" +
+                "                  and bid is not null and ask is not null) a\n" +
+                "         where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)) a\n" +
                 "where row %s %s = 0;";
-        String query = String.format(q, rows, table_location, hours, modulu, step_count);
+        String query = String.format(q, rows, table_location, modulu, step_count);
         return MySql.select(query);
     }
-
-    ;
 
     public static ResultSet get_serie_cumulative_avg(String table_location) {
         String q = "select time, avg(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +

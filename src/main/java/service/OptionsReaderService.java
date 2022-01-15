@@ -107,7 +107,7 @@ public class OptionsReaderService extends MyBaseService {
             options.appendDelta(delta_buy_sell);
         }
     }
-
+    
     private void setUpOptions(Exp exp, DDEClientConversation conversation) {
         try {
             Options options = exp.getOptions();
