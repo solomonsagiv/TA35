@@ -80,8 +80,8 @@ public class Queries {
                 "select *\n" +
                 "              from data.ta35_index i\n" +
                 "                       inner join %s f on f.time = i.time\n" +
-                "              order by i.time desc limit %s) a " +
-                "where bid is not null and ask is not null;";
+                "                where i.bid is not null and i.ask is not null\n" +
+                "              order by i.time desc limit %s) a;";
 
         String query = String.format(q, table_location, rows);
         return MySql.select(query);
@@ -91,7 +91,7 @@ public class Queries {
         String modulu = "%";
         String q = "select *\n" +
                 "from (\n" +
-                "         select time, \n" +
+                "         select time,\n" +
                 "                avg(op) over (ORDER BY row RANGE BETWEEN %s PRECEDING AND CURRENT ROW) as value,\n" +
                 "                row\n" +
                 "         from (\n" +
@@ -100,10 +100,17 @@ public class Queries {
                 "                         row_number() over (order by i.time) as row\n" +
                 "                  from data.ta35_index i\n" +
                 "                           inner join %s f on i.time = f.time\n" +
-                "                  where i.time >= date_trunc('day', now() - interval '1' day)\n" +
-                "                  and bid is not null and ask is not null) a\n" +
-                "         where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)) a\n" +
-                "where row %s %s = 0;";
+                "                  where i.time >= (select date_trunc('day', time)\n" +
+                "                                   from data.ta35_index\n" +
+                "                                   where date_trunc('day', time) < date_trunc('day', now())\n" +
+                "                                   group by date_trunc('day', time)\n" +
+                "                                   order by date_trunc('day', time) desc\n" +
+                "                                   limit 1)\n" +
+                "                    and bid is not null\n" +
+                "                    and ask is not null) a\n" +
+                "         ) a\n" +
+                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)\n" +
+                "and row %s %s = 0;";
         String query = String.format(q, rows, table_location, modulu, step_count);
         return MySql.select(query);
     }

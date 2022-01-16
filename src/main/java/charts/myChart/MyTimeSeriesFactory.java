@@ -203,7 +203,6 @@ public class MyTimeSeriesFactory {
                     }
                 };
 
-
             case Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_15_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_15_SERIE) {
                     @Override

@@ -134,7 +134,7 @@ public class OptionsReaderService extends MyBaseService {
                 Option put = new Option("p", strike, options);
 
                 // Get the option cell
-                for (int row = 1; row < 500; row++) {
+                for (int row = 1; row < 350; row++) {
                     String currentStrike = conversation.request(String.format(cell, row, 7));
                     if (currentStrike.contains(String.valueOf(strike))) {
                         call.setCellRow(row);

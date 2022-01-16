@@ -106,27 +106,27 @@ public class DataBaseService extends MyBaseService {
         change = bid_ask_counter_week - bid_ask_counter_week_0;
         if (change != 0) {
             if (change < 100 && change > -100) {
-                bid_ask_counter_week_0 = bid_ask_counter_week;
                 bid_ask_counter_week_timestamp.add(new MyTimeStampObject(Instant.now(), change));
             }
+            bid_ask_counter_week_0 = bid_ask_counter_week;
         }
 
         // Bid ask counter month
         change = bid_ask_counter_month - bid_ask_counter_month_0;
         if (change != 0) {
             if (change < 100 && change > -100) {
-                bid_ask_counter_month_0 = bid_ask_counter_month;
                 bid_ask_counter_month_timestamp.add(new MyTimeStampObject(Instant.now(), change));
             }
+            bid_ask_counter_month_0 = bid_ask_counter_month;
         }
 
         // Index delta
         change = ind_delta - ind_delta_0;
         if (change != 0) {
             if (change < 10000 && change > -10000) {
-                ind_delta_0 = ind_delta;
                 ind_delta_timestamp.add(new MyTimeStampObject(Instant.now(), change));
             }
+            ind_delta_0 = ind_delta;
         }
 
         // Baskets
@@ -195,16 +195,16 @@ public class DataBaseService extends MyBaseService {
                 double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
 //                double op_avg_week_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 60));
 //                double op_avg_week_15 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE, 15));
-                double continue_op_avg_week_15 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 900));
-                double continue_op_avg_week_60 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 3600));
-                double continue_op_avg_week_240 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 14000));
+                double continue_op_avg_week_15 =  Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 900));
+                double continue_op_avg_week_60 =  Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 3600));
+                double continue_op_avg_week_240 = Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 14000));
 
                 double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE));
 //                double op_avg_month_60 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 60));
 //                double op_avg_month_15 = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE, 15));
-                double continue_op_avg_month_15 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_MONTH_TABLE, 900));
-                double continue_op_avg_month_60 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_MONTH_TABLE, 3600));
-                double continue_op_avg_month_240 = (int) Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_MONTH_TABLE, 14000));
+                double continue_op_avg_month_15 =  Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_MONTH_TABLE, 900));
+                double continue_op_avg_month_60 =  Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_MONTH_TABLE, 3600));
+                double continue_op_avg_month_240 =  Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_MONTH_TABLE, 14000));
 
                 // V5 V6 V4 V8
                 apiObject.setV5(v5);

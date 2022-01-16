@@ -131,7 +131,7 @@ public class FullCharts2 extends MyChartCreator {
         continue_opavg_240_month.setStokeSize(1.2f);
         continue_opavg_240_month.setVisible(false);
 
-        series = new MyTimeSeries[4];
+        series = new MyTimeSeries[6];
         series[0] = continue_opavg_60_week;
         series[1] = continue_opavg_240_week;
         series[2] = continue_opavg_60_month;

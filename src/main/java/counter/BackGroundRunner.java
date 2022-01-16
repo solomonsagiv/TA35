@@ -159,7 +159,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
         new OptionsDataCalculator();
         new OptionsReaderService(Options.WEEK, weekPath);
         new OptionsReaderService(Options.MONTH, monthPath);
-//        new DataBaseService();
     }
 
     private void open_services() {

@@ -53,11 +53,11 @@ public class MyChartContainer extends JFrame {
         // Layout
         setLayout(new GridLayout(charts.length, 0));
 
-        // Append charts
-        appendCharts();
-
         // Load series data
         load_data();
+
+        // Append charts
+        appendCharts();
 
     }
 
