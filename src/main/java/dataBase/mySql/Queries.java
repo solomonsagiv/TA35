@@ -82,7 +82,6 @@ public class Queries {
                 "                       inner join %s f on f.time = i.time\n" +
                 "                where i.bid is not null and i.ask is not null\n" +
                 "              order by i.time desc limit %s) a;";
-
         String query = String.format(q, table_location, rows);
         return MySql.select(query);
     }
