@@ -21,7 +21,7 @@ public class FullCharts2 extends MyChartCreator {
 
     @Override
     public void init() throws CloneNotSupportedException {
-        
+
         MyTimeSeries[] series;
 
         // Props
@@ -113,31 +113,10 @@ public class FullCharts2 extends MyChartCreator {
         continue_opavg_240_week.setColor(Themes.ORANGE);
         continue_opavg_240_week.setStokeSize(1.2f);
 
-        // --------------- MONTH --------------- //
-        // Op avg 60 yesterday
-        MyTimeSeries continue_opavg_15_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_15_SERIE);
-        continue_opavg_15_month.setColor(Themes.GREEN);
-        continue_opavg_15_month.setStokeSize(1.2f);
-
-        // Op avg 60 yesterday
-        MyTimeSeries continue_opavg_60_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_60_SERIE);
-        continue_opavg_60_month.setColor(Themes.BLUE);
-        continue_opavg_60_month.setStokeSize(1.2f);
-        continue_opavg_60_month.setVisible(false);
-
-        // Op avg 240 yesterday
-        MyTimeSeries continue_opavg_240_month = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_MONTH_240_SERIE);
-        continue_opavg_240_month.setColor(Themes.ORANGE);
-        continue_opavg_240_month.setStokeSize(1.2f);
-        continue_opavg_240_month.setVisible(false);
-
-        series = new MyTimeSeries[6];
+        series = new MyTimeSeries[3];
         series[0] = continue_opavg_60_week;
         series[1] = continue_opavg_240_week;
-        series[2] = continue_opavg_60_month;
-        series[3] = continue_opavg_240_month;
-        series[4] = continue_opavg_15_month;
-        series[5] = continue_opavg_15_week;
+        series[2] = continue_opavg_15_week;
 
         // Chart
         MyChart op_avg_chart = new MyChart(series, props);

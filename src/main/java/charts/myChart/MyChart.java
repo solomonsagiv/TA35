@@ -54,14 +54,14 @@ public class MyChart {
         oldVals = new double[series.length];
 
         // Init
-        init(series, props);
+        init();
 
         // Start updater
         updater = new ChartUpdater(series);
         updater.getHandler().start();
     }
 
-    private void init(MyTimeSeries[] series, MyProps props) {
+    private void init() {
         // Series
         TimeSeriesCollection data = new TimeSeriesCollection();
 
@@ -274,10 +274,13 @@ public class MyChart {
                     // If bigger then target Seconds
                     if (serie.getItemCount() > props.getProp(ChartPropsEnum.SECONDS)) {
                         serie.remove(0);
-
                     }
                     // Append data
-                    serie.add(LocalDateTime.now());
+                    if (props.getBool(ChartPropsEnum.IS_LIVE)) {
+                        serie.add();
+                    } else {
+                        serie.add(LocalDateTime.now());
+                    }
                 }
             } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
