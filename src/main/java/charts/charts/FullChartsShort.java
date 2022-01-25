@@ -3,6 +3,7 @@ package charts.charts;
 import api.ApiObject;
 import charts.myChart.*;
 import locals.Themes;
+
 import java.awt.*;
 import java.sql.ResultSet;
 
@@ -65,102 +66,6 @@ public class FullChartsShort extends MyChartCreator {
         // Chart
         MyChart indexChart = new MyChart(series, props);
 
-        // ----------------------------------------- Deltas ----------------------------------------- //
-        // Delta week
-        MyTimeSeries delta_week_serie = new MyTimeSeries("Delta week") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
-                return apiObject.getExps().getWeek().getOptions().getTotal_delta();
-            }
-
-            @Override
-            public void load() {
-            }
-        };
-        delta_week_serie.setColor(Themes.GREEN_6);
-        delta_week_serie.setStokeSize(1.2f);
-
-        // Delta month
-        MyTimeSeries delta_month_serie = new MyTimeSeries("Delta month") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
-                return apiObject.getExps().getMonth().getOptions().getTotal_delta();
-            }
-
-            @Override
-            public void load() {
-
-            }
-        };
-        delta_month_serie.setColor(Themes.GREEN_5);
-        delta_month_serie.setVisible(false);
-        delta_month_serie.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[2];
-        series[0] = delta_week_serie;
-        series[1] = delta_month_serie;
-
-        // Chart
-        MyChart deltaChart = new MyChart(series, props);
-
-        // ----------------------------------------- Bid ask counter ----------------------------------------- //
-        // Counter week
-        MyTimeSeries bid_ask_counter_week_serie = new MyTimeSeries("Bid ask counter week") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
-                return apiObject.getExps().getWeek().getOptions().getConBidAskCounter();
-            }
-
-            @Override
-            public void load() {
-
-            }
-        };
-        bid_ask_counter_week_serie.setColor(Themes.GREEN_6);
-        bid_ask_counter_week_serie.setStokeSize(1.2f);
-
-        // Counter month
-        MyTimeSeries bid_ask_counter_month_serie = new MyTimeSeries("Bid ask counter month") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
-                return apiObject.getExps().getMonth().getOptions().getConBidAskCounter();
-            }
-
-            @Override
-            public void load() {
-
-            }
-        };
-        bid_ask_counter_month_serie.setVisible(false);
-        bid_ask_counter_month_serie.setColor(Themes.GREEN_5);
-        bid_ask_counter_month_serie.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[2];
-        series[0] = bid_ask_counter_week_serie;
-        series[1] = bid_ask_counter_month_serie;
-
-        // Chart
-        MyChart bid_ask_counter_chart = new MyChart(series, props);
         MyProps props_2 = (MyProps) props.clone();
         props_2.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
 
@@ -182,7 +87,7 @@ public class FullChartsShort extends MyChartCreator {
 
             }
         };
-        opavg_1_week.setColor(Themes.BLUE_2);
+        opavg_1_week.setColor(Themes.RED);
         opavg_1_week.setStokeSize(1.2f);
 
         // Op avg 5
@@ -202,7 +107,7 @@ public class FullChartsShort extends MyChartCreator {
 
             }
         };
-        opavg_5_week.setColor(Themes.GREEN);
+        opavg_5_week.setColor(Themes.PURPLE);
         opavg_5_week.setStokeSize(1.2f);
 
         // Op avg 15
@@ -214,7 +119,7 @@ public class FullChartsShort extends MyChartCreator {
 
             @Override
             public double getData() {
-                return apiObject.getExps().getMonth().getContinue_op_avg_15();
+                return apiObject.getExps().getWeek().getContinue_op_avg_15();
             }
 
             @Override
@@ -235,7 +140,7 @@ public class FullChartsShort extends MyChartCreator {
 
             @Override
             public double getData() {
-                return apiObject.getExps().getMonth().getOp_avg_60();
+                return apiObject.getExps().getWeek().getOp_avg_60();
             }
 
             @Override
@@ -247,9 +152,8 @@ public class FullChartsShort extends MyChartCreator {
         opavg_60_week.setVisible(false);
         opavg_60_week.setStokeSize(1.2f);
 
-
         // Op avg 15
-        MyTimeSeries opavg_240_week = new MyTimeSeries("Op avg week 60") {
+        MyTimeSeries opavg_240_week = new MyTimeSeries("Op avg week 240") {
             @Override
             public ResultSet load_last_x_time(int minuts) {
                 return null;
@@ -257,7 +161,7 @@ public class FullChartsShort extends MyChartCreator {
 
             @Override
             public double getData() {
-                return apiObject.getExps().getMonth().getContinue_op_avg_240();
+                return apiObject.getExps().getWeek().getContinue_op_avg_240();
             }
 
             @Override
@@ -282,7 +186,7 @@ public class FullChartsShort extends MyChartCreator {
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, opavg_chart, bid_ask_counter_chart, deltaChart};
+        MyChart[] charts = {indexChart, opavg_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");

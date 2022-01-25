@@ -127,7 +127,7 @@ public class Queries {
         String query = String.format(q, table_location, min);
         return MySql.select(query);
     }
-
+    
     public static ResultSet get_start_exp(String exp) {
         String q = "select value " +
                 "from %s " +
