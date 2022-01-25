@@ -87,7 +87,7 @@ public class FullChartsShort extends MyChartCreator {
 
             }
         };
-        opavg_1_week.setColor(Themes.RED);
+        opavg_1_week.setColor(Themes.PURPLE);
         opavg_1_week.setStokeSize(1.2f);
 
         // Op avg 5
@@ -107,7 +107,7 @@ public class FullChartsShort extends MyChartCreator {
 
             }
         };
-        opavg_5_week.setColor(Themes.PURPLE);
+        opavg_5_week.setColor(Themes.RED);
         opavg_5_week.setStokeSize(1.2f);
 
         // Op avg 15
@@ -127,7 +127,7 @@ public class FullChartsShort extends MyChartCreator {
 
             }
         };
-        opavg_15_week.setColor(Themes.BLUE_2);
+        opavg_15_week.setColor(Themes.GREEN_5);
         opavg_15_week.setVisible(false);
         opavg_15_week.setStokeSize(1.2f);
 
@@ -148,7 +148,7 @@ public class FullChartsShort extends MyChartCreator {
 
             }
         };
-        opavg_60_week.setColor(Themes.GREEN);
+        opavg_60_week.setColor(Themes.BLUE);
         opavg_60_week.setVisible(false);
         opavg_60_week.setStokeSize(1.2f);
 

@@ -147,7 +147,7 @@ public class DataBaseService extends MyBaseService {
         System.out.println("Stream merket " + BackGroundRunner.streamMarketBool);
 
         // Grabb data and insert data
-        if (sleepCount % 15000 == 0) {
+        if (sleepCount % 10000 == 0) {
             insert_data();
             grab_data();
         }
