@@ -21,6 +21,7 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.Layer;
 import org.jfree.ui.RectangleInsets;
 import threads.MyThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -265,7 +266,7 @@ public class MyChart {
             // Ticker
             setTickerData();
         }
-        
+
         // Append data to series
         private void appendDataToSeries() {
             try {
@@ -380,14 +381,8 @@ public class MyChart {
 
                 ArrayList<Double> dots = new ArrayList<>();
                 for (MyTimeSeries serie : series) {
-                    if (serie.isScaled()) {
-                        if (serie.isVisible()) {
-                            dots.addAll(serie.getMyValues().scaledList());
-                        }
-                    } else {
-                        if (serie.isVisible()) {
-                            dots.addAll(serie.getMyValues());
-                        }
+                    if (serie.isVisible()) {
+                        dots.addAll(serie.getMyValues());
                     }
                 }
 

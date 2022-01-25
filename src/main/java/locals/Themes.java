@@ -42,6 +42,7 @@ public class Themes {
 
     // Colors
     public static Color ORANGE = new Color(219, 158, 47);
+    public static Color ORANGE_2 = new Color(154, 91, 0);
     public static Color LIGHT_BLUE_2 = new Color(0, 237, 255);
     public static Color BLUE_STRIKE = new Color(48, 82, 181);
     public static Color BLUE_DARK = new Color(0, 24, 49);
