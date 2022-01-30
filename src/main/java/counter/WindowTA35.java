@@ -4,6 +4,7 @@ import api.ApiObject;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
 import charts.charts.*;
+import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import options.optionsDataTable.OptionsTableWindow;
@@ -16,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.sql.SQLException;
 
 public class WindowTA35 extends MyGuiComps.MyFrame {
 
@@ -83,6 +85,13 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     @Override
     public void onClose() {
         super.onClose();
+        try {
+            JibeConnectionPool pool = JibeConnectionPool.getConnectionsPoolInstance();
+            pool.shutdown();
+        } catch (SQLException throwables) {
+            JOptionPane.showMessageDialog(this, "Connections shut down failed");
+            throwables.printStackTrace();
+        }
         System.exit(0);
     }
 
