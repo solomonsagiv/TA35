@@ -11,7 +11,7 @@ import java.util.List;
 
 public class JibeConnectionPool implements IConnectionPool {
 	
-	private static final int MAX_POOL_SIZE = 20;
+	private static final int MAX_POOL_SIZE = 15;
 	
 	// Instance
 	private static JibeConnectionPool jibeConnectionPool;

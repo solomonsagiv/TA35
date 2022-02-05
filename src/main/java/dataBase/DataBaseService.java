@@ -22,7 +22,7 @@ public class DataBaseService extends MyBaseService {
     double baskets_0 = 0;
     double delta_mix_0 = 0;
     double ind_bid_ask_counter_0 = 0;
-
+    
     ArrayList<MyTimeStampObject> bid_ask_counter_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> bid_ask_counter_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> delta_week_timestamp = new ArrayList<>();
