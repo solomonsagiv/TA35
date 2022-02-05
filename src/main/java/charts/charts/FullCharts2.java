@@ -52,29 +52,29 @@ public class FullCharts2 extends MyChartCreator {
         // Chart
         MyChart indexChart = new MyChart(series, props);
 
-        // ----------------------------------------- Deltas ----------------------------------------- //
-        // Delta week
-        MyTimeSeries delta_week_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_WEEK_SERIE);
-        delta_week_serie.setColor(Themes.GREEN_6);
-        delta_week_serie.setStokeSize(1.2f);
+        // ----------------------------------------- OP AVG 2 ----------------------------------------- //
+        // --------------- WEEK --------------- //
+        // Op avg 15 yesterday
+        MyTimeSeries continue_opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_15_SERIE);
+        continue_opavg_15_week.setColor(Themes.GREEN);
+        continue_opavg_15_week.setStokeSize(1.2f);
 
-        // Delta month
-        MyTimeSeries delta_month_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MONTH_SERIE);
-        delta_month_serie.setColor(Themes.GREEN_5);
-        delta_month_serie.setStokeSize(1.2f);
+        // Op avg 60 yesterday
+        MyTimeSeries continue_opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_60_SERIE);
+        continue_opavg_60_week.setColor(Themes.BLUE);
+        continue_opavg_60_week.setStokeSize(1.2f);
 
-        // Delta mix
-        MyTimeSeries delta_mixserie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.DELTA_MIX_SERIE);
-        delta_mixserie.setColor(Themes.LIGHT_BLUE_3);
-        delta_mixserie.setStokeSize(1.2f);
+        // Op avg 240 yesterday
+        MyTimeSeries continue_opavg_240_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE);
+        continue_opavg_240_week.setColor(Themes.ORANGE);
+        continue_opavg_240_week.setStokeSize(1.2f);
 
         series = new MyTimeSeries[3];
-        series[0] = delta_week_serie;
-        series[1] = delta_month_serie;
-        series[2] = delta_mixserie;
+        series[0] = continue_opavg_60_week;
+        series[1] = continue_opavg_240_week;
+        series[2] = continue_opavg_15_week;
 
-        // Chart
-        MyChart deltaChart = new MyChart(series, props);
+        MyChart op_avg_chart = new MyChart(series, props);
 
         // ----------------------------------------- Bid ask counter ----------------------------------------- //
         // Counter week
@@ -98,33 +98,21 @@ public class FullCharts2 extends MyChartCreator {
 
         // ----------------------------------------- Op avg 60 15 ----------------------------------------- //
         // --------------- WEEK --------------- //
-        // Op avg 15 yesterday
-        MyTimeSeries continue_opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_15_SERIE);
-        continue_opavg_15_week.setColor(Themes.GREEN);
-        continue_opavg_15_week.setStokeSize(1.2f);
-
-        // Op avg 60 yesterday
-        MyTimeSeries continue_opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_60_SERIE);
-        continue_opavg_60_week.setColor(Themes.BLUE);
-        continue_opavg_60_week.setStokeSize(1.2f);
-
         // Op avg 240 yesterday
-        MyTimeSeries continue_opavg_240_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE);
-        continue_opavg_240_week.setColor(Themes.ORANGE);
-        continue_opavg_240_week.setStokeSize(1.2f);
+        MyTimeSeries continue_opavg_240_week_2 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE);
+        continue_opavg_240_week_2.setColor(Themes.ORANGE);
+        continue_opavg_240_week_2.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[3];
-        series[0] = continue_opavg_60_week;
-        series[1] = continue_opavg_240_week;
-        series[2] = continue_opavg_15_week;
+        series = new MyTimeSeries[1];
+        series[0] = continue_opavg_240_week_2;
 
         // Chart
-        MyChart op_avg_chart = new MyChart(series, props);
+        MyChart op_avg_chart_2 = new MyChart(series, props);
 
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, bid_ask_counter_chart, deltaChart};
+        MyChart[] charts = {indexChart, op_avg_chart, op_avg_chart_2, bid_ask_counter_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
