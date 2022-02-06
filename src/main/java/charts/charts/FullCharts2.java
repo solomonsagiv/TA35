@@ -76,26 +76,6 @@ public class FullCharts2 extends MyChartCreator {
 
         MyChart op_avg_chart = new MyChart(series, props);
 
-        // ----------------------------------------- Bid ask counter ----------------------------------------- //
-        // Counter week
-        MyTimeSeries bid_ask_counter_week_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_WEEK_SERIE);
-        bid_ask_counter_week_serie.setColor(Themes.GREEN_6);
-        bid_ask_counter_week_serie.setStokeSize(1.2f);
-
-        // Counter month
-        MyTimeSeries bid_ask_counter_month_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.BID_ASK_COUNTER_MONTH_SERIE);
-        bid_ask_counter_month_serie.setColor(Themes.GREEN_5);
-        bid_ask_counter_month_serie.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[2];
-        series[0] = bid_ask_counter_week_serie;
-        series[1] = bid_ask_counter_month_serie;
-
-        // Chart
-        MyChart bid_ask_counter_chart = new MyChart(series, props);
-        MyProps props_2 = (MyProps) props.clone();
-        props_2.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
-
         // ----------------------------------------- Op avg 60 15 ----------------------------------------- //
         // --------------- WEEK --------------- //
         // Op avg 240 yesterday
@@ -112,7 +92,7 @@ public class FullCharts2 extends MyChartCreator {
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, op_avg_chart_2, bid_ask_counter_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, op_avg_chart_2};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
