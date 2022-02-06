@@ -16,7 +16,6 @@ import java.time.LocalDateTime;
 
 interface ITimeSeries {
     double getData();
-
     void load();
 }
 
@@ -120,7 +119,9 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
     public void add(LocalDateTime dateTime) {
         try {
             double value = getData();
-            base_add(dateTime, value);
+            if (value != 0) {
+                base_add(dateTime, value);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,7 +129,9 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
 
     public void add(LocalDateTime dateTime, double value) {
         try {
-            base_add(dateTime, value);
+            if (value != 0) {
+                base_add(dateTime, value);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,7 +153,6 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
             addOrUpdate(lastSeconde, value);
         }
     }
-
 
 //    public double add() {
 //        double data = 0;
