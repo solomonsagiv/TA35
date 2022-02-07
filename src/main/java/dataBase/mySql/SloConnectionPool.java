@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SloConnectionPool implements IConnectionPool {
 
-	private static final int MAX_POOL_SIZE = 20;
+	private static final int MAX_POOL_SIZE = 15;
 
 	// Instance
 	private static SloConnectionPool connectionPool;
@@ -128,7 +128,7 @@ public class SloConnectionPool implements IConnectionPool {
 	public int getSize() {
 		return connections.size() + usedConnections.size();
 	}
-	
+
 	public static MyJson getAsJson() {
 		MyJson json = new MyJson();
 		json.put(JsonStrings.connections, connections.size());

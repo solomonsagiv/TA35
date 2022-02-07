@@ -70,46 +70,6 @@ public class FullChartsShort extends MyChartCreator {
         props_2.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
 
         // ----------------------------------------- Op avg 1, 5 ----------------------------------------- //
-        // Op avg 60
-        MyTimeSeries opavg_1_week = new MyTimeSeries("Op avg week 1") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
-                return apiObject.getExps().getWeek().getOp_avg_1();
-            }
-
-            @Override
-            public void load() {
-
-            }
-        };
-        opavg_1_week.setColor(Themes.PURPLE);
-        opavg_1_week.setStokeSize(1.2f);
-
-        // Op avg 5
-        MyTimeSeries opavg_5_week = new MyTimeSeries("Op avg week 5") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
-                return apiObject.getExps().getWeek().getOp_avg_5();
-            }
-
-            @Override
-            public void load() {
-
-            }
-        };
-        opavg_5_week.setColor(Themes.RED);
-        opavg_5_week.setStokeSize(1.2f);
-
         // Op avg 15
         MyTimeSeries opavg_15_week = new MyTimeSeries("Op avg week 15") {
             @Override
@@ -173,12 +133,10 @@ public class FullChartsShort extends MyChartCreator {
         opavg_240_week.setVisible(false);
         opavg_240_week.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[5];
-        series[0] = opavg_1_week;
-        series[1] = opavg_5_week;
-        series[2] = opavg_15_week;
-        series[3] = opavg_60_week;
-        series[4] = opavg_240_week;
+        series = new MyTimeSeries[3];
+        series[0] = opavg_15_week;
+        series[1] = opavg_60_week;
+        series[2] = opavg_240_week;
 
         // Chart
         MyChart opavg_chart = new MyChart(series, props);

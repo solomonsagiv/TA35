@@ -24,8 +24,6 @@ public abstract class Exp implements IJsonData {
 	private double continue_op_avg_60 = 0;
 	private double continue_op_avg_240 = 0;
 	private double op_avg_60 = 0;
-	private double op_avg_5 = 0;
-	private double op_avg_1 = 0;
 	private double op_avg15 = 0;
 	private double op_avg = 0;
 
@@ -161,22 +159,5 @@ public abstract class Exp implements IJsonData {
 	public void setContinue_op_avg_15(double continue_op_avg_15) {
 		this.continue_op_avg_15 = continue_op_avg_15;
 	}
-
-	public double getOp_avg_5() {
-		return op_avg_5;
-	}
-
-	public void setOp_avg_5(double op_avg_5) {
-		this.op_avg_5 = op_avg_5;
-	}
-
-	public double getOp_avg_1() {
-		return op_avg_1;
-	}
-
-	public void setOp_avg_1(double op_avg_1) {
-		this.op_avg_1 = op_avg_1;
-	}
-
 
 }
