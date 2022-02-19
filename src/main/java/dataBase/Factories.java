@@ -23,6 +23,9 @@ public class Factories {
         public static final String DF_N_SPEED_300 = "data.research_ta35_df5_speed_300";
         public static final String DF_SPEED_300 = "data.research_ta35_df6_speed_300";
         public static final String INDEX_BID_ASK_COUNTER = "data.ta35_index_bid_ask_counter";
+        public static final String OP_AVG_15_CONTINUE = "data.ta35_op_avg_week_15_continue";
+        public static final String OP_AVG_60_CONTINUE = "data.ta35_op_avg_week_60_continue";
+        public static final String OP_AVG_240_CONTINUE = "data.ta35_op_avg_week_240_continue";
     }
 
     public static class TimeSeries {

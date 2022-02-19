@@ -193,9 +193,9 @@ public class DataBaseService extends MyBaseService {
                 int v4 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 4));
                 int v8 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 8));
                 double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
-                double continue_op_avg_week_15 =  Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 900));
-                double continue_op_avg_week_60 =  Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 3600));
-                double continue_op_avg_week_240 = Queries.handle_rs(Queries.get_op_avg_last_x_rows(Factories.Tables.FUT_WEEK_TABLE, 14000));
+                double continue_op_avg_week_15 =  Queries.handle_rs(Queries.get_last_record(Factories.Tables.OP_AVG_15_CONTINUE));
+                double continue_op_avg_week_60 =  Queries.handle_rs(Queries.get_last_record(Factories.Tables.OP_AVG_60_CONTINUE));
+                double continue_op_avg_week_240 = Queries.handle_rs(Queries.get_last_record(Factories.Tables.OP_AVG_240_CONTINUE));
 
                 double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE));
 
