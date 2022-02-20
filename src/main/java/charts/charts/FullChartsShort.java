@@ -79,7 +79,7 @@ public class FullChartsShort extends MyChartCreator {
 
             @Override
             public double getData() {
-                return apiObject.getExps().getWeek().getContinue_op_avg_15();
+                return apiObject.getExps().getWeek().getOp_avg_15();
             }
 
             @Override

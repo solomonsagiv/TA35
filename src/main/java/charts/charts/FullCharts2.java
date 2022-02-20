@@ -54,25 +54,33 @@ public class FullCharts2 extends MyChartCreator {
 
         // ----------------------------------------- OP AVG 2 ----------------------------------------- //
         // --------------- WEEK --------------- //
-        // Op avg 15 yesterday
-        MyTimeSeries continue_opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_15_SERIE);
-        continue_opavg_15_week.setColor(Themes.GREEN);
-        continue_opavg_15_week.setStokeSize(1.2f);
 
-        // Op avg 60 yesterday
-        MyTimeSeries continue_opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_60_SERIE);
-        continue_opavg_60_week.setColor(Themes.BLUE);
-        continue_opavg_60_week.setStokeSize(1.2f);
+        // Op avg 5
+        MyTimeSeries opavg_5_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_5_SERIE);
+        opavg_5_week.setColor(Themes.RED);
+        opavg_5_week.setStokeSize(1.2f);
+
+        // Op avg 15
+        MyTimeSeries opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_15_SERIE);
+        opavg_15_week.setColor(Themes.GREEN);
+        opavg_15_week.setStokeSize(1.2f);
+
+        // Op avg 60
+        MyTimeSeries opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
+        opavg_60_week.setColor(Themes.BLUE);
+        opavg_60_week.setStokeSize(1.2f);
 
         // Op avg 240 yesterday
         MyTimeSeries continue_opavg_240_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE);
         continue_opavg_240_week.setColor(Themes.ORANGE);
         continue_opavg_240_week.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[3];
-        series[0] = continue_opavg_60_week;
-        series[1] = continue_opavg_240_week;
-        series[2] = continue_opavg_15_week;
+        series = new MyTimeSeries[4];
+        series[0] = opavg_5_week;
+        series[1] = opavg_15_week;
+        series[2] = opavg_60_week;
+        series[3] = continue_opavg_240_week;
+
 
         MyChart op_avg_chart = new MyChart(series, props);
 

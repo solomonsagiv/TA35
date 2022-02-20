@@ -20,11 +20,10 @@ public abstract class Exp implements IJsonData {
 	private int futureStartStrike = 0;
 	private int futureEndStrike = 0;
 
-	private double continue_op_avg_15 = 0;
-	private double continue_op_avg_60 = 0;
 	private double continue_op_avg_240 = 0;
 	private double op_avg_60 = 0;
-	private double op_avg15 = 0;
+	private double op_avg_15 = 0;
+	private double op_avg_5 = 0;
 	private double op_avg = 0;
 
 	public Exp(ApiObject apiObject, String exp_name) {
@@ -124,20 +123,12 @@ public abstract class Exp implements IJsonData {
 		this.exp_name = exp_name;
 	}
 
-	public void setOp_avg15(double op_avg15) {
-		this.op_avg15 = op_avg15;
+	public void setOp_avg_15(double op_avg_15) {
+		this.op_avg_15 = op_avg_15;
 	}
 
-	public double getOp_avg15() {
-		return op_avg15;
-	}
-
-	public double getContinue_op_avg_60() {
-		return continue_op_avg_60;
-	}
-
-	public void setContinue_op_avg_60(double continue_op_avg_60) {
-		this.continue_op_avg_60 = continue_op_avg_60;
+	public double getOp_avg_15() {
+		return op_avg_15;
 	}
 
 	public double getContinue_op_avg_240() {
@@ -152,12 +143,11 @@ public abstract class Exp implements IJsonData {
 		return symbol;
 	}
 
-	public double getContinue_op_avg_15() {
-		return continue_op_avg_15;
+	public double getOp_avg_5() {
+		return op_avg_5;
 	}
 
-	public void setContinue_op_avg_15(double continue_op_avg_15) {
-		this.continue_op_avg_15 = continue_op_avg_15;
+	public void setOp_avg_5(double op_avg_5) {
+		this.op_avg_5 = op_avg_5;
 	}
-
 }

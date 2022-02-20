@@ -23,9 +23,10 @@ public class Factories {
         public static final String DF_N_SPEED_300 = "data.research_ta35_df5_speed_300";
         public static final String DF_SPEED_300 = "data.research_ta35_df6_speed_300";
         public static final String INDEX_BID_ASK_COUNTER = "data.ta35_index_bid_ask_counter";
-        public static final String OP_AVG_15_CONTINUE = "data.ta35_op_avg_week_15_continue";
-        public static final String OP_AVG_60_CONTINUE = "data.ta35_op_avg_week_60_continue";
         public static final String OP_AVG_240_CONTINUE = "data.ta35_op_avg_week_240_continue";
+        public static final String OP_AVG_15 = "data.ta35_op_avg_week_15";
+        public static final String OP_AVG_60 = "data.ta35_op_avg_week_60";
+        public static final String OP_AVG_5 = "data.ta35_op_avg_week_5";
     }
 
     public static class TimeSeries {
@@ -39,10 +40,9 @@ public class Factories {
         public static final String OP_AVG_WEEK_SERIE = "OP_AVG_WEEK";
         public static final String OP_AVG_MONTH_SERIE = "OP_AVG_MONTH";
 
-        public static final String OP_AVG_WEEK_60_SERIE = "OP_AVG_WEEK_60";
-        public static final String OP_AVG_MONTH_60_SERIE = "OP_AVG_MONTH_60";
+        public static final String OP_AVG_WEEK_5_SERIE = "OP_AVG_WEEK_5";
         public static final String OP_AVG_WEEK_15_SERIE = "OP_AVG_WEEK_15";
-        public static final String OP_AVG_MONTH_15_SERIE = "OP_AVG_MONTH_15";
+        public static final String OP_AVG_WEEK_60_SERIE = "OP_AVG_WEEK_60";
         public static final String BID_ASK_COUNTER_WEEK_SERIE = "BID_ASK_COUNTER_WEEK";
         public static final String BID_ASK_COUNTER_MONTH_SERIE = "BID_ASK_COUNTER_MONTH";
         public static final String BID_ASK_COUNTER_WEEK_AVG_60_SERIE = "BID_ASK_COUNTER_WEEK_AVG_60";
@@ -54,12 +54,7 @@ public class Factories {
         public static final String DF_V_5_SERIE = "DF_V_5";
         public static final String DF_V_6_SERIE = "DF_V_6";
         public static final String INDEX_DELTA_SERIE = "INDEX_DELTA";
-        public static final String CONTINUE_OP_AVG_WEEK_15_SERIE = "YESTERDAY_OP_AVG_WEEK_15_SERIE";
-        public static final String CONTINUE_OP_AVG_MONTH_15_SERIE = "YESTERDAY_OP_AVG_MONTH_15_SERIE";
-        public static final String CONTINUE_OP_AVG_WEEK_60_SERIE = "YESTERDAY_OP_AVG_WEEK_60_SERIE";
         public static final String CONTINUE_OP_AVG_WEEK_240_SERIE = "YESTERDAY_OP_AVG_WEEK_240_SERIE";
-        public static final String CONTINUE_OP_AVG_MONTH_60_SERIE = "YESTERDAY_OP_AVG_MONTH_60_SERIE";
-        public static final String CONTINUE_OP_AVG_MONTH_240_SERIE = "YESTERDAY_OP_AVG_MONTH_240_SERIE";
         public static final String INDEX_WITH_BID_ASK_SERIE = "INDEX_WITH_BID_ASK_SERIE";
     }
 
