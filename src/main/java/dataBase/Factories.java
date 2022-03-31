@@ -56,6 +56,7 @@ public class Factories {
         public static final String INDEX_DELTA_SERIE = "INDEX_DELTA";
         public static final String CONTINUE_OP_AVG_WEEK_240_SERIE = "YESTERDAY_OP_AVG_WEEK_240_SERIE";
         public static final String INDEX_WITH_BID_ASK_SERIE = "INDEX_WITH_BID_ASK_SERIE";
+        public static final String FUTURE_WEEK_SERIE = "FUTURE_WEEK_SERIE";
     }
 
 }
