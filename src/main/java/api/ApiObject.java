@@ -545,7 +545,7 @@ public class ApiObject implements IJsonData {
 
 
     public int getV107() {
-        return v103;
+        return v107;
     }
 
     public void setV107(int new_v107) {
