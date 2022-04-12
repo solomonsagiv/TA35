@@ -23,7 +23,7 @@ public class FullCharts2 extends MyChartCreator {
     public void init() throws CloneNotSupportedException {
 
         MyTimeSeries[] series;
-
+        
         // Props
         props = new MyProps();
         props.setProp(ChartPropsEnum.SECONDS, INFINITE);
@@ -87,20 +87,26 @@ public class FullCharts2 extends MyChartCreator {
         // ----------------------------------------- Op avg 60 15 ----------------------------------------- //
         // --------------- WEEK --------------- //
         // Op avg 240 yesterday
-        MyTimeSeries continue_opavg_240_week_2 = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE);
-        continue_opavg_240_week_2.setColor(Themes.ORANGE);
-        continue_opavg_240_week_2.setStokeSize(1.2f);
+        MyTimeSeries v_103_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.V_103_SERIE);
+        v_103_serie.setColor(Themes.ORANGE);
+        v_103_serie.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[1];
-        series[0] = continue_opavg_240_week_2;
+        MyTimeSeries v_107_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.V_107_SERIE);
+        v_107_serie.setColor(Themes.PURPLE);
+        v_107_serie.setStokeSize(1.2f);
+
+
+        series = new MyTimeSeries[2];
+        series[0] = v_103_serie;
+        series[1] = v_107_serie;
 
         // Chart
-        MyChart op_avg_chart_2 = new MyChart(series, props);
+        MyChart df_chart = new MyChart(series, props);
 
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, op_avg_chart_2};
+        MyChart[] charts = {indexChart, op_avg_chart, df_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");

@@ -53,6 +53,8 @@ public class Factories {
         public static final String DF_V_8_SERIE = "DF_V_8";
         public static final String DF_V_5_SERIE = "DF_V_5";
         public static final String DF_V_6_SERIE = "DF_V_6";
+        public static final String V_103_SERIE = "V_103";
+        public static final String V_107_SERIE = "V_107";
         public static final String INDEX_DELTA_SERIE = "INDEX_DELTA";
         public static final String CONTINUE_OP_AVG_WEEK_240_SERIE = "YESTERDAY_OP_AVG_WEEK_240_SERIE";
         public static final String INDEX_WITH_BID_ASK_SERIE = "INDEX_WITH_BID_ASK_SERIE";

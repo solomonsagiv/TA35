@@ -183,7 +183,7 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro(ind_bid_ask_counter_timestamp, Factories.Tables.INDEX_BID_ASK_COUNTER);
         }).start();
     }
-
+    
     private void grab_data() {
         new Thread(() -> {
             try {
@@ -192,6 +192,10 @@ public class DataBaseService extends MyBaseService {
                 int v6 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 6));
                 int v4 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 4));
                 int v8 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 8));
+
+                int v103 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 1, 103));
+                int v107 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 1, 107));
+                
                 double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
                 double op_avg_week_5 =  Queries.handle_rs(Queries.get_last_record(Factories.Tables.OP_AVG_5));
                 double op_avg_week_15 =  Queries.handle_rs(Queries.get_last_record(Factories.Tables.OP_AVG_15));
@@ -200,11 +204,13 @@ public class DataBaseService extends MyBaseService {
 
                 double op_avg_month = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_MONTH_TABLE));
 
-                // V5 V6 V4 V8
+                // V5 V6 V4 V8 v103 v107
                 apiObject.setV5(v5);
                 apiObject.setV6(v6);
                 apiObject.setV4(v4);
                 apiObject.setV8(v8);
+                apiObject.setV103(v103);
+                apiObject.setV107(v107);
 
                 Exp week = apiObject.getExps().getWeek();
                 Exp month = apiObject.getExps().getMonth();

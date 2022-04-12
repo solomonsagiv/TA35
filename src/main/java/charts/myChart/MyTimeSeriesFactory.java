@@ -119,7 +119,7 @@ public class MyTimeSeriesFactory {
                     }
                 };
             case Factories.TimeSeries.DF_V_8_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.DF_V_4_SERIE) {
+                return new MyTimeSeries(Factories.TimeSeries.DF_V_8_SERIE) {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         String table_location = Factories.Tables.DF_TABLE;
@@ -139,7 +139,7 @@ public class MyTimeSeriesFactory {
                     }
                 };
             case Factories.TimeSeries.DF_V_5_SERIE:
-                return new MyTimeSeries(Factories.TimeSeries.DF_V_4_SERIE) {
+                return new MyTimeSeries(Factories.TimeSeries.DF_V_5_SERIE) {
                     @Override
                     public ResultSet load_last_x_time(int minuts) {
                         String table_location = Factories.Tables.DF_TABLE;
@@ -156,7 +156,7 @@ public class MyTimeSeriesFactory {
 
                     @Override
                     public double getData() {
-                        return apiObject.getV4();
+                        return apiObject.getV5();
                     }
 
                     @Override
@@ -165,6 +165,50 @@ public class MyTimeSeriesFactory {
 //                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
+
+            case Factories.TimeSeries.V_103_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.V_103_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        String table_location = Factories.Tables.DF_TABLE;
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 1, 103, minuts);
+                        return rs;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getV103();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 1, 103, Queries.START_OF_THE_DAY_MIN);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+
+            case Factories.TimeSeries.V_107_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.V_107_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        String table_location = Factories.Tables.DF_TABLE;
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(table_location, 1, 107, minuts);
+                        return rs;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getV107();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_last_x_min_record_from_decision_func(Factories.Tables.DF_TABLE, 1, 107, Queries.START_OF_THE_DAY_MIN);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
             case Factories.TimeSeries.OP_AVG_WEEK_60_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE) {
                     @Override

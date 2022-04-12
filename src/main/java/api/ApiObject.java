@@ -33,6 +33,10 @@ public class ApiObject implements IJsonData {
     private int v6 = 0;
     private int pre_v5 = 0;
     private int pre_v6 = 0;
+    private int v103 = 0;
+    private int v107 = 0;
+    private int pre_v103 = 0;
+    private int pre_v107 = 0;
     private int v4 = 0;
     private int v8 = 0;
     private int pre_v4 = 0;
@@ -41,6 +45,7 @@ public class ApiObject implements IJsonData {
     private int v6_speed_300 = 0;
     private int pre_df_n_speed_300 = 0;
     private int pre_df_speed_300 = 0;
+    private int df_7 = 0;
 
     private double bid_ask_counter_avg_60 = 0;
     private double bid_ask_counter_avg = 0;
@@ -523,6 +528,37 @@ public class ApiObject implements IJsonData {
         }
     }
 
+    public int getV103() {
+        return v103;
+    }
+
+    public void setV103(int new_v103) {
+        if (new_v103 != 0 && this.v103 != new_v103) {
+            setPre_v103(this.v103);
+            this.v103 = new_v103;
+        }
+    }
+
+    public void setPre_v103(int pre_v103) {
+        this.pre_v103 = pre_v103;
+    }
+
+
+    public int getV107() {
+        return v103;
+    }
+
+    public void setV107(int new_v107) {
+        if (new_v107 != 0 && this.v107 != new_v107) {
+            setPre_v103(this.v107);
+            this.v107 = new_v107;
+        }
+    }
+
+    public void setPre_v107(int pre_v107) {
+        this.pre_v107 = pre_v107;
+    }
+
     public int getV6_speed_300() {
         return v6_speed_300;
     }
@@ -543,6 +579,14 @@ public class ApiObject implements IJsonData {
                 setPre_df_speed_300(this.v6_speed_300);
                 this.v6_speed_300 = new_val;
             }
+    }
+
+    public int getDf_7() {
+        return df_7;
+    }
+
+    public void setDf_7(int df_7) {
+        this.df_7 = df_7;
     }
 
     public int getPre_df_n_speed_300() {
