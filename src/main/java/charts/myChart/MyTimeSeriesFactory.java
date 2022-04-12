@@ -69,6 +69,25 @@ public class MyTimeSeriesFactory {
                     }
                 };
 
+            case Factories.TimeSeries.FUTURE_WEEK_SERIE:
+                return new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK_SERIE) {
+                    @Override
+                    public ResultSet load_last_x_time(int minuts) {
+                        return null;
+                    }
+
+                    @Override
+                    public double getData() {
+                        return apiObject.getExps().getWeek().getOptions().getContract();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie(Factories.Tables.SAGIV_FUT_WEEK_TABLE, step_second);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
             case Factories.TimeSeries.INDEX_WITH_BID_ASK_SERIE:
                 return new MyTimeSeries(Factories.TimeSeries.INDEX_WITH_BID_ASK_SERIE) {
                     @Override
