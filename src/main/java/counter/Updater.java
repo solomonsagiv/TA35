@@ -88,31 +88,31 @@ public class Updater extends MyThread implements Runnable {
                 
                 // Delta calc
                 // Month
-                colorForge(window.monthDeltaField, (int) optionsMonth.getTotal_delta(), L.df());
+                colorForgeRound(window.monthDeltaField, (int) optionsMonth.getTotal_delta());
                 // Week
-                colorForge(window.weekDeltaField, (int) optionsWeek.getTotal_delta(), L.df());
+                colorForgeRound(window.weekDeltaField, (int) optionsWeek.getTotal_delta());
 
                 // Ind baskets
-                colorForge(window.indDeltaNoBasketsField, (int) apiObject.getStocksHandler().getDelta(), L.df());
+                colorForgeRound(window.indDeltaNoBasketsField, (int) apiObject.getStocksHandler().getDelta());
 
                 // Decision func
-                window.v5_field.colorForge(apiObject.getV5(), L.df());
-                window.v6_field.colorForge(apiObject.getV6(), L.df());
-                window.v4_field.colorForge(apiObject.getV4(), L.df());
-                window.v8_field.colorForge(apiObject.getV8(), L.df());
+                window.v5_field.colorForgeRound(apiObject.getV5());
+                window.v6_field.colorForgeRound(apiObject.getV6());
+                window.v4_field.colorForgeRound(apiObject.getV4());
+                window.v8_field.colorForgeRound(apiObject.getV8());
 
                 // Exp
                 // Week
-                colorForge(window.exp_v4_field, (int) expWeek.getExpData().getV4() + apiObject.getV4(), L.df());
-                colorForge(window.exp_v8_field, (int) expWeek.getExpData().getV8() + apiObject.getV8(), L.df());
-                colorForge(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), L.df());
+                colorForgeRound(window.exp_v4_field, (int) expWeek.getExpData().getV4() + apiObject.getV4());
+                colorForgeRound(window.exp_v8_field, (int) expWeek.getExpData().getV8() + apiObject.getV8());
+                colorForgeRound(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets());
                 text = floor(((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.weekStartExpField, text);
 
                 // Month
-                colorForge(window.exp_v5_field, (int) expMonth.getExpData().getV5() + apiObject.getV5(), L.df());
-                colorForge(window.exp_v6_field, (int) expMonth.getExpData().getV6() + apiObject.getV6(), L.df());
-                colorForge(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), L.df());
+                colorForgeRound(window.exp_v5_field, (int) expMonth.getExpData().getV5() + apiObject.getV5());
+                colorForgeRound(window.exp_v6_field, (int) expMonth.getExpData().getV6() + apiObject.getV6());
+                colorForgeRound(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets());
                 text = floor(((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.monthStartExpField, text);
             }
@@ -168,6 +168,17 @@ public class Updater extends MyThread implements Runnable {
         }
 
         textField.setText(format.format(val));
+    }
+
+
+    public void colorForgeRound(JTextField textField, int val) {
+        val /= 1000;
+        if (val >= 0) {
+            textField.setForeground(Themes.GREEN);
+        } else {
+            textField.setForeground(Themes.RED);
+        }
+        textField.setText(L.str((int)val));
     }
 
     // pars double function();

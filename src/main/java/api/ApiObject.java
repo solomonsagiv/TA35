@@ -29,8 +29,10 @@ public class ApiObject implements IJsonData {
     private double bigConBid = 0;
     private double bigConAsk = 0;
 
+    private int v102 = 0;
     private int v5 = 0;
     private int v6 = 0;
+    private int pre_v102 = 0;
     private int pre_v5 = 0;
     private int pre_v6 = 0;
     private int v103 = 0;
@@ -526,6 +528,26 @@ public class ApiObject implements IJsonData {
             setPre_v5(this.v5);
             this.v5 = new_v5;
         }
+    }
+
+
+    public void setV102(int new_v2) {
+        if (new_v2 != 0 && this.v102 != new_v2) {
+            setPre_v102(this.v102);
+            this.v102 = new_v2;
+        }
+    }
+
+    public int getV102() {
+        return v102;
+    }
+
+    public int getPre_v102() {
+        return pre_v102;
+    }
+
+    public void setPre_v102(int pre_v102) {
+        this.pre_v102 = pre_v102;
     }
 
     public int getV103() {

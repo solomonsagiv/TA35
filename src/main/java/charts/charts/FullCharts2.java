@@ -92,9 +92,9 @@ public class FullCharts2 extends MyChartCreator {
         // ----------------------------------------- Op avg 60 15 ----------------------------------------- //
         // --------------- WEEK --------------- //
         // Op avg 240 yesterday
-        MyTimeSeries v_103_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.V_103_SERIE);
-        v_103_serie.setColor(Themes.ORANGE);
-        v_103_serie.setStokeSize(1.2f);
+        MyTimeSeries v_102_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.V_102_SERIE);
+        v_102_serie.setColor(Themes.ORANGE);
+        v_102_serie.setStokeSize(1.2f);
 
         MyTimeSeries v_107_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.V_107_SERIE);
         v_107_serie.setColor(Themes.PURPLE);
@@ -102,7 +102,7 @@ public class FullCharts2 extends MyChartCreator {
 
 
         series = new MyTimeSeries[2];
-        series[0] = v_103_serie;
+        series[0] = v_102_serie;
         series[1] = v_107_serie;
 
         // Chart

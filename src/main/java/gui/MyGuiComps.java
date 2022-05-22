@@ -193,6 +193,21 @@ public class MyGuiComps {
             setText(format.format(val));
         }
 
+
+
+        public void colorForgeRound(double val) {
+            val /= 1000;
+
+            if (val >= 0) {
+                setForeground(Themes.GREEN);
+            } else {
+                setForeground(Themes.RED);
+            }
+
+            setText(L.str((int) val));
+        }
+
+
         public void colorForge(double val, DecimalFormat format, String sign) {
             if (val >= 0) {
                 setForeground(Themes.GREEN);

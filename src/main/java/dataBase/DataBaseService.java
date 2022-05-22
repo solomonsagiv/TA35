@@ -43,7 +43,7 @@ public class DataBaseService extends MyBaseService {
         week = apiObject.getExps().getWeek();
         month = apiObject.getExps().getMonth();
     }
-
+    
     @Override
     public void go() {
         if (Manifest.DB_UPLOAD && BackGroundRunner.streamMarketBool) {
@@ -158,15 +158,6 @@ public class DataBaseService extends MyBaseService {
 //        }
     }
 
-    private void update_options_status() {
-        new Thread(() -> {
-            ExpWeek expWeek = apiObject.getExps().getWeek();
-            ExpMonth expMonth = apiObject.getExps().getMonth();
-
-            Queries.update_options_status(expWeek.getAsJson().toString(), DataBaseHandler.EXP_MONTH);
-            Queries.update_options_status(expMonth.getAsJson().toString(), DataBaseHandler.EXP_WEEK);
-        }).start();
-    }
 
     private void insert_data() {
         new Thread(() -> {
@@ -193,7 +184,7 @@ public class DataBaseService extends MyBaseService {
                 int v4 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 4));
                 int v8 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 2, 8));
 
-                int v103 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 1, 103));
+                int v102 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 1, 102));
                 int v107 = (int) Queries.handle_rs(Queries.get_last_record_from_decision_func(Factories.Tables.RESEARCH_TABLE, 1, 107));
                 
                 double op_avg_week = Queries.handle_rs(Queries.get_op_avg(Factories.Tables.FUT_WEEK_TABLE));
@@ -209,7 +200,7 @@ public class DataBaseService extends MyBaseService {
                 apiObject.setV6(v6);
                 apiObject.setV4(v4);
                 apiObject.setV8(v8);
-                apiObject.setV103(v103);
+                apiObject.setV102(v102);
                 apiObject.setV107(v107);
 
                 Exp week = apiObject.getExps().getWeek();
