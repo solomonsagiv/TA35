@@ -9,7 +9,6 @@ public class ExpData implements IJsonData {
 
 	private double start = 0;
 	private int baskets = 0;
-	private double indDelta = 0;
 	private double v4 = 0;
 	private double v8 = 0;
 	private double v6 = 0;
@@ -35,14 +34,6 @@ public class ExpData implements IJsonData {
 		this.baskets = baskets;
 	}
 
-	public void setIndDelta(double indDelta) {
-		this.indDelta = indDelta;
-	}
-	
-	public double getTotalIndDelta() {
-		return indDelta + apiObject.getStocksHandler().getDelta();
-	}
-	
 	public int getTotalBaskets() {
 		return baskets + (apiObject.getBasketUp() - apiObject.getBasketDown());
 	}
@@ -84,7 +75,6 @@ public class ExpData implements IJsonData {
 		MyJson json = new MyJson();
 		json.put(JsonStrings.expStart, start);
 		json.put(JsonStrings.baskets, baskets);
-		json.put(JsonStrings.indDelta, indDelta);
 		return json;
 	}
 
@@ -92,7 +82,6 @@ public class ExpData implements IJsonData {
 	public void loadFromJson(MyJson json) {
 		setStart(json.getDouble(JsonStrings.expStart));
 		setBaskets(json.getInt(JsonStrings.baskets));
-		setIndDelta(json.getDouble(JsonStrings.indDelta));
 	}
 	
 	@Override
@@ -100,7 +89,6 @@ public class ExpData implements IJsonData {
 		MyJson json = new MyJson();
 		json.put(JsonStrings.expStart, start);
 		json.put(JsonStrings.baskets, getTotalBaskets());
-		json.put(JsonStrings.indDelta, getTotalIndDelta());
 		return json;
 	}
 	

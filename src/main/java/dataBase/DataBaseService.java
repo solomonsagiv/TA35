@@ -13,11 +13,9 @@ import java.util.ArrayList;
 
 public class DataBaseService extends MyBaseService {
 
-    double ind_delta_0 = 0;
     double baskets_0 = 0;
     double ind_bid_ask_counter_0 = 0;
     
-    ArrayList<MyTimeStampObject> ind_delta_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> index_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_month_timestamp = new ArrayList<>();
@@ -33,7 +31,7 @@ public class DataBaseService extends MyBaseService {
         super();
         week = apiObject.getExps().getWeek();
         month = apiObject.getExps().getMonth();
-        
+
         // OP AVG
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5));
@@ -65,7 +63,6 @@ public class DataBaseService extends MyBaseService {
 
     private void append_changed_data_to_lists() {
 
-        double ind_delta = apiObject.getStocksHandler().getDelta();
         double index = apiObject.getIndex();
         double fut_week = week.getOptions().getContract();
         double fut_month = month.getOptions().getContract();
@@ -79,15 +76,6 @@ public class DataBaseService extends MyBaseService {
                 ind_bid_ask_counter_timestamp.add(new MyTimeStampObject(Instant.now(), change));
             }
             ind_bid_ask_counter_0 = ind_bid_ask_counter;
-        }
-
-        // Index delta
-        change = ind_delta - ind_delta_0;
-        if (change != 0) {
-            if (change < 10000 && change > -10000) {
-                ind_delta_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-            ind_delta_0 = ind_delta;
         }
 
         // Baskets
@@ -121,7 +109,6 @@ public class DataBaseService extends MyBaseService {
 
     private void insert_data() {
         new Thread(() -> {
-            insert_data_retro(ind_delta_timestamp, Factories.Tables.INDEX_DELTA_TABLE);
             insert_data_retro(fut_week_timestamp, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
             insert_data_retro(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
             insert_data_retro(baskets_timestamp, Factories.Tables.BASKETS_TABLE);

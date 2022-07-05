@@ -4,16 +4,13 @@ import charts.myChart.MyChartList;
 import locals.L;
 import miniStocks.MiniStock;
 import myJson.IJsonData;
-import myJson.JsonStrings;
 import myJson.MyJson;
 
 public class StocksHandler implements IJsonData {
 	
 	MiniStock[] stocks;
 	
-	double delta = 0;
-	double deltaNoBaskets = 0;
-	
+
 	private MyChartList indDeltaList = new MyChartList();
 	private MyChartList indDeltaNoBasketsList = new MyChartList();
 	
@@ -35,38 +32,11 @@ public class StocksHandler implements IJsonData {
 		return json;
 	}
 	
-	public void minusNoBasketsDelta( double delta ) {
-		this.deltaNoBaskets -= delta;
-	}
-	
+
 	public MiniStock[] getStocks() {
 		return stocks;
 	}
 
-	public double getDelta() {
-		return delta;
-	}
-
-	public double getDeltaNoBaskets() {
-		return deltaNoBaskets;
-	}
-	
-	public void appendDelta(double delta) {
-		this.delta += delta;
-	}
-
-	public void appendDeltaNoBasket(double delta) {
-		this.deltaNoBaskets += delta;
-	}
-
-	public void setDelta(double delta) {
-		this.delta = delta;
-	}
-
-	public void setDeltaNoBaskets(double deltaNoBaskets) {
-		this.deltaNoBaskets = deltaNoBaskets;
-	}
-	
 	public MyChartList getIndDeltaList() {
 		return indDeltaList;
 	}
@@ -78,15 +48,11 @@ public class StocksHandler implements IJsonData {
 	@Override
 	public MyJson getAsJson() {
 		MyJson json = new MyJson();
-		json.put(JsonStrings.delta, delta);
-		json.put(JsonStrings.deltaNoBaskets, deltaNoBaskets);
 		return json;
 	}
 		
 	@Override
 	public void loadFromJson(MyJson json) {
-		setDelta(json.getDouble(JsonStrings.delta));
-		setDeltaNoBaskets(json.getDouble(JsonStrings.deltaNoBaskets));
 	}
 
 	@Override

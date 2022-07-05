@@ -40,9 +40,7 @@ public class DataBaseHandler {
         try {
             int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE)));
             int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE)));
-            int index_delta = (int) L.abs(Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.INDEX_DELTA_TABLE)));
 
-            apiObject.getStocksHandler().setDelta(index_delta);
             apiObject.setBasketUp(baskets_up);
             apiObject.setBasketDown(baskets_down);
         } catch (Exception e) {
@@ -59,17 +57,14 @@ public class DataBaseHandler {
             double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
             double start_exp_week = Queries.handle_rs(Queries.get_start_exp(EXP_WEEK));
             double start_exp_month = Queries.handle_rs(Queries.get_start_exp(EXP_MONTH));
-            double ind_delta_week = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
-            double ind_delta_month = Queries.handle_rs(get_exp_data(Factories.Tables.INDEX_DELTA_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
-            double v4_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_WEEK, Factories.Tables.DF_TABLE, 2, 4));
-            double v8_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_WEEK, Factories.Tables.DF_TABLE, 2, 8));
-            double v5_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_MONTH, Factories.Tables.DF_TABLE, 2, 5));
-            double v6_exp = Queries.handle_rs(Queries.get_decision_exp(EXP_MONTH, Factories.Tables.DF_TABLE, 2, 6));
-            
+
+            double v4_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_4, EXP_WEEK));
+            double v8_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_8, EXP_WEEK));
+            double v5_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_5, EXP_MONTH));
+            double v6_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_6, EXP_MONTH));
+
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
-            week.getExpData().setIndDelta(ind_delta_week);
-            month.getExpData().setIndDelta(ind_delta_month);
             week.getExpData().setBaskets((int) baskets_exp_week);
             month.getExpData().setBaskets((int) baskets_exp_month);
             week.getExpData().setV4(v4_exp);

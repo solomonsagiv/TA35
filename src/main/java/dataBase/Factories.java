@@ -5,7 +5,6 @@ public class Factories {
     public static class Tables {
         public static final String SAGIV_INDEX_TABLE = "sagiv.ta35_index";
         public static final String INDEX_TABLE = "data.ta35_index";
-        public static final String INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";
         public static final String BASKETS_TABLE = "sagiv.ta35_baskets_cdf";
         public static final String EXPS_TABLE = "sagiv.ta35_exps";
         public static final String SAGIV_FUT_WEEK_TABLE = "sagiv.ta35_future_week";
@@ -38,7 +37,6 @@ public class Factories {
         public static final String DF_2_RAW = "DF_2_RAW";
         public static final String DF_7_RAW = "DF_7_RAW";
 
-        public static final String INDEX_DELTA = "INDEX_DELTA";
         public static final String CONTINUE_OP_AVG_WEEK_240 = "YESTERDAY_OP_AVG_WEEK_240";
         public static final String INDEX_WITH_BID_ASK = "INDEX_WITH_BID_ASK";
         public static final String FUTURE_WEEK = "FUTURE_WEEK";

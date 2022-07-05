@@ -173,6 +173,17 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_sum_mega_exp(int serie_id, String exp_type) {
+        String q = "select sum(value) as value\n" +
+                "from ts.timeseries_data\n" +
+                "where timeseries_id = %s\n" +
+                "and date_trunc('day', time) >= (select date from sagiv.ta35_exps where exp_type = '%s');";
+
+        String query = String.format(q, serie_id, exp_type);
+        return MySql.select(query);
+    }
+
+
     public static ResultSet op_avg_cumulative(String index_table, String fut_table) {
         String query = String.format("select i.time as time, avg(f.value - i.value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s i " +

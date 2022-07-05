@@ -23,7 +23,7 @@ public class DataReaderService extends MyBaseService {
     String futureBidCell = "R7C2";
     String futureAskCell = "R7C3";
     String daysToExpCell = "R4C1";
-
+    
     DDEClientConversation conversation;
 
     public DataReaderService(String excel_path) {

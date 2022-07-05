@@ -6,7 +6,6 @@ import dataBase.Factories;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import exp.Exp;
-
 import java.sql.ResultSet;
 
 public class TimeSeriesFactory {
@@ -366,25 +365,6 @@ public class TimeSeriesFactory {
 
                         Exp exp = ApiObject.getInstance().getExps().getWeek();
                         exp.setOp_avg(val);
-                    }
-                };
-            case Factories.TimeSeries.INDEX_DELTA:
-                return new MyTimeSeries(Factories.TimeSeries.INDEX_DELTA) {
-
-                    @Override
-                    public double getValue() {
-                        return ApiObject.getInstance().getStocksHandler().getDelta();
-                    }
-
-                    @Override
-                    public void load() {
-                        ResultSet rs = Queries.get_serie_cumulative_sum(Factories.Tables.INDEX_DELTA_TABLE, step_second);
-                        DataBaseHandler.loadSerieData(rs, this);
-                    }
-
-                    @Override
-                    public void updateData() {
-
                     }
                 };
             case Factories.TimeSeries.OP_AVG_MONTH:
