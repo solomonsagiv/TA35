@@ -30,7 +30,4 @@ public class Exps {
         return month;
     }
 
-    public double get_delta() {
-        return week.getOptions().getTotal_delta() + month.getOptions().getTotal_delta();
-    }
 }

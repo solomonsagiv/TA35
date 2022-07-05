@@ -38,21 +38,9 @@ public class DataBaseHandler {
 
     public void load_today_data(ApiObject apiObject) {
         try {
-            double week_delta = Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.SAGIV_DELTA_WEEK_TABLE));
-            double month_delta = Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.SAGIV_DELTA_MONTH_TABLE));
-            int bid_ask_counter_week = (int) Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.BID_ASK_COUNTER_WEEK_TABLE));
-            int bid_ask_counter_month = (int) Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.BID_ASK_COUNTER_MONTH_TABLE));
             int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE)));
             int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE)));
             int index_delta = (int) L.abs(Queries.handle_rs(Queries.get_serie_sum_today(Factories.Tables.INDEX_DELTA_TABLE)));
-            ExpWeek week = apiObject.getExps().getWeek();
-            ExpMonth month = apiObject.getExps().getMonth();
-
-            week.getOptions().setTotal_delta(week_delta);
-            week.getOptions().setConBidAskCounter(bid_ask_counter_week);
-
-            month.getOptions().setTotal_delta(month_delta);
-            month.getOptions().setConBidAskCounter(bid_ask_counter_month);
 
             apiObject.getStocksHandler().setDelta(index_delta);
             apiObject.setBasketUp(baskets_up);
@@ -67,8 +55,6 @@ public class DataBaseHandler {
             ExpWeek week = apiObject.getExps().getWeek();
             ExpMonth month = apiObject.getExps().getMonth();
 
-            double exp_week_delta = Queries.handle_rs(get_exp_data(Factories.Tables.SAGIV_DELTA_WEEK_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
-            double exp_month_delta = Queries.handle_rs(get_exp_data(Factories.Tables.SAGIV_DELTA_MONTH_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
             double baskets_exp_week = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
             double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
             double start_exp_week = Queries.handle_rs(Queries.get_start_exp(EXP_WEEK));
@@ -82,8 +68,6 @@ public class DataBaseHandler {
             
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
-            week.getExpData().setDelta(exp_week_delta);
-            month.getExpData().setDelta(exp_month_delta);
             week.getExpData().setIndDelta(ind_delta_week);
             month.getExpData().setIndDelta(ind_delta_month);
             week.getExpData().setBaskets((int) baskets_exp_week);

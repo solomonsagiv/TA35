@@ -184,7 +184,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart 2", "Full charts 30", "Options window", "Decision_Chart", "Decision v4, v8", "Exp week v4, v8"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart 2", "Options window"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -202,19 +202,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                     case "Options window":
                         new OptionsTableWindow("Options window");
                         break;
-                    case "Decision v4, v8":
-                        Decision_Chart decision_chart = new Decision_Chart(apiObject);
-                        decision_chart.createChart();
-                        break;
-                    case "Exp week v4, v8":
-                        Exp_Chart exp_chart = new Exp_Chart(apiObject);
-                        exp_chart.createChart();
-                        break;
-                    case "Full charts 30":
-                        FullChartsShort fullChartsShort = new FullChartsShort(apiObject);
-                        fullChartsShort.createChart();
-                        break;
-
                     default:
                         break;
                 }

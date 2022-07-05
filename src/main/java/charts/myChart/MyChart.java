@@ -3,7 +3,6 @@ package charts.myChart;
 
 import api.ApiObject;
 import charts.MyChartPanel;
-import dataBase.DataBaseHandler;
 import locals.L;
 import locals.Themes;
 import org.jfree.chart.ChartFactory;
@@ -21,7 +20,6 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.ui.Layer;
 import org.jfree.ui.RectangleInsets;
 import threads.MyThread;
-
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -230,8 +228,6 @@ public class MyChart {
                             if (isDataChanged()) {
                                 append();
                             }
-                        } else if (props.getProp(ChartPropsEnum.RETRO_MINS) > 0) {
-                            append_retro();
                         } else {
                             append();
                         }
@@ -241,19 +237,6 @@ public class MyChart {
                     }
                 } catch (InterruptedException e) {
                     break;
-                }
-            }
-        }
-
-        private void append_retro() {
-            int minuts = (int) props.getProp(ChartPropsEnum.RETRO_MINS);
-
-            if (minuts > 0) {
-                for (MyTimeSeries serie : series) {
-                    new Thread(() -> {
-                        serie.clear_data();
-                        DataBaseHandler.loadSerieData(serie.load_last_x_time(minuts), serie);
-                    }).start();
                 }
             }
         }
@@ -319,29 +302,15 @@ public class MyChart {
                     ArrayList<Double> dots = new ArrayList<>();
 
                     try {
-                        if (series[0].isScaled()) {
-
-                            for (MyTimeSeries mts : series) {
-                                for (int i = startIndex; i < endIndex; i++) {
-                                    if (mts.isVisible()) {
-                                        dots.add(mts.getScaledData(i));
-                                    }
+                        for (MyTimeSeries mts : series) {
+                            for (int i = startIndex; i < endIndex; i++) {
+                                if (mts.isVisible()) {
+                                    dots.add((Double) mts.getValue(i));
                                 }
                             }
-                            min = Collections.min(dots);
-                            max = Collections.max(dots);
-                        } else {
-
-                            for (MyTimeSeries mts : series) {
-                                for (int i = startIndex; i < endIndex; i++) {
-                                    if (mts.isVisible()) {
-                                        dots.add((Double) mts.getValue(i));
-                                    }
-                                }
-                            }
-                            min = Collections.min(dots);
-                            max = Collections.max(dots);
                         }
+                        min = Collections.min(dots);
+                        max = Collections.max(dots);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -422,7 +391,7 @@ public class MyChart {
             for (MyTimeSeries serie : series) {
                 oldVal = oldVals[i];
                 try {
-                    newVal = serie.getData();
+                    newVal = serie.getValue();
                 } catch (Exception e) {
                     e.printStackTrace();
                     change = false;

@@ -7,6 +7,13 @@ import java.sql.Statement;
 
 public class MySql {
 
+    public static final String RAW = "RAW";
+    public static final String AVG_TODAY = "AVG_TODAY";
+    public static final String CDF = "CDF";
+    public static final String BY_ROWS = "BY_ROWS";
+    public static final String BY_TIME = "BY_TIME";
+    public static final String FROM_TODAY = "FROM_TODAY";
+
     private static JibeConnectionPool pool;
     private static Statement stmt;
 

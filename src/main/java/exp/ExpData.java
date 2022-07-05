@@ -8,7 +8,6 @@ import myJson.MyJson;
 public class ExpData implements IJsonData {
 
 	private double start = 0;
-	private double delta = 0;
 	private int baskets = 0;
 	private double indDelta = 0;
 	private double v4 = 0;
@@ -36,16 +35,8 @@ public class ExpData implements IJsonData {
 		this.baskets = baskets;
 	}
 
-	public void setDelta(double delta) {
-		this.delta = delta;
-	}
-
 	public void setIndDelta(double indDelta) {
 		this.indDelta = indDelta;
-	}
-	
-	public double getTotalDelta() {
-		return delta + exp.getOptions().getTotal_delta();
 	}
 	
 	public double getTotalIndDelta() {
@@ -92,7 +83,6 @@ public class ExpData implements IJsonData {
 	public MyJson getAsJson() {
 		MyJson json = new MyJson();
 		json.put(JsonStrings.expStart, start);
-		json.put(JsonStrings.delta, delta);
 		json.put(JsonStrings.baskets, baskets);
 		json.put(JsonStrings.indDelta, indDelta);
 		return json;
@@ -101,7 +91,6 @@ public class ExpData implements IJsonData {
 	@Override
 	public void loadFromJson(MyJson json) {
 		setStart(json.getDouble(JsonStrings.expStart));
-		setDelta(json.getDouble(JsonStrings.delta));
 		setBaskets(json.getInt(JsonStrings.baskets));
 		setIndDelta(json.getDouble(JsonStrings.indDelta));
 	}
@@ -110,7 +99,6 @@ public class ExpData implements IJsonData {
 	public MyJson getResetJson() {
 		MyJson json = new MyJson();
 		json.put(JsonStrings.expStart, start);
-		json.put(JsonStrings.delta, getTotalDelta());
 		json.put(JsonStrings.baskets, getTotalBaskets());
 		json.put(JsonStrings.indDelta, getTotalIndDelta());
 		return json;

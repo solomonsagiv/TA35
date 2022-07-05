@@ -19,11 +19,6 @@ public class Options implements IJsonData {
     private double contract = 0;
     private double contractBid = 0;
     private double contractAsk = 0;
-    private int conBidAskCounter = 0;
-    private ArrayList<Double> op_list;
-    
-    private double delta_from_fix = 0;
-    private double total_delta = 0;
 
     List<Strike> strikes;
     HashMap<String, Option> optionsMap;
@@ -39,7 +34,6 @@ public class Options implements IJsonData {
         this.apiObject = apiObject;
         strikes = new ArrayList<>();
         optionsMap = new HashMap<>();
-        this.op_list = new ArrayList<>();
         this.options_list = new ArrayList<>();
     }
 
@@ -184,8 +178,7 @@ public class Options implements IJsonData {
 
     @Override
     public String toString() {
-        return "Options [contractBid=" + contractBid + ", contractAsk=" + contractAsk + ", conBidAskCounter="
-                + conBidAskCounter + ", totalDelta=" + total_delta + ", contract=" + contract + "]";
+        return "Options [contractBid=" + contractBid + ", contractAsk=" + contractAsk + ", contract=" + contract + "]";
     }
 
     public void load_options_data_from_json(MyJson json) {
@@ -215,15 +208,11 @@ public class Options implements IJsonData {
         return json;
     }
 
-    public int getConBidAskCounter() {
-        return conBidAskCounter;
-    }
 
     public void setContractBid(double newBid) {
-        if (contractBid != 0 && newBid > contractBid) {
-            increasFutureCounter();
+        if (contractBid != 0) {
+            this.contractBid = newBid;
         }
-        this.contractBid = newBid;
     }
 
     public double getContractBid() {
@@ -235,43 +224,17 @@ public class Options implements IJsonData {
     }
 
     public void setContractAsk(double newAsk) {
-        if (contractAsk != 0 && newAsk < contractAsk) {
-            decreasFutureCounter();
+        if (contractAsk != 0) {
+            this.contractAsk = newAsk;
         }
-        this.contractAsk = newAsk;
     }
 
     public MyChartList getConBidAskCounterList() {
         return conBidAskCounterList;
     }
 
-    public synchronized void increasFutureCounter() {
-        this.conBidAskCounter++;
-    }
-
-    public synchronized void decreasFutureCounter() {
-        this.conBidAskCounter--;
-    }
-
     public String str(Object o) {
         return String.valueOf(o);
-    }
-
-    public void appendDelta(double delta) {
-        this.total_delta += delta;
-    }
-
-    public void setDelta_from_fix(double delta_from_fix) {
-        this.delta_from_fix = delta_from_fix;
-        total_delta = delta_from_fix;
-    }
-
-    public double getTotal_delta() {
-        return total_delta;
-    }
-
-    public void setTotal_delta(double total_delta) {
-        this.total_delta = total_delta;
     }
 
     public double absolute(double d) {
@@ -290,10 +253,6 @@ public class Options implements IJsonData {
         this.contract = contract;
     }
 
-    public void setConBidAskCounter(int conBidAskCounter) {
-        this.conBidAskCounter = conBidAskCounter;
-    }
-
     public MyChartList getOpChartList() {
         return opChartList;
     }
@@ -306,8 +265,6 @@ public class Options implements IJsonData {
     public MyJson getAsJson() {
         MyJson json = new MyJson();
         json.put(JsonStrings.op, getOp());
-        json.put(JsonStrings.conBidAskCounter, getConBidAskCounter());
-        json.put(JsonStrings.delta, getTotal_delta());
         json.put(JsonStrings.con, getContract());
         return json;
     }

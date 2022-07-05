@@ -3,9 +3,7 @@ package charts.charts;
 import api.ApiObject;
 import charts.myChart.*;
 import locals.Themes;
-
 import java.awt.*;
-import java.sql.ResultSet;
 
 public class MainMonthWeekChart extends MyChartCreator {
 
@@ -33,17 +31,17 @@ public class MainMonthWeekChart extends MyChartCreator {
         // Index
         MyTimeSeries index = new MyTimeSeries("Index") {
             @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
+            public double getValue() {
                 return apiObject.getIndex();
             }
 
             @Override
             public void load() {
+
+            }
+
+            @Override
+            public void updateData() {
 
             }
         };
@@ -52,18 +50,19 @@ public class MainMonthWeekChart extends MyChartCreator {
 
         // Index
         MyTimeSeries index_bid_ask = new MyTimeSeries("Index bid ask avg") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
 
             @Override
-            public double getData() {
+            public double getValue() {
                 return (apiObject.getIndex_bid() + apiObject.getIndex_ask()) / 2;
             }
 
             @Override
             public void load() {
+
+            }
+
+            @Override
+            public void updateData() {
 
             }
         };
@@ -72,18 +71,19 @@ public class MainMonthWeekChart extends MyChartCreator {
 
         // Bid
         MyTimeSeries bid = new MyTimeSeries("Bid") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
 
             @Override
-            public double getData() {
+            public double getValue() {
                 return apiObject.getIndex_bid();
             }
 
             @Override
             public void load() {
+
+            }
+
+            @Override
+            public void updateData() {
 
             }
         };
@@ -92,18 +92,19 @@ public class MainMonthWeekChart extends MyChartCreator {
 
         // Ask
         MyTimeSeries ask = new MyTimeSeries("Ask") {
-            @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
 
             @Override
-            public double getData() {
+            public double getValue() {
                 return apiObject.getIndex_ask();
             }
 
             @Override
             public void load() {
+
+            }
+
+            @Override
+            public void updateData() {
 
             }
         };
@@ -113,17 +114,17 @@ public class MainMonthWeekChart extends MyChartCreator {
         // Future
         MyTimeSeries future = new MyTimeSeries("Future") {
             @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
+            public double getValue() {
                 return apiObject.getExps().getMonth().getOptions().getContract();
             }
 
             @Override
             public void load() {
+
+            }
+
+            @Override
+            public void updateData() {
 
             }
         };
@@ -133,17 +134,17 @@ public class MainMonthWeekChart extends MyChartCreator {
         // Future
         MyTimeSeries futureWeek = new MyTimeSeries("Future week") {
             @Override
-            public ResultSet load_last_x_time(int minuts) {
-                return null;
-            }
-
-            @Override
-            public double getData() {
+            public double getValue() {
                 return apiObject.getExps().getWeek().getOptions().getContract();
             }
 
             @Override
             public void load() {
+
+            }
+
+            @Override
+            public void updateData() {
 
             }
         };

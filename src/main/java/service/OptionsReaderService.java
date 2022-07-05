@@ -102,9 +102,6 @@ public class OptionsReaderService extends MyBaseService {
             option.setVolume(volume);
             option.appendDelta(delta_buy_sell);
             option.setOpen_pos(open_positions);
-
-            // Append delta to options object separate
-            options.appendDelta(delta_buy_sell);
         }
     }
     

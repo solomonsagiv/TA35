@@ -1,7 +1,10 @@
 package api;
 
 import charts.myChart.MyChartList;
+import charts.myChart.TimeSeriesFactory;
+import dataBase.Factories;
 import exp.Exps;
+import handlers.TimeSeriesHandler;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -29,30 +32,11 @@ public class ApiObject implements IJsonData {
     private double bigConBid = 0;
     private double bigConAsk = 0;
 
-    private int v102 = 0;
-    private int v5 = 0;
-    private int v6 = 0;
-    private int pre_v102 = 0;
-    private int pre_v5 = 0;
-    private int pre_v6 = 0;
-    private int v103 = 0;
-    private int v107 = 0;
-    private int pre_v103 = 0;
-    private int pre_v107 = 0;
-    private int v4 = 0;
-    private int v8 = 0;
-    private int pre_v4 = 0;
-    private int pre_v8 = 0;
-    private int v5_speed_300 = 0;
-    private int v6_speed_300 = 0;
-    private int pre_df_n_speed_300 = 0;
-    private int pre_df_speed_300 = 0;
-    private int df_7 = 0;
-
     private double bid_ask_counter_avg_60 = 0;
     private double bid_ask_counter_avg = 0;
 
     private StocksHandler stocksHandler;
+    private TimeSeriesHandler timeSeriesHandler;
 
     // Ticker
     private double futureOpen = 0;
@@ -105,6 +89,28 @@ public class ApiObject implements IJsonData {
         this.exps = new Exps(this);
         stocksHandler = new StocksHandler();
         this.name = "ta35";
+
+        init_time_series();
+    }
+
+    private void init_time_series() {
+        timeSeriesHandler = new TimeSeriesHandler();
+
+        timeSeriesHandler.put(Factories.TimeSeries.DF_2_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_2_CDF));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_4_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_4_CDF));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_5_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_5_CDF));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_6_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_6_CDF));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_7_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_7_CDF));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_8_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_CDF));
+
+        timeSeriesHandler.put(Factories.TimeSeries.DF_2_RAW, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_2_RAW));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_7_RAW, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_7_RAW));
+
+        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK));
+        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_5, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_5));
+        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_60, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60));
+        timeSeriesHandler.put(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240, TimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
+        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_MONTH, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH));
     }
 
     // Get instance
@@ -455,22 +461,6 @@ public class ApiObject implements IJsonData {
         return serviceHandler;
     }
 
-    public int getPre_v5() {
-        return pre_v5;
-    }
-
-    public void setPre_v5(int pre_v5) {
-        this.pre_v5 = pre_v5;
-    }
-
-    public int getPre_v6() {
-        return pre_v6;
-    }
-
-    public void setPre_v6(int pre_v6) {
-        this.pre_v6 = pre_v6;
-    }
-
     public synchronized void increasBigBidAskCounter() {
         this.bigConBidAskCounter++;
     }
@@ -519,161 +509,12 @@ public class ApiObject implements IJsonData {
         return bid_ask_counter_avg_60;
     }
 
-    public int getV5() {
-        return v5;
+    public TimeSeriesHandler getTimeSeriesHandler() {
+        return timeSeriesHandler;
     }
 
-    public void setV5(int new_v5) {
-        if (new_v5 != 0 && this.v5 != new_v5) {
-            setPre_v5(this.v5);
-            this.v5 = new_v5;
-        }
-    }
-
-
-    public void setV102(int new_v2) {
-        if (new_v2 != 0 && this.v102 != new_v2) {
-            setPre_v102(this.v102);
-            this.v102 = new_v2;
-        }
-    }
-
-    public int getV102() {
-        return v102;
-    }
-
-    public int getPre_v102() {
-        return pre_v102;
-    }
-
-    public void setPre_v102(int pre_v102) {
-        this.pre_v102 = pre_v102;
-    }
-
-    public int getV103() {
-        return v103;
-    }
-
-    public void setV103(int new_v103) {
-        if (new_v103 != 0 && this.v103 != new_v103) {
-            setPre_v103(this.v103);
-            this.v103 = new_v103;
-        }
-    }
-
-    public void setPre_v103(int pre_v103) {
-        this.pre_v103 = pre_v103;
-    }
-
-
-    public int getV107() {
-        return v107;
-    }
-
-    public void setV107(int new_v107) {
-        if (new_v107 != 0 && this.v107 != new_v107) {
-            setPre_v103(this.v107);
-            this.v107 = new_v107;
-        }
-    }
-
-    public void setPre_v107(int pre_v107) {
-        this.pre_v107 = pre_v107;
-    }
-
-    public int getV6_speed_300() {
-        return v6_speed_300;
-    }
-
-    public int getV5_speed_300() {
-        return v5_speed_300;
-    }
-
-    public void setV5_speed_300(int new_val) {
-        if (new_val != 0 && this.v5_speed_300 != new_val) {
-            setPre_df_n_speed_300(this.v5_speed_300);
-            this.v5_speed_300 = new_val;
-        }
-    }
-
-    public void setV6_speed_300(int new_val) {
-            if (new_val != 0 && this.v6_speed_300 != new_val) {
-                setPre_df_speed_300(this.v6_speed_300);
-                this.v6_speed_300 = new_val;
-            }
-    }
-
-    public int getDf_7() {
-        return df_7;
-    }
-
-    public void setDf_7(int df_7) {
-        this.df_7 = df_7;
-    }
-
-    public int getPre_df_n_speed_300() {
-        return pre_df_n_speed_300;
-    }
-
-    public int getPre_df_speed_300() {
-        return pre_df_speed_300;
-    }
-
-    public void setPre_df_n_speed_300(int pre_df_n_speed_300) {
-        this.pre_df_n_speed_300 = pre_df_n_speed_300;
-    }
-
-    public void setPre_df_speed_300(int pre_df_speed_300) {
-        this.pre_df_speed_300 = pre_df_speed_300;
-    }
-
-    public int getV6() {
-        return v6;
-    }
-
-    public void setV6(int new_v6) {
-        if (new_v6 != 0 && this.v6 != new_v6) {
-            setPre_v6(this.v6);
-            this.v6 = new_v6;
-        }
-    }
-
-    public int getPre_v4() {
-        return pre_v4;
-    }
-
-    public void setPre_v4(int pre_v4) {
-        this.pre_v4 = pre_v4;
-    }
-
-    public int getPre_v8() {
-        return pre_v8;
-    }
-
-    public void setPre_v8(int pre_v8) {
-        this.pre_v8 = pre_v8;
-    }
-
-    public int getV4() {
-        return v4;
-    }
-
-    public void setV4(int new_v4) {
-        if (new_v4 != 0 && this.v4 != new_v4) {
-            setPre_v4(this.v4);
-            this.v4 = new_v4;
-        }
-    }
-
-    public int getV8() {
-        return v8;
-    }
-
-    public void setV8(int new_v8) {
-        if (new_v8 != 0 && this.v8 != new_v8) {
-            setPre_v8(this.v8);
-            this.v8 = new_v8;
-        }
+    public void setTimeSeriesHandler(TimeSeriesHandler timeSeriesHandler) {
+        this.timeSeriesHandler = timeSeriesHandler;
     }
 
     public Exps getExps() {
@@ -694,8 +535,6 @@ public class ApiObject implements IJsonData {
         json.put(JsonStrings.basketDown, apiObject.getBasketDown());
         json.put(JsonStrings.indBidAskCounter, apiObject.getIndBidAskCounter());
         json.put(JsonStrings.base, apiObject.getBase());
-        json.put(JsonStrings.v5, apiObject.getV5());
-        json.put(JsonStrings.v6, apiObject.getV6());
         json.put(JsonStrings.stocks, apiObject.getStocksHandler().getAsJson());
         json.put(JsonStrings.expWeek, exps.getWeek().getAsJson());
         json.put(JsonStrings.expMonth, exps.getMonth().getAsJson());

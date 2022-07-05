@@ -21,9 +21,9 @@ public class FullCharts2 extends MyChartCreator {
 
     @Override
     public void init() throws CloneNotSupportedException {
-        
+
         MyTimeSeries[] series;
-        
+
         // Props
         props = new MyProps();
         props.setProp(ChartPropsEnum.SECONDS, INFINITE);
@@ -42,17 +42,23 @@ public class FullCharts2 extends MyChartCreator {
         // ----------------------------------------- Index ----------------------------------------- //
 
         // Index
-        MyTimeSeries index_with_bid_ask_Serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_WITH_BID_ASK_SERIE);
+        MyTimeSeries index_with_bid_ask_Serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_WITH_BID_ASK);
         index_with_bid_ask_Serie.setColor(Color.BLACK);
         index_with_bid_ask_Serie.setStokeSize(1.2f);
 
-        MyTimeSeries future_week_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_WEEK_SERIE);
+        MyTimeSeries future_week_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_WEEK);
         future_week_serie.setColor(Themes.GREEN);
         future_week_serie.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[2];
+        MyTimeSeries future_month_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_MONTH);
+        future_month_serie.setColor(Themes.GREEN);
+        future_month_serie.setStokeSize(1.2f);
+
+
+        series = new MyTimeSeries[3];
         series[0] = index_with_bid_ask_Serie;
         series[1] = future_week_serie;
+        series[2] = future_month_serie;
 
         // Chart
         MyChart indexChart = new MyChart(series, props);
@@ -61,30 +67,24 @@ public class FullCharts2 extends MyChartCreator {
         // --------------- WEEK --------------- //
 
         // Op avg 5
-        MyTimeSeries opavg_5_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_5_SERIE);
+        MyTimeSeries opavg_5_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5);
         opavg_5_week.setColor(Themes.RED);
         opavg_5_week.setStokeSize(1.2f);
 
-        // Op avg 15
-        MyTimeSeries opavg_15_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_15_SERIE);
-        opavg_15_week.setColor(Themes.GREEN);
-        opavg_15_week.setStokeSize(1.2f);
-
         // Op avg 60
-        MyTimeSeries opavg_60_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60_SERIE);
+        MyTimeSeries opavg_60_week =ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60);
         opavg_60_week.setColor(Themes.BLUE);
         opavg_60_week.setStokeSize(1.2f);
 
         // Op avg 240 yesterday
-        MyTimeSeries continue_opavg_240_week = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240_SERIE);
+        MyTimeSeries continue_opavg_240_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240);
         continue_opavg_240_week.setColor(Themes.ORANGE);
         continue_opavg_240_week.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[4];
+        
+        series = new MyTimeSeries[3];
         series[0] = opavg_5_week;
-        series[1] = opavg_15_week;
-        series[2] = opavg_60_week;
-        series[3] = continue_opavg_240_week;
+        series[1] = opavg_60_week;
+        series[2] = continue_opavg_240_week;
 
 
         MyChart op_avg_chart = new MyChart(series, props);
@@ -92,18 +92,18 @@ public class FullCharts2 extends MyChartCreator {
         // ----------------------------------------- Op avg 60 15 ----------------------------------------- //
         // --------------- WEEK --------------- //
         // Op avg 240 yesterday
-        MyTimeSeries v_102_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.V_102_SERIE);
-        v_102_serie.setColor(Themes.ORANGE);
-        v_102_serie.setStokeSize(1.2f);
+        MyTimeSeries df_2_serie = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_RAW);
+        df_2_serie.setColor(Themes.ORANGE);
+        df_2_serie.setStokeSize(1.2f);
 
-        MyTimeSeries v_107_serie = MyTimeSeriesFactory.get_serie(Factories.TimeSeries.V_107_SERIE);
-        v_107_serie.setColor(Themes.PURPLE);
-        v_107_serie.setStokeSize(1.2f);
+        MyTimeSeries df_7_serie = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_RAW);
+        df_7_serie.setColor(Themes.PURPLE);
+        df_7_serie.setStokeSize(1.2f);
 
 
         series = new MyTimeSeries[2];
-        series[0] = v_102_serie;
-        series[1] = v_107_serie;
+        series[0] = df_2_serie;
+        series[1] = df_7_serie;
 
         // Chart
         MyChart df_chart = new MyChart(series, props);

@@ -5,10 +5,6 @@ public class Factories {
     public static class Tables {
         public static final String SAGIV_INDEX_TABLE = "sagiv.ta35_index";
         public static final String INDEX_TABLE = "data.ta35_index";
-        public static final String SAGIV_DELTA_WEEK_TABLE = "sagiv.ta35_delta_week_2_cdf";
-        public static final String SAGIV_DELTA_MONTH_TABLE = "sagiv.ta35_delta_month_2_cdf";
-        public static final String BID_ASK_COUNTER_WEEK_TABLE = "sagiv.ta35_bid_ask_counter_fut_week_cdf";
-        public static final String BID_ASK_COUNTER_MONTH_TABLE = "sagiv.ta35_bid_ask_counter_fut_month_cdf";
         public static final String INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";
         public static final String BASKETS_TABLE = "sagiv.ta35_baskets_cdf";
         public static final String EXPS_TABLE = "sagiv.ta35_exps";
@@ -18,10 +14,7 @@ public class Factories {
         public static final String FUT_MONTH_TABLE = "data.ta35_futures";
         public static final String RESEARCH_TABLE = "data.ta35_decision_func";
         public static final String SAGIV_OPTIONS_STATUS_TABLE = "sagiv.ta35_options_status";
-        public static final String DELTA_MIX_TABLE = "data.ta35_delta_mix";
         public static final String DF_TABLE = "data.ta35_decision_func";
-        public static final String DF_N_SPEED_300 = "data.research_ta35_df5_speed_300";
-        public static final String DF_SPEED_300 = "data.research_ta35_df6_speed_300";
         public static final String INDEX_BID_ASK_COUNTER = "data.ta35_index_bid_ask_counter";
         public static final String OP_AVG_240_CONTINUE = "data.ta35_op_avg_week_240_continue";
         public static final String OP_AVG_15 = "data.ta35_op_avg_week_15";
@@ -30,35 +23,48 @@ public class Factories {
     }
 
     public static class TimeSeries {
-        public static final String INDEX_SERIE = "INDEX_SERIE";
-        public static final String DELTA_WEEK_SERIE = "DELTA_WEEK_SERIE";
-        public static final String DELTA_MONTH_SERIE = "DELTA_MONTH_SERIE";
-        public static final String DELTA_WEEK_AVG_SERIE = "DELTA_WEEK_AVG";
-        public static final String DELTA_MONTH_AVG_SERIE = "DELTA_MONTH_AVG";
-        public static final String DELTA_WEEK_AVG_60_SERIE = "DELTA_WEEK_AVG_60";
-        public static final String DELTA_MONTH_AVG_60_SERIE = "DELTA_MONTH_AVG_60";
-        public static final String OP_AVG_WEEK_SERIE = "OP_AVG_WEEK";
-        public static final String OP_AVG_MONTH_SERIE = "OP_AVG_MONTH";
+        public static final String INDEX = "INDEX";
+        public static final String OP_AVG_WEEK = "OP_AVG";
+        public static final String OP_AVG_MONTH = "OP_AVG_MONTH";
 
-        public static final String OP_AVG_WEEK_5_SERIE = "OP_AVG_WEEK_5";
-        public static final String OP_AVG_WEEK_15_SERIE = "OP_AVG_WEEK_15";
-        public static final String OP_AVG_WEEK_60_SERIE = "OP_AVG_WEEK_60";
-        public static final String BID_ASK_COUNTER_WEEK_SERIE = "BID_ASK_COUNTER_WEEK";
-        public static final String BID_ASK_COUNTER_MONTH_SERIE = "BID_ASK_COUNTER_MONTH";
-        public static final String BID_ASK_COUNTER_WEEK_AVG_60_SERIE = "BID_ASK_COUNTER_WEEK_AVG_60";
-        public static final String BID_ASK_COUNTER_MONTH_AVG_60_SERIE = "BID_ASK_COUNTER_MONTH_AVG_60";
-        public static final String DELTA_WEEK_MONTH_SERIE = "DELTA_WEEK_MONTH";
-        public static final String DELTA_MIX_SERIE = "DELTA_MIX";
-        public static final String DF_V_4_SERIE = "DF_V_4";
-        public static final String DF_V_8_SERIE = "DF_V_8";
-        public static final String DF_V_5_SERIE = "DF_V_5";
-        public static final String DF_V_6_SERIE = "DF_V_6";
-        public static final String V_102_SERIE = "V_102";
-        public static final String V_107_SERIE = "V_107";
-        public static final String INDEX_DELTA_SERIE = "INDEX_DELTA";
-        public static final String CONTINUE_OP_AVG_WEEK_240_SERIE = "YESTERDAY_OP_AVG_WEEK_240_SERIE";
-        public static final String INDEX_WITH_BID_ASK_SERIE = "INDEX_WITH_BID_ASK_SERIE";
-        public static final String FUTURE_WEEK_SERIE = "FUTURE_WEEK_SERIE";
+        public static final String OP_AVG_WEEK_5 = "OP_AVG_WEEK_5";
+        public static final String OP_AVG_WEEK_60 = "OP_AVG_WEEK_60";
+        public static final String DF_4_CDF = "DF_4_CDF";
+        public static final String DF_8_CDF = "DF_8_CDF";
+        public static final String DF_5_CDF = "DF_5_CDF";
+        public static final String DF_6_CDF = "DF_6_CDF";
+        public static final String DF_2_CDF = "DF_2_CDF";
+        public static final String DF_7_CDF = "DF_7_CDF";
+        public static final String DF_2_RAW = "DF_2_RAW";
+        public static final String DF_7_RAW = "DF_7_RAW";
+
+        public static final String INDEX_DELTA = "INDEX_DELTA";
+        public static final String CONTINUE_OP_AVG_WEEK_240 = "YESTERDAY_OP_AVG_WEEK_240";
+        public static final String INDEX_WITH_BID_ASK = "INDEX_WITH_BID_ASK";
+        public static final String FUTURE_WEEK = "FUTURE_WEEK";
+        public static final String FUTURE_MONTH = "FUTURE_MONTH";
+    }
+
+    public static class IDs {
+        public static final int INDEX_TABLE = 5;
+        //     public static final int INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";
+        public static final int BASKETS_TABLE = 1649;
+        public static final int FUT_WEEK_TABLE = 23;
+        public static final int FUT_MONTH_TABLE = 6;
+        public static final int OP_AVG_240_CONTINUE = 108;
+        public static final int OP_AVG_60 = 109;
+        public static final int OP_AVG_5 = 110;
+        public static final int DF_2 = 1145;
+        public static final int DF_4 = 1147;
+        public static final int DF_8 = 1151;
+        public static final int DF_5 = 1148;
+        public static final int DF_6 = 1149;
+        public static final int DF_7 = 1150;
+        public static final int OP_AVG_WEEK = 2034;
+        public static final int OP_AVG_MONTH = 2035;
+
+//        public static final int OP_AVG_WEEK = ;
+//        public static final int OP_AVG_MONTH = ;
     }
 
 }

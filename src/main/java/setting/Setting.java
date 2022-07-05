@@ -39,11 +39,7 @@ public class Setting {
 	private JLabel lblExpBaskets;
 	private JTextField textField_4;
 	private JTextField expBasketsField;
-	private JTextField textField_6;
-	private JTextField indexCounterField;
-	private JTextField toDayDeltaField;
-	private JTextField conBidAskCounterField;
-	
+
 	private JLabel lblR;
 	private JPanel panel_1;
 	private JLabel lblDataBase;
@@ -84,9 +80,6 @@ public class Setting {
 	Exp expWeek, expMonth, exp;
 	Options optionsMonth, optionsWeek, options;
 	private JTextField indDeltaField;
-	private JTextField indDeltaNoBasketsField;
-	private JTextField optionsDeltaField;
-	private JTextField expDeltaField;
 	private JTextField expIndDeltaField;
 	private JLabel lblIndDelta_1;
 
@@ -268,31 +261,7 @@ public class Setting {
 		expBasketsField.setBorder(null);
 		expBasketsField.setBackground(new Color(255, 255, 255));
 		
-		expDeltaField = new JTextField();
-		expDeltaField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 
-				if (!expDeltaField.getText().isEmpty()) {
-					try {
-						double delta = L.dbl(expDeltaField.getText());
-						exp.getExpData().setDelta(delta);
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						JOptionPane.showMessageDialog(frame, exception.getMessage());
-					}
-				}
-			
-			}
-		});
-		expDeltaField.setHorizontalAlignment(SwingConstants.CENTER);
-		expDeltaField.setForeground(new Color(0, 51, 153));
-		expDeltaField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		expDeltaField.setColumns(10);
-		expDeltaField.setBorder(null);
-		expDeltaField.setBackground(Color.WHITE);
-		expDeltaField.setBounds(304, 71, 56, 22);
-		panel_2.add(expDeltaField);
-		
 		JLabel lblDelta_1 = new JLabel("Delta");
 		lblDelta_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDelta_1.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
@@ -389,7 +358,6 @@ public class Setting {
 				// Index and future bid ask counters
 				apiObject.setIndBidAskCounter(0);
 				apiObject.getIndexBidAskCounterList().clear();
-				optionsMonth.setConBidAskCounter(0);
 				optionsMonth.getConBidAskCounterList().clear();
 				apiObject.getIndexChartList().clear();
 
@@ -410,29 +378,6 @@ public class Setting {
 		setting_panel.add(btnResetDb);
 
 
-		toDayDeltaField = new JTextField();
-		toDayDeltaField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!toDayDeltaField.getText().isEmpty()) {
-					try {
-						double delta = L.dbl(toDayDeltaField.getText());
-						options.setDelta_from_fix(delta);
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						JOptionPane.showMessageDialog(frame, exception.getMessage());
-					}
-				}
-			}
-		});
-		toDayDeltaField.setHorizontalAlignment(SwingConstants.CENTER);
-		toDayDeltaField.setForeground(new Color(0, 51, 153));
-		toDayDeltaField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		toDayDeltaField.setColumns(10);
-		toDayDeltaField.setBorder(null);
-		toDayDeltaField.setBackground(new Color(255, 255, 255));
-		toDayDeltaField.setBounds(10, 73, 71, 22);
-		panel_3.add(toDayDeltaField);
-
 		JLabel lblDelta = new JLabel("Delta");
 		lblDelta.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDelta.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
@@ -445,27 +390,6 @@ public class Setting {
 		lblConBaCounter.setBounds(170, 46, 71, 21);
 		panel_3.add(lblConBaCounter);
 
-		conBidAskCounterField = new JTextField();
-		conBidAskCounterField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!conBidAskCounterField.getText().isEmpty()) {
-					try {
-						int conBidAskCounter = L.INT(conBidAskCounterField.getText());
-						options.setConBidAskCounter(conBidAskCounter);
-					} catch (Exception exception) {
-						JOptionPane.showMessageDialog(frame, exception.getMessage());
-					}
-				}
-			}
-		});
-		conBidAskCounterField.setHorizontalAlignment(SwingConstants.CENTER);
-		conBidAskCounterField.setForeground(new Color(0, 51, 153));
-		conBidAskCounterField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		conBidAskCounterField.setColumns(10);
-		conBidAskCounterField.setBorder(null);
-		conBidAskCounterField.setBackground(new Color(255, 255, 255));
-		conBidAskCounterField.setBounds(170, 73, 71, 22);
-		panel_3.add(conBidAskCounterField);
 
 		JLabel lblOptions = new JLabel("Options");
 		lblOptions.setForeground(new Color(0, 0, 128));
@@ -507,28 +431,6 @@ public class Setting {
 		lblTodayDelta.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
 		lblTodayDelta.setBounds(10, 46, 71, 21);
 		panel_3.add(lblTodayDelta);
-		
-		optionsDeltaField = new JTextField();
-		optionsDeltaField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (!optionsDeltaField.getText().isEmpty()) {
-					try {
-						double delta = L.dbl(optionsDeltaField.getText());
-						options.setDelta_from_fix(delta);
-					} catch (Exception exception) {
-						JOptionPane.showMessageDialog(frame, exception.getMessage());
-					}
-				}
-			}
-		});
-		optionsDeltaField.setHorizontalAlignment(SwingConstants.CENTER);
-		optionsDeltaField.setForeground(new Color(0, 51, 153));
-		optionsDeltaField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		optionsDeltaField.setColumns(10);
-		optionsDeltaField.setBorder(null);
-		optionsDeltaField.setBackground(Color.WHITE);
-		optionsDeltaField.setBounds(90, 73, 71, 22);
-		panel_3.add(optionsDeltaField);
 		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(SystemColor.menu);
@@ -685,24 +587,6 @@ public class Setting {
 		lblIndCounter.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIndCounter.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
 
-		indexCounterField = new JTextField();
-		indexCounterField.setBounds(424, 38, 37, 22);
-		panel_4.add(indexCounterField);
-		indexCounterField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					apiObject.setIndBidAskCounter(Integer.parseInt(e.getActionCommand()));
-				} catch (Exception e2) {
-					popup(e2.getMessage().toString(), e2);
-				}
-			}
-		});
-		indexCounterField.setHorizontalAlignment(SwingConstants.CENTER);
-		indexCounterField.setForeground(new Color(0, 51, 153));
-		indexCounterField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		indexCounterField.setColumns(10);
-		indexCounterField.setBorder(null);
-		indexCounterField.setBackground(new Color(255, 255, 255));
 
 		lblR = new JLabel("Races");
 		lblR.setForeground(new Color(0, 0, 128));
@@ -744,28 +628,6 @@ public class Setting {
 		label_1.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
 		label_1.setBounds(483, 37, 50, 21);
 		panel_4.add(label_1);
-		
-		indDeltaNoBasketsField = new JTextField();
-		indDeltaNoBasketsField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					if (!indDeltaNoBasketsField.getText().isEmpty()) {
-						double delta = L.dbl(indDeltaNoBasketsField.getText());
-						apiObject.getStocksHandler().setDeltaNoBaskets(delta);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		indDeltaNoBasketsField.setHorizontalAlignment(SwingConstants.CENTER);
-		indDeltaNoBasketsField.setForeground(new Color(0, 51, 153));
-		indDeltaNoBasketsField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		indDeltaNoBasketsField.setColumns(10);
-		indDeltaNoBasketsField.setBorder(null);
-		indDeltaNoBasketsField.setBackground(Color.WHITE);
-		indDeltaNoBasketsField.setBounds(554, 65, 52, 22);
-		panel_4.add(indDeltaNoBasketsField);
 		
 		JLabel lblIndDeltaBaskets = new JLabel("Ind no baskets");
 		lblIndDeltaBaskets.setHorizontalAlignment(SwingConstants.CENTER);

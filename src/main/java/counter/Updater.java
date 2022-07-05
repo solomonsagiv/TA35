@@ -1,10 +1,11 @@
 package counter;
 
 import api.ApiObject;
+import charts.myChart.MyTimeSeries;
+import dataBase.Factories;
 import exp.Exp;
 import locals.L;
 import locals.Themes;
-import options.Options;
 import threads.MyThread;
 
 import javax.swing.*;
@@ -36,11 +37,20 @@ public class Updater extends MyThread implements Runnable {
     WindowTA35 window;
     int sleep = 500;
 
+    MyTimeSeries df_4, df_5, df_6, df_8;
+
+
     // Constructor
     public Updater(WindowTA35 window) {
         super();
         this.window = window;
         setRunnable(this);
+
+        this.df_4 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF);
+        this.df_5 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF);
+        this.df_6 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF);
+        this.df_8 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF);
+
     }
 
     @Override
@@ -62,8 +72,6 @@ public class Updater extends MyThread implements Runnable {
 
         Exp expMonth = apiObject.getExps().getMonth();
         Exp expWeek = apiObject.getExps().getWeek();
-        Options optionsMonth = expMonth.getOptions();
-        Options optionsWeek = expWeek.getOptions();
 
         try {
             count++;
@@ -85,33 +93,29 @@ public class Updater extends MyThread implements Runnable {
                 window.basket_up_field.setText(str(apiObject.getBasketUp()));
                 window.basket_down_field.setText(str(apiObject.getBasketDown()));
                 setColorInt(window.basketsSumField, (apiObject.getBasketUp() - apiObject.getBasketDown()));
-                
+
                 // Delta calc
-                // Month
-                colorForgeRound(window.monthDeltaField, (int) optionsMonth.getTotal_delta());
-                // Week
-                colorForgeRound(window.weekDeltaField, (int) optionsWeek.getTotal_delta());
 
                 // Ind baskets
                 colorForgeRound(window.indDeltaNoBasketsField, (int) apiObject.getStocksHandler().getDelta());
 
                 // Decision func
-                window.v5_field.colorForgeRound(apiObject.getV5());
-                window.v6_field.colorForgeRound(apiObject.getV6());
-                window.v4_field.colorForgeRound(apiObject.getV4());
-                window.v8_field.colorForgeRound(apiObject.getV8());
+                window.v5_field.colorForgeRound(df_5.getValue());
+                window.v6_field.colorForgeRound(df_6.getValue());
+                window.v4_field.colorForgeRound(df_4.getValue());
+                window.v8_field.colorForgeRound(df_8.getValue());
 
                 // Exp
                 // Week
-                colorForgeRound(window.exp_v4_field, (int) expWeek.getExpData().getV4() + apiObject.getV4());
-                colorForgeRound(window.exp_v8_field, (int) expWeek.getExpData().getV8() + apiObject.getV8());
+                colorForgeRound(window.exp_v4_field, (int) (expWeek.getExpData().getV4() + df_4.getValue()));
+                colorForgeRound(window.exp_v8_field, (int) (expWeek.getExpData().getV8() + df_8.getValue()));
                 colorForgeRound(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets());
                 text = floor(((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.weekStartExpField, text);
 
                 // Month
-                colorForgeRound(window.exp_v5_field, (int) expMonth.getExpData().getV5() + apiObject.getV5());
-                colorForgeRound(window.exp_v6_field, (int) expMonth.getExpData().getV6() + apiObject.getV6());
+                colorForgeRound(window.exp_v5_field, (int) (expMonth.getExpData().getV5() + df_5.getValue()));
+                colorForgeRound(window.exp_v6_field, (int) (expMonth.getExpData().getV6() + df_6.getValue()));
                 colorForgeRound(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets());
                 text = floor(((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.monthStartExpField, text);
@@ -178,7 +182,7 @@ public class Updater extends MyThread implements Runnable {
         } else {
             textField.setForeground(Themes.RED);
         }
-        textField.setText(L.str((int)val));
+        textField.setText(L.str((int) val));
     }
 
     // pars double function();
