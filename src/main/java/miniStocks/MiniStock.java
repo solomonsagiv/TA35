@@ -75,9 +75,6 @@ public class MiniStock implements IJsonData {
 	public void appendDelta(double newDelta) {
 		this.delta += newDelta;
 		
-		// Append delta to handler 
-		handler.appendDelta(newDelta);
-		handler.appendDeltaNoBasket(newDelta);
 	}
 	
 	public double getWeight() {

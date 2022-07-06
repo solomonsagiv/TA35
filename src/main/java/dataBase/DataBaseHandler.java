@@ -62,7 +62,7 @@ public class DataBaseHandler {
             double v8_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_8, EXP_WEEK));
             double v5_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_5, EXP_MONTH));
             double v6_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_6, EXP_MONTH));
-
+            
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
             week.getExpData().setBaskets((int) baskets_exp_week);

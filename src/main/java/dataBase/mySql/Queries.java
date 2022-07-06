@@ -120,7 +120,7 @@ public class Queries {
         String query = String.format(q, rows, table_location, modulu, step_count);
         return MySql.select(query);
     }
-
+    
     public static ResultSet get_serie_cumulative_avg(String table_location) {
         String q = "select time, avg(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
@@ -182,7 +182,6 @@ public class Queries {
         String query = String.format(q, serie_id, exp_type);
         return MySql.select(query);
     }
-
 
     public static ResultSet op_avg_cumulative(String index_table, String fut_table) {
         String query = String.format("select i.time as time, avg(f.value - i.value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +

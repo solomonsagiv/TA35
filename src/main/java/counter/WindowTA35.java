@@ -57,7 +57,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField exp_v8_field;
     public MyGuiComps.MyTextField expBasketsWeekField;
     public MyGuiComps.MyTextField expBasketsMonthField;
-    public MyGuiComps.MyTextField indDeltaNoBasketsField;
 
     // Constructor
     public WindowTA35() {
@@ -313,12 +312,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         monthDeltaField.setBounds(5, 35, 50, 25);
         monthDeltaField.setHorizontalAlignment(JTextField.CENTER);
         deltaPanel.add(monthDeltaField);
-
-        indDeltaNoBasketsField = new MyGuiComps.MyTextField();
-        indDeltaNoBasketsField.setHorizontalAlignment(SwingConstants.CENTER);
-        indDeltaNoBasketsField.setBorder(null);
-        indDeltaNoBasketsField.setBounds(5, 66, 50, 25);
-        deltaPanel.add(indDeltaNoBasketsField);
 
         // ---------------- Decision ---------------- //
         // ------- Header ------- //

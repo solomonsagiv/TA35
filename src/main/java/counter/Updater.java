@@ -96,9 +96,6 @@ public class Updater extends MyThread implements Runnable {
 
                 // Delta calc
 
-                // Ind baskets
-                colorForgeRound(window.indDeltaNoBasketsField, (int) apiObject.getStocksHandler().getDelta());
-
                 // Decision func
                 window.v5_field.colorForgeRound(df_5.getValue());
                 window.v6_field.colorForgeRound(df_6.getValue());

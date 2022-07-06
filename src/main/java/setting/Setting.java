@@ -79,8 +79,6 @@ public class Setting {
 	
 	Exp expWeek, expMonth, exp;
 	Options optionsMonth, optionsWeek, options;
-	private JTextField indDeltaField;
-	private JTextField expIndDeltaField;
 	private JLabel lblIndDelta_1;
 
 	private void initialize() {
@@ -268,31 +266,7 @@ public class Setting {
 		lblDelta_1.setBounds(304, 44, 56, 21);
 		panel_2.add(lblDelta_1);
 		
-		expIndDeltaField = new JTextField();
-		expIndDeltaField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
 
-				if (!expIndDeltaField.getText().isEmpty()) {
-					try {
-						double delta = L.dbl(expIndDeltaField.getText());
-						exp.getExpData().setIndDelta(delta);
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						JOptionPane.showMessageDialog(frame, exception.getMessage());
-					}
-				}
-						
-			}
-		});
-		expIndDeltaField.setHorizontalAlignment(SwingConstants.CENTER);
-		expIndDeltaField.setForeground(new Color(0, 51, 153));
-		expIndDeltaField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		expIndDeltaField.setColumns(10);
-		expIndDeltaField.setBorder(null);
-		expIndDeltaField.setBackground(Color.WHITE);
-		expIndDeltaField.setBounds(370, 71, 67, 22);
-		panel_2.add(expIndDeltaField);
-		
 		lblIndDelta_1 = new JLabel("Ind delta");
 		lblIndDelta_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblIndDelta_1.setFont(new Font("Dubai Medium", Font.PLAIN, 14));
@@ -600,28 +574,6 @@ public class Setting {
 		lblIndDelta.setFont(new Font("Dubai Medium", Font.BOLD, 15));
 		lblIndDelta.setBounds(520, 10, 71, 21);
 		panel_4.add(lblIndDelta);
-		
-		indDeltaField = new JTextField();
-		indDeltaField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					if (!indDeltaField.getText().isEmpty()) {
-						double delta = L.dbl(indDeltaField.getText());
-						apiObject.getStocksHandler().setDelta(delta);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		indDeltaField.setHorizontalAlignment(SwingConstants.CENTER);
-		indDeltaField.setForeground(new Color(0, 51, 153));
-		indDeltaField.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 15));
-		indDeltaField.setColumns(10);
-		indDeltaField.setBorder(null);
-		indDeltaField.setBackground(Color.WHITE);
-		indDeltaField.setBounds(554, 37, 52, 22);
-		panel_4.add(indDeltaField);
 		
 		JLabel label_1 = new JLabel("Ind");
 		label_1.setHorizontalAlignment(SwingConstants.CENTER);
