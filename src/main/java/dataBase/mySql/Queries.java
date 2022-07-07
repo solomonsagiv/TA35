@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Queries {
-
+    
     public static final int START_OF_THE_DAY_MIN = 600;
     public static final int step_second = 10;
     public static final String RAW = "RAW";
@@ -332,9 +332,6 @@ public class Queries {
         return MySql.select(query);
     }
 
-
-
-
     // -------------------------------------------- Mega tables -------------------------------------------- //
 
     private static ResultSet op_avg_by_time_cdf_mega_table(int index_id, int fut_id, int min) {
@@ -458,7 +455,6 @@ public class Queries {
         return MySql.select(query);
     }
 
-
     public static ResultSet op_avg_mega_table(int index_id, int fut_id) {
         String q = "select avg(f.value - i.value) as value\n" +
                 "from (\n" +
@@ -473,7 +469,6 @@ public class Queries {
         System.out.println(query);
         return MySql.select(query);
     }
-
 
     private static ResultSet get_serie_raw_mega_table(int serie_id) {
 
@@ -490,7 +485,6 @@ public class Queries {
         String query = String.format(q, "ts.timeseries_data", serie_id, Filters.TODAY, modulu, step_second);
         return MySql.select(query);
     }
-
 
     private static ResultSet get_serie_cdf_mega_table(int serie_id) {
 

@@ -7,12 +7,10 @@ import exp.Exp;
 import locals.L;
 import locals.Themes;
 import threads.MyThread;
-
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.time.LocalTime;
-import java.util.ArrayList;
 
 public class Updater extends MyThread implements Runnable {
 
@@ -22,9 +20,6 @@ public class Updater extends MyThread implements Runnable {
     int count = 0;
 
     LocalTime current_time;
-
-    // Avg list
-    public ArrayList<Double> avg_day = new ArrayList<>();
 
     // test
     double efresh;
@@ -50,7 +45,6 @@ public class Updater extends MyThread implements Runnable {
         this.df_5 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF);
         this.df_6 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF);
         this.df_8 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF);
-
     }
 
     @Override
