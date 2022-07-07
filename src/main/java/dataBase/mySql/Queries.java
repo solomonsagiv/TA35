@@ -120,7 +120,7 @@ public class Queries {
         String query = String.format(q, rows, table_location, modulu, step_count);
         return MySql.select(query);
     }
-    
+
     public static ResultSet get_serie_cumulative_avg(String table_location) {
         String q = "select time, avg(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";
@@ -434,6 +434,30 @@ public class Queries {
         }
         return null;
     }
+
+
+    public static ResultSet get_df_serie(int session, int version) {
+        String q = "select time, delta as value\n" +
+                "from data.ta35_decision_func\n" +
+                "where session_id = %s\n" +
+                "and version = %s\n" +
+                "and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1 day') order by time;";
+
+        String query = String.format(q, session, version);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_df_cdf(int session, int version) {
+        String q = "select sum(delta) as value\n" +
+                "from data.ta35_decision_func\n" +
+                "where session_id = %s\n" +
+                "and version = %s\n" +
+                "and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1 day') order by time;";
+
+        String query = String.format(q, session, version);
+        return MySql.select(query);
+    }
+
 
     public static ResultSet op_avg_mega_table(int index_id, int fut_id) {
         String q = "select avg(f.value - i.value) as value\n" +

@@ -52,17 +52,17 @@ public class DataBaseHandler {
         try {
             ExpWeek week = apiObject.getExps().getWeek();
             ExpMonth month = apiObject.getExps().getMonth();
-
+            
             double baskets_exp_week = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
             double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
             double start_exp_week = Queries.handle_rs(Queries.get_start_exp(EXP_WEEK));
             double start_exp_month = Queries.handle_rs(Queries.get_start_exp(EXP_MONTH));
 
-            double v4_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_4, EXP_WEEK));
-            double v8_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_8, EXP_WEEK));
-            double v5_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_5, EXP_MONTH));
-            double v6_exp = Queries.handle_rs(Queries.get_sum_mega_exp(Factories.IDs.DF_6, EXP_MONTH));
-            
+            double v4_exp = Queries.handle_rs(Queries.get_exp_decision_function(2, 4, EXP_WEEK, 10));
+            double v8_exp = Queries.handle_rs(Queries.get_exp_decision_function(2, 8, EXP_WEEK, 10));
+            double v5_exp = Queries.handle_rs(Queries.get_exp_decision_function(2, 5, EXP_MONTH, 10));
+            double v6_exp = Queries.handle_rs(Queries.get_exp_decision_function(2, 6, EXP_MONTH, 10));
+
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
             week.getExpData().setBaskets((int) baskets_exp_week);
