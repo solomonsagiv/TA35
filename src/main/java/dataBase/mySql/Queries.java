@@ -413,12 +413,12 @@ public class Queries {
     }
 
     private static ResultSet get_last_cdf_record_mega(int serie_id) {
-        String q = "select time, sum(value) as value\n" +
+        String q = "select sum(value) as value\n" +
                 "from ts.timeseries_data\n" +
                 "where timeseries_id = %s\n" +
-                "and %s %s;";
+                "and %s;";
 
-        String query = String.format(q, serie_id, Filters.TODAY, Filters.ORDER_BY_TIME_DESC_LIMIT_1);
+        String query = String.format(q, serie_id, Filters.TODAY);
         return MySql.select(query);
     }
 
@@ -449,7 +449,7 @@ public class Queries {
                 "from data.ta35_decision_func\n" +
                 "where session_id = %s\n" +
                 "and version = %s\n" +
-                "and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1 day') order by time;";
+                "and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1 day');";
 
         String query = String.format(q, session, version);
         return MySql.select(query);
