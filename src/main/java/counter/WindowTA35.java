@@ -122,7 +122,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.setBounds(0, 129, 801, 38);
         getContentPane().add(bottomPanel);
         bottomPanel.setLayout(null);
-
+        
         start = new MyGuiComps.MyButton("Start");
         start.setBorder(null);
         start.setBounds(248, 7, 72, 23);
