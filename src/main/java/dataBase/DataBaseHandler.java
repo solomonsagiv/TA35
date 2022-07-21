@@ -47,7 +47,7 @@ public class DataBaseHandler {
             e.printStackTrace();
         }
     }
-
+    
     public void load_exp_data(ApiObject apiObject) {
         try {
             ExpWeek week = apiObject.getExps().getWeek();
