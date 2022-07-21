@@ -42,7 +42,7 @@ public class Factories {
         public static final String FUTURE_WEEK = "FUTURE_WEEK";
         public static final String FUTURE_MONTH = "FUTURE_MONTH";
     }
-    
+
     public static class IDs {
         public static final int INDEX_TABLE = 5;
         //     public static final int INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";
@@ -51,7 +51,7 @@ public class Factories {
         public static final int FUT_MONTH_TABLE = 6;
         public static final int OP_AVG_240_CONTINUE = 1155;
         public static final int OP_AVG_60 = 1153;
-        public static final int OP_AVG_5 = 110;
+        public static final int OP_AVG_5 = 1152;
         public static final int DF_2 = 1145;
         public static final int DF_4 = 1147;
         public static final int DF_8 = 1151;
