@@ -259,6 +259,29 @@ public class TimeSeriesFactory {
                 };
 
 
+            case Factories.TimeSeries.DF_8_DE_CORR_RAW:
+                return new MyTimeSeries(Factories.TimeSeries.DF_8_DE_CORR_RAW) {
+
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_8_DE_CORR, Queries.RAW);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+
+                    @Override
+                    public void updateData() {
+                        int serie_id = Factories.IDs.DF_8_DE_CORR;
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.RAW));
+                        setValue(val);
+                    }
+                };
+
+
             case Factories.TimeSeries.OP_AVG_WEEK_60:
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_60) {
                     @Override

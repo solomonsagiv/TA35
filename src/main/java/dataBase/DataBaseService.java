@@ -50,6 +50,9 @@ public class DataBaseService extends MyBaseService {
         // DF RAW
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_RAW));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_RAW));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_DE_CORR_RAW));
+
+
 
     }
 

@@ -89,9 +89,7 @@ public class FullCharts2 extends MyChartCreator {
 
         MyChart op_avg_chart = new MyChart(series, props);
 
-        // ----------------------------------------- Op avg 60 15 ----------------------------------------- //
-        // --------------- WEEK --------------- //
-        // Op avg 240 yesterday
+        // ----------------------------------------- DF's ----------------------------------------- //
         MyTimeSeries df_2_serie = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_RAW);
         df_2_serie.setColor(Themes.ORANGE);
         df_2_serie.setStokeSize(1.2f);
@@ -100,10 +98,15 @@ public class FullCharts2 extends MyChartCreator {
         df_7_serie.setColor(Themes.PURPLE);
         df_7_serie.setStokeSize(1.2f);
 
+        MyTimeSeries df_8_serie = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_DE_CORR_RAW);
+        df_8_serie.setColor(Themes.RED);
+        df_8_serie.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[2];
+
+        series = new MyTimeSeries[3];
         series[0] = df_2_serie;
         series[1] = df_7_serie;
+        series[2] = df_8_serie;
 
         // Chart
         MyChart df_chart = new MyChart(series, props);
