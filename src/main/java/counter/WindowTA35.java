@@ -30,8 +30,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     private MyGuiComps.MyPanel bottomPanel;
     public MyGuiComps.MyTextField monthStartExpField;
     public static JTextArea log;
-    public MyGuiComps.MyTextField monthDeltaField;
-    public MyGuiComps.MyTextField weekDeltaField;
 
     public MyGuiComps.MyTextField v5_field;
     public MyGuiComps.MyTextField v6_field;
@@ -282,41 +280,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         op_avg_month.setForeground(new Color(255, 255, 255));
         op_avg_month.setColumns(10);
 
-        MyGuiComps.MyPanel deltaHeaderPanel = new MyGuiComps.MyPanel();
-        deltaHeaderPanel.setLayout(null);
-        deltaHeaderPanel.setBounds(op_avg_header_panel.getX() + op_avg_header_panel.getWidth() + 1, op_avg_header_panel.getY(), 60, 25);
-
-        MyGuiComps.MyLabel deltaLbl = new MyGuiComps.MyLabel("Delta");
-        deltaLbl.setBounds(0, 0, deltaHeaderPanel.getWidth(), deltaHeaderPanel.getHeight());
-        deltaLbl.setHorizontalAlignment(JLabel.CENTER);
-        deltaLbl.setForeground(new Color(0, 0, 51));
-        deltaHeaderPanel.add(deltaLbl);
-        getContentPane().add(deltaHeaderPanel);
-
-        // Delta panel
-        MyGuiComps.MyPanel deltaPanel = new MyGuiComps.MyPanel();
-        deltaPanel.setLayout(null);
-        deltaPanel.setBounds(deltaHeaderPanel.getX(), deltaHeaderPanel.getY() + deltaHeaderPanel.getHeight() + 1, 60, 102);
-        getContentPane().add(deltaPanel);
-
-        // Week delta
-        weekDeltaField = new MyGuiComps.MyTextField();
-        weekDeltaField.setBorder(null);
-        weekDeltaField.setBounds(5, 5, 50, 25);
-        weekDeltaField.setHorizontalAlignment(JTextField.CENTER);
-        deltaPanel.add(weekDeltaField);
-
-        // Month delta
-        monthDeltaField = new MyGuiComps.MyTextField();
-        monthDeltaField.setBorder(null);
-        monthDeltaField.setBounds(5, 35, 50, 25);
-        monthDeltaField.setHorizontalAlignment(JTextField.CENTER);
-        deltaPanel.add(monthDeltaField);
-
         // ---------------- Decision ---------------- //
         // ------- Header ------- //
         MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
-        decision_header_panel.setBounds(deltaHeaderPanel.getX() + deltaHeaderPanel.getWidth() + 1, deltaHeaderPanel.getY(), 115, 25);
+        decision_header_panel.setBounds(op_avg_header_panel.getX() + op_avg_header_panel.getWidth() + 1, op_avg_panel.getY(), 115, 25);
         getContentPane().add(decision_header_panel);
 
         MyGuiComps.MyLabel main_decision_lbl = new MyGuiComps.MyLabel("Main");

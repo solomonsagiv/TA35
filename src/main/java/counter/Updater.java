@@ -88,8 +88,6 @@ public class Updater extends MyThread implements Runnable {
                 window.basket_down_field.setText(str(apiObject.getBasketDown()));
                 setColorInt(window.basketsSumField, (apiObject.getBasketUp() - apiObject.getBasketDown()));
 
-                // Delta calc
-
                 // Decision func
                 window.v5_field.colorForgeRound(df_5.getValue());
                 window.v6_field.colorForgeRound(df_6.getValue());

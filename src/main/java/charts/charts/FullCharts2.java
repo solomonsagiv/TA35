@@ -38,7 +38,7 @@ public class FullCharts2 extends MyChartCreator {
         props.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
         props.setProp(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE, 1);
         props.setProp(ChartPropsEnum.MARKER, 0);
-
+        
         // ----------------------------------------- Index ----------------------------------------- //
 
         // Index
