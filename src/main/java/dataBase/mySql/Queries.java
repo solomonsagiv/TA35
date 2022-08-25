@@ -60,10 +60,21 @@ public class Queries {
         return MySql.select(query);
     }
 
-
-    public static ResultSet get_exp_data(ApiObject client, int serie_id, String exp_prop_name) {
+    public static ResultSet get_exp_data_by_candle(ApiObject client, int serie_id, String exp_prop_name) {
         String q = "select sum(sum) as value\n" +
                 "from ts.ca_timeseries_1day_candle\n" +
+                "where date_trunc('day', time) >= (select data::date as date\n" +
+                "                                  from props\n" +
+                "                                  where stock_id = '%s'\n" +
+                "                                    and prop = '%s')\n" +
+                "  and timeseries_id = %s;";
+        String query = String.format(q, client.getName(), exp_prop_name, serie_id);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_exp_data(ApiObject client, int serie_id, String exp_prop_name) {
+        String q = "select sum(value) as value\n" +
+                "from ts.timeseries_data\n" +
                 "where date_trunc('day', time) >= (select data::date as date\n" +
                 "                                  from props\n" +
                 "                                  where stock_id = '%s'\n" +
@@ -315,17 +326,17 @@ public class Queries {
         return query;
     }
 
-    public static ResultSet get_baskets_up_sum(String table_location) {
+    public static ResultSet get_baskets_up_sum(int serie_id) {
         String q = "select sum(value) as value " +
-                "from %s where value = 1 and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
-        String query = String.format(q, table_location);
+                "from ts.timeseries_data where timeseries_id = %s and value = 1 and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
+        String query = String.format(q, serie_id);
         return MySql.select(query);
     }
 
-    public static ResultSet get_baskets_down_sum(String table_location) {
+    public static ResultSet get_baskets_down_sum(int serie_id) {
         String q = "select sum(value) as value " +
-                "from %s where value = -1 and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
-        String query = String.format(q, table_location);
+                "from ts.timeseries_data where timeseries_id = %s and value = -1 and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
+        String query = String.format(q, serie_id);
         return MySql.select(query);
     }
 

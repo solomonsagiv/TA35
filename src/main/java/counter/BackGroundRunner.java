@@ -165,7 +165,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
     private void open_services() {
         new BasketService();
         new DataBaseService();
-        new IndDeltaService(BackGroundRunner.excelPath);
+//        new IndDeltaService(BackGroundRunner.excelPath);
     }
 
     private String str(Object o) {

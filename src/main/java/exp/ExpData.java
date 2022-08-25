@@ -18,7 +18,7 @@ public class ExpData implements IJsonData {
 
 	ApiObject apiObject;
 	Exp exp;
-	
+
 	public ExpData( ApiObject apiObject, Exp exp) {
 		this.apiObject = apiObject;
 		this.exp = exp;

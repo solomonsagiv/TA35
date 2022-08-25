@@ -40,8 +40,8 @@ public class DataBaseHandler {
 
     public void load_today_data(ApiObject apiObject) {
         try {
-            int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.Tables.BASKETS_TABLE)));
-            int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.Tables.BASKETS_TABLE)));
+            int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.IDs.BASKETS_TABLE)));
+            int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.IDs.BASKETS_TABLE)));
 
             apiObject.setBasketUp(baskets_up);
             apiObject.setBasketDown(baskets_down);
@@ -54,17 +54,16 @@ public class DataBaseHandler {
         try {
             ExpWeek week = apiObject.getExps().getWeek();
             ExpMonth month = apiObject.getExps().getMonth();
-            
-            double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1649, Props.EXP_WEEK_START));
-            double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1649, Props.EXP_MONTH_START));
+
+            double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS_TABLE, Props.EXP_WEEK_START));
+            double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS_TABLE, Props.EXP_MONTH_START));
             double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX_TABLE, ApiObject.getInstance(), Props.EXP_WEEK_START));
             double start_exp_month =  Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX_TABLE, ApiObject.getInstance(), Props.EXP_MONTH_START));
 
-            double v2_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1145, Props.EXP_WEEK_START));
-            double v7_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1150, Props.EXP_MONTH_START));
-            double v2_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1145, Props.EXP_WEEK_START));
-            double v7_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1150, Props.EXP_MONTH_START));
-
+            double v2_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_2, Props.EXP_WEEK_START));
+            double v7_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_7, Props.EXP_WEEK_START));
+            double v2_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_2, Props.EXP_MONTH_START));
+            double v7_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_7, Props.EXP_MONTH_START));
 
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
@@ -72,7 +71,7 @@ public class DataBaseHandler {
             month.getExpData().setBaskets((int) baskets_exp_month);
             week.getExpData().setV2(v2_week);
             week.getExpData().setV7(v7_week);
-            month.getExpData().setV7(v2_month);
+            month.getExpData().setV2(v2_month);
             month.getExpData().setV7(v7_month);
 
         } catch (Exception e) {

@@ -49,10 +49,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     DDEConnection ddeConnection;
     public MyGuiComps.MyTextField weekStartExpField;
     private MyGuiComps.MyButton btnDetails;
-    public MyGuiComps.MyTextField exp_v5_field;
-    public MyGuiComps.MyTextField exp_v6_field;
-    public MyGuiComps.MyTextField exp_v4_field;
-    public MyGuiComps.MyTextField exp_v8_field;
+    public MyGuiComps.MyTextField exp_v2_month_field;
+    public MyGuiComps.MyTextField exp_v7_month_field;
+    public MyGuiComps.MyTextField exp_v2_week_field;
+    public MyGuiComps.MyTextField exp_v7_week_field;
     public MyGuiComps.MyTextField expBasketsWeekField;
     public MyGuiComps.MyTextField expBasketsMonthField;
 
@@ -412,38 +412,38 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_panel.add(expBasketsMonthField);
 
         // V4 V8 (WEEK)
-        exp_v4_field = new MyGuiComps.MyTextField();
-        exp_v4_field.setBounds(expBasketsWeekField.getX() + expBasketsWeekField.getWidth() + 1, expBasketsWeekField.getY(), 50, 25);
-        exp_panel.add(exp_v4_field);
-        exp_v4_field.setHorizontalAlignment(SwingConstants.CENTER);
-        exp_v4_field.setForeground(Color.WHITE);
-        exp_v4_field.setColumns(10);
-        exp_v4_field.setBorder(null);
+        exp_v2_week_field = new MyGuiComps.MyTextField();
+        exp_v2_week_field.setBounds(expBasketsWeekField.getX() + expBasketsWeekField.getWidth() + 1, expBasketsWeekField.getY(), 50, 25);
+        exp_panel.add(exp_v2_week_field);
+        exp_v2_week_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v2_week_field.setForeground(Color.WHITE);
+        exp_v2_week_field.setColumns(10);
+        exp_v2_week_field.setBorder(null);
 
-        exp_v8_field = new MyGuiComps.MyTextField();
-        exp_v8_field.setBounds(exp_v4_field.getX() + exp_v4_field.getWidth() + 1, exp_v4_field.getY(), 50, 25);
-        exp_panel.add(exp_v8_field);
-        exp_v8_field.setHorizontalAlignment(SwingConstants.CENTER);
-        exp_v8_field.setForeground(Color.WHITE);
-        exp_v8_field.setColumns(10);
-        exp_v8_field.setBorder(null);
+        exp_v7_week_field = new MyGuiComps.MyTextField();
+        exp_v7_week_field.setBounds(exp_v2_week_field.getX() + exp_v2_week_field.getWidth() + 1, exp_v2_week_field.getY(), 50, 25);
+        exp_panel.add(exp_v7_week_field);
+        exp_v7_week_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v7_week_field.setForeground(Color.WHITE);
+        exp_v7_week_field.setColumns(10);
+        exp_v7_week_field.setBorder(null);
 
         // V5 V6 (MONTH)
-        exp_v5_field = new MyGuiComps.MyTextField();
-        exp_v5_field.setHorizontalAlignment(SwingConstants.CENTER);
-        exp_v5_field.setForeground(Color.WHITE);
-        exp_v5_field.setColumns(10);
-        exp_v5_field.setBorder(null);
-        exp_v5_field.setBounds(expBasketsMonthField.getX() + expBasketsMonthField.getWidth() + 1, expBasketsMonthField.getY(), 50, 25);
-        exp_panel.add(exp_v5_field);
+        exp_v2_month_field = new MyGuiComps.MyTextField();
+        exp_v2_month_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v2_month_field.setForeground(Color.WHITE);
+        exp_v2_month_field.setColumns(10);
+        exp_v2_month_field.setBorder(null);
+        exp_v2_month_field.setBounds(expBasketsMonthField.getX() + expBasketsMonthField.getWidth() + 1, expBasketsMonthField.getY(), 50, 25);
+        exp_panel.add(exp_v2_month_field);
 
-        exp_v6_field = new MyGuiComps.MyTextField();
-        exp_v6_field.setHorizontalAlignment(SwingConstants.CENTER);
-        exp_v6_field.setForeground(Color.WHITE);
-        exp_v6_field.setColumns(10);
-        exp_v6_field.setBorder(null);
-        exp_v6_field.setBounds(exp_v5_field.getX() + exp_v5_field.getWidth() + 1, exp_v5_field.getY(), 50, 25);
-        exp_panel.add(exp_v6_field);
+        exp_v7_month_field = new MyGuiComps.MyTextField();
+        exp_v7_month_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v7_month_field.setForeground(Color.WHITE);
+        exp_v7_month_field.setColumns(10);
+        exp_v7_month_field.setBorder(null);
+        exp_v7_month_field.setBounds(exp_v2_month_field.getX() + exp_v2_month_field.getWidth() + 1, exp_v2_month_field.getY(), 50, 25);
+        exp_panel.add(exp_v7_month_field);
 
         MyGuiComps.MyLabel label_4 = new MyGuiComps.MyLabel("Week");
         label_4.setHorizontalAlignment(SwingConstants.CENTER);
