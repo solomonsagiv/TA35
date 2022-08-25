@@ -45,6 +45,34 @@ public class Queries {
         return MySql.select(query);
     }
 
+
+    public static ResultSet get_start_exp_mega(int index_id, ApiObject apiObject, String exp_prop_name) {
+        String q = "select value\n" +
+                "from ts.timeseries_data\n" +
+                "where timeseries_id = %s\n" +
+                "  and date_trunc('day', time) = (select data::date\n" +
+                "                                 from sagiv.props\n" +
+                "                                 where stock_id = '%s'\n" +
+                "                                   and prop = '%s')\n" +
+                "order by time limit 1;\n";
+
+        String query = String.format(q, index_id, apiObject.getName(), exp_prop_name);
+        return MySql.select(query);
+    }
+
+
+    public static ResultSet get_exp_data(ApiObject client, int serie_id, String exp_prop_name) {
+        String q = "select sum(sum) as value\n" +
+                "from ts.ca_timeseries_1day_candle\n" +
+                "where date_trunc('day', time) >= (select data::date as date\n" +
+                "                                  from props\n" +
+                "                                  where stock_id = '%s'\n" +
+                "                                    and prop = '%s')\n" +
+                "  and timeseries_id = %s;";
+        String query = String.format(q, client.getName(), exp_prop_name, serie_id);
+        return MySql.select(query);
+    }
+
     public static ResultSet get_serie_cumulative_sum(String table_location) {
         String q = "select time, sum(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";

@@ -38,7 +38,7 @@ public class FullCharts2 extends MyChartCreator {
         props.setProp(ChartPropsEnum.INCLUDE_DOMAIN_AXIS, 1);
         props.setProp(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE, 1);
         props.setProp(ChartPropsEnum.MARKER, 0);
-        
+
         // ----------------------------------------- Index ----------------------------------------- //
 
         // Index
@@ -72,7 +72,7 @@ public class FullCharts2 extends MyChartCreator {
         opavg_5_week.setStokeSize(1.2f);
 
         // Op avg 60
-        MyTimeSeries opavg_60_week =ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60);
+        MyTimeSeries opavg_60_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60);
         opavg_60_week.setColor(Themes.BLUE);
         opavg_60_week.setStokeSize(1.2f);
 
@@ -80,7 +80,7 @@ public class FullCharts2 extends MyChartCreator {
         MyTimeSeries continue_opavg_240_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240);
         continue_opavg_240_week.setColor(Themes.ORANGE);
         continue_opavg_240_week.setStokeSize(1.2f);
-        
+
         series = new MyTimeSeries[3];
         series[0] = opavg_5_week;
         series[1] = opavg_60_week;

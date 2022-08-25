@@ -7,6 +7,8 @@ import dataBase.mySql.Queries;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import locals.L;
+import props.Props;
+
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
@@ -53,24 +55,25 @@ public class DataBaseHandler {
             ExpWeek week = apiObject.getExps().getWeek();
             ExpMonth month = apiObject.getExps().getMonth();
             
-            double baskets_exp_week = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_WEEK, SUM_RESULT_TYPE));
-            double baskets_exp_month = Queries.handle_rs(get_exp_data(Factories.Tables.BASKETS_TABLE, EXP_MONTH, SUM_RESULT_TYPE));
-            double start_exp_week = Queries.handle_rs(Queries.get_start_exp(EXP_WEEK));
-            double start_exp_month = Queries.handle_rs(Queries.get_start_exp(EXP_MONTH));
+            double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1649, Props.EXP_WEEK_START));
+            double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1649, Props.EXP_MONTH_START));
+            double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX_TABLE, ApiObject.getInstance(), Props.EXP_WEEK_START));
+            double start_exp_month =  Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX_TABLE, ApiObject.getInstance(), Props.EXP_MONTH_START));
 
-            double v4_exp = Queries.handle_rs(Queries.get_exp_decision_function(2, 4, EXP_WEEK, 10));
-            double v8_exp = Queries.handle_rs(Queries.get_exp_decision_function(2, 8, EXP_WEEK, 10));
-            double v5_exp = Queries.handle_rs(Queries.get_exp_decision_function(2, 5, EXP_MONTH, 10));
-            double v6_exp = Queries.handle_rs(Queries.get_exp_decision_function(2, 6, EXP_MONTH, 10));
+            double v2_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1145, Props.EXP_WEEK_START));
+            double v7_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1150, Props.EXP_MONTH_START));
+            double v2_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1145, Props.EXP_WEEK_START));
+            double v7_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), 1150, Props.EXP_MONTH_START));
+
 
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
             week.getExpData().setBaskets((int) baskets_exp_week);
             month.getExpData().setBaskets((int) baskets_exp_month);
-            week.getExpData().setV4(v4_exp);
-            week.getExpData().setV8(v8_exp);
-            month.getExpData().setV5(v5_exp);
-            month.getExpData().setV6(v6_exp);
+            week.getExpData().setV2(v2_week);
+            week.getExpData().setV7(v7_week);
+            month.getExpData().setV7(v2_month);
+            month.getExpData().setV7(v7_month);
 
         } catch (Exception e) {
             e.printStackTrace();

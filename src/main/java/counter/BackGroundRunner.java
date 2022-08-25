@@ -64,6 +64,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
         runner();
     }
 
+
     int i = 0;
 
     // Runner

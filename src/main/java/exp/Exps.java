@@ -17,7 +17,7 @@ public class Exps {
         exps_list.add(week);
         exps_list.add(month);
     }
-
+    
     public ArrayList<Exp> getExps_list() {
         return exps_list;
     }

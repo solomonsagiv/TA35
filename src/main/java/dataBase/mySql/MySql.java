@@ -18,7 +18,7 @@ public class MySql {
     private static Statement stmt;
 
     // Insert
-    private static void insert(String query) {
+    public static void insert(String query) {
         new Thread(() -> {
             Connection conn = null;
             try {

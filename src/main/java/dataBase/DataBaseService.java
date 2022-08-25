@@ -112,11 +112,12 @@ public class DataBaseService extends MyBaseService {
 
     private void insert_data() {
         new Thread(() -> {
-            insert_data_retro(fut_week_timestamp, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
-            insert_data_retro(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
-            insert_data_retro(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
-            insert_data_retro(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
-            insert_data_retro(ind_bid_ask_counter_timestamp, Factories.Tables.INDEX_BID_ASK_COUNTER);
+            insert_data_retro_mega(fut_week_timestamp, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
+            insert_data_retro_mega(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
+            insert_data_retro_mega(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
+            insert_data_retro_mega(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
+            insert_data_retro_mega(index_timestamp, Factories.IDs.BASKETS_TABLE);
+            insert_data_retro_mega(ind_bid_ask_counter_timestamp, Factories.Tables.INDEX_BID_ASK_COUNTER);
         }).start();
     }
 
@@ -152,7 +153,7 @@ public class DataBaseService extends MyBaseService {
         return 1000;
     }
 
-    void insert_data_retro(ArrayList<MyTimeStampObject> list, String table_location) {
+    void insert_data_retro_mega(ArrayList<MyTimeStampObject> list, String table_location) {
         try {
             if (list.size() > 0) {
                 // Create the query
@@ -179,4 +180,33 @@ public class DataBaseService extends MyBaseService {
             Arik.getInstance().sendMessage("Insert data ta35 failed \n to table " + table_location + "\n \n " + e.getCause());
         }
     }
+
+
+    void insert_data_retro_mega(ArrayList<MyTimeStampObject> list, int timeseries_id) {
+        if (list.size() > 0) {
+
+            // Create the query
+            StringBuilder queryBuiler = new StringBuilder("INSERT INTO %s (time, value, timeseries_id) VALUES ");
+            int last_item_id = list.get(list.size() - 1).hashCode();
+            for (MyTimeStampObject row : list) {
+                queryBuiler.append(String.format("(cast('%s' as timestamp with time zone), %s, %s)", row.getInstant(), row.getValue(), timeseries_id));
+                if (row.hashCode() != last_item_id) {
+                    queryBuiler.append(",");
+                }
+            }
+            queryBuiler.append(";");
+
+            String q = String.format(queryBuiler.toString(), "ts.timeseries_data");
+
+            System.out.println(q);
+
+            // Insert
+            MySql.insert(q);
+
+            // Clear the list
+            list.clear();
+        }
+    }
+
+
 }

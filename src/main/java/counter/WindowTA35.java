@@ -283,7 +283,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         // ---------------- Decision ---------------- //
         // ------- Header ------- //
         MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
-        decision_header_panel.setBounds(op_avg_header_panel.getX() + op_avg_header_panel.getWidth() + 1, op_avg_panel.getY(), 115, 25);
+        decision_header_panel.setBounds(op_avg_header_panel.getX() + op_avg_header_panel.getWidth() + 1, op_avg_header_panel.getY(), 115, 25);
+        decision_header_panel.setBackground(op_avg_header_panel.getBackground());
         getContentPane().add(decision_header_panel);
 
         MyGuiComps.MyLabel main_decision_lbl = new MyGuiComps.MyLabel("Main");
