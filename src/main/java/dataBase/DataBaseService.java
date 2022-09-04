@@ -52,8 +52,6 @@ public class DataBaseService extends MyBaseService {
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_RAW));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_DE_CORR_RAW));
 
-
-
     }
 
     @Override
@@ -116,7 +114,7 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro_mega(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
             insert_data_retro_mega(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
             insert_data_retro_mega(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
-            insert_data_retro_mega(index_timestamp, Factories.IDs.BASKETS_TABLE);
+            insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS_TABLE);
             insert_data_retro_mega(ind_bid_ask_counter_timestamp, Factories.Tables.INDEX_BID_ASK_COUNTER);
         }).start();
     }
@@ -141,7 +139,6 @@ public class DataBaseService extends MyBaseService {
             serie.updateData();
         }
     }
-
 
     @Override
     public String getName() {

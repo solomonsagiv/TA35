@@ -79,7 +79,8 @@ public class Queries {
                 "                                  from props\n" +
                 "                                  where stock_id = '%s'\n" +
                 "                                    and prop = '%s')\n" +
-                "  and timeseries_id = %s;";
+                " and date_trunc('day', time) < date_trunc('day', now())\n " +
+                " and timeseries_id = %s;";
         String query = String.format(q, client.getName(), exp_prop_name, serie_id);
         return MySql.select(query);
     }
