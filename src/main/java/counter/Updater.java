@@ -99,16 +99,16 @@ public class Updater extends MyThread implements Runnable {
 
                 // Exp
                 // Week
-                colorForgeRound(window.exp_v2_week_field, (int) (expWeek.getExpData().getV2() + df_2.getValue()));
-                colorForgeRound(window.exp_v7_week_field, (int) (expWeek.getExpData().getV7() + df_7.getValue()));
-                colorForgeRound(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets());
+                colorForgeRound(window.exp_v2_week_field, (int) (expWeek.getExpData().getV2() + df_2.getValue()), true);
+                colorForgeRound(window.exp_v7_week_field, (int) (expWeek.getExpData().getV7() + df_7.getValue()), true);
+                colorForgeRound(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), false);
                 text = floor(((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.weekStartExpField, text);
 
                 // Month
-                colorForgeRound(window.exp_v2_month_field, (int) (expMonth.getExpData().getV2() + df_2.getValue()));
-                colorForgeRound(window.exp_v7_month_field, (int) (expMonth.getExpData().getV7() + df_7.getValue()));
-                colorForgeRound(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets());
+                colorForgeRound(window.exp_v2_month_field, (int) (expMonth.getExpData().getV2() + df_2.getValue()), true);
+                colorForgeRound(window.exp_v7_month_field, (int) (expMonth.getExpData().getV7() + df_7.getValue()), true);
+                colorForgeRound(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), false);
                 text = floor(((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.monthStartExpField, text);
             }
@@ -167,8 +167,12 @@ public class Updater extends MyThread implements Runnable {
     }
 
 
-    public void colorForgeRound(JTextField textField, int val) {
-        val /= 1000;
+    public void colorForgeRound(JTextField textField, int val, boolean divide_1000) {
+
+        if (divide_1000) {
+            val /= 1000;
+        }
+
         if (val >= 0) {
             textField.setForeground(Themes.GREEN);
         } else {
