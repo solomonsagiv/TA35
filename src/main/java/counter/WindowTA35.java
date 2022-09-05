@@ -10,7 +10,6 @@ import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import options.optionsDataTable.OptionsTableWindow;
 import setting.Setting;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -37,6 +36,9 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField v4_field;
     public MyGuiComps.MyTextField v8_field;
 
+    public MyGuiComps.MyTextField v2_field;
+    public MyGuiComps.MyTextField v7_field;
+    public MyGuiComps.MyTextField v8_de_corr_field;
     public int updater_id = 0;
 
     ApiObject apiObject = ApiObject.getInstance();
@@ -50,10 +52,15 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     DDEConnection ddeConnection;
     public MyGuiComps.MyTextField weekStartExpField;
     private MyGuiComps.MyButton btnDetails;
+
     public MyGuiComps.MyTextField exp_v2_month_field;
     public MyGuiComps.MyTextField exp_v7_month_field;
+    public MyGuiComps.MyTextField exp_v8_month_field;
+
     public MyGuiComps.MyTextField exp_v2_week_field;
     public MyGuiComps.MyTextField exp_v7_week_field;
+    public MyGuiComps.MyTextField exp_v8_week_field;
+
     public MyGuiComps.MyTextField expBasketsWeekField;
     public MyGuiComps.MyTextField expBasketsMonthField;
 
@@ -118,7 +125,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public void initialize() {
 
         bottomPanel = new MyGuiComps.MyPanel();
-        bottomPanel.setBounds(0, 129, 801, 38);
+        bottomPanel.setBounds(0, 120, 801, 38);
         getContentPane().add(bottomPanel);
         bottomPanel.setLayout(null);
         
@@ -211,17 +218,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();
         basketsPanel.setLayout(null);
-        basketsPanel.setBounds(0, 26, 55, 102);
+        basketsPanel.setBounds(0, 26, 55, 93);
         getContentPane().add(basketsPanel);
 
-        basket_down_field = new MyGuiComps.MyTextField();
-        basket_down_field.setBorder(null);
-        basket_down_field.setHorizontalAlignment(SwingConstants.CENTER);
-        basket_down_field.setForeground(lightRed);
-        basket_down_field.setColumns(10);
-        basket_down_field.setBounds(5, 35, 45, 25);
-        basketsPanel.add(basket_down_field);
-
+        // ---------------------------  Baskets --------------------------- //
         basket_up_field = new MyGuiComps.MyTextField();
         basket_up_field.setBorder(null);
         basket_up_field.setHorizontalAlignment(SwingConstants.CENTER);
@@ -230,12 +230,20 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         basket_up_field.setBounds(5, 5, 45, 25);
         basketsPanel.add(basket_up_field);
 
+        basket_down_field = new MyGuiComps.MyTextField();
+        basket_down_field.setBorder(null);
+        basket_down_field.setHorizontalAlignment(SwingConstants.CENTER);
+        basket_down_field.setForeground(lightRed);
+        basket_down_field.setColumns(10);
+        basket_down_field.setBounds(basket_up_field.getX(), basket_up_field.getY() + basket_up_field.getHeight() + 3, 45, 25);
+        basketsPanel.add(basket_down_field);
+
         basketsSumField = new MyGuiComps.MyTextField();
         basketsSumField.setBorder(null);
         basketsSumField.setHorizontalAlignment(SwingConstants.CENTER);
         basketsSumField.setForeground(new Color(229, 19, 0));
         basketsSumField.setColumns(10);
-        basketsSumField.setBounds(5, 70, 45, 25);
+        basketsSumField.setBounds(basket_down_field.getX(), basket_down_field.getY() + basket_down_field.getHeight() + 3, 45, 25);
         basketsPanel.add(basketsSumField);
 
         MyGuiComps.MyPanel basket_header_panel = new MyGuiComps.MyPanel();
@@ -261,7 +269,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         op_avg_header_panel.add(move_lbl);
 
         MyGuiComps.MyPanel op_avg_panel = new MyGuiComps.MyPanel();
-        op_avg_panel.setBounds(op_avg_header_panel.getX(), op_avg_header_panel.getY() + op_avg_header_panel.getHeight() + 1, 64, 102);
+        op_avg_panel.setBounds(op_avg_header_panel.getX(), op_avg_header_panel.getY() + op_avg_header_panel.getHeight() + 1, 64, 93);
         getContentPane().add(op_avg_panel);
         op_avg_panel.setLayout(null);
 
@@ -284,7 +292,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         // ---------------- Decision ---------------- //
         // ------- Header ------- //
         MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
-        decision_header_panel.setBounds(op_avg_header_panel.getX() + op_avg_header_panel.getWidth() + 1, op_avg_header_panel.getY(), 115, 25);
+        decision_header_panel.setBounds(op_avg_header_panel.getX() + op_avg_header_panel.getWidth() + 1, op_avg_header_panel.getY(), 166, 25);
         decision_header_panel.setBackground(op_avg_header_panel.getBackground());
         getContentPane().add(decision_header_panel);
 
@@ -299,8 +307,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         // Vs Panel
         MyGuiComps.MyPanel decisions_panel = new MyGuiComps.MyPanel();
         decisions_panel.setXY(decision_header_panel.getX(), decision_header_panel.getY() + decision_header_panel.getHeight() + 1);
-        decisions_panel.setWidth(115);
-        decisions_panel.setHeight(102);
+        decisions_panel.setWidth(166);
+        decisions_panel.setHeight(93);
         getContentPane().add(decisions_panel);
 
         // V4
@@ -325,9 +333,24 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         v6_field.setBounds(v5_field.getX() + v5_field.getWidth() + 1, v5_field.getY(), 50, 25);
         decisions_panel.add(v6_field);
 
+        // V2
+        v2_field = new MyGuiComps.MyTextField();
+        v2_field.setBounds(v5_field.getX(), v5_field.getY() + v5_field.getHeight() + 3, 50, 25);
+        decisions_panel.add(v2_field);
+
+        // V7
+        v7_field = new MyGuiComps.MyTextField();
+        v7_field.setBounds(v2_field.getX() + v2_field.getWidth() + 1,v2_field.getY(), 50, 25);
+        decisions_panel.add(v7_field);
+
+        // V8 De corr
+        v8_de_corr_field = new MyGuiComps.MyTextField();
+        v8_de_corr_field.setBounds(v7_field.getX() + v7_field.getWidth() + 1, v7_field.getY(), 50, 25);
+        decisions_panel.add(v8_de_corr_field);
+
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
-        logPanel.setBounds(897, 0, 147, 102);
+        logPanel.setBounds(897, 0, 147, 93);
         getContentPane().add(logPanel);
         logPanel.setLayout(null);
 
@@ -352,17 +375,23 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_baskets_lbl.setHorizontalAlignment(SwingConstants.CENTER);
         exp_baskets_lbl.setForeground(new Color(0, 0, 51));
 
-        MyGuiComps.MyLabel main_lbl = new MyGuiComps.MyLabel("Main");
-        main_lbl.setBounds(exp_baskets_lbl.getX() + exp_baskets_lbl.getWidth() + 1, exp_baskets_lbl.getY(), 50, 25);
-        exp_header_panel.add(main_lbl);
-        main_lbl.setHorizontalAlignment(SwingConstants.CENTER);
-        main_lbl.setForeground(new Color(0, 0, 51));
+        MyGuiComps.MyLabel v2_exp_lbl = new MyGuiComps.MyLabel("V2");
+        v2_exp_lbl.setBounds(exp_baskets_lbl.getX() + exp_baskets_lbl.getWidth() + 1, exp_baskets_lbl.getY(), 50, 25);
+        exp_header_panel.add(v2_exp_lbl);
+        v2_exp_lbl.setHorizontalAlignment(SwingConstants.CENTER);
+        v2_exp_lbl.setForeground(new Color(0, 0, 51));
 
-        MyGuiComps.MyLabel sec_lbl = new MyGuiComps.MyLabel("Sec");
-        sec_lbl.setBounds(main_lbl.getX() + main_lbl.getWidth() + 1, main_lbl.getY(), 50, 25);
-        exp_header_panel.add(sec_lbl);
-        sec_lbl.setHorizontalAlignment(SwingConstants.CENTER);
-        sec_lbl.setForeground(new Color(0, 0, 51));
+        MyGuiComps.MyLabel v7_exp_lbl = new MyGuiComps.MyLabel("V7");
+        v7_exp_lbl.setBounds(v2_exp_lbl.getX() + v2_exp_lbl.getWidth() + 1, v2_exp_lbl.getY(), 50, 25);
+        exp_header_panel.add(v7_exp_lbl);
+        v7_exp_lbl.setHorizontalAlignment(SwingConstants.CENTER);
+        v7_exp_lbl.setForeground(new Color(0, 0, 51));
+
+        MyGuiComps.MyLabel v8_exp_lbl = new MyGuiComps.MyLabel("V8");
+        v8_exp_lbl.setBounds(v7_exp_lbl.getX() + v7_exp_lbl.getWidth() + 1, v7_exp_lbl.getY(), 50, 25);
+        exp_header_panel.add(v8_exp_lbl);
+        v8_exp_lbl.setHorizontalAlignment(SwingConstants.CENTER);
+        v8_exp_lbl.setForeground(new Color(0, 0, 51));
 
         MyGuiComps.MyLabel exp_lbl = new MyGuiComps.MyLabel("Exp");
         exp_lbl.setHorizontalAlignment(SwingConstants.CENTER);
@@ -372,7 +401,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         // -------------------------- EXP -------------------------- //
         MyGuiComps.MyPanel exp_panel = new MyGuiComps.MyPanel();
-        exp_panel.setBounds(exp_header_panel.getX(), exp_header_panel.getY() + exp_header_panel.getHeight() + 1, 362, 102);
+        exp_panel.setBounds(exp_header_panel.getX(), exp_header_panel.getY() + exp_header_panel.getHeight() + 1, 362, 93);
         getContentPane().add(exp_panel);
         exp_panel.setLayout(null);
 
@@ -412,7 +441,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         expBasketsMonthField.setBounds(monthStartExpField.getX() + monthStartExpField.getWidth() + 1, monthStartExpField.getY(), 50, 25);
         exp_panel.add(expBasketsMonthField);
 
-        // V4 V8 (WEEK)
+        // V2 V7 V8 (WEEK)
         exp_v2_week_field = new MyGuiComps.MyTextField();
         exp_v2_week_field.setBounds(expBasketsWeekField.getX() + expBasketsWeekField.getWidth() + 1, expBasketsWeekField.getY(), 50, 25);
         exp_panel.add(exp_v2_week_field);
@@ -429,7 +458,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_v7_week_field.setColumns(10);
         exp_v7_week_field.setBorder(null);
 
-        // V5 V6 (MONTH)
+        exp_v8_week_field = new MyGuiComps.MyTextField();
+        exp_v8_week_field.setBounds(exp_v7_week_field.getX() + exp_v7_week_field.getWidth() + 1, exp_v7_week_field.getY(), 50, 25);
+        exp_v8_week_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v8_week_field.setForeground(Color.WHITE);
+        exp_v8_week_field.setColumns(10);
+        exp_v8_week_field.setBorder(null);
+        exp_panel.add(exp_v8_week_field);
+
+
+        // V2 V7 V8 (MONTH)
         exp_v2_month_field = new MyGuiComps.MyTextField();
         exp_v2_month_field.setHorizontalAlignment(SwingConstants.CENTER);
         exp_v2_month_field.setForeground(Color.WHITE);
@@ -445,6 +483,14 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_v7_month_field.setBorder(null);
         exp_v7_month_field.setBounds(exp_v2_month_field.getX() + exp_v2_month_field.getWidth() + 1, exp_v2_month_field.getY(), 50, 25);
         exp_panel.add(exp_v7_month_field);
+
+        exp_v8_month_field = new MyGuiComps.MyTextField();
+        exp_v8_month_field.setHorizontalAlignment(SwingConstants.CENTER);
+        exp_v8_month_field.setForeground(Color.WHITE);
+        exp_v8_month_field.setColumns(10);
+        exp_v8_month_field.setBorder(null);
+        exp_v8_month_field.setBounds(exp_v7_month_field.getX() + exp_v7_month_field.getWidth() + 1, exp_v7_month_field.getY(), 50, 25);
+        exp_panel.add(exp_v8_month_field);
 
         MyGuiComps.MyLabel label_4 = new MyGuiComps.MyLabel("Week");
         label_4.setHorizontalAlignment(SwingConstants.CENTER);
@@ -471,7 +517,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             e.printStackTrace();
         }
     }
-
 
     // -------------------- function -------------------- //
 

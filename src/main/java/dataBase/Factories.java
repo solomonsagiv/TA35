@@ -37,6 +37,8 @@ public class Factories {
         public static final String DF_2_RAW = "DF_2_RAW";
         public static final String DF_7_RAW = "DF_7_RAW";
         public static final String DF_8_DE_CORR_RAW = "DF_8_DE_CORR_RAW";
+        public static final String DF_8_DE_CORR_CDF = "DF_8_DE_CORR_CDF";
+
 
         public static final String CONTINUE_OP_AVG_WEEK_240 = "YESTERDAY_OP_AVG_WEEK_240";
         public static final String INDEX_WITH_BID_ASK = "INDEX_WITH_BID_ASK";

@@ -4,7 +4,6 @@ import counter.WindowTA35;
 import locals.L;
 import miniStocks.MiniStock;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class BasketService extends MyBaseService {
@@ -14,7 +13,6 @@ public class BasketService extends MyBaseService {
     }
 
     private void findBasket() {
-
 
         MiniStock[] stocks = apiObject.getStocksHandler().getStocks();
         int changesCount = 0;

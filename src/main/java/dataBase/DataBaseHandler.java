@@ -8,7 +8,6 @@ import exp.ExpMonth;
 import exp.ExpWeek;
 import locals.L;
 import props.Props;
-
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 
@@ -62,17 +61,30 @@ public class DataBaseHandler {
 
             double v2_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_2, Props.EXP_WEEK_START));
             double v7_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_7, Props.EXP_WEEK_START));
+            double v8_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_8_DE_CORR, Props.EXP_WEEK_START));
+
             double v2_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_2, Props.EXP_MONTH_START));
             double v7_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_7, Props.EXP_MONTH_START));
+            double v8_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_8_DE_CORR, Props.EXP_MONTH_START));
 
+            // Start
             week.getExpData().setStart(start_exp_week);
             month.getExpData().setStart(start_exp_month);
+
+            // Baskets
             week.getExpData().setBaskets((int) baskets_exp_week);
             month.getExpData().setBaskets((int) baskets_exp_month);
+
+            // DF
+            // Week
             week.getExpData().setV2(v2_week);
             week.getExpData().setV7(v7_week);
+            week.getExpData().setV8_de_corr(v8_week);
+
+            // Month
             month.getExpData().setV2(v2_month);
             month.getExpData().setV7(v7_month);
+            month.getExpData().setV8_de_corr(v8_month);
 
         } catch (Exception e) {
             e.printStackTrace();

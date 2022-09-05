@@ -14,13 +14,11 @@ import java.util.ArrayList;
 public class DataBaseService extends MyBaseService {
 
     double baskets_0 = 0;
-    double ind_bid_ask_counter_0 = 0;
-    
+
     ArrayList<MyTimeStampObject> index_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_week_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> fut_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> ind_bid_ask_counter_timestamp = new ArrayList<>();
 
     ExpWeek week;
     ExpMonth month;
@@ -46,11 +44,13 @@ public class DataBaseService extends MyBaseService {
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_DE_CORR_CDF));
 
         // DF RAW
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_RAW));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_RAW));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_DE_CORR_RAW));
+
 
     }
 
@@ -68,19 +68,9 @@ public class DataBaseService extends MyBaseService {
         double fut_week = week.getOptions().getContract();
         double fut_month = month.getOptions().getContract();
         double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
-        double ind_bid_ask_counter = apiObject.getIndBidAskCounter();
-
-        // Index bid ask counter
-        double change = ind_bid_ask_counter - ind_bid_ask_counter_0;
-        if (change != 0) {
-            if (change < 10000 && change > -10000) {
-                ind_bid_ask_counter_timestamp.add(new MyTimeStampObject(Instant.now(), change));
-            }
-            ind_bid_ask_counter_0 = ind_bid_ask_counter;
-        }
 
         // Baskets
-        change = baskets - baskets_0;
+        double change = baskets - baskets_0;
         if (change != 0) {
             baskets_0 = baskets;
             baskets_timestamp.add(new MyTimeStampObject(Instant.now(), change));
@@ -115,7 +105,6 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro_mega(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
             insert_data_retro_mega(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
             insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS_TABLE);
-            insert_data_retro_mega(ind_bid_ask_counter_timestamp, Factories.Tables.INDEX_BID_ASK_COUNTER);
         }).start();
     }
 
