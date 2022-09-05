@@ -4,6 +4,9 @@ import counter.WindowTA35;
 import locals.L;
 import miniStocks.MiniStock;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 public class BasketService extends MyBaseService {
 
     public BasketService() {
@@ -11,6 +14,7 @@ public class BasketService extends MyBaseService {
     }
 
     private void findBasket() {
+
 
         MiniStock[] stocks = apiObject.getStocksHandler().getStocks();
         int changesCount = 0;
@@ -28,6 +32,9 @@ public class BasketService extends MyBaseService {
             // Update pre volume
             stock.setPreVolume(volume);
         }
+
+        System.out.println("Baskets finder ************************** " + changesCount + " " + LocalTime.now());
+
 
         // More then 28 changes
         if (changesCount > 28) {

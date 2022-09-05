@@ -1,6 +1,7 @@
 package service;
 
 import threads.MyThread;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -8,95 +9,97 @@ import java.util.concurrent.Executors;
 
 public class MyServiceHandler extends MyThread implements Runnable {
 
-	// Variables
-	private List<MyBaseService> servies = new ArrayList<>();
-	private ExecutorService executor;
-	final int sleep = 100;
-	int sleepCount = 0;
+    // Variables
+    private List<MyBaseService> servies = new ArrayList<>();
+    private ExecutorService executor;
+    final int sleep = 100;
+    int sleepCount = 0;
 
-	// Constructor
-	public MyServiceHandler() {
-		super();
-		setRunnable(this);
-	}
-	
-	@Override
-	public void run() {
-		init();
-	}
+    // Constructor
+    public MyServiceHandler() {
+        super();
+        setRunnable(this);
+    }
 
-	private void init() {
+    @Override
+    public void run() {
+        init();
+    }
 
-		executor = Executors.newCachedThreadPool();
+    private void init() {
 
-		while (isRun()) {
-			try {
+        executor = Executors.newCachedThreadPool();
 
-				Thread.sleep(sleep);
+        while (isRun()) {
+            try {
 
-				executServices();
+                Thread.sleep(sleep);
 
-				initSleepCount();
+                executServices();
 
-			} catch (InterruptedException e) {
-				executor.shutdownNow();
-				break;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+                initSleepCount();
 
-	public List<MyBaseService> getServies() {
-		return servies;
-	}
+            } catch (InterruptedException e) {
+                executor.shutdownNow();
+                break;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	public void setServies(List<MyBaseService> servies) {
-		this.servies = servies;
-	}
+    public List<MyBaseService> getServies() {
+        return servies;
+    }
 
-	public void addService(MyBaseService newService) {
-		if (!isExist(newService)) {
-			servies.add(newService);
-		}
-	}
+    public void setServies(List<MyBaseService> servies) {
+        this.servies = servies;
+    }
 
-	public boolean isExist(MyBaseService newService) {
-		for (MyBaseService service : servies) {
-			if (service.getName().equals(newService.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public void addService(MyBaseService newService) {
+        if (!isExist(newService)) {
+            servies.add(newService);
+        }
+    }
 
-	public void removeService(MyBaseService service) {
-		servies.remove(service);
-	}
+    public boolean isExist(MyBaseService newService) {
+        for (MyBaseService service : servies) {
+            if (service.getName().equals(newService.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	private void initSleepCount() {
-		if (sleepCount == 300000) {
-			sleepCount = 0;
-		}
-		sleepCount += sleep;
-	}
+    public void removeService(MyBaseService service) {
+        servies.remove(service);
+    }
 
-	private void executServices() {
-		for (MyBaseService service : servies) {
-			service.execute(sleepCount);
-		}
-	}
+    private void initSleepCount() {
+        if (sleepCount == 300000) {
+            sleepCount = 0;
+        }
+        sleepCount += sleep;
+    }
 
-	public String toStringServices() {
-		StringBuilder sb = new StringBuilder();
-		for (MyBaseService service : servies) {
-			sb.append(service.getName() + "\n");
-		}
-		return sb.toString();
-	}
+    private void executServices() {
+        for (MyBaseService service : servies) {
+            new Thread(() -> {
+                service.execute(sleepCount);
+            }).start();
+        }
+    }
 
-	@Override
-	public void initRunnable() {
-		setRunnable(this);
-	}
+    public String toStringServices() {
+        StringBuilder sb = new StringBuilder();
+        for (MyBaseService service : servies) {
+            sb.append(service.getName() + "\n");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void initRunnable() {
+        setRunnable(this);
+    }
 }
