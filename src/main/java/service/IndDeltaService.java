@@ -38,12 +38,10 @@ public class IndDeltaService extends MyBaseService {
                 miniStock.setVolume(newVolume);
                 miniStock.setWeight(weight);
                 miniStock.appendDelta(delta);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     private void initStocksName() {

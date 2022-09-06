@@ -114,7 +114,7 @@ public class Updater extends MyThread implements Runnable {
                 // Month
                 colorForgeRound(window.exp_v2_month_field, (int) (expMonth.getExpData().getV2() + df_2.getValue()), true);
                 colorForgeRound(window.exp_v7_month_field, (int) (expMonth.getExpData().getV7() + df_7.getValue()), true);
-                colorForgeRound(window.exp_v8_month_field, (int) (expWeek.getExpData().getV8_de_corr() + df_8_de_corr.getValue()), true);
+                colorForgeRound(window.exp_v8_month_field, (int) (expMonth.getExpData().getV8_de_corr() + df_8_de_corr.getValue()), true);
                 colorForgeRound(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), false);
                 text = floor(((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.monthStartExpField, text);
