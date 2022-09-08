@@ -85,6 +85,21 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_df_cdf_by_frame(int serie_id, int frame_in_secondes) {
+        String q = "\n" +
+                "select sum(a.value) as value\n" +
+                "from (\n" +
+                "select *\n" +
+                "from ts.timeseries_data\n" +
+                "where timeseries_id = %s\n" +
+                "order by time desc limit %s) a;";
+
+        String query = String.format(q, serie_id, frame_in_secondes);
+        return MySql.select(query);
+
+    }
+
+
     public static ResultSet get_serie_cumulative_sum(String table_location) {
         String q = "select time, sum(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value " +
                 "from %s where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) ORDER BY time;";

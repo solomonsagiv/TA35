@@ -100,11 +100,11 @@ public class DataBaseService extends MyBaseService {
 
     private void insert_data() {
         new Thread(() -> {
+            insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS_TABLE);
             insert_data_retro_mega(fut_week_timestamp, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
             insert_data_retro_mega(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
             insert_data_retro_mega(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
             insert_data_retro_mega(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
-            insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS_TABLE);
         }).start();
     }
 
