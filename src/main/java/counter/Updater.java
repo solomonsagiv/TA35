@@ -43,6 +43,7 @@ public class Updater extends MyThread implements Runnable {
 
         this.df_2 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_CDF);
         this.df_7 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_CDF);
+        this.df_8_de_corr = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF);
 
         this.df_4 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD);
         this.df_5 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
