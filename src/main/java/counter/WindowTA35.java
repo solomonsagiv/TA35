@@ -24,8 +24,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     Color lightGreen = new Color(12, 135, 0);
     Color lightRed = new Color(229, 19, 0);
 
-
-
     public static JButton start;
     private MyGuiComps.MyPanel bottomPanel;
     public MyGuiComps.MyTextField monthStartExpField;
