@@ -96,23 +96,18 @@ public class ApiObject implements IJsonData {
     private void init_time_series() {
         timeSeriesHandler = new TimeSeriesHandler();
 
-        timeSeriesHandler.put(Factories.TimeSeries.DF_2_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_2_CDF));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_4_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_4_CDF));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_5_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_5_CDF));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_6_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_6_CDF));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_7_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_7_CDF));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_8_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_CDF));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_4_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_4_CDF_OLD));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_5_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_5_CDF_OLD));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_6_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_6_CDF_OLD));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_8_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_CDF_OLD));
 
-        timeSeriesHandler.put(Factories.TimeSeries.DF_2_RAW, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_2_RAW));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_7_RAW, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_7_RAW));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_8_DE_CORR_RAW, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_DE_CORR_RAW));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_8_DE_CORR_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_DE_CORR_CDF));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_2_SLOW, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_2_SLOW));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_7_SLOW, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_7_SLOW));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_8_SLOW, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_SLOW));
 
-        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK));
         timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_5, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_5));
         timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_60, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60));
         timeSeriesHandler.put(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240, TimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
-        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_MONTH, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_MONTH));
     }
 
     // Get instance

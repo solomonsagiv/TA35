@@ -96,8 +96,8 @@ public class TimeSeriesFactory {
                     }
                 };
 
-            case Factories.TimeSeries.DF_4_CDF:
-                return new MyTimeSeries(Factories.TimeSeries.DF_4_CDF) {
+            case Factories.TimeSeries.DF_4_CDF_OLD:
+                return new MyTimeSeries(Factories.TimeSeries.DF_4_CDF_OLD) {
 
                     @Override
                     public double getValue() {
@@ -105,17 +105,21 @@ public class TimeSeriesFactory {
                     }
 
                     @Override
-                    public void load() { }
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_4_old, Queries.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
 
                     @Override
                     public void updateData() {
-                        double val = Queries.handle_rs(Queries.get_df_cdf(2, 4));
+                        int serie_id = Factories.IDs.DF_4_old;
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.CDF));
                         setValue(val);
                     }
                 };
 
-            case Factories.TimeSeries.DF_8_CDF:
-                return new MyTimeSeries(Factories.TimeSeries.DF_8_CDF) {
+            case Factories.TimeSeries.DF_8_CDF_OLD:
+                return new MyTimeSeries(Factories.TimeSeries.DF_8_CDF_OLD) {
 
                     @Override
                     public double getValue() {
@@ -123,17 +127,21 @@ public class TimeSeriesFactory {
                     }
 
                     @Override
-                    public void load() { }
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_8_old, Queries.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
 
                     @Override
                     public void updateData() {
-                        double val = Queries.handle_rs(Queries.get_df_cdf(2, 8));
+                        int serie_id = Factories.IDs.DF_8_old;
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.CDF));
                         setValue(val);
                     }
                 };
 
-            case Factories.TimeSeries.DF_5_CDF:
-                return new MyTimeSeries(Factories.TimeSeries.DF_5_CDF) {
+            case Factories.TimeSeries.DF_5_CDF_OLD:
+                return new MyTimeSeries(Factories.TimeSeries.DF_5_CDF_OLD) {
 
                     @Override
                     public double getValue() {
@@ -141,18 +149,22 @@ public class TimeSeriesFactory {
                     }
 
                     @Override
-                    public void load() { }
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_5_old, Queries.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
 
                     @Override
                     public void updateData() {
-                        double val = Queries.handle_rs(Queries.get_df_cdf(2, 5));
+                        int serie_id = Factories.IDs.DF_5_old;
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.CDF));
                         setValue(val);
                     }
                 };
 
 
-            case Factories.TimeSeries.DF_6_CDF:
-                return new MyTimeSeries(Factories.TimeSeries.DF_6_CDF) {
+            case Factories.TimeSeries.DF_6_CDF_OLD:
+                return new MyTimeSeries(Factories.TimeSeries.DF_6_CDF_OLD) {
 
                     @Override
                     public double getValue() {
@@ -160,11 +172,15 @@ public class TimeSeriesFactory {
                     }
 
                     @Override
-                    public void load() { }
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_6_old, Queries.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
 
                     @Override
                     public void updateData() {
-                        double val = Queries.handle_rs(Queries.get_df_cdf(2, 6));
+                        int serie_id = Factories.IDs.DF_6_old;
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.CDF));
                         setValue(val);
                     }
                 };
@@ -213,76 +229,8 @@ public class TimeSeriesFactory {
                     }
                 };
 
-
-            case Factories.TimeSeries.DF_7_RAW:
-                return new MyTimeSeries(Factories.TimeSeries.DF_7_RAW) {
-
-                    @Override
-                    public double getValue() {
-                        return super.getValue();
-                    }
-
-                    @Override
-                    public void load() {
-                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_7, Queries.RAW);
-                        DataBaseHandler.loadSerieData(rs, this);
-                    }
-
-                    @Override
-                    public void updateData() {
-                        int serie_id = Factories.IDs.DF_7;
-                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.RAW));
-                        setValue(val);
-                    }
-                };
-
-            case Factories.TimeSeries.DF_2_RAW:
-                return new MyTimeSeries(Factories.TimeSeries.DF_2_RAW) {
-
-                    @Override
-                    public double getValue() {
-                        return super.getValue();
-                    }
-
-                    @Override
-                    public void load() {
-                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_2, Queries.RAW);
-                        DataBaseHandler.loadSerieData(rs, this);
-                    }
-
-                    @Override
-                    public void updateData() {
-                        int serie_id = Factories.IDs.DF_2;
-                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.RAW));
-                        setValue(val);
-                    }
-                };
-
-
-            case Factories.TimeSeries.DF_8_DE_CORR_RAW:
-                return new MyTimeSeries(Factories.TimeSeries.DF_8_DE_CORR_RAW) {
-
-                    @Override
-                    public double getValue() {
-                        return super.getValue();
-                    }
-
-                    @Override
-                    public void load() {
-                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_8_DE_CORR, Queries.RAW);
-                        DataBaseHandler.loadSerieData(rs, this);
-                    }
-
-                    @Override
-                    public void updateData() {
-                        int serie_id = Factories.IDs.DF_8_DE_CORR;
-                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.RAW));
-                        setValue(val);
-                    }
-                };
-
-            case Factories.TimeSeries.DF_8_DE_CORR_CDF:
-                return new MyTimeSeries(Factories.TimeSeries.DF_8_DE_CORR_CDF) {
+            case Factories.TimeSeries.DF_8_CDF:
+                return new MyTimeSeries(Factories.TimeSeries.DF_8_CDF) {
 
                     @Override
                     public double getValue() {
@@ -374,50 +322,68 @@ public class TimeSeriesFactory {
                     }
                 };
 
-            case Factories.TimeSeries.OP_AVG_WEEK:
-                return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK) {
+
+
+            case Factories.TimeSeries.DF_2_SLOW:
+                return new MyTimeSeries(Factories.TimeSeries.DF_2_SLOW) {
+
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getWeek().getOp_avg();
+                        return super.getValue();
                     }
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.OP_AVG_WEEK, MySql.RAW);
-                        DataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
                     public void updateData() {
-                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.OP_AVG_WEEK, MySql.RAW));
+                        int serie_id = Factories.IDs.DF_2;
+                        double val = Queries.handle_rs(Queries.get_df_cdf_by_frame(serie_id, 21600));
                         setValue(val);
-
-                        Exp exp = ApiObject.getInstance().getExps().getWeek();
-                        exp.setOp_avg(val);
                     }
                 };
-            case Factories.TimeSeries.OP_AVG_MONTH:
-                return new MyTimeSeries(Factories.TimeSeries.OP_AVG_MONTH) {
+
+            case Factories.TimeSeries.DF_7_SLOW:
+                return new MyTimeSeries(Factories.TimeSeries.DF_7_SLOW) {
+
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getMonth().getOp_avg();
+                        return super.getValue();
                     }
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.OP_AVG_MONTH, MySql.RAW);
-                        DataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
                     public void updateData() {
-                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.OP_AVG_MONTH, MySql.RAW));
+                        int serie_id = Factories.IDs.DF_7;
+                        double val = Queries.handle_rs(Queries.get_df_cdf_by_frame(serie_id, 21600));
                         setValue(val);
-
-                        Exp exp = ApiObject.getInstance().getExps().getMonth();
-                        exp.setOp_avg(val);
                     }
                 };
+
+            case Factories.TimeSeries.DF_8_SLOW:
+                return new MyTimeSeries(Factories.TimeSeries.DF_8_SLOW) {
+
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+                    @Override
+                    public void load() {
+                    }
+
+                    @Override
+                    public void updateData() {
+                        int serie_id = Factories.IDs.DF_8_DE_CORR;
+                        double val = Queries.handle_rs(Queries.get_df_cdf_by_frame(serie_id, 21600));
+                        setValue(val);
+                    }
+                };
+
             default:
                 break;
         }

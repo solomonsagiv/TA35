@@ -356,22 +356,22 @@ public class Queries {
         return MySql.select(query);
     }
 
-    public static ResultSet get_exp_decision_function(int session, int version, String exp, int steps) {
-        String modulu = "%";
-        String q = "select * " +
-                "from (select time, " +
-                "sum(delta) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value, " +
-                "row_number() over (order by time) as row " +
-                "from %s " +
-                "where session_id = %s " +
-                "and version = %s " +
-                "and time between date_trunc('day', (select date " +
-                "from sagiv.ta35_exps " +
-                "where exp_type = '%s')) and date_trunc('day', now())) a " +
-                "where row %s %s = 0;";
-        String query = String.format(q, Factories.Tables.DF_TABLE, session, version, exp, modulu, steps);
-        return MySql.select(query);
-    }
+//    public static ResultSet get_exp_decision_function(int session, int version, String exp, int steps) {
+//        String modulu = "%";
+//        String q = "select * " +
+//                "from (select time, " +
+//                "sum(delta) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value, " +
+//                "row_number() over (order by time) as row " +
+//                "from %s " +
+//                "where session_id = %s " +
+//                "and version = %s " +
+//                "and time between date_trunc('day', (select date " +
+//                "from sagiv.ta35_exps " +
+//                "where exp_type = '%s')) and date_trunc('day', now())) a " +
+//                "where row %s %s = 0;";
+//        String query = String.format(q, Factories.Tables.DF_TABLE, session, version, exp, modulu, steps);
+//        return MySql.select(query);
+//    }
 
     public static ResultSet get_exp_serie(String table_location, String exp, int steps) {
         String modulu = "%";
@@ -499,16 +499,16 @@ public class Queries {
         return MySql.select(query);
     }
 
-    public static ResultSet get_df_cdf(int session, int version) {
-        String q = "select sum(delta) as value\n" +
-                "from data.ta35_decision_func\n" +
-                "where session_id = %s\n" +
-                "and version = %s\n" +
-                "and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1 day');";
-
-        String query = String.format(q, session, version);
-        return MySql.select(query);
-    }
+//    public static ResultSet get_df_cdf(int session, int version) {
+//        String q = "select sum(delta) as value\n" +
+//                "from data.ta35_decision_func\n" +
+//                "where session_id = %s\n" +
+//                "and version = %s\n" +
+//                "and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1 day');";
+//
+//        String query = String.format(q, session, version);
+//        return MySql.select(query);
+//    }
 
     public static ResultSet op_avg_mega_table(int index_id, int fut_id) {
         String q = "select avg(f.value - i.value) as value\n" +

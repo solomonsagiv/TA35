@@ -31,26 +31,20 @@ public class DataBaseService extends MyBaseService {
         month = apiObject.getExps().getMonth();
 
         // OP AVG
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_MONTH));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
 
         // DF CDF
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_CDF));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_CDF));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_DE_CORR_CDF));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
 
-        // DF RAW
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_RAW));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_RAW));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_DE_CORR_RAW));
-
+        // SLOW
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_SLOW));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_SLOW));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_SLOW));
 
     }
 
@@ -103,7 +97,6 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS_TABLE);
             insert_data_retro_mega(fut_week_timestamp, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
             insert_data_retro_mega(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
-            insert_data_retro_mega(baskets_timestamp, Factories.Tables.BASKETS_TABLE);
             insert_data_retro_mega(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
         }).start();
     }
