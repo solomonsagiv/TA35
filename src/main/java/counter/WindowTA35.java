@@ -280,6 +280,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         weekStartExpField = new MyGuiComps.MyTextField();
         weekStartExpField.setBounds(week_lbl.getX() + week_lbl.getWidth() + 1 , week_lbl.getY(), 50, 25);
         weekStartExpField.setForeground(Color.WHITE);
+        weekStartExpField.setFont(weekStartExpField.getFont().deriveFont(Font.BOLD));
         exp_panel.add(weekStartExpField);
 
         // V2 V7 V8 (WEEK)
@@ -308,6 +309,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         monthStartExpField = new MyGuiComps.MyTextField();
         monthStartExpField.setForeground(Color.WHITE);
+        monthStartExpField.setFont(monthStartExpField.getFont().deriveFont(Font.BOLD));
         monthStartExpField.setBounds(month_lbl.getX() + month_lbl.getWidth() + 1, month_lbl.getY(),  50, 25);
         exp_panel.add(monthStartExpField);
 
