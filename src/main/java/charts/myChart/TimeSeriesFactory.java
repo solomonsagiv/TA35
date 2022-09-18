@@ -16,42 +16,25 @@ public class TimeSeriesFactory {
 
         switch (serie_name.toUpperCase()) {
 
-            case Factories.TimeSeries.INDEX:
-                return new MyTimeSeries(Factories.TimeSeries.INDEX) {
-                    @Override
-                    public double getValue() {
-                        return ApiObject.getInstance().getIndex();
-                    }
-
-                    @Override
-                    public void load() {
-                        ResultSet rs = Queries.get_serie(Factories.Tables.SAGIV_INDEX_TABLE, step_second);
-                        DataBaseHandler.loadSerieData(rs, this);
-                    }
-
-                    @Override
-                    public void updateData() {
-
-                    }
-                };
-
             case Factories.TimeSeries.FUTURE_WEEK:
                 return new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK) {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
+                        return super.getValue();
                     }
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie(Factories.Tables.SAGIV_FUT_WEEK_TABLE, step_second);
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.FUT_WEEK, Queries.RAW);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
                     public void updateData() {
-
+                        int serie_id = Factories.IDs.FUT_WEEK;
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.RAW));
+                        setValue(val);
                     }
                 };
 
@@ -60,20 +43,24 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
+                        return super.getValue();
                     }
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie(Factories.Tables.SAGIV_FUT_MONTH_TABLE, step_second);
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.FUT_MONTH, Queries.RAW);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
                     public void updateData() {
-
+                        int serie_id = Factories.IDs.FUT_MONTH;
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.RAW));
+                        setValue(val);
                     }
                 };
+
+
 
             case Factories.TimeSeries.INDEX_WITH_BID_ASK:
                 return new MyTimeSeries(Factories.TimeSeries.INDEX_WITH_BID_ASK) {
@@ -86,7 +73,9 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_index_with_bid_ask_series(step_second);
+                        int bid_id = Factories.IDs.INDEX_BID;
+                        int ask_id = Factories.IDs.INDEX_ASK;
+                        ResultSet rs = Queries.get_index_with_bid_ask_series(bid_id, ask_id);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
 

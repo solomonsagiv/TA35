@@ -190,24 +190,6 @@ public class Queries {
         return MySql.select(query);
     }
     
-    public static ResultSet get_start_exp(String exp) {
-        String q = "select value " +
-                "from %s " +
-                "where (select date from sagiv.ta35_exps where exp_type = '%s') = time::date order by time limit 1;";
-        String query = String.format(q, Factories.Tables.SAGIV_INDEX_TABLE, exp);
-        return MySql.select(query);
-    }
-
-    public static ResultSet get_op_avg(String fut_table_location) {
-        String q = "select avg(f.futures - ((i.ask + i.bid) / 2)) as value " +
-                "from %s i " +
-                "inner join %s f on i.time = f.time " +
-                "where i.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
-
-        String query = String.format(q, Factories.Tables.INDEX_TABLE, fut_table_location);
-        return MySql.select(query);
-    }
-
     public static ResultSet op_avg_cumulative(String index_table, String fut_table, int min) {
         String query = String.format("select i.time as time, avg(f.value - i.value) over (order by i.time range between '%s min' preceding and current row ) as value " +
                 "from %s i " +
@@ -279,15 +261,6 @@ public class Queries {
                 "and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day);";
 
         String query = String.format(q, min, table_location, version, session);
-        return MySql.select(query);
-    }
-
-    public static ResultSet get_op_avg(String fut_table_location, int min) {
-        String q = "select avg(f.futures - ((i.ask + i.bid) / 2)) as value " +
-                "from %s i " +
-                "inner join %s f on i.time = f.time " +
-                "where i.time > now() - interval '%s min' and bid is not null and ask is not null;";
-        String query = String.format(q, Factories.Tables.INDEX_TABLE, fut_table_location, min);
         return MySql.select(query);
     }
 
@@ -630,16 +603,21 @@ public class Queries {
         return MySql.select(query);
     }
 
-    public static ResultSet get_index_with_bid_ask_series(int step_second) {
+    public static ResultSet get_index_with_bid_ask_series(int bid_id, int ask_id) {
         String modulu = "%";
-        String q = "select * " +
-                "from ( " +
-                "select time, (bid + ask) / 2 as value, row_number() over (order by time) as row " +
-                "from data.ta35_index " +
-                "where time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) " +
-                "order by time) a " +
+        String q = "select time, value\n" +
+                "from (\n" +
+                "         select a.time, (a.value + b.value) / 2 as value, row_number() over (order by a.time) as row\n" +
+                "         from (\n" +
+                "                  select *\n" +
+                "                  from ts.timeseries_data\n" +
+                "                  where timeseries_id = %s\n" +
+                "              ) a\n" +
+                "                  inner join (select * from ts.timeseries_data where timeseries_id = %s) b on a.time = b.time\n" +
+                "         where date_trunc('day', a.time) = date_trunc('day', now())\n" +
+                "         order by a.time) big\n" +
                 "where row %s %s = 0;";
-        String query = String.format(q, modulu, step_second);
+        String query = String.format(q, bid_id, ask_id, modulu, step_second);
         return MySql.select(query);
     }
 

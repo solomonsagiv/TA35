@@ -15,9 +15,6 @@ public class DataBaseService extends MyBaseService {
 
     double baskets_0 = 0;
 
-    ArrayList<MyTimeStampObject> index_timestamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> fut_week_timestamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> fut_month_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
 
     ExpWeek week;
@@ -62,9 +59,6 @@ public class DataBaseService extends MyBaseService {
 
     private void append_changed_data_to_lists() {
 
-        double index = apiObject.getIndex();
-        double fut_week = week.getOptions().getContract();
-        double fut_month = month.getOptions().getContract();
         double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
 
         // Baskets
@@ -77,9 +71,6 @@ public class DataBaseService extends MyBaseService {
         // Op avg week
         if (sleepCount % 1000 == 0) {
             Instant instant = Instant.now();
-            index_timestamp.add(new MyTimeStampObject(instant, index));
-            fut_week_timestamp.add(new MyTimeStampObject(instant, fut_week));
-            fut_month_timestamp.add(new MyTimeStampObject(instant, fut_month));
         }
 
         System.out.println("Stream merket " + BackGroundRunner.streamMarketBool);
@@ -98,10 +89,7 @@ public class DataBaseService extends MyBaseService {
 
     private void insert_data() {
         new Thread(() -> {
-            insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS_TABLE);
-            insert_data_retro_mega(fut_week_timestamp, Factories.Tables.SAGIV_FUT_WEEK_TABLE);
-            insert_data_retro_mega(fut_month_timestamp, Factories.Tables.SAGIV_FUT_MONTH_TABLE);
-            insert_data_retro_mega(index_timestamp, Factories.Tables.SAGIV_INDEX_TABLE);
+            insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS);
         }).start();
     }
 
