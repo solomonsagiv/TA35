@@ -112,6 +112,9 @@ public class ApiObject implements IJsonData {
         timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_5, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_5));
         timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_60, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60));
         timeSeriesHandler.put(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240, TimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
+
+        timeSeriesHandler.put(Factories.TimeSeries.FUTURE_WEEK, TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_WEEK));
+        timeSeriesHandler.put(Factories.TimeSeries.FUTURE_MONTH, TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_MONTH));
     }
 
     // Get instance
