@@ -32,8 +32,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void updateData() {
-                        int serie_id = Factories.IDs.FUT_WEEK;
-                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.RAW));
+                        double val = ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
                         setValue(val);
                     }
                 };
@@ -54,8 +53,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void updateData() {
-                        int serie_id = Factories.IDs.FUT_MONTH;
-                        double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.RAW));
+                        double val = ApiObject.getInstance().getExps().getMonth().getOptions().getContract();
                         setValue(val);
                     }
                 };
