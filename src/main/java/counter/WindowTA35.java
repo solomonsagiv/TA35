@@ -31,7 +31,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
     public MyGuiComps.MyTextField v5_field;
     public MyGuiComps.MyTextField v6_field;
-    public MyGuiComps.MyTextField v4_field;
+    public MyGuiComps.MyTextField v2_field;
+    public MyGuiComps.MyTextField v7_field;
     public MyGuiComps.MyTextField v8_field;
 
     MyGuiComps.MyLabel slow_lbl;
@@ -39,6 +40,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField v2_slow_field;
     public MyGuiComps.MyTextField v7_slow_field;
     public MyGuiComps.MyTextField v8_slow_field;
+
 
     public int updater_id = 0;
 
@@ -177,18 +179,18 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         getContentPane().add(decisions_panel);
 
         // V4
-        v4_field = new MyGuiComps.MyTextField();
-        v4_field.setBounds(5, 5, 50, 25);
-        decisions_panel.add(v4_field);
+        v2_field = new MyGuiComps.MyTextField();
+        v2_field.setBounds(5, 5, 50, 25);
+        decisions_panel.add(v2_field);
 
         // V8
-        v8_field = new MyGuiComps.MyTextField();
-        v8_field.setBounds(v4_field.getX() + v4_field.getWidth() + 1, v4_field.getY(), 50, 25);
-        decisions_panel.add(v8_field);
+        v7_field = new MyGuiComps.MyTextField();
+        v7_field.setBounds(v2_field.getX() + v2_field.getWidth() + 1, v2_field.getY(), 50, 25);
+        decisions_panel.add(v7_field);
 
         // V5
         v5_field = new MyGuiComps.MyTextField();
-        v5_field.setBounds(v4_field.getX(), v4_field.getY() + v4_field.getHeight() + 3, 50, 25);
+        v5_field.setBounds(v2_field.getX(), v2_field.getY() + v2_field.getHeight() + 3, 50, 25);
         decisions_panel.add(v5_field);
 
         // V6

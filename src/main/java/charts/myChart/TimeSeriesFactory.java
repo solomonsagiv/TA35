@@ -21,7 +21,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return super.getValue();
+                        return ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
                     }
 
                     @Override
@@ -32,8 +32,6 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void updateData() {
-                        double val = ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
-                        setValue(val);
                     }
                 };
 
@@ -42,7 +40,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return super.getValue();
+                        return ApiObject.getInstance().getExps().getMonth().getOptions().getContract();
                     }
 
                     @Override
@@ -53,8 +51,6 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void updateData() {
-                        double val = ApiObject.getInstance().getExps().getMonth().getOptions().getContract();
-                        setValue(val);
                     }
                 };
 

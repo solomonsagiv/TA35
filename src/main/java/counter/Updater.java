@@ -94,8 +94,8 @@ public class Updater extends MyThread implements Runnable {
                 // Decision func
                 window.v5_field.colorForgeRound(df_5.getValue());
                 window.v6_field.colorForgeRound(df_6.getValue());
-                window.v4_field.colorForgeRound(df_4.getValue());
-                window.v8_field.colorForgeRound(df_8.getValue());
+                window.v2_field.colorForgeRound(df_4.getValue());
+                window.v7_field.colorForgeRound(df_8.getValue());
 
                 window.v2_slow_field.colorForgeRound(df_2_slow.getValue());
                 window.v7_slow_field.colorForgeRound(df_7_slow.getValue());

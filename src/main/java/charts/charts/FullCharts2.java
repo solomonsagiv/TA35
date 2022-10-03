@@ -53,8 +53,7 @@ public class FullCharts2 extends MyChartCreator {
         MyTimeSeries future_month_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_MONTH);
         future_month_serie.setColor(Themes.GREEN);
         future_month_serie.setStokeSize(1.2f);
-
-
+        
         series = new MyTimeSeries[3];
         series[0] = index_with_bid_ask_Serie;
         series[1] = future_week_serie;
