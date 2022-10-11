@@ -2,10 +2,13 @@ package charts.charts;
 
 import api.ApiObject;
 import charts.myChart.*;
+import dataBase.DataBaseHandler;
 import dataBase.Factories;
+import dataBase.mySql.Queries;
 import locals.Themes;
 
 import java.awt.*;
+import java.sql.ResultSet;
 
 public class FullCharts2 extends MyChartCreator {
 
@@ -46,11 +49,43 @@ public class FullCharts2 extends MyChartCreator {
         index_with_bid_ask_Serie.setColor(Color.BLACK);
         index_with_bid_ask_Serie.setStokeSize(1.2f);
 
-        MyTimeSeries future_week_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_WEEK);
+        MyTimeSeries future_week_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK) {
+
+            @Override
+            public double getValue() {
+                return ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
+            }
+
+            @Override
+            public void load() {
+                ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.FUT_WEEK, Queries.RAW);
+                DataBaseHandler.loadSerieData(rs, this);
+            }
+
+            @Override
+            public void updateData() {
+            }
+        };
         future_week_serie.setColor(Themes.GREEN);
         future_week_serie.setStokeSize(1.2f);
 
-        MyTimeSeries future_month_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_MONTH);
+        MyTimeSeries future_month_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_MONTH) {
+
+            @Override
+            public double getValue() {
+                return ApiObject.getInstance().getExps().getMonth().getOptions().getContract();
+            }
+
+            @Override
+            public void load() {
+                ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.FUT_WEEK, Queries.RAW);
+                DataBaseHandler.loadSerieData(rs, this);
+            }
+
+            @Override
+            public void updateData() {
+            }
+        };
         future_month_serie.setColor(Themes.GREEN);
         future_month_serie.setStokeSize(1.2f);
         
