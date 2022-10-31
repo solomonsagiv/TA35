@@ -8,10 +8,7 @@ import dataBase.DataBaseService;
 import options.Options;
 import options.OptionsDataCalculator;
 import org.json.JSONArray;
-import service.BasketService;
-import service.DataReaderService;
-import service.IndDeltaService;
-import service.OptionsReaderService;
+import service.*;
 import threads.MyThread;
 import javax.swing.*;
 import java.awt.*;
@@ -163,7 +160,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
     }
 
     private void open_services() {
-        new BasketService();
+        new BasketFinder_by_stocks(28, 3);
         new DataBaseService();
         new IndDeltaService(BackGroundRunner.excelPath);
     }

@@ -3,7 +3,6 @@ package service;
 import counter.WindowTA35;
 import locals.L;
 import miniStocks.MiniStock;
-
 import java.time.LocalTime;
 
 public class BasketService extends MyBaseService {
@@ -56,23 +55,6 @@ public class BasketService extends MyBaseService {
             WindowTA35.log.setText("Changed: " + changesCount + " \n ");
         } catch (Exception e) {
 
-        }
-    }
-
-    // Basket class
-    private class Basket {
-
-        private boolean upDown;
-
-        public Basket() {
-        }
-
-        public boolean isUpDown() {
-            return upDown;
-        }
-
-        public void setUpDown(boolean upDown) {
-            this.upDown = upDown;
         }
     }
 

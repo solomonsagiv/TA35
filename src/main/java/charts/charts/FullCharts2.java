@@ -26,7 +26,7 @@ public class FullCharts2 extends MyChartCreator {
     public void init() throws CloneNotSupportedException {
 
         MyTimeSeries[] series;
-        
+
         // Props
         props = new MyProps();
         props.setProp(ChartPropsEnum.SECONDS, INFINITE);

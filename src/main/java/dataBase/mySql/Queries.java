@@ -54,7 +54,8 @@ public class Queries {
                 "                                 from sagiv.props\n" +
                 "                                 where stock_id = '%s'\n" +
                 "                                   and prop = '%s')\n" +
-                "order by time limit 1;\n";
+                "where value is not null\n" +
+                "order by time limit 1;";
 
         String query = String.format(q, index_id, apiObject.getName(), exp_prop_name);
         return MySql.select(query);
