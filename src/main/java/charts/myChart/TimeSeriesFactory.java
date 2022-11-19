@@ -267,13 +267,13 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.OP_AVG_5, MySql.RAW);
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.OP_AVG_15, MySql.RAW);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
                     public void updateData() {
-                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.OP_AVG_5, MySql.RAW));
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.OP_AVG_15, MySql.RAW));
                         setValue(val);
 
                         Exp exp = ApiObject.getInstance().getExps().getWeek();
@@ -302,68 +302,6 @@ public class TimeSeriesFactory {
 
                         Exp exp = ApiObject.getInstance().getExps().getWeek();
                         exp.setContinue_op_avg_240(val);
-                    }
-                };
-
-
-
-            case Factories.TimeSeries.DF_2_SLOW:
-                return new MyTimeSeries(Factories.TimeSeries.DF_2_SLOW) {
-
-                    @Override
-                    public double getValue() {
-                        return super.getValue();
-                    }
-
-                    @Override
-                    public void load() {
-                    }
-
-                    @Override
-                    public void updateData() {
-                        int serie_id = Factories.IDs.DF_2;
-                        double val = Queries.handle_rs(Queries.get_df_cdf_by_frame(serie_id, 21600));
-                        setValue(val);
-                    }
-                };
-
-            case Factories.TimeSeries.DF_7_SLOW:
-                return new MyTimeSeries(Factories.TimeSeries.DF_7_SLOW) {
-
-                    @Override
-                    public double getValue() {
-                        return super.getValue();
-                    }
-
-                    @Override
-                    public void load() {
-                    }
-
-                    @Override
-                    public void updateData() {
-                        int serie_id = Factories.IDs.DF_7;
-                        double val = Queries.handle_rs(Queries.get_df_cdf_by_frame(serie_id, 21600));
-                        setValue(val);
-                    }
-                };
-
-            case Factories.TimeSeries.DF_8_SLOW:
-                return new MyTimeSeries(Factories.TimeSeries.DF_8_SLOW) {
-
-                    @Override
-                    public double getValue() {
-                        return super.getValue();
-                    }
-
-                    @Override
-                    public void load() {
-                    }
-
-                    @Override
-                    public void updateData() {
-                        int serie_id = Factories.IDs.DF_8_DE_CORR;
-                        double val = Queries.handle_rs(Queries.get_df_cdf_by_frame(serie_id, 21600));
-                        setValue(val);
                     }
                 };
 

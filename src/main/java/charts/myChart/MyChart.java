@@ -361,7 +361,7 @@ public class MyChart {
                 double min = Collections.min(dots);
                 double max = Collections.max(dots);
 
-                double range = (max - min) * 0.2;
+                double range = (max - min) * 0.07;
                 min -= range;
                 max += range;
 

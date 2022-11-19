@@ -8,7 +8,6 @@ import charts.charts.MainMonthWeekChart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
-import options.optionsDataTable.OptionsTableWindow;
 import setting.Setting;
 import javax.swing.*;
 import java.awt.*;
@@ -34,12 +33,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField v2_field;
     public MyGuiComps.MyTextField v7_field;
     public MyGuiComps.MyTextField v8_field;
-
-    MyGuiComps.MyLabel slow_lbl;
-    public MyGuiComps.MyTextField slow_move_field;
-    public MyGuiComps.MyTextField v2_slow_field;
-    public MyGuiComps.MyTextField v7_slow_field;
-    public MyGuiComps.MyTextField v8_slow_field;
 
 
     public int updater_id = 0;
@@ -244,37 +237,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         getContentPane().add(exp_panel);
         exp_panel.setLayout(null);
 
-        // Fast
-        // Lbl
-        slow_lbl = new MyGuiComps.MyLabel("Slow");
-        slow_lbl.setBounds(0, 11, 70, 25);
-        exp_panel.add(slow_lbl);
-
-        // Move
-        slow_move_field = new MyGuiComps.MyTextField();
-        slow_move_field.setBounds(slow_lbl.getX() + slow_lbl.getWidth() + 1, slow_lbl.getY(), 50, 25);
-        exp_panel.add(slow_move_field);
-
-        // V2
-        v2_slow_field = new MyGuiComps.MyTextField();
-        v2_slow_field.setBounds(slow_move_field.getX() + slow_move_field.getWidth() + 1, slow_move_field.getY(), 50, 25);
-        exp_panel.add(v2_slow_field);
-
-        // V7
-        v7_slow_field = new MyGuiComps.MyTextField();
-        v7_slow_field.setBounds(v2_slow_field.getX() + v2_slow_field.getWidth() + 1, v2_slow_field.getY(), 50, 25);
-        exp_panel.add(v7_slow_field);
-
-        // V8 De corr
-        v8_slow_field = new MyGuiComps.MyTextField();
-        v8_slow_field.setBounds(v7_slow_field.getX() + v7_slow_field.getWidth() + 1, v7_slow_field.getY(), 50, 25);
-        exp_panel.add(v8_slow_field);
-
-
 
         // ------ Week ------ //
         MyGuiComps.MyLabel week_lbl = new MyGuiComps.MyLabel("Week");
-        week_lbl.setBounds(slow_lbl.getX(), slow_lbl.getY() + slow_lbl.getHeight() + 3, 70, 25);
+        week_lbl.setBounds(0, 11, 70, 25);
         exp_panel.add(week_lbl);
 
         weekStartExpField = new MyGuiComps.MyTextField();
@@ -397,7 +363,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart 2", "Options window"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -405,15 +371,13 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (chartsCombo.getSelectedItem().toString()) {
-                    case "Full chart 2":
+                    case "Full chart":
                         FullCharts2 chart = new FullCharts2(apiObject);
                         chart.createChart();
                         break;
                     case "Main chart":
                         MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
                         mainMonthWeekChart.createChart();
-                    case "Options window":
-                        new OptionsTableWindow("Options window");
                         break;
                     default:
                         break;

@@ -32,17 +32,13 @@ public class DataBaseService extends MyBaseService {
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
 
-        // DF CDF
+        // DF OLD CDF
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
 
-        // SLOW
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_SLOW));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_SLOW));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_SLOW));
-
+        // CDF
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_CDF));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_CDF));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF));

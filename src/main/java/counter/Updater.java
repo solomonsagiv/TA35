@@ -32,7 +32,7 @@ public class Updater extends MyThread implements Runnable {
     WindowTA35 window;
     int sleep = 500;
 
-    MyTimeSeries df_4, df_5, df_6, df_8, df_2, df_7, df_8_de_corr, df_2_slow, df_7_slow, df_8_slow;
+    MyTimeSeries df_4, df_5, df_6, df_8, df_2, df_7, df_8_de_corr;
 
 
     // Constructor
@@ -50,9 +50,6 @@ public class Updater extends MyThread implements Runnable {
         this.df_6 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD);
         this.df_8 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD);
         this.df_8_de_corr = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF);
-        this.df_2_slow = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_2_SLOW);
-        this.df_7_slow = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_7_SLOW);
-        this.df_8_slow = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_SLOW);
     }
 
     @Override
@@ -96,10 +93,6 @@ public class Updater extends MyThread implements Runnable {
                 window.v6_field.colorForgeRound(df_6.getValue());
                 window.v2_field.colorForgeRound(df_4.getValue());
                 window.v7_field.colorForgeRound(df_8.getValue());
-
-                window.v2_slow_field.colorForgeRound(df_2_slow.getValue());
-                window.v7_slow_field.colorForgeRound(df_7_slow.getValue());
-                window.v8_slow_field.colorForgeRound(df_8_slow.getValue());
 
                 // Exp
                 // Week

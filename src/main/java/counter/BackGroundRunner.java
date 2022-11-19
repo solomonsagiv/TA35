@@ -5,11 +5,13 @@ import api.Manifest;
 import arik.Arik;
 import dataBase.DataBaseHandler;
 import dataBase.DataBaseService;
-import options.Options;
 import options.OptionsDataCalculator;
 import org.json.JSONArray;
-import service.*;
+import service.BasketFinder_by_stocks;
+import service.DataReaderService;
+import service.IndDeltaService;
 import threads.MyThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -152,11 +154,11 @@ public class BackGroundRunner extends MyThread implements Runnable {
             e.printStackTrace();
         }
     }
-
+    
     public void pre_open_services() {
         new OptionsDataCalculator();
-        new OptionsReaderService(Options.WEEK, weekPath);
-        new OptionsReaderService(Options.MONTH, monthPath);
+//        new OptionsReaderService(Options.WEEK, weekPath);
+//        new OptionsReaderService(Options.MONTH, monthPath);
     }
 
     private void open_services() {
