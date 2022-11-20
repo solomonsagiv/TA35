@@ -11,7 +11,6 @@ import service.BasketFinder_by_stocks;
 import service.DataReaderService;
 import service.IndDeltaService;
 import threads.MyThread;
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;

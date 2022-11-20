@@ -40,11 +40,11 @@ public class Factories {
         public static final int OP_AVG_15 = 5392;
         public static final int DF_2 = 5385;
         public static final int DF_8_DE_CORR = 5391;
-        public static final int DF_4_old = 3790;
-        public static final int DF_8_old = 3791;
-        public static final int DF_5_old = 3792;
-        public static final int DF_6_old = 3793;
-        public static final int DF_7 = 5390;
+        public static final int DF_4_old = 5416;
+        public static final int DF_8_old = 5417;
+        public static final int DF_5_old = 5418;
+        public static final int DF_6_old = 5419;
+        public static final int DF_7 = 5420;
         public static final int OP_AVG_WEEK = 2034;
         public static final int OP_AVG_MONTH = 2035;
 
