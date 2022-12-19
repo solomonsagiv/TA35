@@ -11,11 +11,11 @@ import java.util.List;
 
 public class JibeConnectionPool implements IConnectionPool {
 
-    private static final int MAX_POOL_SIZE = 15;
-
+    private static final int MAX_POOL_SIZE = 10;
+    
     // Instance
     private static JibeConnectionPool jibeConnectionPool;
-    private static int INITIAL_POOL_SIZE = 10;
+    private static int INITIAL_POOL_SIZE = 5;
     private static String url;
     private static String user;
     private static String password;
