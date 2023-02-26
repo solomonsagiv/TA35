@@ -120,15 +120,14 @@ public class MyChartContainer extends JFrame {
             initProps(chartPanel);
             addPan(chartPanel);
             mouseListener(chartPanel, myChart);
-            mouseWheel(chartPanel, myChart);
             add(chartPanel);
         }
     }
 
     private void initProps(MyChartPanel chartPanel) {
-        chartPanel.setMouseZoomable(true);
-        chartPanel.setMouseWheelEnabled(true);
-        chartPanel.setDomainZoomable(true);
+        chartPanel.setMouseZoomable(false);
+        chartPanel.setMouseWheelEnabled(false);
+        chartPanel.setDomainZoomable(false);
         chartPanel.setRangeZoomable(false);
         chartPanel.setZoomTriggerDistance(Integer.MAX_VALUE);
         chartPanel.setFillZoomRectangle(true);
