@@ -4,12 +4,12 @@ import api.ApiObject;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
 import charts.charts.FullCharts2;
+import charts.charts.FullCharts3;
 import charts.charts.MainMonthWeekChart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import setting.Setting;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +34,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField v2_field;
     public MyGuiComps.MyTextField v7_field;
     public MyGuiComps.MyTextField v9_field;
-
+    
     public int updater_id = 0;
 
     ApiObject apiObject = ApiObject.getInstance();
@@ -249,7 +249,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_panel.add(week_lbl);
 
         weekStartExpField = new MyGuiComps.MyTextField();
-        weekStartExpField.setBounds(week_lbl.getX() + week_lbl.getWidth() + 1 , week_lbl.getY(), 50, 25);
+        weekStartExpField.setBounds(week_lbl.getX() + week_lbl.getWidth() + 1, week_lbl.getY(), 50, 25);
         weekStartExpField.setForeground(Color.WHITE);
         weekStartExpField.setFont(weekStartExpField.getFont().deriveFont(Font.BOLD));
         exp_panel.add(weekStartExpField);
@@ -281,7 +281,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         monthStartExpField = new MyGuiComps.MyTextField();
         monthStartExpField.setForeground(Color.WHITE);
         monthStartExpField.setFont(monthStartExpField.getFont().deriveFont(Font.BOLD));
-        monthStartExpField.setBounds(month_lbl.getX() + month_lbl.getWidth() + 1, month_lbl.getY(),  50, 25);
+        monthStartExpField.setBounds(month_lbl.getX() + month_lbl.getWidth() + 1, month_lbl.getY(), 50, 25);
         exp_panel.add(monthStartExpField);
 
         // V2 V7 V8 (MONTH)
@@ -368,7 +368,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart", "Full chart 3"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -379,6 +379,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                     case "Full chart":
                         FullCharts2 chart = new FullCharts2(apiObject);
                         chart.createChart();
+                        break;
+                    case "Full chart 3":
+                        FullCharts3 chart_3 = new FullCharts3(apiObject);
+                        chart_3.createChart();
                         break;
                     case "Main chart":
                         MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
@@ -401,7 +405,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             mainMonthWeekChart.createChart();
 
             // Full charts
-            FullCharts2 fullCharts = new FullCharts2(ApiObject.getInstance());
+            FullCharts3 fullCharts = new FullCharts3(ApiObject.getInstance());
             fullCharts.createChart();
         } catch (Exception e) {
             e.printStackTrace();
