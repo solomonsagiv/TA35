@@ -2,18 +2,16 @@ package setting;
 
 import api.ApiObject;
 import arik.Arik;
-import counter.WindowTA35;
 import dataBase.DataBaseHandler;
-import dataBase.mySql.JibeConnectionPool;
 import exp.Exp;
 import locals.L;
 import options.Option;
 import options.Options;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 public class Setting {
 	
@@ -671,11 +669,6 @@ public class Setting {
 		JButton btnNewConnection = new JButton("New connection");
 		btnNewConnection.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					JibeConnectionPool.addNewConnection();
-				} catch (SQLException e) {
-					WindowTA35.popup("Add connection faild", e);
-				}
 			}
 		});
 		btnNewConnection.setFont(new Font("Dubai Medium", Font.PLAIN, 14));

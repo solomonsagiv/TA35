@@ -28,25 +28,45 @@ public class Factories {
     }
 
     public static class IDs {
-        public static final int INDEX_TABLE = 5404;
+//        public static final int INDEX_TABLE = 5404;
+//        public static final int INDEX_BID = 22;
+//        public static final int INDEX_ASK = 21;
+//        //     public static final int INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";
+//        public static final int BASKETS = 1649;
+//        public static final int FUT_WEEK = 23;
+//        public static final int FUT_MONTH = 6;
+//        public static final int OP_AVG_240_CONTINUE = 5398;
+//        public static final int OP_AVG_60 = 5393;
+//        public static final int OP_AVG_15 = 5392;
+//        public static final int DF_2 = 5385;
+//        public static final int DF_8_DE_CORR = 5412;
+//        public static final int DF_4_old = 5416;
+//        public static final int DF_8_old = 5417;
+//        public static final int DF_5_old = 5418;
+//        public static final int DF_6_old = 5419;
+//        public static final int DF_7 = 5420;
+//        public static final int OP_AVG_WEEK = 2034;
+//        public static final int OP_AVG_MONTH = 2035;
+
+
+        public static final int INDEX_TABLE = 5;
         public static final int INDEX_BID = 22;
         public static final int INDEX_ASK = 21;
         //     public static final int INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";
-        public static final int BASKETS = 1649;
+        public static final int BASKETS = 9513;
         public static final int FUT_WEEK = 23;
         public static final int FUT_MONTH = 6;
-        public static final int OP_AVG_240_CONTINUE = 5398;
-        public static final int OP_AVG_60 = 5393;
-        public static final int OP_AVG_15 = 5392;
-        public static final int DF_2 = 5385;
-        public static final int DF_8_DE_CORR = 5412;
-        public static final int DF_4_old = 5416;
-        public static final int DF_8_old = 5417;
-        public static final int DF_5_old = 5418;
-        public static final int DF_6_old = 5419;
-        public static final int DF_7 = 5420;
-        public static final int OP_AVG_WEEK = 2034;
-        public static final int OP_AVG_MONTH = 2035;
+        public static final int OP_AVG_240_CONTINUE = 9486;
+        public static final int OP_AVG_60 = 9484;
+        public static final int OP_AVG_15 = 9485;
+        public static final int DF_2 = 9477;
+        public static final int DF_8_DE_CORR = 9479;
+        public static final int DF_4_old = 9489;
+        public static final int DF_8_old = 9490;
+        public static final int DF_5_old = 9491;
+        public static final int DF_6_old = 9492;
+        public static final int DF_7 = 9478;
+
 
 //        public static final int OP_AVG_WEEK = ;
 //        public static final int OP_AVG_MONTH = ;

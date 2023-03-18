@@ -55,7 +55,7 @@ public class Queries {
                 "                                 where stock_id = '%s'\n" +
                 "                                   and prop = '%s')\n" +
                 "and value is not null\n" +
-                "order by time limit 1;";
+                "order by time limit 10;";
 
         String query = String.format(q, index_id, apiObject.getName(), exp_prop_name);
         return MySql.select(query);

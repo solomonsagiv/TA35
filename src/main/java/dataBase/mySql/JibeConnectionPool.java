@@ -12,7 +12,7 @@ import java.util.List;
 public class JibeConnectionPool implements IConnectionPool {
 
     private static final int MAX_POOL_SIZE = 5;
-    
+
     // Instance
     private static JibeConnectionPool jibeConnectionPool;
     private static int INITIAL_POOL_SIZE = 5;
@@ -42,8 +42,13 @@ public class JibeConnectionPool implements IConnectionPool {
 //				String user = "sagivMasterUser";
 //				String password = "Solomonsagivawsmaster12";
 
-                String url = "jdbc:postgresql://52.4.58.207:5432/jibe";
-                String user = "sagiv";
+//                String url = "jdbc:postgresql://52.4.58.207:5432/jibe";
+//                String user = "sagiv";
+//                String password = "f19add32-1141-4af5-9abd-4744487f3b51";
+
+
+                String url = "jdbc:postgresql://34.203.91.131:5432/jibe";
+                String user = "jibe_admin";
                 String password = "f19add32-1141-4af5-9abd-4744487f3b51";
 
                 jibeConnectionPool = JibeConnectionPool.create(url, user, password);
