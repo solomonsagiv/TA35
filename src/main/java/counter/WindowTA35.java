@@ -34,7 +34,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField v2_field;
     public MyGuiComps.MyTextField v7_field;
     public MyGuiComps.MyTextField v9_field;
-    
+        
     public int updater_id = 0;
 
     ApiObject apiObject = ApiObject.getInstance();

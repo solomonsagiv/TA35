@@ -124,6 +124,27 @@ public class FullCharts3 extends MyChartCreator {
         MyChart op_avg_chart = new MyChart(series, props);
 
 
+
+        // --------------- ROLL --------------- //
+
+        // Op avg 5
+        MyTimeSeries roll_3600 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600);
+        roll_3600.setColor(Themes.ORANGE_2);
+        roll_3600.setStokeSize(1.2f);
+
+        // Op avg 60
+        MyTimeSeries roll_900 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60);
+        roll_900.setColor(Themes.PURPLE);
+        roll_900.setStokeSize(1.2f);
+
+        series = new MyTimeSeries[2];
+        series[0] = roll_3600;
+        series[1] = roll_900;
+
+
+        MyChart roll_chart = new MyChart(series, props);
+
+
         // ----------------------------------------- DF ----------------------------------------- //
 
         MyTimeSeries df_5_old = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
@@ -152,7 +173,7 @@ public class FullCharts3 extends MyChartCreator {
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, df_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, roll_chart, df_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");

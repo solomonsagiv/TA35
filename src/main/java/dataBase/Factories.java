@@ -25,6 +25,8 @@ public class Factories {
         public static final String INDEX_WITH_BID_ASK = "INDEX_WITH_BID_ASK";
         public static final String FUTURE_WEEK = "FUTURE_WEEK";
         public static final String FUTURE_MONTH = "FUTURE_MONTH";
+        public static final String ROLL_3600 = "ROLL_3600";
+        public static final String ROLL_900 = "ROLL_900";
     }
 
     public static class IDs {
@@ -66,6 +68,9 @@ public class Factories {
         public static final int DF_5_old = 9491;
         public static final int DF_6_old = 9492;
         public static final int DF_7 = 9478;
+        public static final int ROLL_3600 = 9542;
+        public static final int ROLL_900 = 9543;
+
 
 
 //        public static final int OP_AVG_WEEK = ;

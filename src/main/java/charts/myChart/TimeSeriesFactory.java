@@ -16,6 +16,48 @@ public class TimeSeriesFactory {
 
         switch (serie_name.toUpperCase()) {
 
+
+            case Factories.TimeSeries.ROLL_900:
+                return new MyTimeSeries(Factories.TimeSeries.ROLL_900) {
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.ROLL_900, MySql.RAW);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+
+                    @Override
+                    public void updateData() {
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.ROLL_900, MySql.RAW));
+                        setValue(val);
+                    }
+                };
+
+
+            case Factories.TimeSeries.ROLL_3600:
+                return new MyTimeSeries(Factories.TimeSeries.ROLL_3600) {
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.ROLL_3600, MySql.RAW);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+
+                    @Override
+                    public void updateData() {
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.ROLL_3600, MySql.RAW));
+                        setValue(val);
+                    }
+                };
+
             case Factories.TimeSeries.FUTURE_WEEK:
                 return new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK) {
 
