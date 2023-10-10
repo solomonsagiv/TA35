@@ -148,7 +148,7 @@ public class MainMonthWeekChart extends MyChartCreator {
 
             }
         };
-        futureWeek.setColor(Themes.GREEN_LIGHT);
+        futureWeek.setColor(Themes.GREEN_7);
         futureWeek.setStokeSize(2.25f);
 
         MyTimeSeries[] series = {index, index_bid_ask, bid, ask, future, futureWeek};
