@@ -64,7 +64,6 @@ public class TimeSeriesFactory {
                     }
                 };
 
-
             case Factories.TimeSeries.ROLL_3600:
                 return new MyTimeSeries(Factories.TimeSeries.ROLL_3600) {
                     @Override

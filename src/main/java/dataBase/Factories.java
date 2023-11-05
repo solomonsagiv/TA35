@@ -73,7 +73,6 @@ public class Factories {
         public static final int ROLL_900 = 9543;
 
 
-
 //        public static final int OP_AVG_WEEK = ;
 //        public static final int OP_AVG_MONTH = ;
     }

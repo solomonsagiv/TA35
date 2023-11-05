@@ -33,7 +33,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
     public static String weekPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Week";
     public static String monthPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Month";
     public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
-
+    
     public static boolean preTradingBool = false;
     public static boolean streamMarketBool = false;
     public static boolean randomallyBool = false;
