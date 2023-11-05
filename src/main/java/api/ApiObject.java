@@ -45,6 +45,8 @@ public class ApiObject implements IJsonData {
     private double low = 0;
     private double last = 0;
     private double index = 0;
+    private double index_avg_3600 = 0;
+
     private double base = 0;
     private double index_bid = 0;
     private double index_ask = 0;
@@ -519,6 +521,14 @@ public class ApiObject implements IJsonData {
 
     public Exps getExps() {
         return exps;
+    }
+
+    public double getIndex_avg_3600() {
+        return index_avg_3600;
+    }
+
+    public void setIndex_avg_3600(double index_avg_3600) {
+        this.index_avg_3600 = index_avg_3600;
     }
 
     @Override

@@ -16,6 +16,33 @@ public class TimeSeriesFactory {
 
         switch (serie_name.toUpperCase()) {
 
+            case Factories.TimeSeries.INDEX_AVG_3600:
+                return new MyTimeSeries(Factories.TimeSeries.INDEX_AVG_3600) {
+
+                    @Override
+                    public double getValue() {
+                        return ApiObject.getInstance().getIndex_avg_3600();
+                    }
+
+                    @Override
+                    public void updateData() {
+                        int serie_id = Factories.IDs.INDEX;
+
+                        double val = Queries.handle_rs(Queries.get_serie_moving_avg(serie_id, 60));
+                        setValue(val);
+                        ApiObject.getInstance().setIndex_avg_3600(val);
+
+                    }
+
+                    @Override
+                    public void load() {
+                        int serie_id = Factories.IDs.INDEX;
+
+                        ResultSet rs = Queries.get_cumulative_avg_serie(serie_id, 60);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
 
             case Factories.TimeSeries.ROLL_900:
                 return new MyTimeSeries(Factories.TimeSeries.ROLL_900) {

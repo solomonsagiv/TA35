@@ -10,6 +10,7 @@ public class Factories {
 
     public static class TimeSeries {
         public static final String INDEX = "INDEX";
+        public static final String INDEX_AVG_3600 = "INDEX_AVG_3600";
 
         public static final String OP_AVG_WEEK_5 = "OP_AVG_WEEK_5";
         public static final String OP_AVG_WEEK_60 = "OP_AVG_WEEK_60";
@@ -51,7 +52,7 @@ public class Factories {
 //        public static final int OP_AVG_MONTH = 2035;
 
 
-        public static final int INDEX_TABLE = 5;
+        public static final int INDEX = 5;
         public static final int INDEX_BID = 22;
         public static final int INDEX_ASK = 21;
         //     public static final int INDEX_DELTA_TABLE = "sagiv.ta35_ind_delta_cdf";

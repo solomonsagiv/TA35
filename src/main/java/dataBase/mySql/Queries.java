@@ -515,6 +515,32 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_cumulative_avg_serie(int serie_id, int min) {
+
+        String modulu = "%";
+
+        String q = "select time, value\n" +
+                "from (\n" +
+                "         select time, avg(value) over (ORDER BY time RANGE BETWEEN '%s min' PRECEDING AND CURRENT ROW) as value, row_number() over (order by time) as row\n" +
+                "         from ts.timeseries_data\n" +
+                "         where timeseries_id = %s\n" +
+                "           and %s) a\n" +
+                "where row %s %s = 0;";
+
+        String query = String.format(q, min, serie_id, Filters.TODAY, modulu, step_second);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_serie_moving_avg(int serie_id, int min) {
+        String q = "select avg(value) as value\n" +
+                "from ts.timeseries_data\n" +
+                "where timeseries_id = %s\n" +
+                "and time > now() - interval '%s min';";
+
+        String query = String.format(q, serie_id, min);
+        return MySql.select(query);
+    }
+
     private static ResultSet get_serie_cdf_mega_table(int serie_id) {
 
         String modulu = "%";
