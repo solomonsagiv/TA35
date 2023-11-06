@@ -54,6 +54,11 @@ public class FullCharts3 extends MyChartCreator {
         index_avg_3600_serie.setColor(Themes.PURPLE);
         index_avg_3600_serie.setStokeSize(0.75f);
 
+        // Index avg 3600
+        MyTimeSeries index_avg_900_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_900);
+        index_avg_900_serie.setColor(Themes.RED);
+        index_avg_900_serie.setStokeSize(0.75f);
+
         MyTimeSeries future_week_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK) {
 
             @Override
@@ -94,11 +99,12 @@ public class FullCharts3 extends MyChartCreator {
         future_month_serie.setColor(Themes.GREEN);
         future_month_serie.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[4];
+        series = new MyTimeSeries[5];
         series[0] = index_with_bid_ask_Serie;
         series[1] = future_week_serie;
         series[2] = future_month_serie;
         series[3] = index_avg_3600_serie;
+        series[4] = index_avg_900_serie;
 
         // Chart
         MyChart indexChart = new MyChart(series, props);

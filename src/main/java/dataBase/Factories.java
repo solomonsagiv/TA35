@@ -11,6 +11,7 @@ public class Factories {
     public static class TimeSeries {
         public static final String INDEX = "INDEX";
         public static final String INDEX_AVG_3600 = "INDEX_AVG_3600";
+        public static final String INDEX_AVG_900 = "INDEX_AVG_900";
 
         public static final String OP_AVG_WEEK_5 = "OP_AVG_WEEK_5";
         public static final String OP_AVG_WEEK_60 = "OP_AVG_WEEK_60";

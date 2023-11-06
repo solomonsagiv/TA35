@@ -46,6 +46,7 @@ public class ApiObject implements IJsonData {
     private double last = 0;
     private double index = 0;
     private double index_avg_3600 = 0;
+    private double index_avg_900 = 0;
 
     private double base = 0;
     private double index_bid = 0;
@@ -99,6 +100,8 @@ public class ApiObject implements IJsonData {
         timeSeriesHandler = new TimeSeriesHandler();
 
         timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_3600));
+        timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_900, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_900));
+
         timeSeriesHandler.put(Factories.TimeSeries.DF_4_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_4_CDF_OLD));
         timeSeriesHandler.put(Factories.TimeSeries.DF_5_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_5_CDF_OLD));
         timeSeriesHandler.put(Factories.TimeSeries.DF_6_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_6_CDF_OLD));
@@ -533,6 +536,14 @@ public class ApiObject implements IJsonData {
 
     public void setIndex_avg_3600(double index_avg_3600) {
         this.index_avg_3600 = index_avg_3600;
+    }
+
+    public double getIndex_avg_900() {
+        return index_avg_900;
+    }
+
+    public void setIndex_avg_900(double index_avg_900) {
+        this.index_avg_900 = index_avg_900;
     }
 
     @Override
