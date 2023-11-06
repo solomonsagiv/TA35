@@ -133,11 +133,11 @@ public class FullCharts3 extends MyChartCreator {
 
         // Op avg 5
         MyTimeSeries roll_3600 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600);
-        roll_3600.setColor(Themes.ORANGE_2);
+        roll_3600.setColor(Themes.BLUE3);
         roll_3600.setStokeSize(1.2f);
-
+        
         // Op avg 60
-        MyTimeSeries roll_900 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60);
+        MyTimeSeries roll_900 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900);
         roll_900.setColor(Themes.PURPLE);
         roll_900.setStokeSize(1.2f);
 
