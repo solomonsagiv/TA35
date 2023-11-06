@@ -54,7 +54,7 @@ public class FullCharts3 extends MyChartCreator {
         index_avg_3600_serie.setColor(Themes.PURPLE);
         index_avg_3600_serie.setStokeSize(0.75f);
 
-        // Index avg 3600
+        // Index avg 900
         MyTimeSeries index_avg_900_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_900);
         index_avg_900_serie.setColor(Themes.RED);
         index_avg_900_serie.setStokeSize(0.75f);
