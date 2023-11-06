@@ -93,7 +93,7 @@ public class FullCharts3 extends MyChartCreator {
         };
         future_month_serie.setColor(Themes.GREEN);
         future_month_serie.setStokeSize(1.2f);
-        
+
         series = new MyTimeSeries[4];
         series[0] = index_with_bid_ask_Serie;
         series[1] = future_week_serie;
@@ -128,8 +128,6 @@ public class FullCharts3 extends MyChartCreator {
 
 
         MyChart op_avg_chart = new MyChart(series, props);
-
-
 
         // --------------- ROLL --------------- //
 
