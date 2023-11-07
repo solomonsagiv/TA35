@@ -29,6 +29,7 @@ public class DataBaseService extends MyBaseService {
 
         // OP AVG
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_900));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
