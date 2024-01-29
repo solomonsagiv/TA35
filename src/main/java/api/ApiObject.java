@@ -110,8 +110,6 @@ public class ApiObject implements IJsonData {
         timeSeriesHandler.put(Factories.TimeSeries.ROLL_900, TimeSeriesFactory.get_serie(Factories.TimeSeries.ROLL_900));
         timeSeriesHandler.put(Factories.TimeSeries.ROLL_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.ROLL_3600));
 
-        timeSeriesHandler.put(Factories.TimeSeries.DF_2_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_2_CDF));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_7_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_7_CDF));
         timeSeriesHandler.put(Factories.TimeSeries.DF_8_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_CDF));
 
         timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_5, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_5));

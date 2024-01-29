@@ -13,8 +13,6 @@ public class ExpData implements IJsonData {
 	private double v8 = 0;
 	private double v6 = 0;
 	private double v5 = 0;
-	private double v2 = 0;
-	private double v7 = 0;
 	private double v8_de_corr = 0;
 
 	ApiObject apiObject;
@@ -71,22 +69,6 @@ public class ExpData implements IJsonData {
 
 	public void setV5(double v5) {
 		this.v5 = v5;
-	}
-
-	public double getV2() {
-		return v2;
-	}
-
-	public void setV2(double v2) {
-		this.v2 = v2;
-	}
-
-	public double getV7() {
-		return v7;
-	}
-
-	public void setV7(double v7) {
-		this.v7 = v7;
 	}
 
 	public double getV8_de_corr() {

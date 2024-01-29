@@ -49,12 +49,12 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField weekStartExpField;
     private MyGuiComps.MyButton btnDetails;
 
-    public MyGuiComps.MyTextField exp_v2_month_field;
-    public MyGuiComps.MyTextField exp_v7_month_field;
+    public MyGuiComps.MyTextField exp_v5_month_field;
+    public MyGuiComps.MyTextField exp_v6_month_field;
     public MyGuiComps.MyTextField exp_v8_month_field;
 
-    public MyGuiComps.MyTextField exp_v2_week_field;
-    public MyGuiComps.MyTextField exp_v7_week_field;
+    public MyGuiComps.MyTextField exp_v5_week_field;
+    public MyGuiComps.MyTextField exp_v6_week_field;
     public MyGuiComps.MyTextField exp_v8_week_field;
 
     public MyGuiComps.MyTextField expBasketsWeekField;
@@ -216,16 +216,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_move_lbl.setBounds(66, 0, 50, 25);
         exp_header_panel.add(exp_move_lbl);
 
-        MyGuiComps.MyLabel exp_v2 = new MyGuiComps.MyLabel("V2");
-        exp_v2.setBounds(exp_move_lbl.getX() + exp_move_lbl.getWidth() + 1, exp_move_lbl.getY(), 50, 25);
-        exp_header_panel.add(exp_v2);
+        MyGuiComps.MyLabel exp_v5 = new MyGuiComps.MyLabel("V5");
+        exp_v5.setBounds(exp_move_lbl.getX() + exp_move_lbl.getWidth() + 1, exp_move_lbl.getY(), 50, 25);
+        exp_header_panel.add(exp_v5);
 
-        MyGuiComps.MyLabel exp_v7 = new MyGuiComps.MyLabel("V7");
-        exp_v7.setBounds(exp_v2.getX() + exp_v2.getWidth() + 1, exp_v2.getY(), 50, 25);
-        exp_header_panel.add(exp_v7);
+        MyGuiComps.MyLabel exp_v6 = new MyGuiComps.MyLabel("V6");
+        exp_v6.setBounds(exp_v5.getX() + exp_v5.getWidth() + 1, exp_v5.getY(), 50, 25);
+        exp_header_panel.add(exp_v6);
 
         MyGuiComps.MyLabel exp_v8 = new MyGuiComps.MyLabel("V8");
-        exp_v8.setBounds(exp_v7.getX() + exp_v7.getWidth() + 1, exp_v7.getY(), 50, 25);
+        exp_v8.setBounds(exp_v6.getX() + exp_v6.getWidth() + 1, exp_v6.getY(), 50, 25);
         exp_header_panel.add(exp_v8);
 
         MyGuiComps.MyLabel exp_baskets = new MyGuiComps.MyLabel("Baskets");
@@ -255,16 +255,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_panel.add(weekStartExpField);
 
         // V2 V7 V8 (WEEK)
-        exp_v2_week_field = new MyGuiComps.MyTextField();
-        exp_v2_week_field.setBounds(weekStartExpField.getX() + weekStartExpField.getWidth() + 1, weekStartExpField.getY(), 50, 25);
-        exp_panel.add(exp_v2_week_field);
+        exp_v5_week_field = new MyGuiComps.MyTextField();
+        exp_v5_week_field.setBounds(weekStartExpField.getX() + weekStartExpField.getWidth() + 1, weekStartExpField.getY(), 50, 25);
+        exp_panel.add(exp_v5_week_field);
 
-        exp_v7_week_field = new MyGuiComps.MyTextField();
-        exp_v7_week_field.setBounds(exp_v2_week_field.getX() + exp_v2_week_field.getWidth() + 1, exp_v2_week_field.getY(), 50, 25);
-        exp_panel.add(exp_v7_week_field);
+        exp_v6_week_field = new MyGuiComps.MyTextField();
+        exp_v6_week_field.setBounds(exp_v5_week_field.getX() + exp_v5_week_field.getWidth() + 1, exp_v5_week_field.getY(), 50, 25);
+        exp_panel.add(exp_v6_week_field);
 
         exp_v8_week_field = new MyGuiComps.MyTextField();
-        exp_v8_week_field.setBounds(exp_v7_week_field.getX() + exp_v7_week_field.getWidth() + 1, exp_v7_week_field.getY(), 50, 25);
+        exp_v8_week_field.setBounds(exp_v6_week_field.getX() + exp_v6_week_field.getWidth() + 1, exp_v6_week_field.getY(), 50, 25);
         exp_panel.add(exp_v8_week_field);
 
         // Baskets
@@ -285,16 +285,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_panel.add(monthStartExpField);
 
         // V2 V7 V8 (MONTH)
-        exp_v2_month_field = new MyGuiComps.MyTextField();
-        exp_v2_month_field.setBounds(monthStartExpField.getX() + monthStartExpField.getWidth() + 1, monthStartExpField.getY(), 50, 25);
-        exp_panel.add(exp_v2_month_field);
+        exp_v5_month_field = new MyGuiComps.MyTextField();
+        exp_v5_month_field.setBounds(monthStartExpField.getX() + monthStartExpField.getWidth() + 1, monthStartExpField.getY(), 50, 25);
+        exp_panel.add(exp_v5_month_field);
 
-        exp_v7_month_field = new MyGuiComps.MyTextField();
-        exp_v7_month_field.setBounds(exp_v2_month_field.getX() + exp_v2_month_field.getWidth() + 1, exp_v2_month_field.getY(), 50, 25);
-        exp_panel.add(exp_v7_month_field);
+        exp_v6_month_field = new MyGuiComps.MyTextField();
+        exp_v6_month_field.setBounds(exp_v5_month_field.getX() + exp_v5_month_field.getWidth() + 1, exp_v5_month_field.getY(), 50, 25);
+        exp_panel.add(exp_v6_month_field);
 
         exp_v8_month_field = new MyGuiComps.MyTextField();
-        exp_v8_month_field.setBounds(exp_v7_month_field.getX() + exp_v7_month_field.getWidth() + 1, exp_v7_month_field.getY(), 50, 25);
+        exp_v8_month_field.setBounds(exp_v6_month_field.getX() + exp_v6_month_field.getWidth() + 1, exp_v6_month_field.getY(), 50, 25);
         exp_panel.add(exp_v8_month_field);
 
 
