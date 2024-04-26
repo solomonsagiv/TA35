@@ -8,7 +8,9 @@ import exp.ExpMonth;
 import exp.ExpWeek;
 import locals.L;
 import props.Props;
+
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 
 public class DataBaseHandler {
@@ -48,7 +50,7 @@ public class DataBaseHandler {
             e.printStackTrace();
         }
     }
-    
+
     public void load_exp_data(ApiObject apiObject) {
         try {
             ExpWeek week = apiObject.getExps().getWeek();
@@ -57,7 +59,7 @@ public class DataBaseHandler {
             double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_WEEK_START));
             double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_MONTH_START));
             double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_WEEK_START));
-            double start_exp_month =  Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_MONTH_START));
+            double start_exp_month = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_MONTH_START));
 
             double v5_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_5_old, Props.EXP_WEEK_START));
             double v6_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_6_old, Props.EXP_WEEK_START));
@@ -66,6 +68,9 @@ public class DataBaseHandler {
             double v5_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_5_old, Props.EXP_MONTH_START));
             double v6_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_6_old, Props.EXP_MONTH_START));
             double v8_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_8_DE_CORR, Props.EXP_MONTH_START));
+
+            // OP avg, Roll avg count
+            load_optimi_pesimi_count();
 
             // Start
             week.getExpData().setStart(start_exp_week);
@@ -125,6 +130,72 @@ public class DataBaseHandler {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+
+    private void load_optimi_pesimi_count() {
+
+        ApiObject client = ApiObject.getInstance();
+
+        // ------------- Op avg ------------- //
+        // Week
+        ResultSet rs = Queries.get_optimi_pesimi_count(Factories.IDs.OP_AVG_60, Props.EXP_WEEK_START);
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                int optimi = rs.getInt("optimi");
+                int pesimi = rs.getInt("pesimi");
+                client.getExps().getWeek().setOptimi_count(optimi);
+                client.getExps().getWeek().setPesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+        // Month
+        rs = Queries.get_optimi_pesimi_count(Factories.IDs.OP_AVG_60, Props.EXP_MONTH_START);
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                int optimi = rs.getInt("optimi");
+                int pesimi = rs.getInt("pesimi");
+                client.getExps().getMonth().setOptimi_count(optimi);
+                client.getExps().getMonth().setPesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+
+        // ------------- Roll avg ------------- //
+        // Week
+        rs = Queries.get_optimi_pesimi_count(Factories.IDs.ROLL_3600, Props.EXP_WEEK_START);
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                int optimi = rs.getInt("optimi");
+                int pesimi = rs.getInt("pesimi");
+                client.getExps().getWeek().setRoll_optimi_count(optimi);
+                client.getExps().getWeek(). setRoll_pesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+        // Roll avg
+        // Month
+        rs = Queries.get_optimi_pesimi_count(Factories.IDs.ROLL_3600, Props.EXP_MONTH_START);
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                int optimi = rs.getInt("optimi");
+                int pesimi = rs.getInt("pesimi");
+                client.getExps().getMonth().setRoll_optimi_count(optimi);
+                client.getExps().getMonth().setRoll_pesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
     }
 }

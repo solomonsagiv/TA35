@@ -92,7 +92,7 @@ public class Updater extends MyThread implements Runnable {
                 window.v2_field.colorForgeRound(df_4.getValue());
                 window.v7_field.colorForgeRound(df_8.getValue());
                 window.v9_field.colorForgeRound(df_8_de_corr.getValue());
-                
+
                 // Exp
                 // Week
                 colorForgeRound(window.exp_v5_week_field, (int) (expWeek.getExpData().getV5() + df_5.getValue()), true);
@@ -101,6 +101,10 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), false);
                 text = floor(((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.weekStartExpField, text);
+                window.optimi_count_week_field.setText(str(expWeek.getOptimi_count()));
+                window.pesimi_count_week_field.setText(str(expWeek.getPesimi_count()));
+                window.roll_optimi_count_week_field.setText(str(expWeek.getRoll_optimi_count()));
+                window.roll_pesimi_count_week_field.setText(str(expWeek.getRoll_pesimi_count()));
 
                 // Month
                 colorForgeRound(window.exp_v5_month_field, (int) (expMonth.getExpData().getV5() + df_5.getValue()), true);
@@ -109,6 +113,10 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), false);
                 text = floor(((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.monthStartExpField, text);
+                window.optimi_count_month_field.setText(str(expMonth.getOptimi_count()));
+                window.pesimi_count_month_field.setText(str(expMonth.getPesimi_count()));
+                window.roll_optimi_count_month_field.setText(str(expMonth.getRoll_optimi_count()));
+                window.roll_pesimi_count_month_field.setText(str(expMonth.getRoll_pesimi_count()));
             }
         } catch (Exception e) {
             e.printStackTrace();

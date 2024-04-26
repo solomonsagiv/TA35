@@ -60,6 +60,18 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField expBasketsWeekField;
     public MyGuiComps.MyTextField expBasketsMonthField;
 
+    public MyGuiComps.MyTextField optimi_count_week_field;
+    public MyGuiComps.MyTextField pesimi_count_week_field;
+
+    public MyGuiComps.MyTextField roll_optimi_count_week_field;
+    public MyGuiComps.MyTextField roll_pesimi_count_week_field;
+
+    public MyGuiComps.MyTextField optimi_count_month_field;
+    public MyGuiComps.MyTextField pesimi_count_month_field;
+
+    public MyGuiComps.MyTextField roll_optimi_count_month_field;
+    public MyGuiComps.MyTextField roll_pesimi_count_month_field;
+
     // Constructor
     public WindowTA35() {
         super("TA35");
@@ -196,7 +208,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         v9_field.setBounds(v5_field.getX(), v5_field.getY() + v5_field.getHeight() + 3, 50, 25);
         decisions_panel.add(v9_field);
 
-
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
         logPanel.setBounds(897, 0, 147, panels_height);
@@ -209,7 +220,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         MyGuiComps.MyPanel exp_header_panel = new MyGuiComps.MyPanel();
         exp_header_panel.setLayout(null);
-        exp_header_panel.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, 0, 362, 25);
+        exp_header_panel.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, 0, 450, 25);
         getContentPane().add(exp_header_panel);
 
         MyGuiComps.MyLabel exp_move_lbl = new MyGuiComps.MyLabel("Move");
@@ -232,13 +243,24 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_baskets.setBounds(exp_v8.getX() + exp_v8.getWidth() + 1, exp_v8.getY(), 50, 25);
         exp_header_panel.add(exp_baskets);
 
+        MyGuiComps.MyLabel op_count_lbl = new MyGuiComps.MyLabel("O / P");
+        op_count_lbl.setBounds(exp_baskets.getX() + exp_baskets.getWidth() + 1, exp_baskets.getY(), 50, 25);
+        op_count_lbl.setAlignmentX(MyGuiComps.MyLabel.CENTER);
+        exp_header_panel.add(op_count_lbl);
+
+
+        MyGuiComps.MyLabel roll_count_lbl = new MyGuiComps.MyLabel("Roll");
+        roll_count_lbl.setBounds(op_count_lbl.getX() + op_count_lbl.getWidth() + 1, op_count_lbl.getY(), 50, 25);
+        roll_count_lbl.setAlignmentX(MyGuiComps.MyLabel.CENTER);
+        exp_header_panel.add(roll_count_lbl);
+
         MyGuiComps.MyLabel exp_lbl = new MyGuiComps.MyLabel("Exp");
         exp_lbl.setBounds(0, 0, 68, 25);
         exp_header_panel.add(exp_lbl);
 
         // -------------------------- EXP -------------------------- //
         MyGuiComps.MyPanel exp_panel = new MyGuiComps.MyPanel();
-        exp_panel.setBounds(exp_header_panel.getX(), exp_header_panel.getY() + exp_header_panel.getHeight() + 1, 362, panels_height);
+        exp_panel.setBounds(exp_header_panel.getX(), exp_header_panel.getY() + exp_header_panel.getHeight() + 1, 450, panels_height);
         getContentPane().add(exp_panel);
         exp_panel.setLayout(null);
 
@@ -272,6 +294,27 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         expBasketsWeekField.setBounds(exp_v8_week_field.getX() + exp_v8_week_field.getWidth() + 1, exp_v8_week_field.getY(), 50, 25);
         exp_panel.add(expBasketsWeekField);
 
+        // ----------- Count ---------- //
+        // ----------- Week
+        // Optimi
+        optimi_count_week_field = new MyGuiComps.MyTextField();
+        optimi_count_week_field.setBounds(expBasketsWeekField.getX() + expBasketsWeekField.getWidth() + 1, expBasketsWeekField.getY(), 25, 25);
+        exp_panel.add(optimi_count_week_field);
+
+        // Pesimi
+        pesimi_count_week_field = new MyGuiComps.MyTextField();
+        pesimi_count_week_field.setBounds(optimi_count_week_field.getX() + optimi_count_week_field.getWidth() + 1, optimi_count_week_field.getY(), 25, 25);
+        exp_panel.add(pesimi_count_week_field);
+
+        // Roll optimi week count
+        roll_optimi_count_week_field = new MyGuiComps.MyTextField();
+        roll_optimi_count_week_field.setBounds(pesimi_count_week_field.getX() + pesimi_count_week_field.getWidth() + 1, pesimi_count_week_field.getY(), 25, 25);
+        exp_panel.add(roll_optimi_count_week_field);
+
+        // Roll pesimi week count
+        roll_pesimi_count_week_field = new MyGuiComps.MyTextField();
+        roll_pesimi_count_week_field.setBounds(roll_optimi_count_week_field.getX() + roll_optimi_count_week_field.getWidth() + 1, roll_optimi_count_week_field.getY(), 25, 25);
+        exp_panel.add(roll_pesimi_count_week_field);
 
         // ------ Month ------ //
         MyGuiComps.MyLabel month_lbl = new MyGuiComps.MyLabel("Month");
@@ -301,6 +344,26 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         expBasketsMonthField = new MyGuiComps.MyTextField();
         expBasketsMonthField.setBounds(exp_v8_month_field.getX() + exp_v8_month_field.getWidth() + 1, exp_v8_month_field.getY(), 50, 25);
         exp_panel.add(expBasketsMonthField);
+
+        // Avg count roll and OP
+        optimi_count_month_field = new MyGuiComps.MyTextField();
+        optimi_count_month_field.setBounds(expBasketsMonthField.getX() + expBasketsMonthField.getWidth() + 1, expBasketsMonthField.getY(), 25, 25);
+        exp_panel.add(optimi_count_month_field);
+
+        // Pesimi
+        pesimi_count_month_field = new MyGuiComps.MyTextField();
+        pesimi_count_month_field.setBounds(optimi_count_month_field.getX() + optimi_count_month_field.getWidth() + 1, optimi_count_month_field.getY(), 25, 25);
+        exp_panel.add(pesimi_count_month_field);
+
+        // Roll optimi week count
+        roll_optimi_count_month_field = new MyGuiComps.MyTextField();
+        roll_optimi_count_month_field.setBounds(pesimi_count_month_field.getX() + pesimi_count_month_field.getWidth() + 1, pesimi_count_month_field.getY(), 25, 25);
+        exp_panel.add(roll_optimi_count_month_field);
+
+        // Roll pesimi week count
+        roll_pesimi_count_month_field = new MyGuiComps.MyTextField();
+        roll_pesimi_count_month_field.setBounds(roll_optimi_count_month_field.getX() + roll_optimi_count_month_field.getWidth() + 1, roll_optimi_count_month_field.getY(), 25, 25);
+        exp_panel.add(roll_pesimi_count_month_field);
 
         // ----------------- Bottom panel ---------------- //
         bottomPanel = new MyGuiComps.MyPanel();

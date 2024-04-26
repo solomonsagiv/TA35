@@ -63,8 +63,8 @@ public class Factories {
         public static final int OP_AVG_15 = 9485;
 //        public static final int DF_2 = 9477;
         public static final int DF_8_DE_CORR = 9479;
-        public static final int DF_4_old = 9489;
-        public static final int DF_8_old = 9490;
+        public static final int DF_4_old = 9770;
+        public static final int DF_8_old = 9773;
         public static final int DF_5_old = 9491;
         public static final int DF_6_old = 9492;
 //        public static final int DF_7 = 9478;

@@ -648,6 +648,23 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_optimi_pesimi_count(int avg_serie, String exp) {
+        String q = "select COUNT(*) FILTER (WHERE value > 0) AS optimi,\n" +
+                "       COUNT(*) FILTER (WHERE value < 0) AS pesimi\n" +
+                "from (\n" +
+                "         select time::date    date,\n" +
+                "                avg(value) as value\n" +
+                "         from ts.timeseries_data\n" +
+                "         where timeseries_id = %s\n" +
+                "           and date_trunc('day', time) >=\n" +
+                "               (select data::date from sagiv.props where stock_id = 'ta35' and prop = '%s')\n" +
+                "           and date_trunc('day', time) <= now()\n" +
+                "         group by date) AVGS;";
+
+        String query = String.format(q, avg_serie, exp);
+        return MySql.select(query);
+    }
+
 
     public static class Filters {
         public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";

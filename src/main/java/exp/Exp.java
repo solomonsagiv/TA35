@@ -25,6 +25,12 @@ public abstract class Exp implements IJsonData {
 	private double op_avg_5 = 0;
 	private double op_avg = 0;
 
+	private int optimi_count = 0;
+	private int pesimi_count = 0;
+
+	private int roll_optimi_count = 0;
+	private int roll_pesimi_count = 0;
+
 	public Exp(ApiObject apiObject, String exp_name) {
 		this.apiObject = apiObject;
 		this.exp_name = exp_name;
@@ -140,5 +146,37 @@ public abstract class Exp implements IJsonData {
 
 	public void setOp_avg_5(double op_avg_5) {
 		this.op_avg_5 = op_avg_5;
+	}
+
+	public int getOptimi_count() {
+		return optimi_count;
+	}
+
+	public void setOptimi_count(int optimi_count) {
+		this.optimi_count = optimi_count;
+	}
+
+	public int getPesimi_count() {
+		return pesimi_count;
+	}
+
+	public void setPesimi_count(int pesimi_count) {
+		this.pesimi_count = pesimi_count;
+	}
+
+	public int getRoll_optimi_count() {
+		return roll_optimi_count;
+	}
+
+	public void setRoll_optimi_count(int roll_optimi_count) {
+		this.roll_optimi_count = roll_optimi_count;
+	}
+
+	public int getRoll_pesimi_count() {
+		return roll_pesimi_count;
+	}
+
+	public void setRoll_pesimi_count(int roll_pesimi_count) {
+		this.roll_pesimi_count = roll_pesimi_count;
 	}
 }
