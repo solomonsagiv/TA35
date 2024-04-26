@@ -9,6 +9,7 @@ import charts.charts.MainMonthWeekChart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
+import locals.Themes;
 import setting.Setting;
 import javax.swing.*;
 import java.awt.*;
@@ -298,21 +299,25 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         // ----------- Week
         // Optimi
         optimi_count_week_field = new MyGuiComps.MyTextField();
+        optimi_count_week_field.setForeground(Themes.GREEN);
         optimi_count_week_field.setBounds(expBasketsWeekField.getX() + expBasketsWeekField.getWidth() + 5, expBasketsWeekField.getY(), 25, 25);
         exp_panel.add(optimi_count_week_field);
 
         // Pesimi
         pesimi_count_week_field = new MyGuiComps.MyTextField();
+        pesimi_count_week_field.setForeground(Themes.RED);
         pesimi_count_week_field.setBounds(optimi_count_week_field.getX() + optimi_count_week_field.getWidth() + 1, optimi_count_week_field.getY(), 25, 25);
         exp_panel.add(pesimi_count_week_field);
 
         // Roll optimi week count
         roll_optimi_count_week_field = new MyGuiComps.MyTextField();
+        roll_optimi_count_week_field.setForeground(Themes.GREEN);
         roll_optimi_count_week_field.setBounds(pesimi_count_week_field.getX() + pesimi_count_week_field.getWidth() + 5, pesimi_count_week_field.getY(), 25, 25);
         exp_panel.add(roll_optimi_count_week_field);
 
         // Roll pesimi week count
         roll_pesimi_count_week_field = new MyGuiComps.MyTextField();
+        roll_pesimi_count_week_field.setForeground(Themes.RED);
         roll_pesimi_count_week_field.setBounds(roll_optimi_count_week_field.getX() + roll_optimi_count_week_field.getWidth() + 1, roll_optimi_count_week_field.getY(), 25, 25);
         exp_panel.add(roll_pesimi_count_week_field);
 
@@ -348,20 +353,24 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         // Avg count roll and OP
         optimi_count_month_field = new MyGuiComps.MyTextField();
         optimi_count_month_field.setBounds(expBasketsMonthField.getX() + expBasketsMonthField.getWidth() + 5, expBasketsMonthField.getY(), 25, 25);
+        optimi_count_month_field.setForeground(Themes.GREEN);
         exp_panel.add(optimi_count_month_field);
 
         // Pesimi
         pesimi_count_month_field = new MyGuiComps.MyTextField();
         pesimi_count_month_field.setBounds(optimi_count_month_field.getX() + optimi_count_month_field.getWidth() + 1, optimi_count_month_field.getY(), 25, 25);
+        pesimi_count_month_field.setForeground(Themes.RED);
         exp_panel.add(pesimi_count_month_field);
 
         // Roll optimi week count
         roll_optimi_count_month_field = new MyGuiComps.MyTextField();
+        roll_optimi_count_month_field.setForeground(Themes.GREEN);
         roll_optimi_count_month_field.setBounds(pesimi_count_month_field.getX() + pesimi_count_month_field.getWidth() + 5, pesimi_count_month_field.getY(), 25, 25);
         exp_panel.add(roll_optimi_count_month_field);
 
         // Roll pesimi week count
         roll_pesimi_count_month_field = new MyGuiComps.MyTextField();
+        roll_pesimi_count_month_field.setForeground(Themes.RED);
         roll_pesimi_count_month_field.setBounds(roll_optimi_count_month_field.getX() + roll_optimi_count_month_field.getWidth() + 1, roll_optimi_count_month_field.getY(), 25, 25);
         exp_panel.add(roll_pesimi_count_month_field);
 
