@@ -3,7 +3,6 @@ package counter;
 import api.ApiObject;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
-import charts.charts.FullCharts2;
 import charts.charts.FullCharts3;
 import charts.charts.MainMonthWeekChart;
 import dataBase.mySql.JibeConnectionPool;
@@ -448,10 +447,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (chartsCombo.getSelectedItem().toString()) {
-                    case "Full chart":
-                        FullCharts2 chart = new FullCharts2(apiObject);
-                        chart.createChart();
-                        break;
                     case "Full chart 3":
                         FullCharts3 chart_3 = new FullCharts3(apiObject);
                         chart_3.createChart();
