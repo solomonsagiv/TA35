@@ -658,7 +658,7 @@ public class Queries {
                 "         where timeseries_id = %s\n" +
                 "           and date_trunc('day', time) >=\n" +
                 "               (select data::date from sagiv.props where stock_id = 'ta35' and prop = '%s')\n" +
-                "           and date_trunc('day', time) <= now()\n" +
+                "           and date_trunc('day', time) < now()\n" +
                 "         group by date) AVGS;";
 
         String query = String.format(q, avg_serie, exp);

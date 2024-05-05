@@ -61,8 +61,8 @@ public class DataBaseHandler {
             double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_WEEK_START));
             double start_exp_month = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_MONTH_START));
 
-            double v5_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_5_old, Props.EXP_WEEK_START));
-            double v6_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_6_old, Props.EXP_WEEK_START));
+            double v5_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_4_old, Props.EXP_WEEK_START));
+            double v6_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_8_old, Props.EXP_WEEK_START));
             double v8_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_8_DE_CORR, Props.EXP_WEEK_START));
 
             double v5_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_5_old, Props.EXP_MONTH_START));
@@ -95,7 +95,6 @@ public class DataBaseHandler {
             e.printStackTrace();
         }
     }
-
 
     public ResultSet get_exp_data(String target_table_location, String exp, int result_type) {
         String q = "";
