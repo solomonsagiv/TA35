@@ -53,8 +53,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField exp_v6_month_field;
     public MyGuiComps.MyTextField exp_v8_month_field;
 
-    public MyGuiComps.MyTextField exp_v5_week_field;
-    public MyGuiComps.MyTextField exp_v6_week_field;
+    public MyGuiComps.MyTextField exp_v4_old_week_field;
+    public MyGuiComps.MyTextField exp_v8_old_week_field;
     public MyGuiComps.MyTextField exp_v8_week_field;
 
     public MyGuiComps.MyTextField expBasketsWeekField;
@@ -277,16 +277,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         exp_panel.add(weekStartExpField);
 
         // V2 V7 V8 (WEEK)
-        exp_v5_week_field = new MyGuiComps.MyTextField();
-        exp_v5_week_field.setBounds(weekStartExpField.getX() + weekStartExpField.getWidth() + 1, weekStartExpField.getY(), 50, 25);
-        exp_panel.add(exp_v5_week_field);
+        exp_v4_old_week_field = new MyGuiComps.MyTextField();
+        exp_v4_old_week_field.setBounds(weekStartExpField.getX() + weekStartExpField.getWidth() + 1, weekStartExpField.getY(), 50, 25);
+        exp_panel.add(exp_v4_old_week_field);
 
-        exp_v6_week_field = new MyGuiComps.MyTextField();
-        exp_v6_week_field.setBounds(exp_v5_week_field.getX() + exp_v5_week_field.getWidth() + 1, exp_v5_week_field.getY(), 50, 25);
-        exp_panel.add(exp_v6_week_field);
+        exp_v8_old_week_field = new MyGuiComps.MyTextField();
+        exp_v8_old_week_field.setBounds(exp_v4_old_week_field.getX() + exp_v4_old_week_field.getWidth() + 1, exp_v4_old_week_field.getY(), 50, 25);
+        exp_panel.add(exp_v8_old_week_field);
 
         exp_v8_week_field = new MyGuiComps.MyTextField();
-        exp_v8_week_field.setBounds(exp_v6_week_field.getX() + exp_v6_week_field.getWidth() + 1, exp_v6_week_field.getY(), 50, 25);
+        exp_v8_week_field.setBounds(exp_v8_old_week_field.getX() + exp_v8_old_week_field.getWidth() + 1, exp_v8_old_week_field.getY(), 50, 25);
         exp_panel.add(exp_v8_week_field);
 
         // Baskets
