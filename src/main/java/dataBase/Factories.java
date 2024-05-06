@@ -19,7 +19,7 @@ public class Factories {
         public static final String DF_8_CDF_OLD = "DF_8_CDF";
         public static final String DF_5_CDF_OLD = "DF_5_CDF";
         public static final String DF_6_CDF_OLD = "DF_6_CDF";
-        public static final String DF_8_CDF = "DF_8_DE_CORR_CDF";
+        public static final String DF_9_CDF = "DF_9_CDF";
 
         public static final String CONTINUE_OP_AVG_WEEK_240 = "YESTERDAY_OP_AVG_WEEK_240";
         public static final String INDEX_WITH_BID_ASK = "INDEX_WITH_BID_ASK";
@@ -62,7 +62,7 @@ public class Factories {
         public static final int OP_AVG_60 = 9484;
         public static final int OP_AVG_15 = 9485;
 //        public static final int DF_2 = 9477;
-        public static final int DF_8_DE_CORR = 9479;
+        public static final int DF_9 = 9479;
         public static final int DF_4_old = 9770;
         public static final int DF_8_old = 9773;
         public static final int DF_5_old = 9491;

@@ -264,8 +264,8 @@ public class TimeSeriesFactory {
                     }
                 };
 
-            case Factories.TimeSeries.DF_8_CDF:
-                return new MyTimeSeries(Factories.TimeSeries.DF_8_CDF) {
+            case Factories.TimeSeries.DF_9_CDF:
+                return new MyTimeSeries(Factories.TimeSeries.DF_9_CDF) {
 
                     @Override
                     public double getValue() {
@@ -274,13 +274,13 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_8_DE_CORR, Queries.CDF);
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.DF_9, Queries.CDF);
                         DataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
                     public void updateData() {
-                        int serie_id = Factories.IDs.DF_8_DE_CORR;
+                        int serie_id = Factories.IDs.DF_9;
                         double val = Queries.handle_rs(Queries.get_last_record_mega(serie_id, MySql.CDF));
                         setValue(val);
                     }

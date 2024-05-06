@@ -41,13 +41,13 @@ public class Updater extends MyThread implements Runnable {
         this.window = window;
         setRunnable(this);
 
-        this.df_8_de_corr = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF);
+        this.df_8_de_corr = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
 
         this.df_4 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD);
         this.df_5 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
         this.df_6 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD);
         this.df_8 = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD);
-        this.df_8_de_corr = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF);
+        this.df_8_de_corr = apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Updater extends MyThread implements Runnable {
                 // Week
                 colorForgeRound(window.exp_v4_old_week_field, (int) (expWeek.getExpData().getV4() + df_4.getValue()), true);
                 colorForgeRound(window.exp_v8_old_week_field, (int) (expWeek.getExpData().getV8() + df_8.getValue()), true);
-                colorForgeRound(window.exp_v8_week_field, (int) (expWeek.getExpData().getV8_de_corr() + df_8_de_corr.getValue()), true);
+                colorForgeRound(window.exp_v8_week_field, (int) (expWeek.getExpData().getV9() + df_8_de_corr.getValue()), true);
                 colorForgeRound(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), false);
                 text = floor(((apiObject.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.weekStartExpField, text);
@@ -109,7 +109,7 @@ public class Updater extends MyThread implements Runnable {
                 // Month
                 colorForgeRound(window.exp_v5_month_field, (int) (expMonth.getExpData().getV5() + df_5.getValue()), true);
                 colorForgeRound(window.exp_v6_month_field, (int) (expMonth.getExpData().getV6() + df_6.getValue()), true);
-                colorForgeRound(window.exp_v8_month_field, (int) (expMonth.getExpData().getV8_de_corr() + df_8_de_corr.getValue()), true);
+                colorForgeRound(window.exp_v8_month_field, (int) (expMonth.getExpData().getV9() + df_8_de_corr.getValue()), true);
                 colorForgeRound(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), false);
                 text = floor(((apiObject.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
                 setColorPresent(window.monthStartExpField, text);

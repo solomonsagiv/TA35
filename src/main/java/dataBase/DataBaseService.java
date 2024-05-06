@@ -43,7 +43,7 @@ public class DataBaseService extends MyBaseService {
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
 
         // CDF
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF));
     }
 
     @Override

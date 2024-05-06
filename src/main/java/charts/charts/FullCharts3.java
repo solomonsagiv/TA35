@@ -167,7 +167,7 @@ public class FullCharts3 extends MyChartCreator {
         df_6_old.setStokeSize(1.2f);
 
         // Op avg 240 yesterday
-        MyTimeSeries df_9 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF);
+        MyTimeSeries df_9 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
         df_9.setColor(Themes.RED);
         df_9.setStokeSize(1.2f);
 
