@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Queries {
-    
+
     public static final int START_OF_THE_DAY_MIN = 600;
     public static final int step_second = 10;
     public static final String RAW = "RAW";
@@ -68,6 +68,7 @@ public class Queries {
                 "                                  from props\n" +
                 "                                  where stock_id = '%s'\n" +
                 "                                    and prop = '%s')\n" +
+                " and date_trunc('day', time) < date_trunc('day', now())\n" +
                 "  and timeseries_id = %s;";
         String query = String.format(q, client.getName(), exp_prop_name, serie_id);
         return MySql.select(query);
@@ -190,7 +191,7 @@ public class Queries {
         String query = String.format(q, table_location, min);
         return MySql.select(query);
     }
-    
+
     public static ResultSet op_avg_cumulative(String index_table, String fut_table, int min) {
         String query = String.format("select i.time as time, avg(f.value - i.value) over (order by i.time range between '%s min' preceding and current row ) as value " +
                 "from %s i " +
