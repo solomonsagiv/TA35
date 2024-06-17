@@ -5,12 +5,14 @@ import charts.myChart.TimeSeriesFactory;
 import dataBase.Factories;
 import exp.Exps;
 import handlers.TimeSeriesHandler;
+import locals.L;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
+
 import java.util.ArrayList;
 
 public class ApiObject implements IJsonData {
@@ -154,10 +156,18 @@ public class ApiObject implements IJsonData {
         return json;
     }
 
+
+    public double get_bid_last_margin() {
+        return L.abs(last - index_bid);
+    }
+
+    public double get_ask_last_margin() {
+        return L.abs(last - index_ask);
+    }
+
     public void start() {
         setStarted(true);
     }
-
 
     private void setStarted(boolean bool) {
         this.started = bool;

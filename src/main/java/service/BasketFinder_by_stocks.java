@@ -86,11 +86,11 @@ public class BasketFinder_by_stocks extends MyBaseService {
 
         // If got enough changes
         if (volume_sum >= targetChanges) {
-            // Basket up or down
-            if (bigFrame.is_index_up()) {
+
+            // Up - last closer to the ask
+            if (apiObject.get_ask_last_margin() < apiObject.get_bid_last_margin()) {
                 add_basket_up();
                 reset_data_after_basket();
-
             } else {
                 add_basket_down();
                 reset_data_after_basket();
@@ -117,6 +117,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
             pre_index_price = last_index_price;
         }
     }
+
 
     private class IndexFrame {
         LocalTime time;
