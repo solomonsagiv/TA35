@@ -548,7 +548,7 @@ public class Queries {
 
         String q = "select time, sum as value\n" +
                 "from (\n" +
-                "         select time, value, row_number() over (order by time) as row\n" +
+                "         select time, sum, row_number() over (order by time) as row\n" +
                 "         from %s\n" +
                 "         where timeseries_id = %s\n" +
                 "           and %s) a\n" +

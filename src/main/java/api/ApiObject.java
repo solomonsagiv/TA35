@@ -167,13 +167,12 @@ public class ApiObject implements IJsonData {
         return json;
     }
 
-
     public double get_bid_last_margin() {
-        return L.abs(last - index_bid);
+        return L.abs(index - index_bid);
     }
 
     public double get_ask_last_margin() {
-        return L.abs(last - index_ask);
+        return L.abs(index - index_ask);
     }
 
     public void start() {
