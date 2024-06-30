@@ -7,6 +7,7 @@ import counter.BackGroundRunner;
 import dataBase.mySql.MySql;
 import exp.ExpMonth;
 import exp.ExpWeek;
+import races.Race_Logic;
 import service.MyBaseService;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -14,8 +15,12 @@ import java.util.ArrayList;
 public class DataBaseService extends MyBaseService {
 
     double baskets_0 = 0;
+    double index_races_0 = 0;
+    double week_races_0 = 0;
 
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> index_races_timeStamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> week_races_timeStamp  = new ArrayList<>();
 
     ExpWeek week;
     ExpMonth month;
@@ -65,6 +70,26 @@ public class DataBaseService extends MyBaseService {
             baskets_timestamp.add(new MyTimeStampObject(Instant.now(), change));
         }
 
+
+        // Index races
+        double index_races = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
+
+        if (index_races != index_races_0) {
+            double last_count = index_races - index_races_0;
+            index_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            index_races_0 = index_races;
+        }
+
+        // Week races
+        double week_races = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points();
+
+        if (week_races != week_races_0) {
+            double last_count = week_races - week_races_0;
+            week_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            week_races_0 = week_races;
+        }
+
+
         // Op avg week
         if (sleepCount % 1000 == 0) {
             Instant instant = Instant.now();
@@ -87,9 +112,11 @@ public class DataBaseService extends MyBaseService {
     private void insert_data() {
         new Thread(() -> {
             insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS);
+            insert_data_retro_mega(index_races_timeStamp, Factories.IDs.INDEX_RACES_WI);
+            insert_data_retro_mega(week_races_timeStamp, Factories.IDs.WEEK_RACES_WI);
         }).start();
     }
-    
+
     private void grab_data() {
         new Thread(() -> {
             try {
@@ -148,7 +175,6 @@ public class DataBaseService extends MyBaseService {
             Arik.getInstance().sendMessage("Insert data ta35 failed \n to table " + table_location + "\n \n " + e.getCause());
         }
     }
-
 
     void insert_data_retro_mega(ArrayList<MyTimeStampObject> list, int timeseries_id) {
         if (list.size() > 0) {
