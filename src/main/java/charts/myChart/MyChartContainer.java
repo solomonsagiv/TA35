@@ -67,7 +67,7 @@ public class MyChartContainer extends JFrame {
         for (MyChart chart : charts) {
             for (MyTimeSeries serie : chart.getSeries()) {
                 try {
-//                        Thread.sleep(1000);
+                    serie.clear_data();
                     serie.load_data();
                 } catch (Exception e) {
                     e.printStackTrace();
