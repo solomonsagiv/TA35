@@ -72,7 +72,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField roll_optimi_count_month_field;
     public MyGuiComps.MyTextField roll_pesimi_count_month_field;
 
-    public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field, week_races_wm_field, month_race_wm_field;
+    public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field,
+            week_races_wm_field, month_race_wm_field;
 
     // Constructor
     public WindowTA35() {
@@ -147,16 +148,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         races_panel.add(index_races_iw_field);
 
         week_races_iw_field = new MyGuiComps.MyTextField();
-        week_races_iw_field.setBounds(index_races_iw_field.getX(), index_races_iw_field.getY() + index_races_iw_field.getHeight() + 3, 50, 25);
+        week_races_iw_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
         races_panel.add(week_races_iw_field);
 
-        week_races_wm_field = new MyGuiComps.MyTextField();
-        week_races_wm_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
-        races_panel.add(week_races_wm_field);
-
-        month_race_wm_field = new MyGuiComps.MyTextField();
-        month_race_wm_field.setBounds(week_races_wm_field.getX(), week_races_wm_field.getY() + week_races_wm_field.getHeight() + 3, 50, 25);
-        races_panel.add(month_race_wm_field);
+//        week_races_wm_field = new MyGuiComps.MyTextField();
+//        week_races_wm_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
+//        races_panel.add(week_races_wm_field);
+//
+//        month_race_wm_field = new MyGuiComps.MyTextField();
+//        month_race_wm_field.setBounds(week_races_wm_field.getX(), week_races_wm_field.getY() + week_races_wm_field.getHeight() + 3, 50, 25);
+//        races_panel.add(month_race_wm_field);
 
         // ---------------------------  Baskets --------------------------- //
         MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();
