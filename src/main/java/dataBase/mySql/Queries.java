@@ -685,7 +685,6 @@ public class Queries {
         return MySql.select(query);
     }
 
-
     public static class Filters {
         public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";
         public static final String ONE_OR_MINUS_ONE = "(value = 1 or value = -1)";

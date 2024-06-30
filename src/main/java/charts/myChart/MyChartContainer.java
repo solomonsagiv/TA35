@@ -6,6 +6,7 @@ import dataBase.mySql.MySql;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -65,9 +66,12 @@ public class MyChartContainer extends JFrame {
         // Load each serie
         for (MyChart chart : charts) {
             for (MyTimeSeries serie : chart.getSeries()) {
-                new Thread(() -> {
+                try {
+//                        Thread.sleep(1000);
                     serie.load_data();
-                }).start();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 

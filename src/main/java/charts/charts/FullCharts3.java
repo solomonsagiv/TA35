@@ -180,10 +180,30 @@ public class FullCharts3 extends MyChartCreator {
         MyChart df_chart = new MyChart(series, props);
 
 
+        // ----------------------------------------- Races ----------------------------------------- //
+
+        // Index races wi
+        MyTimeSeries index_races_wi = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_RACES_WI);
+        index_races_wi.setColor(Themes.ORANGE);
+        index_races_wi.setStokeSize(1.2f);
+
+        // Week races wi
+        MyTimeSeries week_races_wi = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_RACES_WI);
+        week_races_wi.setColor(Themes.PURPLE);
+        week_races_wi.setStokeSize(1.2f);
+
+        series = new MyTimeSeries[2];
+        series[0] = index_races_wi;
+        series[1] = week_races_wi;
+
+
+        MyChart races_chart = new MyChart(series, props);
+
+
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, roll_chart, df_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, roll_chart, df_chart, races_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");

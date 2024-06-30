@@ -6,6 +6,8 @@ import dataBase.Factories;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import exp.Exp;
+import races.Race_Logic;
+
 import java.sql.ResultSet;
 
 public class TimeSeriesFactory {
@@ -354,6 +356,51 @@ public class TimeSeriesFactory {
 
                         Exp exp = ApiObject.getInstance().getExps().getWeek();
                         exp.setContinue_op_avg_240(val);
+                    }
+                };
+
+
+            case Factories.TimeSeries.INDEX_RACES_WI:
+                return new MyTimeSeries(Factories.TimeSeries.INDEX_RACES_WI) {
+
+                    @Override
+                    public double getValue() {
+                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.INDEX_RACES_WI, MySql.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.WEEK_RACES_WI:
+                return new MyTimeSeries(Factories.TimeSeries.INDEX_RACES_WI) {
+
+                    @Override
+                    public double getValue() {
+                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.WEEK_RACES_WI, MySql.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 

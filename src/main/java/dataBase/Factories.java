@@ -27,6 +27,8 @@ public class Factories {
         public static final String FUTURE_MONTH = "FUTURE_MONTH";
         public static final String ROLL_3600 = "ROLL_3600";
         public static final String ROLL_900 = "ROLL_900";
+        public static final String INDEX_RACES_WI  = "INDEX_RACES_WI";
+        public static final String WEEK_RACES_WI  = "WEEK_RACES_WI";
     }
 
     public static class IDs {
