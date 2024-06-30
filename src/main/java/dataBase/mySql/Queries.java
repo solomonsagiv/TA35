@@ -570,7 +570,6 @@ public class Queries {
         return 0;
     }
 
-
     public static HashMap<String, Integer> get_bounds(String title) {
 
         ApiObject apiObject = ApiObject.getInstance();
