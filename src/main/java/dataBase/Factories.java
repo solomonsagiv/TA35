@@ -70,6 +70,8 @@ public class Factories {
 //        public static final int DF_7 = 9478;
         public static final int ROLL_3600 = 9542;
         public static final int ROLL_900 = 9543;
+        public static final int INDEX_RACES_WI = 9789;
+        public static final int WEEK_RACES_WI = 9788;
 
 
 //        public static final int OP_AVG_WEEK = ;

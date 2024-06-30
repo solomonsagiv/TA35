@@ -6,7 +6,9 @@ import dataBase.Factories;
 import exp.Exp;
 import locals.L;
 import locals.Themes;
+import races.Race_Logic;
 import threads.MyThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -117,6 +119,11 @@ public class Updater extends MyThread implements Runnable {
                 window.pesimi_count_month_field.setText(str(expMonth.getPesimi_count()));
                 window.roll_optimi_count_month_field.setText(str(expMonth.getRoll_optimi_count()));
                 window.roll_pesimi_count_month_field.setText(str(expMonth.getRoll_pesimi_count()));
+
+                // Races
+                colorForgeRound(window.index_races_iw_field, (int) apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points(), false);
+                colorForgeRound(window.week_races_iw_field, (int) apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points(), false);
+
             }
         } catch (Exception e) {
             e.printStackTrace();

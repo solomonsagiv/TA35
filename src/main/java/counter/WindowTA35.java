@@ -72,6 +72,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField roll_optimi_count_month_field;
     public MyGuiComps.MyTextField roll_pesimi_count_month_field;
 
+    public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field, week_races_wm_field, month_race_wm_field;
+
     // Constructor
     public WindowTA35() {
         super("TA35");
@@ -135,10 +137,30 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         int panels_height = 90;
 
+        // ---------------------------  Races --------------------------- //
+        MyGuiComps.MyPanel races_panel = new MyGuiComps.MyPanel();
+        races_panel.setBounds(0, 26, 112, panels_height + 40);
+        getContentPane().add(races_panel);
+
+        index_races_iw_field = new MyGuiComps.MyTextField();
+        index_races_iw_field.setBounds(5, 5, 50, 25);
+        races_panel.add(index_races_iw_field);
+
+        week_races_iw_field = new MyGuiComps.MyTextField();
+        week_races_iw_field.setBounds(index_races_iw_field.getX(), index_races_iw_field.getY() + index_races_iw_field.getHeight() + 3, 50, 25);
+        races_panel.add(week_races_iw_field);
+
+        week_races_wm_field = new MyGuiComps.MyTextField();
+        week_races_wm_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
+        races_panel.add(week_races_wm_field);
+
+        month_race_wm_field = new MyGuiComps.MyTextField();
+        month_race_wm_field.setBounds(week_races_wm_field.getX(), week_races_wm_field.getY() + week_races_wm_field.getHeight() + 3, 50, 25);
+        races_panel.add(month_race_wm_field);
 
         // ---------------------------  Baskets --------------------------- //
         MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();
-        basketsPanel.setBounds(0, 26, 55, panels_height);
+        basketsPanel.setBounds(races_panel.getX() + races_panel.getWidth() + 1, races_panel.getY(), 55, panels_height);
         getContentPane().add(basketsPanel);
 
         basket_up_field = new MyGuiComps.MyTextField();
@@ -153,16 +175,31 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         basketsSumField.setBounds(basket_down_field.getX(), basket_down_field.getY() + basket_down_field.getHeight() + 3, 45, 25);
         basketsPanel.add(basketsSumField);
 
+        // ---------------- Decision ---------------- //
+        // ------- Header ------- //
+
+        // Races
+        MyGuiComps.MyPanel races_panel_header = new MyGuiComps.MyPanel();
+        races_panel_header.setBounds(0, 0, 112, 25);
+        getContentPane().add(races_panel_header);
+
+        MyGuiComps.MyLabel index_races_lbl = new MyGuiComps.MyLabel("Ind");
+        index_races_lbl.setBounds(0, 0, 55, 25);
+        races_panel_header.add(index_races_lbl);
+
+        MyGuiComps.MyLabel week_races_lbl = new MyGuiComps.MyLabel("Week");
+        week_races_lbl.setBounds(index_races_lbl.getX() + index_races_lbl.getWidth(), index_races_lbl.getY(), 55, 25);
+        races_panel_header.add(week_races_lbl);
+
         MyGuiComps.MyPanel basket_header_panel = new MyGuiComps.MyPanel();
-        basket_header_panel.setBounds(0, 0, 55, 25);
+        basket_header_panel.setBounds(races_panel_header.getX() + races_panel_header.getWidth() + 1, races_panel_header.getY(), 55, 25);
         getContentPane().add(basket_header_panel);
 
         MyGuiComps.MyLabel baskets_lbl = new MyGuiComps.MyLabel("Baskets");
         baskets_lbl.setBounds(0, 0, 55, 26);
         basket_header_panel.add(baskets_lbl);
 
-        // ---------------- Decision ---------------- //
-        // ------- Header ------- //
+
         MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
         decision_header_panel.setBounds(basket_header_panel.getX() + basket_header_panel.getWidth() + 1, basket_header_panel.getY(), 112, 25);
         decision_header_panel.setBackground(basket_header_panel.getBackground());

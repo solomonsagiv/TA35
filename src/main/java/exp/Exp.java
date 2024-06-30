@@ -179,4 +179,5 @@ public abstract class Exp implements IJsonData {
 	public void setRoll_pesimi_count(int roll_pesimi_count) {
 		this.roll_pesimi_count = roll_pesimi_count;
 	}
+
 }

@@ -7,14 +7,18 @@ import dataBase.DataBaseHandler;
 import dataBase.DataBaseService;
 import options.OptionsDataCalculator;
 import org.json.JSONArray;
+import races.Race_Logic;
+import races.RacesService;
 import service.BasketFinder_by_stocks;
 import service.DataReaderService;
 import service.IndDeltaService;
 import threads.MyThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 
 public class BackGroundRunner extends MyThread implements Runnable {
 
@@ -33,13 +37,13 @@ public class BackGroundRunner extends MyThread implements Runnable {
     public static String weekPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Week";
     public static String monthPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Month";
     public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
-    
+
     public static boolean preTradingBool = false;
     public static boolean streamMarketBool = false;
     public static boolean randomallyBool = false;
     public static boolean endMarketBool = false;
     boolean exported = false;
-    
+
     Color lightGreen = new Color(12, 135, 0);
     Color lightRed = new Color(229, 19, 0);
 
@@ -153,7 +157,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
             e.printStackTrace();
         }
     }
-    
+
     public void pre_open_services() {
         new OptionsDataCalculator();
 //        new OptionsReaderService(Options.WEEK, weekPath);
@@ -161,9 +165,13 @@ public class BackGroundRunner extends MyThread implements Runnable {
     }
 
     private void open_services() {
-        new BasketFinder_by_stocks(28, 3);
-        new DataBaseService();
-        new IndDeltaService(BackGroundRunner.excelPath);
+        HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map = new HashMap<>();
+        map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, apiObject.getRACE_MARGIN()));
+
+        apiObject.setBasketFinder_by_stocks(new BasketFinder_by_stocks(28, 3));
+        apiObject.setDataBaseService(new DataBaseService());
+        apiObject.setIndDeltaService(new IndDeltaService(BackGroundRunner.excelPath));
+        apiObject.setRacesService(new RacesService(map));
     }
 
     private String str(Object o) {

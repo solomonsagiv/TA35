@@ -8,6 +8,7 @@ import exp.ExpMonth;
 import exp.ExpWeek;
 import locals.L;
 import props.Props;
+import races.Race_Logic;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,21 +26,31 @@ public class DataBaseHandler {
     public static final String width = "width";
     public static final String height = "height";
 
+    ApiObject apiObject;
+
     public void load_data() {
 
-        ApiObject apiObject = ApiObject.getInstance();
+        apiObject = ApiObject.getInstance();
 
         // Exp
-        load_exp_data(apiObject);
+        load_exp_data();
 
         // Today
-        load_today_data(apiObject);
+        load_today_data();
+
+        // Load races
+        load_all_races();
 
         // Set loaded
         apiObject.setDbLoaded(true);
     }
 
-    public void load_today_data(ApiObject apiObject) {
+    private void load_all_races() {
+        load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, Factories.IDs.INDEX_RACES_WI, true);
+        load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, Factories.IDs.WEEK_RACES_WI, false);
+    }
+
+    public void load_today_data() {
         try {
             int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.IDs.BASKETS)));
             int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.IDs.BASKETS)));
@@ -51,7 +62,7 @@ public class DataBaseHandler {
         }
     }
 
-    public void load_exp_data(ApiObject apiObject) {
+    public void load_exp_data() {
         try {
             ExpWeek week = apiObject.getExps().getWeek();
             ExpMonth month = apiObject.getExps().getMonth();
@@ -176,7 +187,7 @@ public class DataBaseHandler {
                 int optimi = rs.getInt("optimi");
                 int pesimi = rs.getInt("pesimi");
                 client.getExps().getWeek().setRoll_optimi_count(optimi);
-                client.getExps().getWeek(). setRoll_pesimi_count(pesimi);
+                client.getExps().getWeek().setRoll_pesimi_count(pesimi);
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -192,6 +203,44 @@ public class DataBaseHandler {
                 int pesimi = rs.getInt("pesimi");
                 client.getExps().getMonth().setRoll_optimi_count(optimi);
                 client.getExps().getMonth().setRoll_pesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+
+    private void load_races(Race_Logic.RACE_RUNNER_ENUM race_runner_enum, int serie_id, boolean r_one_or_two) {
+        load_race_points(race_runner_enum, serie_id, true, r_one_or_two);
+        load_race_points(race_runner_enum, serie_id, false, r_one_or_two);
+    }
+
+    private void load_race_points(Race_Logic.RACE_RUNNER_ENUM race_runner_enum, int serie_id, boolean up_down, boolean r_one_or_two) {
+        ResultSet rs;
+        if (up_down) {
+            rs = Queries.get_races_up_sum(serie_id);
+        } else {
+            rs = Queries.get_races_down_sum(serie_id);
+        }
+
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                double value = rs.getDouble("value");
+
+                if (up_down) {
+                    if (r_one_or_two) {
+                        apiObject.getRacesService().get_race_logic(race_runner_enum).setR_one_up_points(value);
+                    } else {
+                        apiObject.getRacesService().get_race_logic(race_runner_enum).setR_two_up_points(value);
+                    }
+                } else {
+                    if (r_one_or_two) {
+                        apiObject.getRacesService().get_race_logic(race_runner_enum).setR_one_down_points(L.abs(value));
+                    } else {
+                        apiObject.getRacesService().get_race_logic(race_runner_enum).setR_two_down_points(L.abs(value));
+                    }
+
+                }
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

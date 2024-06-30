@@ -2,6 +2,7 @@ package api;
 
 import charts.myChart.MyChartList;
 import charts.myChart.TimeSeriesFactory;
+import dataBase.DataBaseService;
 import dataBase.Factories;
 import exp.Exps;
 import handlers.TimeSeriesHandler;
@@ -10,6 +11,9 @@ import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
+import races.RacesService;
+import service.BasketFinder_by_stocks;
+import service.IndDeltaService;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
 
@@ -72,6 +76,7 @@ public class ApiObject implements IJsonData {
     private int conDown = 0;
     private int indUp = 0;
     private int indDown = 0;
+    private final double RACE_MARGIN = 0;
 
     // Exp
     private int futureExpRaces = 0;
@@ -88,6 +93,12 @@ public class ApiObject implements IJsonData {
 
     private boolean started;
     private String name;
+
+    // Services
+    private BasketFinder_by_stocks basketFinder_by_stocks;
+    private DataBaseService dataBaseService;
+    private IndDeltaService indDeltaService;
+    private RacesService racesService;
 
     // Private constructor
     private ApiObject() {
@@ -552,6 +563,42 @@ public class ApiObject implements IJsonData {
 
     public void setIndex_avg_900(double index_avg_900) {
         this.index_avg_900 = index_avg_900;
+    }
+
+    public double getRACE_MARGIN() {
+        return RACE_MARGIN;
+    }
+
+    public BasketFinder_by_stocks getBasketFinder_by_stocks() {
+        return basketFinder_by_stocks;
+    }
+
+    public void setBasketFinder_by_stocks(BasketFinder_by_stocks basketFinder_by_stocks) {
+        this.basketFinder_by_stocks = basketFinder_by_stocks;
+    }
+
+    public DataBaseService getDataBaseService() {
+        return dataBaseService;
+    }
+
+    public void setDataBaseService(DataBaseService dataBaseService) {
+        this.dataBaseService = dataBaseService;
+    }
+
+    public IndDeltaService getIndDeltaService() {
+        return indDeltaService;
+    }
+
+    public void setIndDeltaService(IndDeltaService indDeltaService) {
+        this.indDeltaService = indDeltaService;
+    }
+
+    public RacesService getRacesService() {
+        return racesService;
+    }
+
+    public void setRacesService(RacesService racesService) {
+        this.racesService = racesService;
     }
 
     @Override

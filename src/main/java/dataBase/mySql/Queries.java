@@ -554,7 +554,7 @@ public class Queries {
                 "           and %s) a\n" +
                 "where row %s %s = 0;";
 
-        String query = String.format(q, "ts.timeseries_data", serie_id, Filters.TODAY, modulu, step_second);
+        String query = String.format(q, "ts.ca_timeseries_1min_candle", serie_id, Filters.TODAY, modulu, step_second);
         return MySql.select(query);
     }
 
@@ -663,6 +663,26 @@ public class Queries {
                 "         group by date) AVGS;";
 
         String query = String.format(q, avg_serie, exp);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_races_up_sum(int serie_id) {
+        String q = "select sum(value) as value\n" +
+                "from ts.timeseries_data\n" +
+                "where timeseries_id = %s\n" +
+                "  and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)\n" +
+                "and value > 0;";
+        String query = String.format(q, serie_id);
+        return MySql.select(query);
+    }
+
+    public static ResultSet get_races_down_sum(int serie_id) {
+        String q = "select sum(value) as value\n" +
+                "from ts.timeseries_data\n" +
+                "where timeseries_id = %s\n" +
+                "  and time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)\n" +
+                "and value < 0;";
+        String query = String.format(q, serie_id);
         return MySql.select(query);
     }
 
