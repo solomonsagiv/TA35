@@ -546,7 +546,7 @@ public class Queries {
 
         String modulu = "%";
 
-        String q = "select time, sum(value) over (ORDER BY time RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as value\n" +
+        String q = "select time, sum as value\n" +
                 "from (\n" +
                 "         select time, value, row_number() over (order by time) as row\n" +
                 "         from %s\n" +
