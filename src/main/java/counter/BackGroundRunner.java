@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import races.Race_Logic;
 import races.RacesService;
 import service.BasketFinder_by_stocks;
+import service.DataReaderService;
 import service.IndDeltaService;
 import threads.MyThread;
 
@@ -79,9 +80,10 @@ public class BackGroundRunner extends MyThread implements Runnable {
             }
 
             // Data reader
-//            new DataReaderService(BackGroundRunner.excelPath);
-//            apiObject.getServiceHandler().getHandler().start();
-//
+            new DataReaderService(BackGroundRunner.excelPath);
+            apiObject.getServiceHandler().getHandler().start();
+
+
             open_services();
 
             while (true) {
