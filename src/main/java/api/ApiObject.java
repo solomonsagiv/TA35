@@ -2,6 +2,7 @@ package api;
 
 import charts.myChart.MyChartList;
 import charts.myChart.TimeSeriesFactory;
+import counter.BackGroundRunner;
 import dataBase.DataBaseService;
 import dataBase.Factories;
 import exp.Exps;
@@ -11,6 +12,7 @@ import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
+import races.Race_Logic;
 import races.RacesService;
 import service.BasketFinder_by_stocks;
 import service.IndDeltaService;
@@ -18,6 +20,7 @@ import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ApiObject implements IJsonData {
 
@@ -106,7 +109,20 @@ public class ApiObject implements IJsonData {
         stocksHandler = new StocksHandler();
         this.name = "ta35";
 
+
+        open_services();
+
         init_time_series();
+    }
+
+    private void open_services() {
+        setIndDeltaService(new IndDeltaService(BackGroundRunner.excelPath));
+        HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map = new HashMap<>();
+        map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, apiObject.getRACE_MARGIN()));
+
+        setBasketFinder_by_stocks(new BasketFinder_by_stocks(28, 3));
+        setDataBaseService(new DataBaseService());
+        setRacesService(new RacesService(map));
     }
 
     private void init_time_series() {
