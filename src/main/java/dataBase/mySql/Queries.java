@@ -543,18 +543,12 @@ public class Queries {
     }
 
     private static ResultSet get_serie_cdf_mega_table(int serie_id) {
+        String q = "select time, sum(sum) OVER (ORDER BY time RANGE BETWEEN INTERVAL '10 hours' PRECEDING AND CURRENT ROW) AS value\n" +
+                "from %s\n" +
+                "where timeseries_id = %s\n" +
+                "  and %s;";
 
-        String modulu = "%";
-
-        String q = "select time, sum as value\n" +
-                "from (\n" +
-                "         select time, sum, row_number() over (order by time) as row\n" +
-                "         from %s\n" +
-                "         where timeseries_id = %s\n" +
-                "           and %s) a\n" +
-                "where row %s %s = 0;";
-
-        String query = String.format(q, "ts.ca_timeseries_1min_candle", serie_id, Filters.TODAY, modulu, step_second);
+        String query = String.format(q, "ts.ca_timeseries_1min_candle", serie_id, Filters.TODAY);
         return MySql.select(query);
     }
 
