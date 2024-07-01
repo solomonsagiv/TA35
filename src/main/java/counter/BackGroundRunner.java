@@ -4,15 +4,21 @@ import api.ApiObject;
 import api.Manifest;
 import arik.Arik;
 import dataBase.DataBaseHandler;
+import dataBase.DataBaseService;
 import options.OptionsDataCalculator;
 import org.json.JSONArray;
+import races.Race_Logic;
+import races.RacesService;
+import service.BasketFinder_by_stocks;
 import service.DataReaderService;
+import service.IndDeltaService;
 import threads.MyThread;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 
 public class BackGroundRunner extends MyThread implements Runnable {
 
@@ -77,6 +83,9 @@ public class BackGroundRunner extends MyThread implements Runnable {
             new DataReaderService(BackGroundRunner.excelPath);
             apiObject.getServiceHandler().getHandler().start();
 
+            pre_open_services();
+            open_services();
+
             while (true) {
                 try {
                     // Sleep
@@ -99,7 +108,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         // Auto start
                         if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
                             apiObject.setFutureOpen(apiObject.getExps().getMonth().getOptions().getContract());
-                            pre_open_services();
 
                             apiObject.start();
 
@@ -158,13 +166,13 @@ public class BackGroundRunner extends MyThread implements Runnable {
     }
 
     private void open_services() {
-//        apiObject.setIndDeltaService(new IndDeltaService(BackGroundRunner.excelPath));
-//        HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map = new HashMap<>();
-//        map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, apiObject.getRACE_MARGIN()));
-//
-//        apiObject.setBasketFinder_by_stocks(new BasketFinder_by_stocks(28, 3));
-//        apiObject.setDataBaseService(new DataBaseService());
-//        apiObject.setRacesService(new RacesService(map));
+
+        HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map = new HashMap<>();
+        map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, apiObject.getRACE_MARGIN()));
+        apiObject.setIndDeltaService(new IndDeltaService(BackGroundRunner.excelPath));
+        apiObject.setBasketFinder_by_stocks(new BasketFinder_by_stocks(28, 3));
+        apiObject.setDataBaseService(new DataBaseService());
+        apiObject.setRacesService(new RacesService(map));
     }
 
     private String str(Object o) {

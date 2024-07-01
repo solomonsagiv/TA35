@@ -109,21 +109,10 @@ public class ApiObject implements IJsonData {
         stocksHandler = new StocksHandler();
         this.name = "ta35";
 
-
-        open_services();
-
         init_time_series();
     }
 
-    private void open_services() {
-        setIndDeltaService(new IndDeltaService(BackGroundRunner.excelPath));
-        HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map = new HashMap<>();
-        map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, apiObject.getRACE_MARGIN()));
 
-        setBasketFinder_by_stocks(new BasketFinder_by_stocks(28, 3));
-        setDataBaseService(new DataBaseService());
-        setRacesService(new RacesService(map));
-    }
 
     private void init_time_series() {
         timeSeriesHandler = new TimeSeriesHandler();
