@@ -75,8 +75,6 @@ public class MyChartContainer extends JFrame {
             }
         }
 
-        // Check load
-        check_load();
     }
 
 

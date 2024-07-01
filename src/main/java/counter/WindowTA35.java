@@ -138,18 +138,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         int panels_height = 90;
 
-        // ---------------------------  Races --------------------------- //
-        MyGuiComps.MyPanel races_panel = new MyGuiComps.MyPanel();
-        races_panel.setBounds(0, 26, 112, panels_height + 40);
-        getContentPane().add(races_panel);
 
-        index_races_iw_field = new MyGuiComps.MyTextField();
-        index_races_iw_field.setBounds(5, 5, 50, 25);
-        races_panel.add(index_races_iw_field);
-
-        week_races_iw_field = new MyGuiComps.MyTextField();
-        week_races_iw_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
-        races_panel.add(week_races_iw_field);
 
 //        week_races_wm_field = new MyGuiComps.MyTextField();
 //        week_races_wm_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
@@ -159,47 +148,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 //        month_race_wm_field.setBounds(week_races_wm_field.getX(), week_races_wm_field.getY() + week_races_wm_field.getHeight() + 3, 50, 25);
 //        races_panel.add(month_race_wm_field);
 
-        // ---------------------------  Baskets --------------------------- //
-        MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();
-        basketsPanel.setBounds(races_panel.getX() + races_panel.getWidth() + 1, races_panel.getY(), 55, panels_height);
-        getContentPane().add(basketsPanel);
 
-        basket_up_field = new MyGuiComps.MyTextField();
-        basket_up_field.setBounds(5, 5, 45, 25);
-        basketsPanel.add(basket_up_field);
-
-        basket_down_field = new MyGuiComps.MyTextField();
-        basket_down_field.setBounds(basket_up_field.getX(), basket_up_field.getY() + basket_up_field.getHeight() + 3, 45, 25);
-        basketsPanel.add(basket_down_field);
-
-        basketsSumField = new MyGuiComps.MyTextField();
-        basketsSumField.setBounds(basket_down_field.getX(), basket_down_field.getY() + basket_down_field.getHeight() + 3, 45, 25);
-        basketsPanel.add(basketsSumField);
-
-        // ---------------- Decision ---------------- //
+        // --------------------------- headers ---------------------------- //
         // ------- Header ------- //
-
-        // Races
-        MyGuiComps.MyPanel races_panel_header = new MyGuiComps.MyPanel();
-        races_panel_header.setBounds(0, 0, 112, 25);
-        getContentPane().add(races_panel_header);
-
-        MyGuiComps.MyLabel index_races_lbl = new MyGuiComps.MyLabel("Ind");
-        index_races_lbl.setBounds(0, 0, 55, 25);
-        races_panel_header.add(index_races_lbl);
-
-        MyGuiComps.MyLabel week_races_lbl = new MyGuiComps.MyLabel("Week");
-        week_races_lbl.setBounds(index_races_lbl.getX() + index_races_lbl.getWidth(), index_races_lbl.getY(), 55, 25);
-        races_panel_header.add(week_races_lbl);
-
         MyGuiComps.MyPanel basket_header_panel = new MyGuiComps.MyPanel();
-        basket_header_panel.setBounds(races_panel_header.getX() + races_panel_header.getWidth() + 1, races_panel_header.getY(), 55, 25);
+        basket_header_panel.setBounds(0, 0, 55, 25);
         getContentPane().add(basket_header_panel);
 
         MyGuiComps.MyLabel baskets_lbl = new MyGuiComps.MyLabel("Baskets");
         baskets_lbl.setBounds(0, 0, 55, 26);
         basket_header_panel.add(baskets_lbl);
-
 
         MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
         decision_header_panel.setBounds(basket_header_panel.getX() + basket_header_panel.getWidth() + 1, basket_header_panel.getY(), 112, 25);
@@ -220,6 +178,83 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         decisions_panel.setWidth(decision_header_panel.getWidth());
         decisions_panel.setHeight(panels_height);
         getContentPane().add(decisions_panel);
+
+        // Races
+        MyGuiComps.MyPanel races_panel_header = new MyGuiComps.MyPanel();
+        races_panel_header.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, decision_header_panel.getY(), 112, 25);
+        getContentPane().add(races_panel_header);
+
+        MyGuiComps.MyLabel index_races_lbl = new MyGuiComps.MyLabel("Ind");
+        index_races_lbl.setBounds(0, 0, 55, 25);
+        races_panel_header.add(index_races_lbl);
+
+        MyGuiComps.MyLabel week_races_lbl = new MyGuiComps.MyLabel("Week");
+        week_races_lbl.setBounds(index_races_lbl.getX() + index_races_lbl.getWidth(), index_races_lbl.getY(), 55, 25);
+        races_panel_header.add(week_races_lbl);
+
+
+        // Exp
+        MyGuiComps.MyPanel exp_header_panel = new MyGuiComps.MyPanel();
+        exp_header_panel.setLayout(null);
+        exp_header_panel.setBounds(races_panel_header.getX() + races_panel_header.getWidth() + 1, 0, 450, 25);
+        getContentPane().add(exp_header_panel);
+
+        MyGuiComps.MyLabel exp_move_lbl = new MyGuiComps.MyLabel("Move");
+        exp_move_lbl.setBounds(66, 0, 50, 25);
+        exp_header_panel.add(exp_move_lbl);
+
+        MyGuiComps.MyLabel exp_v5 = new MyGuiComps.MyLabel("V5");
+        exp_v5.setBounds(exp_move_lbl.getX() + exp_move_lbl.getWidth() + 1, exp_move_lbl.getY(), 50, 25);
+        exp_header_panel.add(exp_v5);
+
+        MyGuiComps.MyLabel exp_v6 = new MyGuiComps.MyLabel("V6");
+        exp_v6.setBounds(exp_v5.getX() + exp_v5.getWidth() + 1, exp_v5.getY(), 50, 25);
+        exp_header_panel.add(exp_v6);
+
+        MyGuiComps.MyLabel exp_v8 = new MyGuiComps.MyLabel("V8");
+        exp_v8.setBounds(exp_v6.getX() + exp_v6.getWidth() + 1, exp_v6.getY(), 50, 25);
+        exp_header_panel.add(exp_v8);
+
+        // Baskets
+        MyGuiComps.MyLabel exp_baskets = new MyGuiComps.MyLabel("Baskets");
+        exp_baskets.setBounds(exp_v8.getX() + exp_v8.getWidth() + 1, exp_v8.getY(), 50, 25);
+        exp_header_panel.add(exp_baskets);
+
+        // Op
+        MyGuiComps.MyLabel op_count_lbl = new MyGuiComps.MyLabel("O / P");
+        op_count_lbl.setBounds(exp_baskets.getX() + exp_baskets.getWidth() + 5, exp_baskets.getY(), 50, 25);
+        op_count_lbl.setAlignmentX(MyGuiComps.MyLabel.CENTER);
+        exp_header_panel.add(op_count_lbl);
+
+
+        // Roll
+        MyGuiComps.MyLabel roll_count_lbl = new MyGuiComps.MyLabel("Roll");
+        roll_count_lbl.setBounds(op_count_lbl.getX() + op_count_lbl.getWidth() + 5, op_count_lbl.getY(), 50, 25);
+        roll_count_lbl.setAlignmentX(MyGuiComps.MyLabel.CENTER);
+        exp_header_panel.add(roll_count_lbl);
+
+        MyGuiComps.MyLabel exp_lbl = new MyGuiComps.MyLabel("Exp");
+        exp_lbl.setBounds(0, 0, 68, 25);
+        exp_header_panel.add(exp_lbl);
+
+        // ---------------------------  Baskets --------------------------- //
+        MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();
+        basketsPanel.setBounds(basket_header_panel.getX(), basket_header_panel.getY() + basket_header_panel.getHeight() + 1, basket_header_panel.getWidth(), panels_height);
+        getContentPane().add(basketsPanel);
+
+        basket_up_field = new MyGuiComps.MyTextField();
+        basket_up_field.setBounds(5, 5, 45, 25);
+        basketsPanel.add(basket_up_field);
+
+        basket_down_field = new MyGuiComps.MyTextField();
+        basket_down_field.setBounds(basket_up_field.getX(), basket_up_field.getY() + basket_up_field.getHeight() + 3, 45, 25);
+        basketsPanel.add(basket_down_field);
+
+        basketsSumField = new MyGuiComps.MyTextField();
+        basketsSumField.setBounds(basket_down_field.getX(), basket_down_field.getY() + basket_down_field.getHeight() + 3, 45, 25);
+        basketsPanel.add(basketsSumField);
+
+        // ---------------- Decision ---------------- //
 
         // V4
         v2_field = new MyGuiComps.MyTextField();
@@ -246,6 +281,20 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         v9_field.setBounds(v5_field.getX(), v5_field.getY() + v5_field.getHeight() + 3, 50, 25);
         decisions_panel.add(v9_field);
 
+        // ---------------------------  Races --------------------------- //
+        MyGuiComps.MyPanel races_panel = new MyGuiComps.MyPanel();
+        races_panel.setBounds(races_panel_header.getX(), races_panel.getY() + races_panel_header.getHeight() + 1, 112, panels_height);
+        getContentPane().add(races_panel);
+
+        index_races_iw_field = new MyGuiComps.MyTextField();
+        index_races_iw_field.setBounds(5, 5, 50, 25);
+        races_panel.add(index_races_iw_field);
+
+        week_races_iw_field = new MyGuiComps.MyTextField();
+        week_races_iw_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
+        races_panel.add(week_races_iw_field);
+
+
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
         logPanel.setBounds(897, 0, 147, panels_height);
@@ -256,52 +305,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         log.setBounds(10, 11, 127, 80);
         logPanel.add(log);
 
-        MyGuiComps.MyPanel exp_header_panel = new MyGuiComps.MyPanel();
-        exp_header_panel.setLayout(null);
-        exp_header_panel.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, 0, 450, 25);
-        getContentPane().add(exp_header_panel);
-
-        MyGuiComps.MyLabel exp_move_lbl = new MyGuiComps.MyLabel("Move");
-        exp_move_lbl.setBounds(66, 0, 50, 25);
-        exp_header_panel.add(exp_move_lbl);
-
-        MyGuiComps.MyLabel exp_v5 = new MyGuiComps.MyLabel("V5");
-        exp_v5.setBounds(exp_move_lbl.getX() + exp_move_lbl.getWidth() + 1, exp_move_lbl.getY(), 50, 25);
-        exp_header_panel.add(exp_v5);
-
-        MyGuiComps.MyLabel exp_v6 = new MyGuiComps.MyLabel("V6");
-        exp_v6.setBounds(exp_v5.getX() + exp_v5.getWidth() + 1, exp_v5.getY(), 50, 25);
-        exp_header_panel.add(exp_v6);
-
-        MyGuiComps.MyLabel exp_v8 = new MyGuiComps.MyLabel("V8");
-        exp_v8.setBounds(exp_v6.getX() + exp_v6.getWidth() + 1, exp_v6.getY(), 50, 25);
-        exp_header_panel.add(exp_v8);
-
-        MyGuiComps.MyLabel exp_baskets = new MyGuiComps.MyLabel("Baskets");
-        exp_baskets.setBounds(exp_v8.getX() + exp_v8.getWidth() + 1, exp_v8.getY(), 50, 25);
-        exp_header_panel.add(exp_baskets);
-
-        MyGuiComps.MyLabel op_count_lbl = new MyGuiComps.MyLabel("O / P");
-        op_count_lbl.setBounds(exp_baskets.getX() + exp_baskets.getWidth() + 5, exp_baskets.getY(), 50, 25);
-        op_count_lbl.setAlignmentX(MyGuiComps.MyLabel.CENTER);
-        exp_header_panel.add(op_count_lbl);
-
-
-        MyGuiComps.MyLabel roll_count_lbl = new MyGuiComps.MyLabel("Roll");
-        roll_count_lbl.setBounds(op_count_lbl.getX() + op_count_lbl.getWidth() + 5, op_count_lbl.getY(), 50, 25);
-        roll_count_lbl.setAlignmentX(MyGuiComps.MyLabel.CENTER);
-        exp_header_panel.add(roll_count_lbl);
-
-        MyGuiComps.MyLabel exp_lbl = new MyGuiComps.MyLabel("Exp");
-        exp_lbl.setBounds(0, 0, 68, 25);
-        exp_header_panel.add(exp_lbl);
-
         // -------------------------- EXP -------------------------- //
         MyGuiComps.MyPanel exp_panel = new MyGuiComps.MyPanel();
         exp_panel.setBounds(exp_header_panel.getX(), exp_header_panel.getY() + exp_header_panel.getHeight() + 1, 450, panels_height);
         getContentPane().add(exp_panel);
         exp_panel.setLayout(null);
-
 
         // ------ Week ------ //
         MyGuiComps.MyLabel week_lbl = new MyGuiComps.MyLabel("Week");

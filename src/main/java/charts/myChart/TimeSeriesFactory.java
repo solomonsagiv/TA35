@@ -383,7 +383,7 @@ public class TimeSeriesFactory {
                 };
 
             case Factories.TimeSeries.WEEK_RACES_WI:
-                return new MyTimeSeries(Factories.TimeSeries.INDEX_RACES_WI) {
+                return new MyTimeSeries(Factories.TimeSeries.WEEK_RACES_WI) {
 
                     @Override
                     public double getValue() {
