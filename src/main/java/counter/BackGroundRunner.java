@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import races.Race_Logic;
 import races.RacesService;
 import service.BasketFinder_by_stocks;
-import service.DataReaderService;
 import service.IndDeltaService;
 import threads.MyThread;
 
@@ -80,8 +79,10 @@ public class BackGroundRunner extends MyThread implements Runnable {
             }
 
             // Data reader
-            new DataReaderService(BackGroundRunner.excelPath);
-            apiObject.getServiceHandler().getHandler().start();
+//            new DataReaderService(BackGroundRunner.excelPath);
+//            apiObject.getServiceHandler().getHandler().start();
+//
+            open_services();
 
             while (true) {
                 try {
@@ -106,7 +107,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
                             apiObject.setFutureOpen(apiObject.getExps().getMonth().getOptions().getContract());
                             pre_open_services();
-                            open_services();
+
 
                             apiObject.start();
 
