@@ -28,7 +28,6 @@ public class Race_Logic {
     final double r_one_increase_points = 1;
     final double r_two_increase_points = 1;
 
-    private boolean one_two = true;
 
     public Race_Logic(RACE_RUNNER_ENUM race_runners, double RACE_MARGIN) {
         this.client = ApiObject.getInstance();
@@ -41,13 +40,8 @@ public class Race_Logic {
         // First time update data
         first_time_update_data();
 
-        if (one_two) {
-            out_of_race_r1();
-            in_race_r1();
-        } else {
-            out_of_race_r2();
-            in_race_r2();
-        }
+        out_of_race_r1();
+        in_race_r1();
     }
 
     private void first_time_update_data() {
@@ -127,77 +121,6 @@ public class Race_Logic {
         }
     }
 
-    private void in_race_r2() {
-
-        // ------------ R_TWO ------------ //
-        // UP
-        if (R_TWO_UP) {
-            // R two close
-            if (r_two_margin < L.opo(RACE_MARGIN)) {
-                R_TWO_UP = false;
-                return;
-            }
-
-            // R one win
-            if (r_one_margin > RACE_MARGIN) {
-                r_two_win_up();
-                reset_races();
-                return;
-            }
-        }
-
-        // DOWN
-        if (R_TWO_DOWN) {
-            // R two close
-            if (r_two_margin > RACE_MARGIN) {
-                R_TWO_DOWN = false;
-                return;
-            }
-
-            // R two win
-            if (r_one_margin < L.opo(RACE_MARGIN)) {
-                r_two_win_down();
-                reset_races();
-                return;
-            }
-        }
-
-        // ------------ R_ONE ------------ //
-        // UP
-        if (R_ONE_UP) {
-
-            // R one win
-            if (r_two_margin > RACE_MARGIN) {
-                r_one_win_up();
-                reset_races();
-                return;
-            }
-
-            // R one close
-            if (r_one_margin < L.opo(RACE_MARGIN)) {
-                R_ONE_UP = false;
-                return;
-            }
-        }
-
-        // DOWN
-        if (R_ONE_DOWN) {
-
-            // R one win
-            if (r_two_margin < L.opo(RACE_MARGIN)) {
-                r_one_win_down();
-                reset_races();
-                return;
-            }
-
-            // R one close
-            if (r_one_margin > RACE_MARGIN) {
-                R_ONE_DOWN = false;
-                return;
-            }
-        }
-
-    }
 
 
     // OUT OF RACE
@@ -231,37 +154,6 @@ public class Race_Logic {
         }
     }
 
-    // OUT OF RACE
-    private void out_of_race_r2() {
-        // If no race
-        if (!is_in_race()) {
-
-            // RUNNER TWO UP
-            if (r_two_margin > RACE_MARGIN) {
-                R_TWO_UP = true;
-                return;
-            }
-
-            // RUNNER TWO DOWN
-            if (r_two_margin < L.opo(RACE_MARGIN)) {
-                R_TWO_DOWN = true;
-                return;
-            }
-
-            // RUNNER ONE UP
-            if (r_one_margin > RACE_MARGIN) {
-                R_ONE_UP = true;
-                return;
-            }
-
-            // RUNNER ONE DOWN
-            if (r_one_margin < L.opo(RACE_MARGIN)) {
-                R_ONE_DOWN = true;
-                return;
-            }
-        }
-    }
-
 
     // Update data
     public void update_data() {
@@ -284,10 +176,8 @@ public class Race_Logic {
         R_ONE_DOWN = false;
         R_TWO_UP = false;
         R_TWO_DOWN = false;
-
-        one_two = !one_two;
     }
-    
+
     // Update runners price
     private void update_runners_price() {
         switch (race_runners) {
