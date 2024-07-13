@@ -301,6 +301,10 @@ public class Race_Logic {
         }
     }
 
+    public double get_r1_minus_r2() {
+        return get_r_one_points() - get_r_two_points();
+    }
+
     public double get_sum_points() {
         return get_r_one_points() + get_r_two_points();
     }

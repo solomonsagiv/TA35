@@ -679,6 +679,27 @@ public class Queries {
         return MySql.select(query);
     }
 
+    public static ResultSet get_races_margin_r1_minus_r2(int r_one_id, int r_two_id) {
+        String q = "with r_one_race as (\n" +
+                "    select *, sum(value) over (ORDER BY time ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)\n" +
+                "    from ts.timeseries_data\n" +
+                "    where timeseries_id = %s\n" +
+                "    and date_trunc('day', time) between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)\n" +
+                "),\n" +
+                "     r_two_race as (\n" +
+                "         select *, sum(value) over (ORDER BY time ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)\n" +
+                "         from ts.timeseries_data\n" +
+                "         where timeseries_id = %s\n" +
+                "           and date_trunc('day', time) between date_trunc('day', now()) and date_trunc('day', now()+ interval '1' day)\n" +
+                "     )\n" +
+                "select r_one_race.time, r_one_race.sum + r_two_race.sum as value\n" +
+                "from r_one_race\n" +
+                "         inner join r_two_race on r_one_race.time = r_two_race.time;";
+        String query = String.format(q, r_one_id, r_two_id);
+        return MySql.select(query);
+    }
+
+
     public static class Filters {
         public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";
         public static final String ONE_OR_MINUS_ONE = "(value = 1 or value = -1)";

@@ -29,6 +29,7 @@ public class Factories {
         public static final String ROLL_900 = "ROLL_900";
         public static final String INDEX_RACES_WI  = "INDEX_RACES_WI";
         public static final String WEEK_RACES_WI  = "WEEK_RACES_WI";
+        public static final String R1_MINUS_R2_IQ = "R1_MINUS_R2_IQ";
     }
 
     public static class IDs {

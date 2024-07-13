@@ -404,6 +404,31 @@ public class TimeSeriesFactory {
                     }
                 };
 
+            case Factories.TimeSeries.R1_MINUS_R2_IQ:
+                return new MyTimeSeries(Factories.TimeSeries.R1_MINUS_R2_IQ) {
+
+                    @Override
+                    public double getValue() {
+                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.Q1_INDEX).get_r1_minus_r2();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        int r_one_id = Factories.IDs.INDEX_RACES_WI;
+                        int r_two_id = Factories.IDs.WEEK_RACES_WI;
+                        ResultSet rs = Queries.get_races_margin_r1_minus_r2(r_one_id, r_two_id);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+
             default:
                 break;
         }

@@ -2,7 +2,6 @@ package api;
 
 import charts.myChart.MyChartList;
 import charts.myChart.TimeSeriesFactory;
-import counter.BackGroundRunner;
 import dataBase.DataBaseService;
 import dataBase.Factories;
 import exp.Exps;
@@ -12,7 +11,6 @@ import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
-import races.Race_Logic;
 import races.RacesService;
 import service.BasketFinder_by_stocks;
 import service.IndDeltaService;
@@ -20,7 +18,6 @@ import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ApiObject implements IJsonData {
 
@@ -111,8 +108,6 @@ public class ApiObject implements IJsonData {
 
         init_time_series();
     }
-
-
 
     private void init_time_series() {
         timeSeriesHandler = new TimeSeriesHandler();
