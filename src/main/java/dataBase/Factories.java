@@ -30,6 +30,8 @@ public class Factories {
         public static final String INDEX_RACES_WI  = "INDEX_RACES_WI";
         public static final String WEEK_RACES_WI  = "WEEK_RACES_WI";
         public static final String R1_MINUS_R2_IQ = "R1_MINUS_R2_IQ";
+        public static final String MONTH_RACES_WM = "MONTH_RACES_WM";
+        public static final String WEEK_RACES_WM = "WEEK_RACES_WM";
     }
 
     public static class IDs {
@@ -75,6 +77,9 @@ public class Factories {
         public static final int ROLL_900 = 9543;
         public static final int INDEX_RACES_WI = 9789;
         public static final int WEEK_RACES_WI = 9788;
+
+        public static final int MONTH_RACES_WM = 9791;
+        public static final int WEEK_RACES_WM = 9790;
 
 
 //        public static final int OP_AVG_WEEK = ;

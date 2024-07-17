@@ -169,6 +169,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
         HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map = new HashMap<>();
         map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, apiObject.getRACE_MARGIN()));
+        map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, apiObject.getRACE_MARGIN()));
         apiObject.setIndDeltaService(new IndDeltaService(BackGroundRunner.excelPath));
         apiObject.setBasketFinder_by_stocks(new BasketFinder_by_stocks(28, 3));
         apiObject.setDataBaseService(new DataBaseService());

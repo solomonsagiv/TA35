@@ -17,10 +17,14 @@ public class DataBaseService extends MyBaseService {
     double baskets_0 = 0;
     double index_races_0 = 0;
     double week_races_0 = 0;
+    double month_races_wm_0 = 0;
+    double week_races_wm_0 = 0;
 
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> index_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_races_timeStamp  = new ArrayList<>();
+    ArrayList<MyTimeStampObject> month_races_wm_timeStamp  = new ArrayList<>();
+    ArrayList<MyTimeStampObject> week_races_wm_timeStamp  = new ArrayList<>();
 
     ExpWeek week;
     ExpMonth month;
@@ -90,6 +94,25 @@ public class DataBaseService extends MyBaseService {
         }
 
 
+        // Month races wm
+        double month_races_wm = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
+
+        if (month_races_wm != month_races_wm_0) {
+            double last_count = month_races_wm - month_races_wm_0;
+            month_races_wm_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            month_races_wm_0 = month_races_wm;
+        }
+
+        // Month races wm
+        double week_races_wm = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_two_points();
+
+        if (week_races_wm != week_races_wm_0) {
+            double last_count = week_races_wm - week_races_wm_0;
+            week_races_wm_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            week_races_wm_0 = week_races_wm;
+        }
+
+
         // Op avg week
         if (sleepCount % 1000 == 0) {
             Instant instant = Instant.now();
@@ -114,6 +137,9 @@ public class DataBaseService extends MyBaseService {
             insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS);
             insert_data_retro_mega(index_races_timeStamp, Factories.IDs.INDEX_RACES_WI);
             insert_data_retro_mega(week_races_timeStamp, Factories.IDs.WEEK_RACES_WI);
+
+            insert_data_retro_mega(week_races_wm_timeStamp, Factories.IDs.WEEK_RACES_WM);
+            insert_data_retro_mega(month_races_wm_timeStamp, Factories.IDs.MONTH_RACES_WM);
         }).start();
     }
 

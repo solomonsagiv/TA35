@@ -429,6 +429,51 @@ public class TimeSeriesFactory {
                 };
 
 
+            case Factories.TimeSeries.WEEK_RACES_WM:
+                return new MyTimeSeries(Factories.TimeSeries.WEEK_RACES_WM) {
+
+                    @Override
+                    public double getValue() {
+                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_two_points();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.WEEK_RACES_WM, MySql.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+
+            case Factories.TimeSeries.MONTH_RACES_WM:
+                return new MyTimeSeries(Factories.TimeSeries.MONTH_RACES_WM) {
+
+                    @Override
+                    public double getValue() {
+                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.MONTH_RACES_WM, MySql.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
             default:
                 break;
         }

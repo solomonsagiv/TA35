@@ -141,11 +141,33 @@ public class Races_Chart extends MyChartCreator {
 
         MyChart minus_chart = new MyChart(series, props);
 
+        // ----------------------------------------- Races wm ----------------------------------------- //
+
+        // Week races wm
+        MyTimeSeries week_races_wm = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_RACES_WM);
+        week_races_wm.setColor(Themes.PURPLE);
+        week_races_wm.setStokeSize(1.2f);
+
+
+        // Index races wi
+        MyTimeSeries month_races_wm = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
+        month_races_wm.setColor(Themes.RED);
+        month_races_wm.setStokeSize(1.2f);
+
+
+        // Week races wi
+        series = new MyTimeSeries[2];
+        series[0] = week_races_wm;
+        series[1] = month_races_wm;
+
+
+        MyChart wm_races_chart = new MyChart(series, props);
+
 
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, races_chart, minus_chart};
+        MyChart[] charts = {indexChart, races_chart, minus_chart, wm_races_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
