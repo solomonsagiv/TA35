@@ -192,9 +192,16 @@ public class FullCharts3 extends MyChartCreator {
         week_races_wi.setColor(Themes.PURPLE);
         week_races_wi.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[2];
+        // Index races wi
+        MyTimeSeries month_races_wm = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
+        month_races_wm.setColor(Themes.RED);
+        month_races_wm.setStokeSize(1.2f);
+
+
+        series = new MyTimeSeries[3];
         series[0] = index_races_wi;
         series[1] = week_races_wi;
+        series[2] = month_races_wm;
 
 
         MyChart races_chart = new MyChart(series, props);

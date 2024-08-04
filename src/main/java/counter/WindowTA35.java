@@ -5,7 +5,6 @@ import api.dde.DDE.DDEConnection;
 import book.BookWindow;
 import charts.charts.FullCharts3;
 import charts.charts.MainMonthWeekChart;
-import charts.charts.Races_Chart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
@@ -502,10 +501,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                         MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
                         mainMonthWeekChart.createChart();
                         break;
-                    case "Races":
-                        Races_Chart races_chart = new Races_Chart(apiObject);
-                        races_chart.createChart();
-                        break;
                     default:
                         break;
                 }
@@ -526,9 +521,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             FullCharts3 fullCharts = new FullCharts3(ApiObject.getInstance());
             fullCharts.createChart();
 
-            //  Races
-            Races_Chart races_chart = new Races_Chart(ApiObject.getInstance());
-            races_chart.createChart();
         } catch (Exception e) {
             e.printStackTrace();
         }
