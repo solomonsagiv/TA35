@@ -70,41 +70,47 @@ public class DataBaseHandler {
             ExpWeek week = apiObject.getExps().getWeek();
             ExpMonth month = apiObject.getExps().getMonth();
 
-            double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_WEEK_START));
-            double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_MONTH_START));
-            double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_WEEK_START));
-            double start_exp_month = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_MONTH_START));
+            new Thread(() -> {
 
-            double v4_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_4_old, Props.EXP_WEEK_START));
-            double v8_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_8_old, Props.EXP_WEEK_START));
-            double v9_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_9, Props.EXP_WEEK_START));
 
-            double v5_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_5_old, Props.EXP_MONTH_START));
-            double v6_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_6_old, Props.EXP_MONTH_START));
-            double v8_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_9, Props.EXP_MONTH_START));
+                double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_WEEK_START));
+                double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_MONTH_START));
+                double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_WEEK_START));
+                double start_exp_month = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_MONTH_START));
 
+                double v4_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_4_old, Props.EXP_WEEK_START));
+                double v8_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_8_old, Props.EXP_WEEK_START));
+                double v9_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_9, Props.EXP_WEEK_START));
+
+                double v5_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_5_old, Props.EXP_MONTH_START));
+                double v6_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_6_old, Props.EXP_MONTH_START));
+                double v8_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_9, Props.EXP_MONTH_START));
+
+                // Start
+                week.getExpData().setStart(start_exp_week);
+                month.getExpData().setStart(start_exp_month);
+
+                // Baskets
+                week.getExpData().setBaskets((int) baskets_exp_week);
+                month.getExpData().setBaskets((int) baskets_exp_month);
+
+                // DF
+                // Week
+                week.getExpData().setV4(v4_week);
+                week.getExpData().setV8(v8_week);
+                week.getExpData().setV9(v9_week);
+
+                // Month
+                month.getExpData().setV5(v5_month);
+                month.getExpData().setV6(v6_month);
+                month.getExpData().setV9(v8_month);
+
+            }).start();
 
             // OP avg, Roll avg count
             load_optimi_pesimi_count();
 
-            // Start
-            week.getExpData().setStart(start_exp_week);
-            month.getExpData().setStart(start_exp_month);
 
-            // Baskets
-            week.getExpData().setBaskets((int) baskets_exp_week);
-            month.getExpData().setBaskets((int) baskets_exp_month);
-
-            // DF
-            // Week
-            week.getExpData().setV4(v4_week);
-            week.getExpData().setV8(v8_week);
-            week.getExpData().setV9(v9_week);
-
-            // Month
-            month.getExpData().setV5(v5_month);
-            month.getExpData().setV6(v6_month);
-            month.getExpData().setV9(v8_month);
 
         } catch (Exception e) {
             e.printStackTrace();
