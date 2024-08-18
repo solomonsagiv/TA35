@@ -116,7 +116,7 @@ public class DataBaseHandler {
             e.printStackTrace();
         }
     }
-
+    
     public ResultSet get_exp_data(String target_table_location, String exp, int result_type) {
         String q = "";
 

@@ -76,7 +76,7 @@ public class Queries {
 
     public static ResultSet get_exp_data(ApiObject client, int serie_id, String exp_prop_name) {
         String q = "select sum(value) as value\n" +
-                "from ts.timeseries_data\n" +
+                "from ts.ca_timeseries_1min_candle\n" +
                 "where date_trunc('day', time) >= (select data::date as date\n" +
                 "                                  from props\n" +
                 "                                  where stock_id = '%s'\n" +
