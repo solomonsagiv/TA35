@@ -67,11 +67,11 @@ public class DataBaseHandler {
 
     public void load_exp_data() {
         try {
-            ExpWeek week = apiObject.getExps().getWeek();
-            ExpMonth month = apiObject.getExps().getMonth();
+
 
             new Thread(() -> {
-
+                ExpWeek week = apiObject.getExps().getWeek();
+                ExpMonth month = apiObject.getExps().getMonth();
 
                 double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_WEEK_START));
                 double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_MONTH_START));
