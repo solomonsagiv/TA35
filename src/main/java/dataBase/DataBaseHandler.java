@@ -68,7 +68,6 @@ public class DataBaseHandler {
     public void load_exp_data() {
         try {
 
-
             new Thread(() -> {
                 ExpWeek week = apiObject.getExps().getWeek();
                 ExpMonth month = apiObject.getExps().getMonth();
@@ -105,18 +104,16 @@ public class DataBaseHandler {
                 month.getExpData().setV6(v6_month);
                 month.getExpData().setV9(v8_month);
 
+                // OP avg, Roll avg count
+                load_optimi_pesimi_count();
+
             }).start();
-
-            // OP avg, Roll avg count
-            load_optimi_pesimi_count();
-
-
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    
+
     public ResultSet get_exp_data(String target_table_location, String exp, int result_type) {
         String q = "";
 
@@ -156,69 +153,67 @@ public class DataBaseHandler {
 
     private void load_optimi_pesimi_count() {
 
-        new Thread(() -> {
-            ApiObject client = ApiObject.getInstance();
+        ApiObject client = ApiObject.getInstance();
 
-            // ------------- Op avg ------------- //
-            // Week
-            ResultSet rs = Queries.get_optimi_pesimi_count(Factories.IDs.OP_AVG_60, Props.EXP_WEEK_START);
-            while (true) {
-                try {
-                    if (!rs.next()) break;
-                    int optimi = rs.getInt("optimi");
-                    int pesimi = rs.getInt("pesimi");
-                    client.getExps().getWeek().setOptimi_count(optimi);
-                    client.getExps().getWeek().setPesimi_count(pesimi);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+        // ------------- Op avg ------------- //
+        // Week
+        ResultSet rs = Queries.get_optimi_pesimi_count(Factories.IDs.OP_AVG_60, Props.EXP_WEEK_START);
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                int optimi = rs.getInt("optimi");
+                int pesimi = rs.getInt("pesimi");
+                client.getExps().getWeek().setOptimi_count(optimi);
+                client.getExps().getWeek().setPesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
+        }
 
-            // Month
-            rs = Queries.get_optimi_pesimi_count(Factories.IDs.OP_AVG_60, Props.EXP_MONTH_START);
-            while (true) {
-                try {
-                    if (!rs.next()) break;
-                    int optimi = rs.getInt("optimi");
-                    int pesimi = rs.getInt("pesimi");
-                    client.getExps().getMonth().setOptimi_count(optimi);
-                    client.getExps().getMonth().setPesimi_count(pesimi);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+        // Month
+        rs = Queries.get_optimi_pesimi_count(Factories.IDs.OP_AVG_60, Props.EXP_MONTH_START);
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                int optimi = rs.getInt("optimi");
+                int pesimi = rs.getInt("pesimi");
+                client.getExps().getMonth().setOptimi_count(optimi);
+                client.getExps().getMonth().setPesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
+        }
 
 
-            // ------------- Roll avg ------------- //
-            // Week
-            rs = Queries.get_optimi_pesimi_count(Factories.IDs.ROLL_3600, Props.EXP_WEEK_START);
-            while (true) {
-                try {
-                    if (!rs.next()) break;
-                    int optimi = rs.getInt("optimi");
-                    int pesimi = rs.getInt("pesimi");
-                    client.getExps().getWeek().setRoll_optimi_count(optimi);
-                    client.getExps().getWeek().setRoll_pesimi_count(pesimi);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+        // ------------- Roll avg ------------- //
+        // Week
+        rs = Queries.get_optimi_pesimi_count(Factories.IDs.ROLL_3600, Props.EXP_WEEK_START);
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                int optimi = rs.getInt("optimi");
+                int pesimi = rs.getInt("pesimi");
+                client.getExps().getWeek().setRoll_optimi_count(optimi);
+                client.getExps().getWeek().setRoll_pesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
+        }
 
-            // Roll avg
-            // Month
-            rs = Queries.get_optimi_pesimi_count(Factories.IDs.ROLL_3600, Props.EXP_MONTH_START);
-            while (true) {
-                try {
-                    if (!rs.next()) break;
-                    int optimi = rs.getInt("optimi");
-                    int pesimi = rs.getInt("pesimi");
-                    client.getExps().getMonth().setRoll_optimi_count(optimi);
-                    client.getExps().getMonth().setRoll_pesimi_count(pesimi);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+        // Roll avg
+        // Month
+        rs = Queries.get_optimi_pesimi_count(Factories.IDs.ROLL_3600, Props.EXP_MONTH_START);
+        while (true) {
+            try {
+                if (!rs.next()) break;
+                int optimi = rs.getInt("optimi");
+                int pesimi = rs.getInt("pesimi");
+                client.getExps().getMonth().setRoll_optimi_count(optimi);
+                client.getExps().getMonth().setRoll_pesimi_count(pesimi);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-        }).start();
+        }
     }
 
     private void load_races(Race_Logic.RACE_RUNNER_ENUM race_runner_enum, int serie_id, boolean r_one_or_two) {

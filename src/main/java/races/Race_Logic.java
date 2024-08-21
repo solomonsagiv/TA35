@@ -186,8 +186,8 @@ public class Race_Logic {
                 r_two_price = client.getExps().getWeek().getOptions().getContract();
                 return;
             case WEEK_MONTH:
-                r_one_price = client.getExps().getWeek().getOptions().getContract();
-                r_two_price = client.getExps().getMonth().getOptions().getContract();
+                r_one_price = client.getExps().getMonth().getOptions().getContract();
+                r_two_price = client.getExps().getWeek().getOptions().getContract();
         }
     }
 

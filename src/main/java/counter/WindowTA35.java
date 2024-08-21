@@ -294,6 +294,9 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         week_races_iw_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
         races_panel.add(week_races_iw_field);
 
+        month_race_wm_field = new MyGuiComps.MyTextField();
+        month_race_wm_field.setBounds(index_races_iw_field.getX(), index_races_iw_field.getY() + index_races_iw_field.getHeight() + 3, 50, 25);
+        races_panel.add(month_race_wm_field);
 
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));

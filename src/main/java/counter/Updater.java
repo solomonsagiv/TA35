@@ -123,6 +123,7 @@ public class Updater extends MyThread implements Runnable {
                 // Races
                 colorForgeRound(window.index_races_iw_field, (int) apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points(), false);
                 colorForgeRound(window.week_races_iw_field, (int) apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points(), false);
+                colorForgeRound(window.month_race_wm_field, (int) apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points(), false);
 
             }
         } catch (Exception e) {
