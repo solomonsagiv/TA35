@@ -106,7 +106,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         }
 
                         // Auto start
-                        if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 57, 0)) && !apiObject.isStarted()) {
+                        if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 59, 0)) && !apiObject.isStarted() && ask > bid && ask - bid < 10) {
                             apiObject.setFutureOpen(apiObject.getExps().getMonth().getOptions().getContract());
 
                             apiObject.start();
