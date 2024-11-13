@@ -11,6 +11,7 @@ public class Race_Logic {
         WEEK_MONTH(),
         WEEK_INDEX(),
         MONTH_INDEX();
+
     }
 
     RACE_RUNNER_ENUM race_runners;
@@ -182,8 +183,8 @@ public class Race_Logic {
     private void update_runners_price() {
         switch (race_runners) {
             case WEEK_INDEX:
-                r_one_price = client.getIndex();
-                r_two_price = client.getExps().getWeek().getOptions().getContract();
+                r_one_price = client.get_index_mid();
+                r_two_price = client.getExps().getMonth().getOptions().getContract();
                 return;
             case WEEK_MONTH:
                 r_one_price = client.getExps().getMonth().getOptions().getContract();

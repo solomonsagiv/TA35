@@ -16,7 +16,6 @@ import service.BasketFinder_by_stocks;
 import service.IndDeltaService;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
-
 import java.util.ArrayList;
 
 public class ApiObject implements IJsonData {
@@ -172,6 +171,11 @@ public class ApiObject implements IJsonData {
         json.put("races", races);
 
         return json;
+    }
+
+
+    public double get_index_mid() {
+        return (index_bid + index_ask) / 2;
     }
 
     public double get_bid_last_margin() {
