@@ -19,12 +19,16 @@ public class DataBaseService extends MyBaseService {
     double week_races_0 = 0;
     double month_races_wm_0 = 0;
     double week_races_wm_0 = 0;
+    double bid_races_ba_0 = 0;
+    double ask_races_ba_0 = 0;
 
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> index_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_races_timeStamp  = new ArrayList<>();
     ArrayList<MyTimeStampObject> month_races_wm_timeStamp  = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_races_wm_timeStamp  = new ArrayList<>();
+    ArrayList<MyTimeStampObject> bid_races_ba_timeStamp  = new ArrayList<>();
+    ArrayList<MyTimeStampObject> ask_races_ba_timeStamp  = new ArrayList<>();
 
     ExpWeek week;
     ExpMonth month;
@@ -51,6 +55,14 @@ public class DataBaseService extends MyBaseService {
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
 
+        // VICTOR RACES
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_FUTURE_RACES));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES));
+
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO));
+        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO));
+
         // CDF
         timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF));
     }
@@ -74,7 +86,6 @@ public class DataBaseService extends MyBaseService {
             baskets_timestamp.add(new MyTimeStampObject(Instant.now(), change));
         }
 
-
         // Index races
         double index_races = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
 
@@ -93,8 +104,7 @@ public class DataBaseService extends MyBaseService {
             week_races_0 = week_races;
         }
 
-
-        // Month races wm
+        // Month races WM
         double month_races_wm = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
 
         if (month_races_wm != month_races_wm_0) {
@@ -103,7 +113,7 @@ public class DataBaseService extends MyBaseService {
             month_races_wm_0 = month_races_wm;
         }
 
-        // Month races wm
+        // Month races WM
         double week_races_wm = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_two_points();
 
         if (week_races_wm != week_races_wm_0) {
@@ -112,6 +122,23 @@ public class DataBaseService extends MyBaseService {
             week_races_wm_0 = week_races_wm;
         }
 
+        // Bid races BA
+        double bid_races_ba = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_one_points();
+
+        if (bid_races_ba != bid_races_ba_0) {
+            double last_count = bid_races_ba - bid_races_ba_0;
+            bid_races_ba_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            bid_races_ba_0 = bid_races_ba;
+        }
+
+        // Ask races BA
+        double ask_races_ba = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_two_points();
+
+        if (ask_races_ba != ask_races_ba_0) {
+            double last_count = ask_races_ba - ask_races_ba_0;
+            ask_races_ba_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            ask_races_ba_0 = ask_races_ba;
+        }
 
         // Op avg week
         if (sleepCount % 1000 == 0) {
@@ -140,6 +167,9 @@ public class DataBaseService extends MyBaseService {
 
             insert_data_retro_mega(week_races_wm_timeStamp, Factories.IDs.WEEK_RACES_WM);
             insert_data_retro_mega(month_races_wm_timeStamp, Factories.IDs.MONTH_RACES_WM);
+
+            insert_data_retro_mega(bid_races_ba_timeStamp, Factories.IDs.BID_RACES_BA);
+            insert_data_retro_mega(ask_races_ba_timeStamp, Factories.IDs.ASK_RACES_BA);
         }).start();
     }
 
@@ -227,6 +257,4 @@ public class DataBaseService extends MyBaseService {
             list.clear();
         }
     }
-
-
 }

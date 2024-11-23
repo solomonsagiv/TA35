@@ -51,6 +51,10 @@ public class DataBaseHandler {
 
         load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, Factories.IDs.MONTH_RACES_WM, true);
         load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, Factories.IDs.WEEK_RACES_WM, false);
+
+        load_races(Race_Logic.RACE_RUNNER_ENUM.BID_ASK, Factories.IDs.BID_RACES_BA, true);
+        load_races(Race_Logic.RACE_RUNNER_ENUM.BID_ASK, Factories.IDs.ASK_RACES_BA, false);
+
     }
 
     public void load_today_data() {

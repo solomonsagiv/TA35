@@ -137,6 +137,17 @@ public class ApiObject implements IJsonData {
 
         timeSeriesHandler.put(Factories.TimeSeries.WEEK_RACES_WM, TimeSeriesFactory.get_serie(Factories.TimeSeries.WEEK_RACES_WM));
         timeSeriesHandler.put(Factories.TimeSeries.MONTH_RACES_WM, TimeSeriesFactory.get_serie(Factories.TimeSeries.MONTH_RACES_WM));
+
+        timeSeriesHandler.put(Factories.TimeSeries.BID_RACES_BA, TimeSeriesFactory.get_serie(Factories.TimeSeries.BID_RACES_BA));
+        timeSeriesHandler.put(Factories.TimeSeries.ASK_RACES_BA, TimeSeriesFactory.get_serie(Factories.TimeSeries.ASK_RACES_BA));
+
+        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_INDEX_RACES, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_INDEX_RACES));
+        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_FUTURE_RACES, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_FUTURE_RACES));
+        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_ROLL_RACES, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_ROLL_RACES));
+
+        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO));
+        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO));
+
     }
 
     // Get instance

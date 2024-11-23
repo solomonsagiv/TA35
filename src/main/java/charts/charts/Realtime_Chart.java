@@ -5,10 +5,10 @@ import charts.myChart.*;
 import locals.Themes;
 import java.awt.*;
 
-public class MainMonthWeekChart extends MyChartCreator {
+public class Realtime_Chart extends MyChartCreator {
 
     // Constructor
-    public MainMonthWeekChart(ApiObject apiObject) {
+    public Realtime_Chart(ApiObject apiObject) {
         super(apiObject);
     }
 

@@ -85,6 +85,10 @@ public class MyChart {
         updateSeriesVisibility();
     }
 
+    public void add_marker(ValueMarker marker) {
+        plot.addRangeMarker(marker, Layer.BACKGROUND);
+    }
+
     private void plot_style() {
         plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.WHITE);

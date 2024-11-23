@@ -3,13 +3,15 @@ package counter;
 import api.ApiObject;
 import api.dde.DDE.DDEConnection;
 import book.BookWindow;
-import charts.charts.FullCharts3;
-import charts.charts.MainMonthWeekChart;
+import charts.charts.Main_Chart;
+import charts.charts.Realtime_Chart;
+import charts.charts.Races_chart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import locals.Themes;
 import setting.Setting;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,7 +36,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField v2_field;
     public MyGuiComps.MyTextField v7_field;
     public MyGuiComps.MyTextField v9_field;
-        
+
     public int updater_id = 0;
 
     ApiObject apiObject = ApiObject.getInstance();
@@ -137,7 +139,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public void initialize() {
 
         int panels_height = 90;
-
 
 
 //        week_races_wm_field = new MyGuiComps.MyTextField();
@@ -488,7 +489,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Main chart", "Full chart 3", "Races"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Realtime", "Main", "Races"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -496,13 +497,17 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 switch (chartsCombo.getSelectedItem().toString()) {
-                    case "Full chart 3":
-                        FullCharts3 chart_3 = new FullCharts3(apiObject);
-                        chart_3.createChart();
+                    case "Main":
+                        Main_Chart main_chart = new Main_Chart(apiObject);
+                        main_chart.createChart();
                         break;
-                    case "Main chart":
-                        MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(apiObject);
-                        mainMonthWeekChart.createChart();
+                    case "Realtime":
+                        Realtime_Chart realtimeChart = new Realtime_Chart(apiObject);
+                        realtimeChart.createChart();
+                        break;
+                    case "Races":
+                        Races_chart races_chart = new Races_chart(apiObject);
+                        races_chart.createChart();
                         break;
                     default:
                         break;
@@ -517,12 +522,17 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
     public static void openCharts() {
         try {
-            MainMonthWeekChart mainMonthWeekChart = new MainMonthWeekChart(ApiObject.getInstance());
-            mainMonthWeekChart.createChart();
+            // Realtime chart
+            Realtime_Chart realtimeChart = new Realtime_Chart(ApiObject.getInstance());
+            realtimeChart.createChart();
 
             // Full charts
-            FullCharts3 fullCharts = new FullCharts3(ApiObject.getInstance());
-            fullCharts.createChart();
+            Main_Chart main_chart = new Main_Chart(ApiObject.getInstance());
+            main_chart.createChart();
+
+            // Races chart
+            Races_chart races_chart = new Races_chart(ApiObject.getInstance());
+            races_chart.createChart();
 
         } catch (Exception e) {
             e.printStackTrace();

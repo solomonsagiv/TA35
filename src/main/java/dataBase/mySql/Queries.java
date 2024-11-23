@@ -635,7 +635,7 @@ public class Queries {
                 "                  where timeseries_id = %s\n" +
                 "              ) a\n" +
                 "                  inner join (select * from ts.timeseries_data where timeseries_id = %s) b on a.time = b.time\n" +
-                "         where date_trunc('day', a.time) = date_trunc('day', now())\n" +
+                "         where a.time between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day)\n" +
                 "         order by a.time) big\n" +
                 "where row %s %s = 0;";
         String query = String.format(q, bid_id, ask_id, modulu, step_second);

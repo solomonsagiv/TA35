@@ -121,7 +121,7 @@ public class MyChartContainer extends JFrame {
 
             initProps(chartPanel);
             addPan(chartPanel);
-            mouseListener(chartPanel, myChart);
+            mouseListener(chartPanel, myChart, this);
             add(chartPanel);
         }
     }
@@ -145,7 +145,7 @@ public class MyChartContainer extends JFrame {
         });
     }
 
-    private void mouseListener(MyChartPanel chartPanel, MyChart myChart) {
+    private void mouseListener(MyChartPanel chartPanel, MyChart myChart, MyChartContainer container) {
 
         // 2 Clicks
         chartPanel.addMouseListener(new MouseAdapter() {
@@ -177,7 +177,7 @@ public class MyChartContainer extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (e.getButton() == MouseEvent.BUTTON3) {
-                    new ChartFilterWindow("Filter", myChart);
+                    new ChartFilterWindow("Filter", myChart, container);
                 }
             }
         });
@@ -188,9 +188,7 @@ public class MyChartContainer extends JFrame {
             Field mask = ChartPanel.class.getDeclaredField("panMask");
             mask.setAccessible(true);
             mask.set(chartPanel, 0);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

@@ -6,19 +6,20 @@ import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.Queries;
 import locals.Themes;
+import org.jfree.chart.plot.ValueMarker;
 
 import java.awt.*;
 import java.sql.ResultSet;
 
-public class FullCharts3 extends MyChartCreator {
+public class Races_chart extends MyChartCreator {
 
     public static void main(String[] args) {
-        FullCharts3 fullCharts2 = new FullCharts3(ApiObject.getInstance());
+        Races_chart fullCharts2 = new Races_chart(ApiObject.getInstance());
         fullCharts2.createChart();
     }
 
     // Constructor
-    public FullCharts3(ApiObject apiObject) {
+    public Races_chart(ApiObject apiObject) {
         super(apiObject);
     }
     
@@ -109,76 +110,93 @@ public class FullCharts3 extends MyChartCreator {
         // Chart
         MyChart indexChart = new MyChart(series, props);
 
-        // ----------------------------------------- OP AVG 2 ----------------------------------------- //
-        // --------------- WEEK --------------- //
+        // ----------------------------------------- Victor race ----------------------------------------- //
 
-        // Op avg 5
-        MyTimeSeries opavg_5_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5);
-        opavg_5_week.setColor(Themes.RED);
-        opavg_5_week.setStokeSize(1.2f);
+        MyTimeSeries victor_index_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES);
+        victor_index_races.setColor(Themes.ORANGE);
+        victor_index_races.setStokeSize(1.2f);
 
-        // Op avg 60
-        MyTimeSeries opavg_60_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60);
-        opavg_60_week.setColor(Themes.BLUE);
-        opavg_60_week.setStokeSize(1.2f);
+        MyTimeSeries victor_future_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_FUTURE_RACES);
+        victor_future_races.setColor(Themes.PURPLE);
+        victor_future_races.setStokeSize(1.2f);
 
-        // Op avg 240 yesterday
-        MyTimeSeries continue_opavg_240_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240);
-        continue_opavg_240_week.setColor(Themes.ORANGE);
-        continue_opavg_240_week.setStokeSize(1.2f);
+        MyTimeSeries victore_roll_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES);
+        victore_roll_races.setColor(Themes.RED);
+        victore_roll_races.setStokeSize(1.2f);
+
 
         series = new MyTimeSeries[3];
-        series[0] = opavg_5_week;
-        series[1] = opavg_60_week;
-        series[2] = continue_opavg_240_week;
+        series[0] = victor_index_races;
+        series[1] = victor_future_races;
+        series[2] = victore_roll_races;
+
+        MyChart victor_races_chart = new MyChart(series, props);
+
+        // ----------------------------------------- Victor race ratio ----------------------------------------- //
+
+        MyTimeSeries victor_index_races_ratio = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO);
+        victor_index_races_ratio.setColor(Themes.ORANGE);
+        victor_index_races_ratio.setStokeSize(1.2f);
+
+        MyTimeSeries victor_roll_races_ratio = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO);
+        victor_roll_races_ratio.setColor(Themes.RED);
+        victor_roll_races_ratio.setStokeSize(1.2f);
+
+        MyTimeSeries plus_03 = new MyTimeSeries("0.3") {
+            @Override
+            public void updateData() {
+            }
+
+            @Override
+            public double getValue() {
+                return 0.5;
+            }
+
+            @Override
+            public void load() {
+
+            }
+
+        };
+        plus_03.setColor(Color.BLACK);
+        plus_03.setStokeSize(2f);
+        plus_03.setVisible(false);
+
+        MyTimeSeries minus_03 = new MyTimeSeries("-0.3") {
+            @Override
+            public void updateData() {
+            }
+
+            @Override
+            public double getValue() {
+                return -0.5;
+            }
+
+            @Override
+            public void load() {
+
+            }
+        };
+        minus_03.setColor(Color.BLACK);
+        minus_03.setStokeSize(2f);
+        minus_03.setVisible(false);
 
 
-        MyChart op_avg_chart = new MyChart(series, props);
+        series = new MyTimeSeries[4];
+        series[0] = victor_index_races_ratio;
+        series[1] = victor_roll_races_ratio;
+        series[2] = plus_03;
+        series[3] = minus_03;
 
-        // --------------- ROLL --------------- //
+        MyChart victor_races_ratio_chart = new MyChart(series, props);
+        ValueMarker plus = new ValueMarker(0.3);
+        plus.setStroke(new BasicStroke(2f));
 
-        // Op avg 5
-        MyTimeSeries roll_3600 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600);
-        roll_3600.setColor(Themes.BLUE3);
-        roll_3600.setStokeSize(1.2f);
-        
-        // Op avg 60
-        MyTimeSeries roll_900 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900);
-        roll_900.setColor(Themes.PURPLE);
-        roll_900.setStokeSize(1.2f);
+        ValueMarker minus = new ValueMarker(-0.3);
+        minus.setStroke(new BasicStroke(2f));
 
-        series = new MyTimeSeries[2];
-        series[0] = roll_3600;
-        series[1] = roll_900;
-
-
-        MyChart roll_chart = new MyChart(series, props);
-
-
-        // ----------------------------------------- DF ----------------------------------------- //
-
-        MyTimeSeries df_5_old = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
-        df_5_old.setColor(Themes.ORANGE);
-        df_5_old.setStokeSize(1.2f);
-
-        // Op avg 60
-        MyTimeSeries df_6_old = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD);
-        df_6_old.setColor(Themes.PURPLE);
-        df_6_old.setStokeSize(1.2f);
-
-        // Op avg 240 yesterday
-        MyTimeSeries df_9 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
-        df_9.setColor(Themes.RED);
-        df_9.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[3];
-        series[0] = df_5_old;
-        series[1] = df_6_old;
-        series[2] = df_9;
-
-
-        MyChart df_chart = new MyChart(series, props);
-
+        victor_races_ratio_chart.add_marker(plus);
+        victor_races_ratio_chart.add_marker(minus);
 
         // ----------------------------------------- Races ----------------------------------------- //
 
@@ -203,14 +221,30 @@ public class FullCharts3 extends MyChartCreator {
         series[1] = week_races_wi;
         series[2] = month_races_wm;
 
-
         MyChart races_chart = new MyChart(series, props);
 
+        // ----------------------------------------- BID ASK RACES ----------------------------------------- //
+
+        // Index races wi
+        MyTimeSeries bid_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.BID_RACES_BA);
+        bid_races.setColor(Themes.BLUE);
+        bid_races.setStokeSize(1.2f);
+
+        // Week races wi
+        MyTimeSeries ask_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ASK_RACES_BA);
+        ask_races.setColor(Themes.RED);
+        ask_races.setStokeSize(1.2f);
+
+        series = new MyTimeSeries[2];
+        series[0] = bid_races;
+        series[1] = ask_races;
+
+        MyChart bid_ask_races_chart = new MyChart(series, props);
 
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, roll_chart, df_chart, races_chart};
+        MyChart[] charts = {indexChart, victor_races_chart, victor_races_ratio_chart, races_chart, bid_ask_races_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");

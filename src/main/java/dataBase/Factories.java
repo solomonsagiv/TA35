@@ -32,6 +32,17 @@ public class Factories {
         public static final String R1_MINUS_R2_IQ = "R1_MINUS_R2_IQ";
         public static final String MONTH_RACES_WM = "MONTH_RACES_WM";
         public static final String WEEK_RACES_WM = "WEEK_RACES_WM";
+        public static final String BID_RACES_BA = "BID_RACES_BA";
+        public static final String ASK_RACES_BA = "ASK_RACES_BA";
+        public static final String MID_RACES_ML = "MID_RACES_ML";
+        public static final String LAST_RACES_ML = "LAST_RACES_ML";
+
+        public static final String VICTOR_INDEX_RACES = "VICTOR_INDEX_RACES";
+        public static final String VICTOR_FUTURE_RACES = "VICTOR_FUTURE_RACES";
+        public static final String VICTOR_ROLL_RACES = "VICTOR_ROLL_RACES";
+        public static final String VICTOR_INDEX_RACES_RATIO = "VICTOR_INDEX_RACES_RATIO";
+        public static final String VICTOR_ROLL_RACES_RATIO = "VICTOR_ROLL_RACES_RATIO";
+
     }
 
     public static class IDs {
@@ -80,6 +91,17 @@ public class Factories {
 
         public static final int MONTH_RACES_WM = 9791;
         public static final int WEEK_RACES_WM = 9790;
+        public static final int BID_RACES_BA = 9870;
+        public static final int ASK_RACES_BA = 9871;
+        public static final int MID_RACES_ML = 9872;
+        public static final int LAST_RACES_ML = 9873;
+
+        public static final int VICTOR_INDEX_RACES = 9800;
+        public static final int VICTOR_FUTURE_RACES = 9801;
+        public static final int VICTOR_ROLL_RACES = 9834;
+        public static final int VICTOR_INDEX_RACES_RATIO = 9863;
+        public static final int VICTOR_ROLL_RACES_RATIO = 9865;
+
 
 
 //        public static final int OP_AVG_WEEK = ;

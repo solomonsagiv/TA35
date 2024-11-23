@@ -10,7 +10,9 @@ public class Race_Logic {
         Q1_Q2(),
         WEEK_MONTH(),
         WEEK_INDEX(),
-        MONTH_INDEX();
+        MONTH_INDEX(),
+        BID_ASK(),
+        LAST_MID();
 
     }
 
@@ -189,6 +191,10 @@ public class Race_Logic {
             case WEEK_MONTH:
                 r_one_price = client.getExps().getMonth().getOptions().getContract();
                 r_two_price = client.getExps().getWeek().getOptions().getContract();
+                return;
+            case BID_ASK:
+                r_one_price = client.getIndex_bid();
+                r_two_price = client.getIndex_ask();
         }
     }
 

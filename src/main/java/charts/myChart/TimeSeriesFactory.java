@@ -7,7 +7,6 @@ import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import exp.Exp;
 import races.Race_Logic;
-
 import java.sql.ResultSet;
 
 public class TimeSeriesFactory {
@@ -474,6 +473,161 @@ public class TimeSeriesFactory {
                     }
                 };
 
+            case Factories.TimeSeries.BID_RACES_BA:
+                return new MyTimeSeries(Factories.TimeSeries.BID_RACES_BA) {
+
+                    @Override
+                    public double getValue() {
+                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_one_points();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.BID_RACES_BA, MySql.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.ASK_RACES_BA:
+                return new MyTimeSeries(Factories.TimeSeries.ASK_RACES_BA) {
+
+                    @Override
+                    public double getValue() {
+                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_two_points();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.ASK_RACES_BA, MySql.CDF);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.VICTOR_INDEX_RACES:
+                return new MyTimeSeries(Factories.TimeSeries.VICTOR_INDEX_RACES) {
+
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.VICTOR_INDEX_RACES, MySql.RAW));
+                        setValue(val);
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.VICTOR_INDEX_RACES, MySql.RAW);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.VICTOR_FUTURE_RACES:
+                return new MyTimeSeries(Factories.TimeSeries.VICTOR_FUTURE_RACES) {
+
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.VICTOR_FUTURE_RACES, MySql.RAW));
+                        setValue(val);
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.VICTOR_FUTURE_RACES, MySql.RAW);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+
+            case Factories.TimeSeries.VICTOR_ROLL_RACES:
+                return new MyTimeSeries(Factories.TimeSeries.VICTOR_ROLL_RACES) {
+
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.VICTOR_ROLL_RACES, MySql.RAW));
+                        setValue(val);
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.VICTOR_ROLL_RACES, MySql.RAW);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+
+            case Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO:
+                return new MyTimeSeries(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO) {
+
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.VICTOR_INDEX_RACES_RATIO, MySql.RAW));
+                        setValue(val);
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.VICTOR_INDEX_RACES_RATIO, MySql.RAW);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
+            case Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO:
+                return new MyTimeSeries(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO) {
+
+                    @Override
+                    public double getValue() {
+                        return super.getValue();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+                        double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.VICTOR_ROLL_RACES_RATIO, MySql.RAW));
+                        setValue(val);
+                    }
+
+                    @Override
+                    public void load() {
+                        ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.VICTOR_ROLL_RACES_RATIO, MySql.RAW);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
             default:
                 break;
         }
