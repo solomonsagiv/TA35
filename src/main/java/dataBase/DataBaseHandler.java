@@ -72,7 +72,6 @@ public class DataBaseHandler {
     public void load_exp_data() {
         try {
 
-            new Thread(() -> {
                 ExpWeek week = apiObject.getExps().getWeek();
                 ExpMonth month = apiObject.getExps().getMonth();
 
@@ -110,8 +109,6 @@ public class DataBaseHandler {
 
                 // OP avg, Roll avg count
                 load_optimi_pesimi_count();
-
-            }).start();
 
         } catch (Exception e) {
             e.printStackTrace();

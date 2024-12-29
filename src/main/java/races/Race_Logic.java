@@ -193,8 +193,8 @@ public class Race_Logic {
                 r_two_price = client.getExps().getWeek().getOptions().getContract();
                 return;
             case BID_ASK:
-                r_one_price = client.getIndex_bid();
-                r_two_price = client.getIndex_ask();
+                r_one_price = client.get_index_mid();
+                r_two_price = client.getIndex();
         }
     }
 
