@@ -91,7 +91,9 @@ public class DataBaseService extends MyBaseService {
 
         if (index_races != index_races_0) {
             double last_count = index_races - index_races_0;
-            index_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            if (last_count == 1 || last_count == -1) {
+                index_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
             index_races_0 = index_races;
         }
 
@@ -100,7 +102,9 @@ public class DataBaseService extends MyBaseService {
 
         if (week_races != week_races_0) {
             double last_count = week_races - week_races_0;
-            week_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            if (last_count == 1 || last_count == -1) {
+                week_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
             week_races_0 = week_races;
         }
 
@@ -109,7 +113,9 @@ public class DataBaseService extends MyBaseService {
 
         if (month_races_wm != month_races_wm_0) {
             double last_count = month_races_wm - month_races_wm_0;
-            month_races_wm_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            if (last_count == 1 || last_count == -1) {
+                month_races_wm_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
             month_races_wm_0 = month_races_wm;
         }
 
@@ -118,7 +124,9 @@ public class DataBaseService extends MyBaseService {
 
         if (week_races_wm != week_races_wm_0) {
             double last_count = week_races_wm - week_races_wm_0;
-            week_races_wm_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            if (last_count == 1 || last_count == -1) {
+                week_races_wm_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
             week_races_wm_0 = week_races_wm;
         }
 
@@ -127,7 +135,9 @@ public class DataBaseService extends MyBaseService {
 
         if (bid_races_ba != bid_races_ba_0) {
             double last_count = bid_races_ba - bid_races_ba_0;
-            bid_races_ba_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            if (last_count == 1 || last_count == -1) {
+                bid_races_ba_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
             bid_races_ba_0 = bid_races_ba;
         }
 
@@ -136,7 +146,9 @@ public class DataBaseService extends MyBaseService {
 
         if (ask_races_ba != ask_races_ba_0) {
             double last_count = ask_races_ba - ask_races_ba_0;
-            ask_races_ba_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            if (last_count == 1 || last_count == -1) {
+                ask_races_ba_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
             ask_races_ba_0 = ask_races_ba;
         }
 
