@@ -47,17 +47,22 @@ public class Queries {
 
 
     public static ResultSet get_start_exp_mega(int index_id, ApiObject apiObject, String exp_prop_name) {
-        String q = "select value\n" +
-                "from ts.timeseries_data\n" +
-                "where timeseries_id = %s\n" +
-                "  and date_trunc('day', time) = (select data::date\n" +
-                "                                 from sagiv.props\n" +
-                "                                 where stock_id = '%s'\n" +
-                "                                   and prop = '%s')\n" +
-                "and value is not null\n" +
-                "order by time limit 10;";
+        String q = "WITH week_start_date AS (\n" +
+                "  SELECT data::date AS start_date\n" +
+                "  FROM sagiv.props\n" +
+                "  WHERE stock_id = '%s'\n" +
+                "    AND prop = '%s'\n" +
+                ")\n" +
+                "SELECT value\n" +
+                "FROM ts.timeseries_data\n" +
+                "WHERE timeseries_id = %s\n" +
+                "  AND time >= (SELECT start_date FROM week_start_date)\n" +
+                "  AND time < (SELECT start_date FROM week_start_date) + interval '1 day'\n" +
+                "  AND value IS NOT NULL\n" +
+                "ORDER BY time\n" +
+                "LIMIT 10;\n";
 
-        String query = String.format(q, index_id, apiObject.getName(), exp_prop_name);
+        String query = String.format(q, apiObject.getName(), exp_prop_name, index_id);
         return MySql.select(query);
     }
 
@@ -75,7 +80,7 @@ public class Queries {
     }
 
     public static ResultSet get_exp_data(ApiObject client, int serie_id, String exp_prop_name) {
-        String q = "select sum(value) as value\n" +
+        String q = "select sum(sum) as value\n" +
                 "from ts.ca_timeseries_1min_candle\n" +
                 "where date_trunc('day', time) >= (select data::date as date\n" +
                 "                                  from props\n" +
