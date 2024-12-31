@@ -18,6 +18,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
     private double biggest_change = 0;
     private int sleep_between_frames = 1000;
     private int big_frame_time_in_secondes;
+    private double last_0, last;
 
     public BasketFinder_by_stocks(int targetChanges, int big_frame_time_in_secondes) {
         super();
@@ -49,6 +50,14 @@ public class BasketFinder_by_stocks extends MyBaseService {
             look_for_basket();
             sleep_count = 0;
         }
+
+        // Update data
+        update_data();
+    }
+
+    private void update_data() {
+        last_0 = last;
+        last = apiObject.getIndex();
     }
 
     private void append_volume_frame() {
@@ -88,10 +97,10 @@ public class BasketFinder_by_stocks extends MyBaseService {
         if (volume_sum >= targetChanges) {
 
             // Up - last closer to the ask
-            if (apiObject.get_ask_last_margin() < apiObject.get_bid_last_margin()) {
+            if (apiObject.get_ask_last_margin() < apiObject.get_bid_last_margin() && last > last_0) {
                 add_basket_up();
                 reset_data_after_basket();
-            } else {
+            } else if (apiObject.get_bid_last_margin() < apiObject.get_ask_last_margin() && last < last_0) {
                 add_basket_down();
                 reset_data_after_basket();
             }
