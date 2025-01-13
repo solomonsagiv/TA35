@@ -229,7 +229,7 @@ public class Main_Chart extends MyChartCreator {
         MyChart[] charts = {indexChart, op_avg_chart, roll_chart, df_chart, races_chart, bid_ask_races_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
-        MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
+        MyChartContainer chartContainer = new MyChartContainer(charts, "Main chart");
         chartContainer.create();
 
     }

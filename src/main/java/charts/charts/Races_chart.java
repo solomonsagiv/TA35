@@ -247,7 +247,7 @@ public class Races_chart extends MyChartCreator {
         MyChart[] charts = {indexChart, victor_races_chart, victor_races_ratio_chart, races_chart, bid_ask_races_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
-        MyChartContainer chartContainer = new MyChartContainer(charts, "Full chart");
+        MyChartContainer chartContainer = new MyChartContainer(charts, "Races chart");
         chartContainer.create();
 
     }

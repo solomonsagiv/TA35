@@ -97,10 +97,10 @@ public class BasketFinder_by_stocks extends MyBaseService {
         if (volume_sum >= targetChanges) {
 
             // Up - last closer to the ask
-            if (apiObject.get_ask_last_margin() < apiObject.get_bid_last_margin() && last > last_0) {
+            if (apiObject.get_ask_last_margin() < apiObject.get_bid_last_margin()) {
                 add_basket_up();
                 reset_data_after_basket();
-            } else if (apiObject.get_bid_last_margin() < apiObject.get_ask_last_margin() && last < last_0) {
+            } else if (apiObject.get_bid_last_margin() < apiObject.get_ask_last_margin()) {
                 add_basket_down();
                 reset_data_after_basket();
             }
