@@ -107,9 +107,6 @@ public class DataBaseHandler {
                 month.getExpData().setV6(v6_month);
                 month.getExpData().setV9(v8_month);
 
-                // OP avg, Roll avg count
-                load_optimi_pesimi_count();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
