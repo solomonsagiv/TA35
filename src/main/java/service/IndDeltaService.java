@@ -61,7 +61,6 @@ public class IndDeltaService extends MyBaseService {
                 e.printStackTrace();
             }
         }
-
     }
 
     public String cell(int row, int col) {

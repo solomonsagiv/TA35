@@ -42,8 +42,8 @@ public class DataBaseService extends MyBaseService {
     public DataBaseService(BASE_CLIENT_OBJECT client) {
         super(client);
         this.client = (TA35) client;
-        week = ((TA35) client).getExps().getWeek();
-        month = ((TA35) client).getExps().getMonth();
+        week = this.client.getExps().getWeek();
+        month = this.client.getExps().getMonth();
 
         // OP AVG
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));

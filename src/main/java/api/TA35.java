@@ -28,7 +28,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     // Private constructor
     private TA35() {
         super();
-        this.exps = new Exps(this);
         init_time_series();
     }
 
@@ -55,6 +54,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     protected void init_stocks_handler() {
         setStocksHandler(new StocksHandler());
     }
+
 
     @Override
     protected void init_index_delta_service() {
