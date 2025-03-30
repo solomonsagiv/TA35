@@ -28,7 +28,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     // Private constructor
     private TA35() {
         super();
-        init_time_series();
     }
 
     @Override
@@ -76,9 +75,9 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         return null;
     }
 
-    private void init_time_series() {
 
-
+    @Override
+    protected void init_timeseries_handler() {
         timeSeriesHandler = new TimeSeriesHandler();
 
         timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_3600));
@@ -119,8 +118,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO));
 
         setTimeSeriesHandler(timeSeriesHandler);
-
     }
+
 
     // Get instance
     public static TA35 getInstance() {

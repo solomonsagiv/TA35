@@ -26,6 +26,7 @@ public abstract class BASE_CLIENT_OBJECT {
     public BASE_CLIENT_OBJECT() {
         init_name();
         init_race_service();
+        init_timeseries_handler();
         init_exps();
         init_data_base_service();
     }
@@ -35,6 +36,7 @@ public abstract class BASE_CLIENT_OBJECT {
     protected abstract void init_data_base_service();
     protected abstract void init_exps();
     public abstract Race_Logic get_main_race();
+    protected abstract void init_timeseries_handler();
 
     public double get_ask_last_margin() {
         return L.abs(ask - last_price);
