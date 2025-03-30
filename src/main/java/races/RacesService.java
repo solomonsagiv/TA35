@@ -28,7 +28,7 @@ public class RacesService extends MyBaseService {
 
     @Override
     public String getName() {
-        return null;
+        return client.getName() + " Races";
     }
 
     @Override

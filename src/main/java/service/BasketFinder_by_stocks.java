@@ -275,7 +275,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
 
     @Override
     public String getName() {
-        return TA35.getInstance().getName() + " " + "basket finder";
+        return client + " " + "basket finder";
     }
 
     @Override

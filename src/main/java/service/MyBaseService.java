@@ -8,7 +8,7 @@ public abstract class MyBaseService implements IMyService {
     
     ServiceEnum type;
     
-    BASE_CLIENT_OBJECT client;
+    protected BASE_CLIENT_OBJECT client;
 
     public MyBaseService(BASE_CLIENT_OBJECT client) {
         this.client = client;

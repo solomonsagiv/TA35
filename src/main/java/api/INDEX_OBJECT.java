@@ -19,8 +19,6 @@ public abstract class INDEX_OBJECT extends BASE_CLIENT_OBJECT{
         super();
         init_stocks_handler();
         init_baskets_service();
-
-
     }
 
     private String status = null;

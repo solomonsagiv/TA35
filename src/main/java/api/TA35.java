@@ -17,7 +17,6 @@ import service.BasketFinder_by_stocks;
 import service.IndDeltaService;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
-
 import java.util.HashMap;
 
 public class TA35 extends INDEX_OBJECT implements IJsonData {
