@@ -5,7 +5,7 @@ import service.BasketFinder_by_stocks;
 import service.IndDeltaService;
 import stocksHandler.StocksHandler;
 
-public abstract class INDEX_OBJECT extends BASE_CLIENT_OBJECT{
+public abstract class INDEX_OBJECT extends BASE_CLIENT_OBJECT {
 
     protected abstract void init_baskets_service();
     protected abstract void init_stocks_handler();

@@ -23,11 +23,11 @@ public abstract class BASE_CLIENT_OBJECT {
     protected TimeSeriesHandler timeSeriesHandler;
     public RacesService racesService;
 
-    public void BASE_CLIENT_OBJECT() {
+    public BASE_CLIENT_OBJECT() {
         init_name();
         init_race_service();
-        init_data_base_service();
         init_exps();
+        init_data_base_service();
     }
 
     protected abstract void init_race_service();

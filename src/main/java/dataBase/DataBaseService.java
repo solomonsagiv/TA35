@@ -35,7 +35,7 @@ public class DataBaseService extends MyBaseService {
     ExpWeek week;
     ExpMonth month;
 
-    ArrayList<MyTimeSeries> timeSeriesList = new ArrayList<>();
+    ArrayList<MyTimeSeries> timeSeriesList;
 
     TA35 client;
 
@@ -44,10 +44,11 @@ public class DataBaseService extends MyBaseService {
         this.client = (TA35) client;
         week = this.client.getExps().getWeek();
         month = this.client.getExps().getMonth();
+        timeSeriesList = new ArrayList<>();
 
         // OP AVG
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_900));
+//        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));
+//        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_900));
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5));
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
