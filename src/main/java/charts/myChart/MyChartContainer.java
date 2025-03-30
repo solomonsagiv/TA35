@@ -1,6 +1,6 @@
 package charts.myChart;
 
-import api.ApiObject;
+import api.TA35;
 import charts.MyChartPanel;
 import dataBase.mySql.MySql;
 import org.jfree.chart.ChartPanel;
@@ -22,10 +22,10 @@ public class MyChartContainer extends JFrame {
 
     String name;
 
-    ApiObject apiObject;
+    TA35 client;
 
     public MyChartContainer(MyChart[] charts, String name) {
-        this.apiObject = ApiObject.getInstance();
+        this.client = TA35.getInstance();
         this.charts = charts;
         this.name = name;
         init();
@@ -177,7 +177,7 @@ public class MyChartContainer extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 if (e.getButton() == MouseEvent.BUTTON3) {
-                    new ChartFilterWindow("Filter", myChart, container);
+                    new ChartFilterWindow(client, "Filter", myChart, container);
                 }
             }
         });
@@ -198,7 +198,7 @@ public class MyChartContainer extends JFrame {
             try {
                 int width = 100, height = 100, x = 100, y = 100;
 
-                String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", apiObject.getName(), getName());
+                String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", client.getName(), getName());
                 ResultSet rs = MySql.select(query);
 
                 while (rs.next()) {
@@ -228,7 +228,7 @@ public class MyChartContainer extends JFrame {
 
     private void insetOrUpdateBounds() {
         try {
-            String query = String.format("SELECT sagiv.update_bounds('%s', '%s', %s, %s, %s, %s);", apiObject.getName(), getName(), getX(), getY(), getWidth(), getHeight());
+            String query = String.format("SELECT sagiv.update_bounds('%s', '%s', %s, %s, %s, %s);", client.getName(), getName(), getX(), getY(), getWidth(), getHeight());
             MySql.select(query);
         } catch (Exception e) {
             e.printStackTrace();

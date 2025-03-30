@@ -1,6 +1,6 @@
 package races;
 
-import api.ApiObject;
+import api.BASE_CLIENT_OBJECT;
 import locals.L;
 
 public class Race_Logic {
@@ -17,7 +17,7 @@ public class Race_Logic {
     }
 
     RACE_RUNNER_ENUM race_runners;
-    private ApiObject client;
+    private BASE_CLIENT_OBJECT client;
 
     private boolean R_ONE_UP, R_ONE_DOWN, R_TWO_UP, R_TWO_DOWN = false;
     private double r_one_price = 0, r_two_price = 0;
@@ -32,8 +32,8 @@ public class Race_Logic {
     final double r_two_increase_points = 1;
 
 
-    public Race_Logic(RACE_RUNNER_ENUM race_runners, double RACE_MARGIN) {
-        this.client = ApiObject.getInstance();
+    public Race_Logic(BASE_CLIENT_OBJECT client, RACE_RUNNER_ENUM race_runners, double RACE_MARGIN) {
+        this.client = client;
         this.race_runners = race_runners;
         this.RACE_MARGIN = RACE_MARGIN;
     }
@@ -185,7 +185,7 @@ public class Race_Logic {
     private void update_runners_price() {
         switch (race_runners) {
             case WEEK_INDEX:
-                r_one_price = client.get_index_mid();
+                r_one_price = client.getMid();
                 r_two_price = client.getExps().getMonth().getOptions().getContract();
                 return;
             case WEEK_MONTH:
@@ -193,8 +193,8 @@ public class Race_Logic {
                 r_two_price = client.getExps().getWeek().getOptions().getContract();
                 return;
             case BID_ASK:
-                r_one_price = client.get_index_mid();
-                r_two_price = client.getIndex();
+                r_one_price = client.getMid();
+                r_two_price = client.getLast_price();
         }
     }
 

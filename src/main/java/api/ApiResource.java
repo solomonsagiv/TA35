@@ -8,17 +8,17 @@ import javax.ws.rs.core.MediaType;
 @Path("/api")
 public class ApiResource {
 	
-	ApiObject apiObject;
+	TA35 TA35;
 	
 	public ApiResource() {
-		apiObject = ApiObject.getInstance();
+		TA35 = TA35.getInstance();
 	}
 	
 	@Path("/ta35")
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getData() {
-		return String.valueOf(apiObject.getData());
+		return String.valueOf(TA35.getData());
 	}
 
 }

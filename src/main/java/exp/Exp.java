@@ -1,6 +1,6 @@
 package exp;
 
-import api.ApiObject;
+import api.BASE_CLIENT_OBJECT;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -11,7 +11,7 @@ public abstract class Exp implements IJsonData {
 	public static final String WEEK_SYMBOL = "W";
 	public static final String MONTH_SYMBOL = "M";
 
-	protected ApiObject apiObject;
+	protected BASE_CLIENT_OBJECT client;
 	private Options options;
 	private ExpData expData;
 	private String exp_name;
@@ -31,11 +31,11 @@ public abstract class Exp implements IJsonData {
 	private int roll_optimi_count = 0;
 	private int roll_pesimi_count = 0;
 
-	public Exp(ApiObject apiObject, String exp_name) {
-		this.apiObject = apiObject;
+	public Exp(BASE_CLIENT_OBJECT client, String exp_name) {
+		this.client = client;
 		this.exp_name = exp_name;
-		options = new Options(apiObject);
-		expData = new ExpData(apiObject, this);
+		options = new Options(client);
+		expData = new ExpData(client, this);
 		this.symbol = exp_name.toLowerCase().contains("w") ? WEEK_SYMBOL : MONTH_SYMBOL;
 	}
 
@@ -70,14 +70,6 @@ public abstract class Exp implements IJsonData {
 
 	public MyJson getFullResetJson() {
 		return new MyJson();
-	}
-
-	public ApiObject getApiObject() {
-		return apiObject;
-	}
-
-	public void setApiObject(ApiObject apiObject) {
-		this.apiObject = apiObject;
 	}
 
 	public int getFutureStartStrike() {

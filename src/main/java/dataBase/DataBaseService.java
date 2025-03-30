@@ -1,6 +1,8 @@
 package dataBase;
 
+import api.BASE_CLIENT_OBJECT;
 import api.Manifest;
+import api.TA35;
 import arik.Arik;
 import charts.myChart.MyTimeSeries;
 import counter.BackGroundRunner;
@@ -35,36 +37,39 @@ public class DataBaseService extends MyBaseService {
 
     ArrayList<MyTimeSeries> timeSeriesList = new ArrayList<>();
 
-    public DataBaseService() {
-        super();
-        week = apiObject.getExps().getWeek();
-        month = apiObject.getExps().getMonth();
+    TA35 client;
+
+    public DataBaseService(BASE_CLIENT_OBJECT client) {
+        super(client);
+        this.client = (TA35) client;
+        week = ((TA35) client).getExps().getWeek();
+        month = ((TA35) client).getExps().getMonth();
 
         // OP AVG
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_900));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_900));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600));
 
         // DF OLD CDF
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
 
         // VICTOR RACES
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_FUTURE_RACES));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_FUTURE_RACES));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES));
 
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO));
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO));
 
         // CDF
-        timeSeriesList.add(apiObject.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF));
     }
 
     @Override
@@ -77,7 +82,7 @@ public class DataBaseService extends MyBaseService {
 
     private void append_changed_data_to_lists() {
 
-        double baskets = apiObject.getBasketUp() - apiObject.getBasketDown();
+        double baskets = client.getBasketFinder_by_stocks().getBasket_up() - client.getBasketFinder_by_stocks().getBasket_down();
 
         // Baskets
         double change = baskets - baskets_0;
@@ -87,7 +92,7 @@ public class DataBaseService extends MyBaseService {
         }
 
         // Index races
-        double index_races = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
+        double index_races = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
 
         if (index_races != index_races_0) {
             double last_count = index_races - index_races_0;
@@ -98,7 +103,7 @@ public class DataBaseService extends MyBaseService {
         }
 
         // Week races
-        double week_races = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points();
+        double week_races = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points();
 
         if (week_races != week_races_0) {
             double last_count = week_races - week_races_0;
@@ -109,7 +114,7 @@ public class DataBaseService extends MyBaseService {
         }
 
         // Month races WM
-        double month_races_wm = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
+        double month_races_wm = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
 
         if (month_races_wm != month_races_wm_0) {
             double last_count = month_races_wm - month_races_wm_0;
@@ -120,7 +125,7 @@ public class DataBaseService extends MyBaseService {
         }
 
         // Month races WM
-        double week_races_wm = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_two_points();
+        double week_races_wm = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_two_points();
 
         if (week_races_wm != week_races_wm_0) {
             double last_count = week_races_wm - week_races_wm_0;
@@ -131,7 +136,7 @@ public class DataBaseService extends MyBaseService {
         }
 
         // Bid races BA
-        double bid_races_ba = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_one_points();
+        double bid_races_ba = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_one_points();
 
         if (bid_races_ba != bid_races_ba_0) {
             double last_count = bid_races_ba - bid_races_ba_0;
@@ -142,7 +147,7 @@ public class DataBaseService extends MyBaseService {
         }
 
         // Ask races BA
-        double ask_races_ba = apiObject.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_two_points();
+        double ask_races_ba = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_two_points();
 
         if (ask_races_ba != ask_races_ba_0) {
             double last_count = ask_races_ba - ask_races_ba_0;
@@ -188,7 +193,7 @@ public class DataBaseService extends MyBaseService {
     private void grab_data() {
         new Thread(() -> {
             try {
-                apiObject.setDbLoaded(true);
+                client.setDb_loaded(true);
 
                 // Update data
                 update_series();

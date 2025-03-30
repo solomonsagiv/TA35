@@ -1,17 +1,17 @@
 package charts.myChart;
 
-import api.ApiObject;
+import api.TA35;
 
 public abstract class MyChartCreator implements IChartCreator {
 
     public final int INFINITE = 1000000000;
 
-    protected ApiObject apiObject;
+    protected TA35 TA35;
 
     protected MyProps props;
     
-    public MyChartCreator( ApiObject client ) {
-        this.apiObject = client;
+    public MyChartCreator( TA35 client ) {
+        this.TA35 = client;
     }
 
     public void createChart() {

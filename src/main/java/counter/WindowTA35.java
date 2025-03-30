@@ -1,24 +1,19 @@
 package counter;
 
-import api.ApiObject;
+import api.TA35;
 import api.dde.DDE.DDEConnection;
-import book.BookWindow;
 import charts.charts.Main_Chart;
-import charts.charts.Realtime_Chart;
 import charts.charts.Races_chart;
+import charts.charts.Realtime_Chart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import locals.Themes;
-import setting.Setting;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.sql.SQLException;
 
 public class WindowTA35 extends MyGuiComps.MyFrame {
@@ -38,8 +33,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField v9_field;
 
     public int updater_id = 0;
-
-    ApiObject apiObject = ApiObject.getInstance();
 
     // Threads
     Updater updater;
@@ -79,7 +72,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
     // Constructor
     public WindowTA35() {
-        super("TA35");
+        super(TA35.getInstance(),"TA35");
         updater = new Updater(this);
         updater.getHandler().start();
         load_on_startup();
@@ -89,10 +82,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     private void load_on_startup() {
         try {
             // DDE connection
-            ddeConnection = new DDEConnection(apiObject);
+            ddeConnection = new DDEConnection();
 
             // Back ground runner
-            backGroundRunner = new BackGroundRunner();
+            backGroundRunner = new BackGroundRunner(TA35.getInstance());
             backGroundRunner.getHandler().start();
         } catch (Exception e) {
             e.printStackTrace();
@@ -437,44 +430,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         start.setBackground(new Color(211, 211, 211));
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                apiObject.start();
+                TA35.getInstance().start();
                 start.setEnabled(false);
             }
         });
-
-        MyGuiComps.MyButton options = new MyGuiComps.MyButton("Options");
-        options.setBorder(null);
-        options.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                boolean b;
-                if (updater_id % 2 == 0) {
-                    b = true;
-                } else {
-                    b = false;
-                }
-                BookWindow window = new BookWindow(updater_id, b);
-                window.frame.setVisible(true);
-                updater_id++;
-            }
-        });
-        options.setForeground(new Color(0, 0, 51));
-        options.setBackground(new Color(211, 211, 211));
-        options.setBounds(166, 7, 78, 23);
-        bottomPanel.add(options);
-
-        MyGuiComps.MyButton settingBtn = new MyGuiComps.MyButton("Setting");
-        settingBtn.setBorder(null);
-        settingBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                Setting setting = new Setting();
-                setting.setVisible();
-            }
-        });
-        settingBtn.setForeground(new Color(0, 0, 51));
-        settingBtn.setBackground(new Color(211, 211, 211));
-        settingBtn.setBounds(10, 7, 72, 23);
-        bottomPanel.add(settingBtn);
-
         btnDetails = new MyGuiComps.MyButton("Details");
         btnDetails.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -498,15 +457,15 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             public void actionPerformed(ActionEvent e) {
                 switch (chartsCombo.getSelectedItem().toString()) {
                     case "Main":
-                        Main_Chart main_chart = new Main_Chart(apiObject);
+                        Main_Chart main_chart = new Main_Chart(TA35.getInstance());
                         main_chart.createChart();
                         break;
                     case "Realtime":
-                        Realtime_Chart realtimeChart = new Realtime_Chart(apiObject);
+                        Realtime_Chart realtimeChart = new Realtime_Chart(TA35.getInstance());
                         realtimeChart.createChart();
                         break;
                     case "Races":
-                        Races_chart races_chart = new Races_chart(apiObject);
+                        Races_chart races_chart = new Races_chart(TA35.getInstance());
                         races_chart.createChart();
                         break;
                     default:
@@ -523,22 +482,21 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public static void openCharts() {
         try {
             // Realtime chart
-            Realtime_Chart realtimeChart = new Realtime_Chart(ApiObject.getInstance());
+            Realtime_Chart realtimeChart = new Realtime_Chart(TA35.getInstance());
             realtimeChart.createChart();
 
             // Full charts
-            Main_Chart main_chart = new Main_Chart(ApiObject.getInstance());
+            Main_Chart main_chart = new Main_Chart(TA35.getInstance());
             main_chart.createChart();
 
             // Races chart
-            Races_chart races_chart = new Races_chart(ApiObject.getInstance());
+            Races_chart races_chart = new Races_chart(TA35.getInstance());
             races_chart.createChart();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     // -------------------- function -------------------- //
 
@@ -547,32 +505,12 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         return Math.floor(d * 100) / 100;
     }
 
-    // Open setting window if 2 clicks
-    private void open_setting_window(MouseEvent e) {
-        if (e.getClickCount() == 2) {
-            Setting setting = new Setting();
-            setting.setVisible();
-        }
-    }
-
     // Popup
     public static void popup(String message, Exception e) {
         JOptionPane.showMessageDialog(null, message + "\n" + e.getMessage());
     }
 
-    // Create xls file with the date of today
-    public FileOutputStream getFile(String name) {
-        try {
-            return new FileOutputStream(apiObject.getExport_dir() + name);
-        } catch (FileNotFoundException e) {
-            WindowTA35.popup("Creating file error ", e);
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     // Getters and Setters
-
     public Updater getUpdater() {
         return updater;
     }

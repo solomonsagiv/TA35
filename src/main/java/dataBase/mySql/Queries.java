@@ -1,6 +1,7 @@
 package dataBase.mySql;
 
-import api.ApiObject;
+import api.BASE_CLIENT_OBJECT;
+import api.TA35;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
 
@@ -46,7 +47,7 @@ public class Queries {
     }
 
 
-    public static ResultSet get_start_exp_mega(int index_id, ApiObject apiObject, String exp_prop_name) {
+    public static ResultSet get_start_exp_mega(int index_id, TA35 TA35, String exp_prop_name) {
         String q = "WITH week_start_date AS (\n" +
                 "  SELECT data::date AS start_date\n" +
                 "  FROM sagiv.props\n" +
@@ -62,11 +63,11 @@ public class Queries {
                 "ORDER BY time\n" +
                 "LIMIT 10;\n";
 
-        String query = String.format(q, apiObject.getName(), exp_prop_name, index_id);
+        String query = String.format(q, TA35.getName(), exp_prop_name, index_id);
         return MySql.select(query);
     }
 
-    public static ResultSet get_exp_data_by_candle(ApiObject client, int serie_id, String exp_prop_name) {
+    public static ResultSet get_exp_data_by_candle(TA35 client, int serie_id, String exp_prop_name) {
         String q = "select sum(sum) as value\n" +
                 "from ts.ca_timeseries_1day_candle\n" +
                 "where date_trunc('day', time) >= (select data::date as date\n" +
@@ -79,7 +80,7 @@ public class Queries {
         return MySql.select(query);
     }
 
-    public static ResultSet get_exp_data(ApiObject client, int serie_id, String exp_prop_name) {
+    public static ResultSet get_exp_data(TA35 client, int serie_id, String exp_prop_name) {
         String q = "select sum(sum) as value\n" +
                 "from ts.ca_timeseries_1min_candle\n" +
                 "where date_trunc('day', time) >= (select data::date as date\n" +
@@ -569,13 +570,11 @@ public class Queries {
         return 0;
     }
 
-    public static HashMap<String, Integer> get_bounds(String title) {
-
-        ApiObject apiObject = ApiObject.getInstance();
+    public static HashMap<String, Integer> get_bounds(BASE_CLIENT_OBJECT client, String title) {
 
         int width = 300, height = 300, x = 100, y = 100;
 
-        String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", apiObject.getName(), title);
+        String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", client.getName(), title);
         ResultSet rs = MySql.select(query);
 
         while (true) {

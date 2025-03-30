@@ -1,5 +1,6 @@
 package races;
 
+import api.BASE_CLIENT_OBJECT;
 import service.MyBaseService;
 
 import java.util.HashMap;
@@ -8,8 +9,8 @@ public class RacesService extends MyBaseService {
 
     HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map;
 
-    public RacesService(HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map) {
-        super();
+    public RacesService(BASE_CLIENT_OBJECT client, HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map) {
+        super(client);
         this.map = map;
     }
 

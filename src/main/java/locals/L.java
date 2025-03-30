@@ -15,6 +15,8 @@ public class L {
 	private static DecimalFormat df10;
 	private static DecimalFormat df;
 
+	public static final double RACE_MARGIN = 0.001;
+
 	public static DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 
 

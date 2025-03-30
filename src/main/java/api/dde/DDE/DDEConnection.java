@@ -3,7 +3,6 @@ package api.dde.DDE;
  * Copyright 2009 www.pretty-tools.com. All rights reserved.
  */
 
-import api.ApiObject;
 import com.pretty_tools.dde.DDEException;
 import com.pretty_tools.dde.client.DDEClientConversation;
 
@@ -15,7 +14,6 @@ import javax.swing.*;
  */
 public class DDEConnection {
 
-	ApiObject apiObject;
 
 	// Get conversation instance
 	public DDEClientConversation createNewConversation(String excelPath) {
@@ -34,9 +32,7 @@ public class DDEConnection {
 	}
 	
 	// Empty Constructor
-	public DDEConnection(ApiObject apiObject) {
-		this.apiObject = apiObject;
-	}
+	public DDEConnection() {}
 	
 	public double dbl(String s) {
 		return Double.parseDouble(s.replace(",", ""));

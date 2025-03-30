@@ -1,6 +1,6 @@
 package service;
 
-import api.ApiObject;
+import api.BASE_CLIENT_OBJECT;
 
 public abstract class MyBaseService implements IMyService {
 
@@ -8,10 +8,11 @@ public abstract class MyBaseService implements IMyService {
     
     ServiceEnum type;
     
-    protected ApiObject apiObject = ApiObject.getInstance();
+    BASE_CLIENT_OBJECT client;
 
-    public MyBaseService() {
-        apiObject.getServiceHandler().addService( this );
+    public MyBaseService(BASE_CLIENT_OBJECT client) {
+        this.client = client;
+        client.getServiceHandler().addService( this );
     }
 
     public void execute( int sleepCount ) {

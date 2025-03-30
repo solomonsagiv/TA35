@@ -1,29 +1,19 @@
 package counter;
 
-import api.ApiObject;
 import api.Manifest;
+import api.TA35;
 import arik.Arik;
 import dataBase.DataBaseHandler;
-import dataBase.DataBaseService;
-import options.OptionsDataCalculator;
 import org.json.JSONArray;
-import races.Race_Logic;
-import races.RacesService;
-import service.BasketFinder_by_stocks;
 import service.DataReaderService;
-import service.IndDeltaService;
 import threads.MyThread;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashMap;
 
 public class BackGroundRunner extends MyThread implements Runnable {
 
-    double rando_start;
-    double rando_end;
-    double rando;
     double bid;
     double ask;
     LocalTime current_time;
@@ -33,8 +23,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
     String randomally = "rando";
     String endMarket = "end";
 
-    public static String weekPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Week";
-    public static String monthPath = "C://Users/yosef/Desktop/[TA35.xlsm]Import Month";
     public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
 
     public static boolean preTradingBool = false;
@@ -53,10 +41,12 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
     JSONArray j;
 
-    ApiObject apiObject = ApiObject.getInstance();
+    api.TA35 client;
 
-    public BackGroundRunner() {
+
+    public BackGroundRunner(TA35 client) {
         super();
+        this.client = client;
         setRunnable(this);
     }
 
@@ -79,36 +69,29 @@ public class BackGroundRunner extends MyThread implements Runnable {
             }
 
             // Data reader
-            new DataReaderService(BackGroundRunner.excelPath);
-            apiObject.getServiceHandler().getHandler().start();
-
-            pre_open_services();
-            open_services();
+            new DataReaderService(client, BackGroundRunner.excelPath);
+            client.getServiceHandler().getHandler().start();
 
             while (true) {
                 try {
                     // Sleep
                     Thread.sleep(1000);
 
-                    bid = apiObject.getIndex_bid();
-                    ask = apiObject.getIndex_ask();
+                    bid = client.getBid();
+                    ask = client.getAsk();
                     current_time = LocalTime.now();
 
                     // Wait for load
-                    if (apiObject.isDbLoaded()) {
+                    if (client.isDb_loaded()) {
 
                         // Pre trading
-                        if (apiObject.getStatus().contains(preOpen) && !preTradingBool) {
+                        if (client.getStatus().contains(preOpen) && !preTradingBool) {
                             preTradingBool = true;
-                            // Data base service
-                            pre_open_services();
                         }
 
                         // Auto start
-                        if (apiObject.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 59, 0)) && !apiObject.isStarted() && ask > bid && ask - bid < 10) {
-                            apiObject.setFutureOpen(apiObject.getExps().getMonth().getOptions().getContract());
-
-                            apiObject.start();
+                        if (client.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 59, 0)) && !client.isStarted() && ask > bid && ask - bid < 10) {
+                            client.start();
 
                             if (Manifest.OPEN_CHART) {
                                 WindowTA35.openCharts();
@@ -119,35 +102,33 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         }
 
                         // Rando
-                        if (apiObject.getStatus().contains(randomally) && !randomallyBool) {
+                        if (client.getStatus().contains(randomally) && !randomallyBool) {
                             streamMarketBool = false;
                             randomallyBool = true;
-                            startRando();
                         }
 
                         // End of rando
-                        if (apiObject.getStatus().contains(endMarket) && randomallyBool) {
+                        if (client.getStatus().contains(endMarket) && randomallyBool) {
                             randomallyBool = false;
-                            endRando();
                         }
 
                         // End of Day
-                        if (apiObject.getStatus().contains(endMarket) && current_time.isAfter(end_day) && !endMarketBool && !exported) {
-                            apiObject.close();
+                        if (client.getStatus().contains(endMarket) && current_time.isAfter(end_day) && !endMarketBool && !exported) {
+                            client.close();
                             endMarketBool = true;
                             exported = true;
                         }
                     } else {
                         try {
                             System.out.println("Loading...");
-                            DataBaseHandler dataBaseHandler = new DataBaseHandler();
+                            DataBaseHandler dataBaseHandler = new DataBaseHandler(client);
                             dataBaseHandler.load_data();
                             System.out.println("Loaded!!!");
                         } catch (Exception e) {
                             e.printStackTrace();
                             Arik.getInstance().sendMessage(Arik.sagivID, "TA35 load data failed", null);
                         }
-                        apiObject.setDbLoaded(true);
+                        client.setDb_loaded(true);
                     }
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -158,25 +139,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
         }
     }
 
-    public void pre_open_services() {
-        new OptionsDataCalculator();
-//        new OptionsReaderService(Options.WEEK, weekPath);
-//        new OptionsReaderService(Options.MONTH, monthPath);
-    }
-
-    private void open_services() {
-
-        HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map = new HashMap<>();
-        map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, apiObject.getRACE_MARGIN()));
-        map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, apiObject.getRACE_MARGIN()));
-        map.put(Race_Logic.RACE_RUNNER_ENUM.BID_ASK, new Race_Logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK, apiObject.getRACE_MARGIN()));
-
-        apiObject.setIndDeltaService(new IndDeltaService(BackGroundRunner.excelPath));
-        apiObject.setBasketFinder_by_stocks(new BasketFinder_by_stocks(28, 3));
-        apiObject.setDataBaseService(new DataBaseService());
-        apiObject.setRacesService(new RacesService(map));
-    }
-
     private String str(Object o) {
         return String.valueOf(o);
     }
@@ -184,18 +146,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
     // floor
     private static double floorDouble(double d) {
         return Math.floor(d * 1000) / 1000;
-    }
-
-    // Start rando
-    public void startRando() throws Exception {
-        rando_start = apiObject.getLast();
-    }
-
-    // End rando
-    public void endRando() throws Exception {
-        rando_end = apiObject.getLast();
-        rando = floorDouble(((rando_end - rando_start) / rando_end) * 100);
-        apiObject.setRando(rando);
     }
 
     public double dbl(String string) {

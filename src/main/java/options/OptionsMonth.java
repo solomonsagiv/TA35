@@ -1,11 +1,11 @@
 package options;
 
-import api.ApiObject;
+import api.TA35;
 
 public class OptionsMonth extends Options {
 
-	public OptionsMonth(ApiObject apiObject) {
-		super(apiObject);
+	public OptionsMonth(TA35 TA35) {
+		super(TA35);
 	}
 	
 

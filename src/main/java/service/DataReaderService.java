@@ -1,5 +1,6 @@
 package service;
 
+import api.TA35;
 import api.dde.DDE.DDEConnection;
 import com.pretty_tools.dde.client.DDEClientConversation;
 import locals.L;
@@ -22,13 +23,16 @@ public class DataReaderService extends MyBaseService {
     String statusCell = "R7C1";
     String futureBidCell = "R7C2";
     String futureAskCell = "R7C3";
-    String daysToExpCell = "R4C1";
-    
+
     DDEClientConversation conversation;
 
-    public DataReaderService(String excel_path) {
-        super();
-        this.conversation = new DDEConnection(apiObject).createNewConversation(excel_path);
+    TA35 ta35;
+
+    public DataReaderService(TA35 ta35, String excel_path) {
+        super(ta35);
+        this.ta35 = ta35;
+        this.conversation = new DDEConnection().createNewConversation(excel_path);
+
     }
 
     public void update() {
@@ -36,14 +40,13 @@ public class DataReaderService extends MyBaseService {
             String status = conversation.request(statusCell).replaceAll("\\s+", "");
 
             // Ticker datas
-            apiObject.setStatus(status);
+            ta35.setStatus(status);
 
-            if (apiObject.getStatus() != "preopen") {
+            if (ta35.getStatus() != "preopen") {
 
-                Options optionsWeek = apiObject.getExps().getWeek().getOptions();
-                Options optionsMonth = apiObject.getExps().getMonth().getOptions();
+                Options optionsWeek = ta35.getExps().getWeek().getOptions();
+                Options optionsMonth = ta35.getExps().getMonth().getOptions();
 
-                apiObject.setDaysToExp(L.dbl(conversation.request(daysToExpCell)));
                 optionsMonth.setContract(L.dbl(conversation.request(futureCell)));
 
                 // Week
@@ -52,14 +55,14 @@ public class DataReaderService extends MyBaseService {
                 optionsWeek.setContractAsk(L.dbl(conversation.request(futureWeekAskCell)));
 
                 // Big
-                apiObject.setIndex(L.dbl(conversation.request(indexCell)));
-                apiObject.setIndBid(L.dbl(conversation.request(indexBidCell)));
-                apiObject.setIndAsk(L.dbl(conversation.request(indexAskCell)));
-                apiObject.setHigh(L.dbl(conversation.request(highCell)));
-                apiObject.setLow(L.dbl(conversation.request(lowCell)));
-                apiObject.setBase(L.dbl(conversation.request(baseCell)));
-                apiObject.setOpen(L.dbl(conversation.request(openCell)));
-                apiObject.setLast(L.dbl(conversation.request(lastCell)));
+                ta35.setMid(L.dbl(conversation.request(indexCell)));
+                ta35.setBid(L.dbl(conversation.request(indexBidCell)));
+                ta35.setAsk(L.dbl(conversation.request(indexAskCell)));
+                ta35.setHigh(L.dbl(conversation.request(highCell)));
+                ta35.setLow(L.dbl(conversation.request(lowCell)));
+                ta35.setBase(L.dbl(conversation.request(baseCell)));
+                ta35.setOpen(L.dbl(conversation.request(openCell)));
+                ta35.setLast_price(L.dbl(conversation.request(lastCell)));
                 optionsMonth.setContractBid(L.dbl(conversation.request(futureBidCell)));
                 optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
             }

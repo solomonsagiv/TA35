@@ -1,6 +1,6 @@
 package charts.charts;
 
-import api.ApiObject;
+import api.TA35;
 import charts.myChart.*;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
@@ -13,13 +13,13 @@ import java.sql.ResultSet;
 public class Main_Chart extends MyChartCreator {
 
     public static void main(String[] args) {
-        Main_Chart fullCharts2 = new Main_Chart(ApiObject.getInstance());
+        Main_Chart fullCharts2 = new Main_Chart(api.TA35.getInstance());
         fullCharts2.createChart();
     }
 
     // Constructor
-    public Main_Chart(ApiObject apiObject) {
-        super(apiObject);
+    public Main_Chart(TA35 TA35) {
+        super(TA35);
     }
     
     @Override
@@ -63,7 +63,7 @@ public class Main_Chart extends MyChartCreator {
 
             @Override
             public double getValue() {
-                return ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
+                return TA35.getInstance().getExps().getWeek().getOptions().getContract();
             }
 
             @Override
@@ -83,7 +83,7 @@ public class Main_Chart extends MyChartCreator {
 
             @Override
             public double getValue() {
-                return ApiObject.getInstance().getExps().getMonth().getOptions().getContract();
+                return TA35.getInstance().getExps().getMonth().getOptions().getContract();
             }
 
             @Override
@@ -113,17 +113,17 @@ public class Main_Chart extends MyChartCreator {
         // --------------- WEEK --------------- //
 
         // Op avg 5
-        MyTimeSeries opavg_5_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5);
+        MyTimeSeries opavg_5_week = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5);
         opavg_5_week.setColor(Themes.RED);
         opavg_5_week.setStokeSize(1.2f);
 
         // Op avg 60
-        MyTimeSeries opavg_60_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60);
+        MyTimeSeries opavg_60_week = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60);
         opavg_60_week.setColor(Themes.BLUE);
         opavg_60_week.setStokeSize(1.2f);
 
         // Op avg 240 yesterday
-        MyTimeSeries continue_opavg_240_week = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240);
+        MyTimeSeries continue_opavg_240_week = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240);
         continue_opavg_240_week.setColor(Themes.ORANGE);
         continue_opavg_240_week.setStokeSize(1.2f);
 
@@ -138,12 +138,12 @@ public class Main_Chart extends MyChartCreator {
         // --------------- ROLL --------------- //
 
         // Op avg 5
-        MyTimeSeries roll_3600 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600);
+        MyTimeSeries roll_3600 = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600);
         roll_3600.setColor(Themes.BLUE3);
         roll_3600.setStokeSize(1.2f);
         
         // Op avg 60
-        MyTimeSeries roll_900 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900);
+        MyTimeSeries roll_900 = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900);
         roll_900.setColor(Themes.PURPLE);
         roll_900.setStokeSize(1.2f);
 
@@ -157,17 +157,17 @@ public class Main_Chart extends MyChartCreator {
 
         // ----------------------------------------- DF ----------------------------------------- //
 
-        MyTimeSeries df_5_old = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
+        MyTimeSeries df_5_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
         df_5_old.setColor(Themes.ORANGE);
         df_5_old.setStokeSize(1.2f);
 
         // Op avg 60
-        MyTimeSeries df_6_old = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD);
+        MyTimeSeries df_6_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD);
         df_6_old.setColor(Themes.PURPLE);
         df_6_old.setStokeSize(1.2f);
 
         // Op avg 240 yesterday
-        MyTimeSeries df_9 = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
+        MyTimeSeries df_9 = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
         df_9.setColor(Themes.RED);
         df_9.setStokeSize(1.2f);
 
@@ -183,17 +183,17 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Races ----------------------------------------- //
 
         // Index races wi
-        MyTimeSeries index_races_wi = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_RACES_WI);
+        MyTimeSeries index_races_wi = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_RACES_WI);
         index_races_wi.setColor(Themes.ORANGE);
         index_races_wi.setStokeSize(1.2f);
 
         // Week races wi
-        MyTimeSeries week_races_wi = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_RACES_WI);
+        MyTimeSeries week_races_wi = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_RACES_WI);
         week_races_wi.setColor(Themes.PURPLE);
         week_races_wi.setStokeSize(1.2f);
 
         // Index races wi
-        MyTimeSeries month_races_wm = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
+        MyTimeSeries month_races_wm = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
         month_races_wm.setColor(Themes.RED);
         month_races_wm.setStokeSize(1.2f);
 
@@ -208,12 +208,12 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- BID ASK RACES ----------------------------------------- //
 
         // Index races wi
-        MyTimeSeries bid_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.BID_RACES_BA);
+        MyTimeSeries bid_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.BID_RACES_BA);
         bid_races.setColor(Themes.BLUE);
         bid_races.setStokeSize(1.2f);
 
         // Week races wi
-        MyTimeSeries ask_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ASK_RACES_BA);
+        MyTimeSeries ask_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ASK_RACES_BA);
         ask_races.setColor(Themes.RED);
         ask_races.setStokeSize(1.2f);
 

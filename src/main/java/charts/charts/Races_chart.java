@@ -1,6 +1,6 @@
 package charts.charts;
 
-import api.ApiObject;
+import api.TA35;
 import charts.myChart.*;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
@@ -14,13 +14,13 @@ import java.sql.ResultSet;
 public class Races_chart extends MyChartCreator {
 
     public static void main(String[] args) {
-        Races_chart fullCharts2 = new Races_chart(ApiObject.getInstance());
+        Races_chart fullCharts2 = new Races_chart(api.TA35.getInstance());
         fullCharts2.createChart();
     }
 
     // Constructor
-    public Races_chart(ApiObject apiObject) {
-        super(apiObject);
+    public Races_chart(TA35 TA35) {
+        super(TA35);
     }
     
     @Override
@@ -64,7 +64,7 @@ public class Races_chart extends MyChartCreator {
 
             @Override
             public double getValue() {
-                return ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
+                return TA35.getInstance().getExps().getWeek().getOptions().getContract();
             }
 
             @Override
@@ -84,7 +84,7 @@ public class Races_chart extends MyChartCreator {
 
             @Override
             public double getValue() {
-                return ApiObject.getInstance().getExps().getMonth().getOptions().getContract();
+                return TA35.getInstance().getExps().getMonth().getOptions().getContract();
             }
 
             @Override
@@ -112,15 +112,15 @@ public class Races_chart extends MyChartCreator {
 
         // ----------------------------------------- Victor race ----------------------------------------- //
 
-        MyTimeSeries victor_index_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES);
+        MyTimeSeries victor_index_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES);
         victor_index_races.setColor(Themes.ORANGE);
         victor_index_races.setStokeSize(1.2f);
 
-        MyTimeSeries victor_future_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_FUTURE_RACES);
+        MyTimeSeries victor_future_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_FUTURE_RACES);
         victor_future_races.setColor(Themes.PURPLE);
         victor_future_races.setStokeSize(1.2f);
 
-        MyTimeSeries victore_roll_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES);
+        MyTimeSeries victore_roll_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES);
         victore_roll_races.setColor(Themes.RED);
         victore_roll_races.setStokeSize(1.2f);
 
@@ -134,11 +134,11 @@ public class Races_chart extends MyChartCreator {
 
         // ----------------------------------------- Victor race ratio ----------------------------------------- //
 
-        MyTimeSeries victor_index_races_ratio = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO);
+        MyTimeSeries victor_index_races_ratio = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO);
         victor_index_races_ratio.setColor(Themes.ORANGE);
         victor_index_races_ratio.setStokeSize(1.2f);
 
-        MyTimeSeries victor_roll_races_ratio = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO);
+        MyTimeSeries victor_roll_races_ratio = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO);
         victor_roll_races_ratio.setColor(Themes.RED);
         victor_roll_races_ratio.setStokeSize(1.2f);
 
@@ -201,17 +201,17 @@ public class Races_chart extends MyChartCreator {
         // ----------------------------------------- Races ----------------------------------------- //
 
         // Index races wi
-        MyTimeSeries index_races_wi = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_RACES_WI);
+        MyTimeSeries index_races_wi = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_RACES_WI);
         index_races_wi.setColor(Themes.ORANGE);
         index_races_wi.setStokeSize(1.2f);
 
         // Week races wi
-        MyTimeSeries week_races_wi = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_RACES_WI);
+        MyTimeSeries week_races_wi = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_RACES_WI);
         week_races_wi.setColor(Themes.PURPLE);
         week_races_wi.setStokeSize(1.2f);
 
         // Index races wi
-        MyTimeSeries month_races_wm = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
+        MyTimeSeries month_races_wm = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
         month_races_wm.setColor(Themes.RED);
         month_races_wm.setStokeSize(1.2f);
 
@@ -226,12 +226,12 @@ public class Races_chart extends MyChartCreator {
         // ----------------------------------------- BID ASK RACES ----------------------------------------- //
 
         // Index races wi
-        MyTimeSeries bid_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.BID_RACES_BA);
+        MyTimeSeries bid_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.BID_RACES_BA);
         bid_races.setColor(Themes.BLUE);
         bid_races.setStokeSize(1.2f);
 
         // Week races wi
-        MyTimeSeries ask_races = ApiObject.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ASK_RACES_BA);
+        MyTimeSeries ask_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ASK_RACES_BA);
         ask_races.setColor(Themes.RED);
         ask_races.setStokeSize(1.2f);
 

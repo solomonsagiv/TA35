@@ -1,6 +1,6 @@
 package charts;
 
-import api.ApiObject;
+import api.TA35;
 import options.Options;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -159,7 +159,7 @@ class JFreeUpdater extends Thread {
 
 	ArrayList<Double> dots = new ArrayList<>();
 
-	ApiObject apiObject = ApiObject.getInstance();
+	TA35 client = TA35.getInstance();
 
 	private boolean run = true;
 
@@ -202,18 +202,18 @@ class JFreeUpdater extends Thread {
 	// Update data
 	private void updateChart() {
 
-		Options optionsMonth = apiObject.getExps().getMonth().getOptions();
+		Options optionsMonth = client.getExps().getMonth().getOptions();
 		
-		if (optionsMonth.getContract() != 0 && apiObject.getIndex() != 0 && apiObject.getIndex_bid() != 0
-				&& apiObject.getIndex_ask() != 0) { // Add to the dots
+		if (optionsMonth.getContract() != 0 && client.getIndex() != 0 && client.getBid() != 0
+				&& client.getAsk() != 0) { // Add to the dots
 
-			if (future != optionsMonth.getContract()|| index != apiObject.getIndex()
-					|| index_bid != apiObject.getIndex_bid() || index_ask != apiObject.getIndex_ask()) {
+			if (future != optionsMonth.getContract()|| index != client.getLast_price()
+					|| index_bid != client.getBid() || index_ask != client.getAsk()) {
 				
 				future = optionsMonth.getContract();
-				index = apiObject.getIndex();
-				index_bid = apiObject.getIndex_bid();
-				index_ask = apiObject.getIndex_ask();
+				index = client.getLast_price();
+				index_bid = client.getBid();
+				index_ask = client.getAsk();
 
 				dots.add(future);
 				dots.add(index);

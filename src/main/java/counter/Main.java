@@ -1,7 +1,7 @@
 
 package counter;
 
-import api.ApiObject;
+import api.TA35;
 import dataBase.mySql.JibeConnectionPool;
 
 public class Main {
@@ -13,7 +13,7 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 //		JibeConnectionPool.getConnectionsPoolInstance();
 		JibeConnectionPool.getConnectionsPoolInstance();
-		ApiObject apiObject = ApiObject.getInstance();
+		TA35 client = TA35.getInstance();
 
 		Thread.sleep(1000);
 		new WindowTA35();

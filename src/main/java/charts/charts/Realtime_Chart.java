@@ -1,15 +1,18 @@
 package charts.charts;
 
-import api.ApiObject;
+import api.TA35;
 import charts.myChart.*;
 import locals.Themes;
 import java.awt.*;
 
 public class Realtime_Chart extends MyChartCreator {
 
+    TA35 client;
+
     // Constructor
-    public Realtime_Chart(ApiObject apiObject) {
-        super(apiObject);
+    public Realtime_Chart(TA35 client) {
+        super(client);
+        this.client = client;
     }
 
     @SuppressWarnings("serial")
@@ -32,7 +35,7 @@ public class Realtime_Chart extends MyChartCreator {
         MyTimeSeries index = new MyTimeSeries("Index") {
             @Override
             public double getValue() {
-                return apiObject.getIndex();
+                return client.getIndex();
             }
 
             @Override
@@ -53,7 +56,7 @@ public class Realtime_Chart extends MyChartCreator {
 
             @Override
             public double getValue() {
-                return (apiObject.getIndex_bid() + apiObject.getIndex_ask()) / 2;
+                return (client.getBid() + client.getAsk()) / 2;
             }
 
             @Override
@@ -74,7 +77,7 @@ public class Realtime_Chart extends MyChartCreator {
 
             @Override
             public double getValue() {
-                return apiObject.getIndex_bid();
+                return client.getBid();
             }
 
             @Override
@@ -95,7 +98,7 @@ public class Realtime_Chart extends MyChartCreator {
 
             @Override
             public double getValue() {
-                return apiObject.getIndex_ask();
+                return client.getAsk();
             }
 
             @Override
@@ -115,7 +118,7 @@ public class Realtime_Chart extends MyChartCreator {
         MyTimeSeries future = new MyTimeSeries("Future") {
             @Override
             public double getValue() {
-                return apiObject.getExps().getMonth().getOptions().getContract();
+                return TA35.getExps().getMonth().getOptions().getContract();
             }
 
             @Override
@@ -135,7 +138,7 @@ public class Realtime_Chart extends MyChartCreator {
         MyTimeSeries futureWeek = new MyTimeSeries("Future week") {
             @Override
             public double getValue() {
-                return apiObject.getExps().getWeek().getOptions().getContract();
+                return TA35.getExps().getWeek().getOptions().getContract();
             }
 
             @Override

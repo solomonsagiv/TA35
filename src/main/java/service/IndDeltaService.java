@@ -1,5 +1,6 @@
 package service;
 
+import api.INDEX_OBJECT;
 import api.dde.DDE.DDEConnection;
 import api.deltaTest.Calculator;
 import com.pretty_tools.dde.client.DDEClientConversation;
@@ -9,17 +10,19 @@ import miniStocks.MiniStock;
 public class IndDeltaService extends MyBaseService {
 
     DDEClientConversation conversation;
+    INDEX_OBJECT client;
 
-    public IndDeltaService(String excel_path) {
-        super();
-        DDEConnection ddeConnection = new DDEConnection(apiObject);
+    public IndDeltaService(INDEX_OBJECT client, String excel_path) {
+        super(client);
+        this.client = client;
+        DDEConnection ddeConnection = new DDEConnection();
         this.conversation = ddeConnection.createNewConversation(excel_path);
         initStocksName();
     }
 
     private void calcStocksDelta() {
 
-        MiniStock[] miniStocks = apiObject.getStocksHandler().getStocks();
+        MiniStock[] miniStocks = client.getStocksHandler().getStocks();
 
         for (int i = 2; i < 37; i++) {
             try {
@@ -46,7 +49,7 @@ public class IndDeltaService extends MyBaseService {
 
     private void initStocksName() {
 
-        MiniStock[] miniStocks = apiObject.getStocksHandler().getStocks();
+        MiniStock[] miniStocks = client.getStocksHandler().getStocks();
 
         for (int i = 2; i < 37; i++) {
             try {

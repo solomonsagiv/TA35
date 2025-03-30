@@ -1,12 +1,13 @@
 package blackScholes;
 
 
-import api.ApiObject;
+import api.TA35;
 import options.Option;
 
 public class MyBlackScholes {
 
-	static ApiObject apiObject = ApiObject.getInstance();
+
+	static TA35 client = TA35.getInstance();
 
 	// Get stDev
 	public static double[] getStDev(Option option) {
@@ -36,12 +37,13 @@ public class MyBlackScholes {
 	static double[] findSTDEV(Option option) throws Exception {
 		
 		// TEST DATA -- trade 106005
-		double targetPrice = apiObject.getExps().getMonth().getOptions().getContract();
-		double timeToExp = apiObject.getDaysToExp() / 365.0;
+		double targetPrice = client.getExps().getMonth().getOptions().getContract();
+//		double timeToExp = TA35.getDaysToExp() / 365.0;
+		double timeToExp = 1;
 		double stDev = 0.001;
 		double bid = option.lastBid() / 100;
 		double ask = option.lastAsk() / 100;
-		double interest = apiObject.getInterest();
+		double interest = 1.045;
 		Boolean callPut = option.getSide().toLowerCase().contains("c") ? true : false;
 
 		// run till find the right price
@@ -86,22 +88,22 @@ public class MyBlackScholes {
 
 			String opositeName = option.getName().replace("c", "p");
 
-			return apiObject.getExps().getMonth().getOptions().getOption(opositeName);
+			return client.getExps().getMonth().getOptions().getOption(opositeName);
 
 		} else {
 
 			String opositeName = option.getName().replace("p", "c");
 
-			return  apiObject.getExps().getMonth().getOptions().getOption(opositeName);
+			return  client.getExps().getMonth().getOptions().getOption(opositeName);
 
 		}
 	}
 
 	static double[] getStDevByOption(Option option, double stDev) {
 
-		double targetPrice = apiObject.getExps().getMonth().getOptions().getContract();
-		double interest = apiObject.getInterest();
-		double timeToExp = apiObject.getDaysToExp() / 365.0;
+		double targetPrice = client.getExps().getMonth().getOptions().getContract();
+		double interest = 1.045;
+		double timeToExp = 1 / 365.0;
 
 		Boolean callPut = option.getSide().toLowerCase().contains("c") ? true : false;
 		double calcPrice = (getGreeaks(option.getStrike(), callPut, targetPrice, interest, timeToExp, stDev)[0]) * 100;

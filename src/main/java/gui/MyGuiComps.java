@@ -1,12 +1,13 @@
 package gui;
 
-import api.ApiObject;
+import api.BASE_CLIENT_OBJECT;
 import dataBase.DataBaseHandler;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import gui.listeners.MyListeners;
 import locals.L;
 import locals.Themes;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
@@ -20,10 +21,11 @@ public class MyGuiComps {
     // ---------- JFrame ---------- //
     public static abstract class MyFrame extends JFrame {
 
-        protected ApiObject client = ApiObject.getInstance();
+        BASE_CLIENT_OBJECT client;
 
-        public MyFrame(String title) throws HeadlessException {
+        public MyFrame(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
             super(title);
+            this.client = client;
             init();
             initialize();
             initListeners();
@@ -33,7 +35,7 @@ public class MyGuiComps {
 
         private void packAndFinish() {
             pack();
-            loadBounds(Queries.get_bounds(getTitle()));
+            loadBounds(Queries.get_bounds(client, getTitle()));
             setVisible(true);
         }
 

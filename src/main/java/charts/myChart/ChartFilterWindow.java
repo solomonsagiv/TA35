@@ -1,5 +1,6 @@
 package charts.myChart;
 
+import api.BASE_CLIENT_OBJECT;
 import gui.MyGuiComps;
 import locals.Themes;
 import org.apache.commons.lang3.StringUtils;
@@ -20,13 +21,13 @@ public class ChartFilterWindow extends MyGuiComps.MyFrame {
     MyGuiComps.MyLabel titleLbl;
 
     // Constructors
-    public ChartFilterWindow(String title) throws HeadlessException {
-        super(title);
+    public ChartFilterWindow(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
+        super(client, title);
     }
 
     // Constructors
-    public ChartFilterWindow(String title, MyChart myChart, MyChartContainer container) throws HeadlessException {
-        super(title);
+    public ChartFilterWindow(BASE_CLIENT_OBJECT client, String title, MyChart myChart, MyChartContainer container) throws HeadlessException {
+        super(client, title);
         this.myChart = myChart;
         this.container = container;
         initParams(myChart);

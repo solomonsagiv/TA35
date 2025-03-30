@@ -1,6 +1,7 @@
 package dataBase;
 
-import api.ApiObject;
+import api.BASE_CLIENT_OBJECT;
+import api.TA35;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
@@ -26,11 +27,15 @@ public class DataBaseHandler {
     public static final String width = "width";
     public static final String height = "height";
 
-    ApiObject apiObject;
+    TA35 client;
+
+    public DataBaseHandler(TA35 client) {
+        this.client = client;
+    }
 
     public void load_data() {
 
-        apiObject = ApiObject.getInstance();
+        client = TA35.getInstance();
 
         // Exp
         load_exp_data();
@@ -42,7 +47,7 @@ public class DataBaseHandler {
         load_all_races();
 
         // Set loaded
-        apiObject.setDbLoaded(true);
+        client.setDb_loaded(true);
     }
 
     private void load_all_races() {
@@ -62,8 +67,8 @@ public class DataBaseHandler {
             int baskets_up = (int) L.abs(Queries.handle_rs(Queries.get_baskets_up_sum(Factories.IDs.BASKETS)));
             int baskets_down = (int) L.abs(Queries.handle_rs(Queries.get_baskets_down_sum(Factories.IDs.BASKETS)));
 
-            apiObject.setBasketUp(baskets_up);
-            apiObject.setBasketDown(baskets_down);
+            client.getBasketFinder_by_stocks().setBasket_up(baskets_up);
+            client.getBasketFinder_by_stocks().setBasket_down(baskets_down);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,22 +76,21 @@ public class DataBaseHandler {
 
     public void load_exp_data() {
         try {
+                ExpWeek week = client.getExps().getWeek();
+                ExpMonth month = client.getExps().getMonth();
 
-                ExpWeek week = apiObject.getExps().getWeek();
-                ExpMonth month = apiObject.getExps().getMonth();
+                double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(TA35.getInstance(), Factories.IDs.BASKETS, Props.EXP_WEEK_START));
+                double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(TA35.getInstance(), Factories.IDs.BASKETS, Props.EXP_MONTH_START));
+                double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, TA35.getInstance(), Props.EXP_WEEK_START));
+                double start_exp_month = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, TA35.getInstance(), Props.EXP_MONTH_START));
 
-                double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_WEEK_START));
-                double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(ApiObject.getInstance(), Factories.IDs.BASKETS, Props.EXP_MONTH_START));
-                double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_WEEK_START));
-                double start_exp_month = Queries.handle_rs(Queries.get_start_exp_mega(Factories.IDs.INDEX, ApiObject.getInstance(), Props.EXP_MONTH_START));
+                double v4_week = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), Factories.IDs.DF_4_old, Props.EXP_WEEK_START));
+                double v8_week = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), Factories.IDs.DF_8_old, Props.EXP_WEEK_START));
+                double v9_week = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), Factories.IDs.DF_9, Props.EXP_WEEK_START));
 
-                double v4_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_4_old, Props.EXP_WEEK_START));
-                double v8_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_8_old, Props.EXP_WEEK_START));
-                double v9_week = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_9, Props.EXP_WEEK_START));
-
-                double v5_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_5_old, Props.EXP_MONTH_START));
-                double v6_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_6_old, Props.EXP_MONTH_START));
-                double v8_month = Queries.handle_rs(Queries.get_exp_data_by_candle(ApiObject.getInstance(), Factories.IDs.DF_9, Props.EXP_MONTH_START));
+                double v5_month = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), Factories.IDs.DF_5_old, Props.EXP_MONTH_START));
+                double v6_month = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), Factories.IDs.DF_6_old, Props.EXP_MONTH_START));
+                double v8_month = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), Factories.IDs.DF_9, Props.EXP_MONTH_START));
 
                 // Start
                 week.getExpData().setStart(start_exp_week);
@@ -151,7 +155,7 @@ public class DataBaseHandler {
 
     private void load_optimi_pesimi_count() {
 
-        ApiObject client = ApiObject.getInstance();
+        TA35 client = TA35.getInstance();
 
         // ------------- Op avg ------------- //
         // Week
@@ -215,11 +219,11 @@ public class DataBaseHandler {
     }
 
     private void load_races(Race_Logic.RACE_RUNNER_ENUM race_runner_enum, int serie_id, boolean r_one_or_two) {
-        load_race_points(race_runner_enum, serie_id, true, r_one_or_two);
-        load_race_points(race_runner_enum, serie_id, false, r_one_or_two);
+        load_race_points(client, race_runner_enum, serie_id, true, r_one_or_two);
+        load_race_points(client, race_runner_enum, serie_id, false, r_one_or_two);
     }
 
-    private void load_race_points(Race_Logic.RACE_RUNNER_ENUM race_runner_enum, int serie_id, boolean up_down, boolean r_one_or_two) {
+    private void load_race_points(BASE_CLIENT_OBJECT client, Race_Logic.RACE_RUNNER_ENUM race_runner_enum, int serie_id, boolean up_down, boolean r_one_or_two) {
         ResultSet rs;
         if (up_down) {
             rs = Queries.get_races_up_sum(serie_id);
@@ -234,15 +238,15 @@ public class DataBaseHandler {
 
                 if (up_down) {
                     if (r_one_or_two) {
-                        apiObject.getRacesService().get_race_logic(race_runner_enum).setR_one_up_points(value);
+                        client.getRacesService().get_race_logic(race_runner_enum).setR_one_up_points(value);
                     } else {
-                        apiObject.getRacesService().get_race_logic(race_runner_enum).setR_two_up_points(value);
+                        client.getRacesService().get_race_logic(race_runner_enum).setR_two_up_points(value);
                     }
                 } else {
                     if (r_one_or_two) {
-                        apiObject.getRacesService().get_race_logic(race_runner_enum).setR_one_down_points(L.abs(value));
+                        client.getRacesService().get_race_logic(race_runner_enum).setR_one_down_points(L.abs(value));
                     } else {
-                        apiObject.getRacesService().get_race_logic(race_runner_enum).setR_two_down_points(L.abs(value));
+                        client.getRacesService().get_race_logic(race_runner_enum).setR_two_down_points(L.abs(value));
                     }
                 }
             } catch (SQLException throwables) {

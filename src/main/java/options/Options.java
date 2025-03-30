@@ -1,6 +1,6 @@
 package options;
 
-import api.ApiObject;
+import api.BASE_CLIENT_OBJECT;
 import charts.myChart.MyChartList;
 import myJson.IJsonData;
 import myJson.JsonStrings;
@@ -28,10 +28,10 @@ public class Options implements IJsonData {
     private MyChartList conBidAskCounterList = new MyChartList();
     private MyChartList opChartList = new MyChartList();
 
-    protected ApiObject apiObject;
+    protected BASE_CLIENT_OBJECT client;
 
-    public Options(ApiObject apiObject) {
-        this.apiObject = apiObject;
+    public Options(BASE_CLIENT_OBJECT client) {
+        this.client = client;
         strikes = new ArrayList<>();
         optionsMap = new HashMap<>();
         this.options_list = new ArrayList<>();
@@ -64,10 +64,6 @@ public class Options implements IJsonData {
             }
         }
         return null;
-    }
-
-    public double getOp() {
-        return getContract() - apiObject.getIndex();
     }
 
     // Return single strike by strike price (double)
@@ -264,7 +260,6 @@ public class Options implements IJsonData {
     @Override
     public MyJson getAsJson() {
         MyJson json = new MyJson();
-        json.put(JsonStrings.op, getOp());
         json.put(JsonStrings.con, getContract());
         return json;
     }

@@ -1,11 +1,11 @@
 package options;
 
-import api.ApiObject;
+import api.TA35;
 
 public class OptionsWeek extends Options {
 
-	public OptionsWeek(ApiObject apiObject) {
-		super(apiObject);
+	public OptionsWeek(TA35 TA35) {
+		super(TA35);
 	}
 	
 }

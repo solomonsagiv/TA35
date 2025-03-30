@@ -1,9 +1,8 @@
 package api.deltaTest;
 
-import api.ApiObject;
+import api.TA35;
 import miniStocks.MiniStock;
 import options.Option;
-import options.Options;
 
 public class Calculator {
 
@@ -33,7 +32,7 @@ public class Calculator {
 	
 	public static double calcMiniStockDelta(MiniStock miniStock, int newLast, int newVolume) {
 		
-		ApiObject apiObject = ApiObject.getInstance();
+		TA35 client = TA35.getInstance();
 		
 		double delta = 0;
 		
@@ -46,14 +45,14 @@ public class Calculator {
 				
 				// Buy ( Last >= pre ask )
 				if (newLast >= miniStock.getAsk()) {
-					double stockWorth = apiObject.getIndex() * 100 * miniStock.getWeight();
+					double stockWorth = client.getIndex() * 100 * miniStock.getWeight();
 					double money = (quantity * miniStock.getLast());
 					delta = (money / stockWorth) * miniStock.getWeight();
 				}
 				
 				// Sell ( Last <= pre bid )
 				if (newLast <= miniStock.getBid()) {
-					double stockWorth = apiObject.getIndex() * 100 * miniStock.getWeight();
+					double stockWorth = client.getIndex() * 100 * miniStock.getWeight();
 					double money = (quantity * miniStock.getLast());
 					delta = (money / stockWorth) * miniStock.getWeight();
 					delta *= -1;

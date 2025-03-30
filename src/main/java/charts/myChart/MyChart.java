@@ -1,7 +1,7 @@
 package charts.myChart;
 
 
-import api.ApiObject;
+import api.TA35;
 import charts.MyChartPanel;
 import locals.L;
 import locals.Themes;
@@ -42,11 +42,11 @@ public class MyChart {
     private MyProps props;
     boolean load = false;
     XYLineAndShapeRenderer renderer;
-    ApiObject apiObject;
+    TA35 TA35;
 
     // Constructor
     public MyChart(MyTimeSeries[] series, MyProps props) {
-        apiObject = ApiObject.getInstance();
+        TA35 = TA35.getInstance();
         this.series = series;
         this.props = props;
         oldVals = new double[series.length];

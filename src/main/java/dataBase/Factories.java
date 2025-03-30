@@ -7,7 +7,7 @@ public class Factories {
         public static final String SAGIV_OPTIONS_STATUS_TABLE = "sagiv.ta35_options_status";
 //        public static final String DF_TABLE = "data.ta35_decision_func";
     }
-
+    
     public static class TimeSeries {
         public static final String INDEX = "INDEX";
         public static final String INDEX_AVG_3600 = "INDEX_AVG_3600";
@@ -42,6 +42,7 @@ public class Factories {
         public static final String VICTOR_ROLL_RACES = "VICTOR_ROLL_RACES";
         public static final String VICTOR_INDEX_RACES_RATIO = "VICTOR_INDEX_RACES_RATIO";
         public static final String VICTOR_ROLL_RACES_RATIO = "VICTOR_ROLL_RACES_RATIO";
+        public static final String TRADING_STATUS = "TRADING_STATUS";
 
     }
 

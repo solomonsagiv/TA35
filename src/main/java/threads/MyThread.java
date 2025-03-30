@@ -1,7 +1,5 @@
 package threads;
 
-import api.ApiObject;
-
 public abstract class MyThread {
 	
 	// Variables 
@@ -11,8 +9,6 @@ public abstract class MyThread {
 	private MyThreadHandler handler;
 	private Runnable runnable;
 	
-	protected ApiObject apiObject = ApiObject.getInstance();
-
 	public MyThread() {
 		initRunnable();
 	}
@@ -51,11 +47,5 @@ public abstract class MyThread {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public ApiObject getApiObject() {
-		return apiObject;
-	}
-	public void setApiObject(ApiObject apiObject) {
-		this.apiObject = apiObject;
-	}
-	
+
 }

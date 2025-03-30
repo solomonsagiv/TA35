@@ -1,5 +1,6 @@
 package gui.details;
 
+import api.TA35;
 import dataBase.mySql.JibeConnectionPool;
 import threads.MyThread;
 
@@ -17,6 +18,8 @@ public class DetailsWindow {
 	public static JTextArea indStocksArea;
 
 	Updater updater;
+
+	TA35 client;
 
 	/**
 	 * Launch the application.
@@ -38,6 +41,7 @@ public class DetailsWindow {
 	 * Create the application.
 	 */
 	public DetailsWindow() {
+		this.client = TA35.getInstance();
 		initialize();
 		updater = new Updater();
 		updater.getHandler().start();
@@ -140,14 +144,14 @@ public class DetailsWindow {
 		private void updateText() {
 			
 			StringBuilder text = new StringBuilder();
-			text.append(apiObject.getAsJson().toString(4));
+			text.append(client.getAsJson().toString(4));
 			text.append("/n Connection pool /n");
 			text.append(JibeConnectionPool.getAsJson().toString(4));
 			
 			textArea.setText(text.toString());
-			optionsWeekArea.setText(apiObject.getExps().getWeek().getOptions().getOptionsWithDataAsJson().toString(4));
-			optionsMonthArea.setText(apiObject.getExps().getMonth().getOptions().getOptionsWithDataAsJson().toString(4));
-			indStocksArea.setText(apiObject.getStocksHandler().getData().toString(4));
+			optionsWeekArea.setText(client.getExps().getWeek().getOptions().getOptionsWithDataAsJson().toString(4));
+			optionsMonthArea.setText(client.getExps().getMonth().getOptions().getOptionsWithDataAsJson().toString(4));
+			indStocksArea.setText(client.getStocksHandler().getData().toString(4));
 		}
 
 		@Override

@@ -1,6 +1,7 @@
 package exp;
 
-import api.ApiObject;
+import api.BASE_CLIENT_OBJECT;
+import api.TA35;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -15,11 +16,11 @@ public class ExpData implements IJsonData {
 	private double v5 = 0;
 	private double v9 = 0;
 
-	ApiObject apiObject;
+	TA35 client;
 	Exp exp;
 
-	public ExpData( ApiObject apiObject, Exp exp) {
-		this.apiObject = apiObject;
+	public ExpData(BASE_CLIENT_OBJECT client, Exp exp) {
+		this.client = (TA35) client;
 		this.exp = exp;
 	}
 
@@ -36,7 +37,7 @@ public class ExpData implements IJsonData {
 	}
 
 	public int getTotalBaskets() {
-		return baskets + (apiObject.getBasketUp() - apiObject.getBasketDown());
+		return baskets + (client.getBasketFinder_by_stocks().getBasket_up() - client.getBasketFinder_by_stocks().getBasket_down());
 	}
 
 	public double getV4() {

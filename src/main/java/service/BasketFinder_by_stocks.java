@@ -1,9 +1,10 @@
 package service;
 
-import api.ApiObject;
+import api.TA35;
 import locals.L;
 import miniStocks.MiniStock;
 import stocksHandler.StocksHandler;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -19,12 +20,13 @@ public class BasketFinder_by_stocks extends MyBaseService {
     private int sleep_between_frames = 1000;
     private int big_frame_time_in_secondes;
     private double last_0, last;
+    private int basket_up = 0, basket_down = 0;
 
-    public BasketFinder_by_stocks(int targetChanges, int big_frame_time_in_secondes) {
-        super();
+    public BasketFinder_by_stocks(TA35 client, int targetChanges, int big_frame_time_in_secondes) {
+        super(client);
         this.targetChanges = targetChanges;
         this.big_frame_time_in_secondes = big_frame_time_in_secondes;
-        this.stocksHandler = ApiObject.getInstance().getStocksHandler();
+        this.stocksHandler = client.getStocksHandler();
         this.bigFrame = new BigFrame();
     }
 
@@ -57,7 +59,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
 
     private void update_data() {
         last_0 = last;
-        last = apiObject.getIndex();
+        last = client.getLast_price();
     }
 
     private void append_volume_frame() {
@@ -97,10 +99,10 @@ public class BasketFinder_by_stocks extends MyBaseService {
         if (volume_sum >= targetChanges) {
 
             // Up - last closer to the ask
-            if (apiObject.get_ask_last_margin() < apiObject.get_bid_last_margin()) {
+            if (client.get_ask_last_margin() < client.get_bid_last_margin()) {
                 add_basket_up();
                 reset_data_after_basket();
-            } else if (apiObject.get_bid_last_margin() < apiObject.get_ask_last_margin()) {
+            } else if (client.get_bid_last_margin() < client.get_ask_last_margin()) {
                 add_basket_down();
                 reset_data_after_basket();
             }
@@ -114,7 +116,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
     private double pre_index_price = 0;
 
     private void append_index_changed() {
-        double last_index_price = ApiObject.getInstance().getIndex();
+        double last_index_price = TA35.getInstance().getIndex();
 
         // If changed
         if (last_index_price != pre_index_price) {
@@ -232,11 +234,11 @@ public class BasketFinder_by_stocks extends MyBaseService {
     }
 
     public void add_basket_up() {
-        ApiObject.getInstance().incrementBasketUp();
+        basket_up++;
     }
 
     public void add_basket_down() {
-        ApiObject.getInstance().incrementBasketDown();
+        basket_down++;
     }
 
     public int getChangesCount() {
@@ -255,9 +257,25 @@ public class BasketFinder_by_stocks extends MyBaseService {
         return biggest_change;
     }
 
+    public int getBasket_up() {
+        return basket_up;
+    }
+
+    public void setBasket_up(int basket_up) {
+        this.basket_up = basket_up;
+    }
+
+    public int getBasket_down() {
+        return basket_down;
+    }
+
+    public void setBasket_down(int basket_down) {
+        this.basket_down = basket_down;
+    }
+
     @Override
     public String getName() {
-        return ApiObject.getInstance().getName() + " " + "basket finder";
+        return TA35.getInstance().getName() + " " + "basket finder";
     }
 
     @Override
@@ -270,8 +288,8 @@ public class BasketFinder_by_stocks extends MyBaseService {
         StringBuilder str = new StringBuilder();
         str.append("Target changes= " + targetChanges + "\n");
         str.append("Changes= " + changesCount + "\n");
-        str.append("BasketUp= " + ApiObject.getInstance().getBasketUp() + "\n");
-        str.append("BasketDown= " + ApiObject.getInstance().getBasketDown() + "\n");
+        str.append("BasketUp= " + getBasket_up() + "\n");
+        str.append("BasketDown= " + getBasket_down() + "\n");
         str.append("Biggest change= " + L.floor(biggest_change, 100));
         str.append("Stoocks= " + stocksHandler.toString());
         return str.toString();

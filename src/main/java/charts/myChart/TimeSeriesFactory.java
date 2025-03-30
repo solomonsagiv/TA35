@@ -1,6 +1,6 @@
 package charts.myChart;
 
-import api.ApiObject;
+import api.TA35;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.MySql;
@@ -22,7 +22,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getIndex_avg_3600();
+                        return super.getValue();
                     }
 
                     @Override
@@ -31,8 +31,6 @@ public class TimeSeriesFactory {
 
                         double val = Queries.handle_rs(Queries.get_serie_moving_avg(serie_id, 60));
                         setValue(val);
-                        ApiObject.getInstance().setIndex_avg_3600(val);
-
                     }
 
                     @Override
@@ -50,7 +48,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getIndex_avg_900();
+                        return super.getValue();
                     }
 
                     @Override
@@ -59,7 +57,6 @@ public class TimeSeriesFactory {
 
                         double val = Queries.handle_rs(Queries.get_serie_moving_avg(serie_id, 15));
                         setValue(val);
-                        ApiObject.getInstance().setIndex_avg_900(val);
 
                     }
 
@@ -118,7 +115,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getWeek().getOptions().getContract();
+                        return TA35.getInstance().getExps().getWeek().getOptions().getContract();
                     }
 
                     @Override
@@ -137,7 +134,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getMonth().getOptions().getContract();
+                        return TA35.getInstance().getExps().getMonth().getOptions().getContract();
                     }
 
                     @Override
@@ -158,7 +155,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        double ind_with_bid_ask = (ApiObject.getInstance().getIndex_ask() + ApiObject.getInstance().getIndex_bid()) / 2;
+                        double ind_with_bid_ask = (TA35.getInstance().getAsk() + TA35.getInstance().getBid()) / 2;
                         return ind_with_bid_ask;
                     }
 
@@ -292,7 +289,7 @@ public class TimeSeriesFactory {
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_60) {
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getWeek().getOp_avg_60();
+                        return TA35.getInstance().getExps().getWeek().getOp_avg_60();
                     }
 
                     @Override
@@ -306,7 +303,7 @@ public class TimeSeriesFactory {
                         double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.OP_AVG_60, MySql.RAW));
                         setValue(val);
 
-                        Exp exp = ApiObject.getInstance().getExps().getWeek();
+                        Exp exp = TA35.getInstance().getExps().getWeek();
                         exp.setOp_avg_60(val);
                     }
                 };
@@ -315,7 +312,7 @@ public class TimeSeriesFactory {
                 return new MyTimeSeries(Factories.TimeSeries.OP_AVG_WEEK_5) {
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getWeek().getOp_avg_5();
+                        return TA35.getInstance().getExps().getWeek().getOp_avg_5();
                     }
 
                     @Override
@@ -329,7 +326,7 @@ public class TimeSeriesFactory {
                         double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.OP_AVG_15, MySql.RAW));
                         setValue(val);
 
-                        Exp exp = ApiObject.getInstance().getExps().getWeek();
+                        Exp exp = TA35.getInstance().getExps().getWeek();
                         exp.setOp_avg_5(val);
                     }
                 };
@@ -339,7 +336,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getExps().getWeek().getContinue_op_avg_240();
+                        return TA35.getInstance().getExps().getWeek().getContinue_op_avg_240();
                     }
 
                     @Override
@@ -353,7 +350,7 @@ public class TimeSeriesFactory {
                         double val = Queries.handle_rs(Queries.get_last_record_mega(Factories.IDs.OP_AVG_240_CONTINUE, MySql.RAW));
                         setValue(val);
 
-                        Exp exp = ApiObject.getInstance().getExps().getWeek();
+                        Exp exp = TA35.getInstance().getExps().getWeek();
                         exp.setContinue_op_avg_240(val);
                     }
                 };
@@ -364,7 +361,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
+                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
                     }
 
 
@@ -386,7 +383,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points();
+                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points();
                     }
 
 
@@ -408,7 +405,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.Q1_INDEX).get_r1_minus_r2();
+                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.Q1_INDEX).get_r1_minus_r2();
                     }
 
 
@@ -433,7 +430,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_two_points();
+                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_two_points();
                     }
 
 
@@ -456,7 +453,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
+                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
                     }
 
 
@@ -478,7 +475,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_one_points();
+                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_one_points();
                     }
 
 
@@ -500,7 +497,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return ApiObject.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_two_points();
+                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_two_points();
                     }
 
 
