@@ -48,4 +48,9 @@ public class Poli extends BASE_CLIENT_OBJECT {
     public Race_Logic get_main_race() {
         return getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.LAST_MID);
     }
+
+    @Override
+    protected void init_timeseries_handler() {
+
+    }
 }
