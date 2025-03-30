@@ -118,6 +118,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO));
         timeSeriesHandler.put(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO));
 
+        setTimeSeriesHandler(timeSeriesHandler);
+
     }
 
     // Get instance

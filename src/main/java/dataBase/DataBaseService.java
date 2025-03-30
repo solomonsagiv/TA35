@@ -46,6 +46,11 @@ public class DataBaseService extends MyBaseService {
         month = this.client.getExps().getMonth();
         timeSeriesList = new ArrayList<>();
 
+        // Append timeseries
+        add_timeseries();
+    }
+
+    private void add_timeseries() {
         // OP AVG
 //        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));
 //        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_900));
