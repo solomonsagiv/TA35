@@ -25,6 +25,7 @@ public class DataReaderService extends MyBaseService {
     String statusCell = "R7C1";
     String futureBidCell = "R7C2";
     String futureAskCell = "R7C3";
+    String trading_status_cell = "RC3";
 
     DDEClientConversation conversation;
 

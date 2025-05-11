@@ -21,6 +21,7 @@ public abstract class BASE_CLIENT_OBJECT {
     private boolean started, db_loaded;
     protected Exps exps;
     protected Props props;
+    private int trading_status = 0;
 
     // Services
     public MyServiceHandler serviceHandler;
@@ -226,5 +227,13 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setProps(Props props) {
         this.props = props;
+    }
+
+    public int getTrading_status() {
+        return trading_status;
+    }
+
+    public void setTrading_status(int trading_status) {
+        this.trading_status = trading_status;
     }
 }

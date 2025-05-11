@@ -7,7 +7,6 @@ import dataBase.mySql.Queries;
 import gui.listeners.MyListeners;
 import locals.L;
 import locals.Themes;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;

@@ -21,8 +21,6 @@ public class DataBaseService extends IDataBaseHandler {
     double week_races_0 = 0;
     double month_races_wm_0 = 0;
     double week_races_wm_0 = 0;
-    double bid_races_ba_0 = 0;
-    double ask_races_ba_0 = 0;
 
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> index_races_timeStamp = new ArrayList<>();
@@ -198,7 +196,6 @@ public class DataBaseService extends IDataBaseHandler {
 
     private void updateListsRetro() {
         // Dev and Prod
-        insert_dev_prod(index_races_timeStamp, client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BASKETS), serie_ids.get(Factories.TimeSeries.INDEX_RACES_WI));
         insert_data_retro_mega(baskets_timestamp, Factories.TimeSeries.BASKETS);
         insert_data_retro_mega(index_races_timeStamp, Factories.TimeSeries.INDEX_RACES_WI);
         insert_data_retro_mega(week_races_timeStamp, Factories.TimeSeries.WEEK_RACES_WI);

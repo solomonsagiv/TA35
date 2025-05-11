@@ -449,6 +449,23 @@ public class TimeSeriesFactory {
                     }
                 };
 
+            case Factories.TimeSeries.TRADING_STATUS:
+                return new MyTimeSeries(Factories.TimeSeries.TRADING_STATUS, client) {
+
+                    @Override
+                    public double getValue() {
+                        return client.getTrading_status();
+                    }
+
+                    @Override
+                    public void updateData() {
+                    }
+
+                    @Override
+                    public void load() {
+                    }
+                };
+
             default:
                 break;
         }

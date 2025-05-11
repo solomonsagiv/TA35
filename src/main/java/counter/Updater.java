@@ -36,7 +36,6 @@ public class Updater extends MyThread implements Runnable {
 
     TA35 client;
 
-
     // Constructor
     public Updater(WindowTA35 window) {
         super();
@@ -80,7 +79,6 @@ public class Updater extends MyThread implements Runnable {
 
             // After start trading
             if (client.isStarted()) {
-
                 int basket_up = client.getBasketFinder_by_stocks().getBasket_up();
                 int basket_down = client.getBasketFinder_by_stocks().getBasket_down();
 
@@ -125,7 +123,6 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.index_races_iw_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points(), false);
                 colorForgeRound(window.week_races_iw_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points(), false);
                 colorForgeRound(window.month_race_wm_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points(), false);
-
             }
         } catch (Exception e) {
             e.printStackTrace();
