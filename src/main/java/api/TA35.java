@@ -7,16 +7,20 @@ import dataBase.Factories;
 import exp.Exps;
 import handlers.TimeSeriesHandler;
 import locals.L;
+import locals.Themes;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
 import races.Race_Logic;
 import races.RacesService;
+import races.Stocks_Race_Service;
 import service.BasketFinder_by_stocks;
 import service.IndDeltaService;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
+
+import java.awt.*;
 import java.util.HashMap;
 
 public class TA35 extends INDEX_OBJECT implements IJsonData {
@@ -24,6 +28,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     private static TA35 TA35;
 
     private String status;
+
+    private Stocks_Race_Service stocks_race_service;
 
     // Private constructor
     private TA35() {
@@ -40,7 +46,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         HashMap<Race_Logic.RACE_RUNNER_ENUM, Race_Logic> map = new HashMap<>();
         map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, new Race_Logic(this, Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, L.RACE_MARGIN));
         map.put(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, new Race_Logic(this, Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, L.RACE_MARGIN));
-        map.put(Race_Logic.RACE_RUNNER_ENUM.BID_ASK, new Race_Logic(this, Race_Logic.RACE_RUNNER_ENUM.BID_ASK, L.RACE_MARGIN));
         setRacesService(new RacesService(this, map));
     }
 
@@ -80,44 +85,66 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     protected void init_timeseries_handler() {
         timeSeriesHandler = new TimeSeriesHandler();
 
-        timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_3600));
-        timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_900, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_900));
+        timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_3600, this));
+        timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_900, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_900, this));
 
-        timeSeriesHandler.put(Factories.TimeSeries.DF_4_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_4_CDF_OLD));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_5_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_5_CDF_OLD));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_6_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_6_CDF_OLD));
-        timeSeriesHandler.put(Factories.TimeSeries.DF_8_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_CDF_OLD));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_4_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_4_CDF_OLD, this));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_5_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_5_CDF_OLD, this));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_6_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_6_CDF_OLD, this));
+        timeSeriesHandler.put(Factories.TimeSeries.DF_8_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_CDF_OLD, this));
 
-        timeSeriesHandler.put(Factories.TimeSeries.ROLL_900, TimeSeriesFactory.get_serie(Factories.TimeSeries.ROLL_900));
-        timeSeriesHandler.put(Factories.TimeSeries.ROLL_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.ROLL_3600));
+        timeSeriesHandler.put(Factories.TimeSeries.ROLL_900, TimeSeriesFactory.get_serie(Factories.TimeSeries.ROLL_900, this));
+        timeSeriesHandler.put(Factories.TimeSeries.ROLL_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.ROLL_3600, this));
 
-        timeSeriesHandler.put(Factories.TimeSeries.DF_9_CDF, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_9_CDF));
+        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_15, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_15, this));
+        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_60, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60, this));
+        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_240_CONTINUE, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_240_CONTINUE, this));
 
-        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_5, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_5));
-        timeSeriesHandler.put(Factories.TimeSeries.OP_AVG_WEEK_60, TimeSeriesFactory.get_serie(Factories.TimeSeries.OP_AVG_WEEK_60));
-        timeSeriesHandler.put(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240, TimeSeriesFactory.get_serie(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
+        timeSeriesHandler.put(Factories.TimeSeries.FUTURE_WEEK, TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_WEEK, this));
+        timeSeriesHandler.put(Factories.TimeSeries.FUTURE_MONTH, TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_MONTH, this));
 
-        timeSeriesHandler.put(Factories.TimeSeries.FUTURE_WEEK, TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_WEEK));
-        timeSeriesHandler.put(Factories.TimeSeries.FUTURE_MONTH, TimeSeriesFactory.get_serie(Factories.TimeSeries.FUTURE_MONTH));
+        timeSeriesHandler.put(Factories.TimeSeries.INDEX_RACES_WI, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_RACES_WI, this));
+        timeSeriesHandler.put(Factories.TimeSeries.WEEK_RACES_WI, TimeSeriesFactory.get_serie(Factories.TimeSeries.WEEK_RACES_WI, this));
 
-        timeSeriesHandler.put(Factories.TimeSeries.INDEX_RACES_WI, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_RACES_WI));
-        timeSeriesHandler.put(Factories.TimeSeries.WEEK_RACES_WI, TimeSeriesFactory.get_serie(Factories.TimeSeries.WEEK_RACES_WI));
-        timeSeriesHandler.put(Factories.TimeSeries.R1_MINUS_R2_IQ, TimeSeriesFactory.get_serie(Factories.TimeSeries.R1_MINUS_R2_IQ));
-
-        timeSeriesHandler.put(Factories.TimeSeries.WEEK_RACES_WM, TimeSeriesFactory.get_serie(Factories.TimeSeries.WEEK_RACES_WM));
-        timeSeriesHandler.put(Factories.TimeSeries.MONTH_RACES_WM, TimeSeriesFactory.get_serie(Factories.TimeSeries.MONTH_RACES_WM));
-
-        timeSeriesHandler.put(Factories.TimeSeries.BID_RACES_BA, TimeSeriesFactory.get_serie(Factories.TimeSeries.BID_RACES_BA));
-        timeSeriesHandler.put(Factories.TimeSeries.ASK_RACES_BA, TimeSeriesFactory.get_serie(Factories.TimeSeries.ASK_RACES_BA));
-
-        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_INDEX_RACES, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_INDEX_RACES));
-        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_FUTURE_RACES, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_FUTURE_RACES));
-        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_ROLL_RACES, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_ROLL_RACES));
-
-        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO));
-        timeSeriesHandler.put(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO, TimeSeriesFactory.get_serie(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO));
+        timeSeriesHandler.put(Factories.TimeSeries.WEEK_RACES_WM, TimeSeriesFactory.get_serie(Factories.TimeSeries.WEEK_RACES_WM, this));
+        timeSeriesHandler.put(Factories.TimeSeries.MONTH_RACES_WM, TimeSeriesFactory.get_serie(Factories.TimeSeries.MONTH_RACES_WM, this));
 
         setTimeSeriesHandler(timeSeriesHandler);
+
+
+        timeSeriesHandler.put_id(Factories.TimeSeries.INDEX, 5);
+        timeSeriesHandler.put_id(Factories.TimeSeries.BID, 22);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ASK, 21);
+//        timeSeriesHandler.put_id(Factories.TimeSeries.MID, 5ddd);
+        timeSeriesHandler.put_id(Factories.TimeSeries.LAST_PRICE, 5);
+        timeSeriesHandler.put_id(Factories.TimeSeries.BASKETS, 9513);
+        timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_WEEK, 23);
+        timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_MONTH, 6);
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_AVG_240_CONTINUE, 9486);
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_AVG_WEEK_60, 9484);
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_AVG_WEEK_15, 9485);
+        timeSeriesHandler.put_id(Factories.TimeSeries.DF_4_CDF_OLD, 9770);
+        timeSeriesHandler.put_id(Factories.TimeSeries.DF_8_CDF_OLD, 9773);
+        timeSeriesHandler.put_id(Factories.TimeSeries.DF_5_CDF_OLD, 9491);
+        timeSeriesHandler.put_id(Factories.TimeSeries.DF_6_CDF_OLD, 9492);
+
+        timeSeriesHandler.put_id(Factories.TimeSeries.INDEX_RACES_WI, 9789);
+        timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_RACES_WI, 9788);
+        timeSeriesHandler.put_id(Factories.TimeSeries.MONTH_RACES_WM, 9791);
+        timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_RACES_WM, 9788);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_3600, 9542);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_900, 9543);
+//        timeSeriesHandler.put_id(Factories.TimeSeries.TRADING_STATUS, 5fff);
+    }
+
+    @Override
+    protected void init_dde_cells() {
+
+    }
+
+    @Override
+    public Color get_index_race_serie_color() {
+        return Themes.ORANGE;
     }
 
 
@@ -213,5 +240,11 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         return new MyJson();
     }
 
+    public Stocks_Race_Service getStocks_race_service() {
+        return stocks_race_service;
+    }
 
+    public void setStocks_race_service(Stocks_Race_Service stocks_race_service) {
+        this.stocks_race_service = stocks_race_service;
+    }
 }

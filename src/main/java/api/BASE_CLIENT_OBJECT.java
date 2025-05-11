@@ -1,12 +1,16 @@
 package api;
 
 import dataBase.DataBaseService;
+import dde.DDECells;
 import exp.Exps;
 import handlers.TimeSeriesHandler;
 import locals.L;
+import props.Props;
 import races.Race_Logic;
 import races.RacesService;
 import service.MyServiceHandler;
+
+import java.awt.*;
 
 public abstract class BASE_CLIENT_OBJECT {
 
@@ -16,12 +20,14 @@ public abstract class BASE_CLIENT_OBJECT {
     private String export_dir = "C://Users/user/Desktop/Work/Data history/TA35/";
     private boolean started, db_loaded;
     protected Exps exps;
+    protected Props props;
 
     // Services
     public MyServiceHandler serviceHandler;
     public DataBaseService dataBaseService;
     protected TimeSeriesHandler timeSeriesHandler;
     public RacesService racesService;
+    protected DDECells ddeCells;
 
     public BASE_CLIENT_OBJECT() {
         init_name();
@@ -29,6 +35,7 @@ public abstract class BASE_CLIENT_OBJECT {
         init_timeseries_handler();
         init_exps();
         init_data_base_service();
+        init_dde_cells();
     }
 
     protected abstract void init_race_service();
@@ -37,11 +44,24 @@ public abstract class BASE_CLIENT_OBJECT {
     protected abstract void init_exps();
     public abstract Race_Logic get_main_race();
     protected abstract void init_timeseries_handler();
+    protected abstract void init_dde_cells();
+    public abstract Color get_index_race_serie_color();
 
+    public double getOpenPresent() {
+        return L.floor(((open - base) / base) * 100, 100);
+    }
+    public double getLastPresent() {
+        return L.floor(((last_price - base) / base) * 100, 100);
+    }
+    public double getHighPresent() {
+        return L.floor(((high - base) / base) * 100, 100);
+    }
+    public double getLowPresent() {
+        return L.floor(((low - base) / base) * 100, 100);
+    }
     public double get_ask_last_margin() {
         return L.abs(ask - last_price);
     }
-
     public double get_bid_last_margin() {
         return L.abs(last_price - bid);
     }
@@ -109,6 +129,8 @@ public abstract class BASE_CLIENT_OBJECT {
     public void setTimeSeriesHandler(TimeSeriesHandler timeSeriesHandler) {
         this.timeSeriesHandler = timeSeriesHandler;
     }
+
+
 
     public double getOpen() {
         return open;
@@ -188,5 +210,21 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setExps(Exps exps) {
         this.exps = exps;
+    }
+
+    public DDECells getDdeCells() {
+        return ddeCells;
+    }
+
+    public void setDdeCells(DDECells ddeCells) {
+        this.ddeCells = ddeCells;
+    }
+
+    public Props getProps() {
+        return props;
+    }
+
+    public void setProps(Props props) {
+        this.props = props;
     }
 }

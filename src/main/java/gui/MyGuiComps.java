@@ -35,7 +35,7 @@ public class MyGuiComps {
 
         private void packAndFinish() {
             pack();
-            loadBounds(Queries.get_bounds(client, getTitle()));
+            loadBounds(Queries.get_bounds(client, getTitle(), MySql.JIBE_PROD_CONNECTION));
             setVisible(true);
         }
 
@@ -88,7 +88,7 @@ public class MyGuiComps {
         protected void insetOrUpdateBounds() {
             try {
                 String query = String.format("SELECT sagiv.update_bounds('%s', '%s', %s, %s, %s, %s);", client.getName(), getTitle(), getX(), getY(), getWidth(), getHeight());
-                MySql.select(query);
+                MySql.select(query, MySql.JIBE_PROD_CONNECTION);
             } catch (Exception e) {
                 e.printStackTrace();
             }

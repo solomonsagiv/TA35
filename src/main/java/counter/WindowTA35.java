@@ -3,12 +3,13 @@ package counter;
 import api.TA35;
 import api.dde.DDE.DDEConnection;
 import charts.charts.Main_Chart;
-import charts.charts.Races_chart;
 import charts.charts.Realtime_Chart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import locals.Themes;
+import stocks.SummeryWindow;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -447,7 +448,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Realtime", "Main", "Races"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Realtime", "Main", "Races", "Stocks"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -463,9 +464,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                         Realtime_Chart realtimeChart = new Realtime_Chart(TA35.getInstance());
                         realtimeChart.createChart();
                         break;
-                    case "Races":
-                        Races_chart races_chart = new Races_chart(TA35.getInstance());
-                        races_chart.createChart();
+                    case "Stocks":
+                        new SummeryWindow("Stocks");
                         break;
                     default:
                         break;
@@ -487,10 +487,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             // Full charts
             Main_Chart main_chart = new Main_Chart(TA35.getInstance());
             main_chart.createChart();
-
-            // Races chart
-            Races_chart races_chart = new Races_chart(TA35.getInstance());
-            races_chart.createChart();
 
         } catch (Exception e) {
             e.printStackTrace();

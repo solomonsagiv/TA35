@@ -1,6 +1,7 @@
 package service;
 
-public interface IMyService {
+public interface
+IMyService {
     void go();
     String getName();
     int getSleep();

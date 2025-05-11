@@ -1,5 +1,6 @@
 package charts.myChart;
 
+import api.BASE_CLIENT_OBJECT;
 import lists.MyDoubleList;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -33,11 +34,14 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
     private boolean load = false;
 //    private double data = 0;
 
+    BASE_CLIENT_OBJECT client;
+
     double value = 0;
 
     // Constructor
-    public MyTimeSeries(Comparable name) {
+    public MyTimeSeries(Comparable name, BASE_CLIENT_OBJECT client) {
         super(name);
+        this.client = client;
         this.name = (String) name;
         this.series_type = (String) name;
         myValues = new MyDoubleList();

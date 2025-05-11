@@ -11,7 +11,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.lang.reflect.Field;
-import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
 
 public class MyChartContainer extends JFrame {
 
@@ -193,19 +194,23 @@ public class MyChartContainer extends JFrame {
         }
     }
 
-    private void loadBounds() {
+    protected void loadBounds() {
         new Thread(() -> {
             try {
-                int width = 100, height = 100, x = 100, y = 100;
+                int width = 300, height = 300, x = 300, y = 300;
 
-                String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", client.getName(), getName());
-                ResultSet rs = MySql.select(query);
+                if (client == null) {
+                    client = TA35.getInstance();
+                }
 
-                while (rs.next()) {
-                    x = rs.getInt("x");
-                    y = rs.getInt("y");
-                    width = rs.getInt("width");
-                    height = rs.getInt("height");
+                String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", client.getName(), getTitle());
+                List<Map<String, Object>> rs = MySql.select(query, MySql.JIBE_PROD_CONNECTION);
+
+                for(Map<String, Object> row: rs) {
+                    x = (int) row.get("x");
+                    y = (int) row.get("y");
+                    width = (int) row.get("width");
+                    height = (int) row.get("height");
                 }
 
                 setPreferredSize(new Dimension(width, height));
@@ -229,7 +234,7 @@ public class MyChartContainer extends JFrame {
     private void insetOrUpdateBounds() {
         try {
             String query = String.format("SELECT sagiv.update_bounds('%s', '%s', %s, %s, %s, %s);", client.getName(), getName(), getX(), getY(), getWidth(), getHeight());
-            MySql.select(query);
+            MySql.select(query, MySql.JIBE_PROD_CONNECTION);
         } catch (Exception e) {
             e.printStackTrace();
         }

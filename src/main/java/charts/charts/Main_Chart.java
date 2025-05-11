@@ -1,27 +1,23 @@
 package charts.charts;
 
-import api.TA35;
 import charts.myChart.*;
 import dataBase.DataBaseHandler;
 import dataBase.Factories;
+import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import locals.Themes;
-
+import api.TA35;
 import java.awt.*;
-import java.sql.ResultSet;
+import java.util.List;
+import java.util.Map;
 
 public class Main_Chart extends MyChartCreator {
 
-    public static void main(String[] args) {
-        Main_Chart fullCharts2 = new Main_Chart(api.TA35.getInstance());
-        fullCharts2.createChart();
+    // Constructor
+    public Main_Chart(TA35 ta35) {
+        super(ta35);
     }
 
-    // Constructor
-    public Main_Chart(TA35 TA35) {
-        super(TA35);
-    }
-    
     @Override
     public void init() throws CloneNotSupportedException {
 
@@ -45,21 +41,21 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Index ----------------------------------------- //
 
         // Index
-        MyTimeSeries index_with_bid_ask_Serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_WITH_BID_ASK);
+        MyTimeSeries index_with_bid_ask_Serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.MID, client);
         index_with_bid_ask_Serie.setColor(Color.BLACK);
         index_with_bid_ask_Serie.setStokeSize(1.2f);
 
         // Index avg 3600
-        MyTimeSeries index_avg_3600_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_3600);
+        MyTimeSeries index_avg_3600_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_3600, client);
         index_avg_3600_serie.setColor(Themes.PURPLE);
         index_avg_3600_serie.setStokeSize(0.75f);
 
         // Index avg 900
-        MyTimeSeries index_avg_900_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_900);
+        MyTimeSeries index_avg_900_serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_900, client);
         index_avg_900_serie.setColor(Themes.RED);
         index_avg_900_serie.setStokeSize(0.75f);
 
-        MyTimeSeries future_week_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK) {
+        MyTimeSeries future_week_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK, client) {
 
             @Override
             public double getValue() {
@@ -68,7 +64,8 @@ public class Main_Chart extends MyChartCreator {
 
             @Override
             public void load() {
-                ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.FUT_WEEK, Queries.RAW);
+                int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_WEEK);
+                List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, Queries.RAW, MySql.JIBE_PROD_CONNECTION);
                 DataBaseHandler.loadSerieData(rs, this);
             }
 
@@ -79,7 +76,7 @@ public class Main_Chart extends MyChartCreator {
         future_week_serie.setColor(Themes.GREEN);
         future_week_serie.setStokeSize(1.2f);
 
-        MyTimeSeries future_month_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_MONTH) {
+        MyTimeSeries future_month_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_MONTH, client) {
 
             @Override
             public double getValue() {
@@ -88,7 +85,8 @@ public class Main_Chart extends MyChartCreator {
 
             @Override
             public void load() {
-                ResultSet rs = Queries.get_serie_mega_table(Factories.IDs.FUT_WEEK, Queries.RAW);
+                int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_MONTH);
+                List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, Queries.RAW, MySql.JIBE_PROD_CONNECTION);
                 DataBaseHandler.loadSerieData(rs, this);
             }
 
@@ -113,7 +111,7 @@ public class Main_Chart extends MyChartCreator {
         // --------------- WEEK --------------- //
 
         // Op avg 5
-        MyTimeSeries opavg_5_week = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5);
+        MyTimeSeries opavg_5_week = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_15);
         opavg_5_week.setColor(Themes.RED);
         opavg_5_week.setStokeSize(1.2f);
 
@@ -123,7 +121,7 @@ public class Main_Chart extends MyChartCreator {
         opavg_60_week.setStokeSize(1.2f);
 
         // Op avg 240 yesterday
-        MyTimeSeries continue_opavg_240_week = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240);
+        MyTimeSeries continue_opavg_240_week = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_240_CONTINUE);
         continue_opavg_240_week.setColor(Themes.ORANGE);
         continue_opavg_240_week.setStokeSize(1.2f);
 
@@ -166,15 +164,10 @@ public class Main_Chart extends MyChartCreator {
         df_6_old.setColor(Themes.PURPLE);
         df_6_old.setStokeSize(1.2f);
 
-        // Op avg 240 yesterday
-        MyTimeSeries df_9 = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
-        df_9.setColor(Themes.RED);
-        df_9.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[3];
+        series = new MyTimeSeries[2];
         series[0] = df_5_old;
         series[1] = df_6_old;
-        series[2] = df_9;
 
 
         MyChart df_chart = new MyChart(series, props);
@@ -205,28 +198,10 @@ public class Main_Chart extends MyChartCreator {
 
         MyChart races_chart = new MyChart(series, props);
 
-        // ----------------------------------------- BID ASK RACES ----------------------------------------- //
-
-        // Index races wi
-        MyTimeSeries bid_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.BID_RACES_BA);
-        bid_races.setColor(Themes.BLUE);
-        bid_races.setStokeSize(1.2f);
-
-        // Week races wi
-        MyTimeSeries ask_races = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ASK_RACES_BA);
-        ask_races.setColor(Themes.RED);
-        ask_races.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[2];
-        series[0] = bid_races;
-        series[1] = ask_races;
-
-        MyChart bid_ask_races_chart = new MyChart(series, props);
-
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, roll_chart, df_chart, races_chart, bid_ask_races_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, roll_chart, df_chart, races_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Main chart");

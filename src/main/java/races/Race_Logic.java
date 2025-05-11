@@ -11,7 +11,6 @@ public class Race_Logic {
         WEEK_MONTH(),
         WEEK_INDEX(),
         MONTH_INDEX(),
-        BID_ASK(),
         LAST_MID();
 
     }
@@ -191,77 +190,57 @@ public class Race_Logic {
             case WEEK_MONTH:
                 r_one_price = client.getExps().getMonth().getOptions().getContract();
                 r_two_price = client.getExps().getWeek().getOptions().getContract();
-                return;
-            case BID_ASK:
-                r_one_price = client.getMid();
-                r_two_price = client.getLast_price();
         }
     }
 
     public double get_r1_minus_r2() {
         return get_r_one_points() - get_r_two_points();
     }
-
     public double get_sum_points() {
         return get_r_one_points() + get_r_two_points();
     }
-
     public double get_r_one_points() {
         return r_one_up_points - r_one_down_points;
     }
-
     public double get_r_two_points() {
         return r_two_up_points - r_two_down_points;
     }
-
     private boolean is_in_race() {
         return R_ONE_UP || R_ONE_DOWN || R_TWO_UP || R_TWO_DOWN;
     }
-
     private void r_one_win_up() {
         r_one_up_points += r_one_increase_points;
     }
-
     private void r_one_win_down() {
         r_one_down_points += r_one_increase_points;
     }
-
     private void r_two_win_up() {
         r_two_up_points += r_two_increase_points;
     }
-
     private void r_two_win_down() {
         r_two_down_points += r_two_increase_points;
     }
-
     public void setR_one_up_points(double r_one_up_points) {
         this.r_one_up_points = r_one_up_points;
     }
-
     public void setR_one_down_points(double r_one_down_points) {
         this.r_one_down_points = r_one_down_points;
     }
-
     public void setR_two_up_points(double r_two_up_points) {
         this.r_two_up_points = r_two_up_points;
     }
-
     public void setR_two_down_points(double r_two_down_points) {
         this.r_two_down_points = r_two_down_points;
     }
-
     public double getR_one_points_from_database() {
         return r_one_points_from_database;
     }
-
     public void setR_one_points_from_database(double r_one_points_from_database) {
         this.r_one_points_from_database = r_one_points_from_database;
     }
-
     public double getR_two_points_from_database() {
         return r_two_points_from_database;
     }
-
     public void setR_two_points_from_database(double r_two_points_from_database) {
         this.r_two_points_from_database = r_two_points_from_database;
     }

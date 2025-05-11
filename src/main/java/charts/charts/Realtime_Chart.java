@@ -32,7 +32,7 @@ public class Realtime_Chart extends MyChartCreator {
 
         // ----- Chart 1 ----- //
         // Index
-        MyTimeSeries index = new MyTimeSeries("Index") {
+        MyTimeSeries index = new MyTimeSeries("Index", client) {
             @Override
             public double getValue() {
                 return client.getIndex();
@@ -52,7 +52,7 @@ public class Realtime_Chart extends MyChartCreator {
         index.setStokeSize(2.25f);
 
         // Index
-        MyTimeSeries index_bid_ask = new MyTimeSeries("Index bid ask avg") {
+        MyTimeSeries index_bid_ask = new MyTimeSeries("Index bid ask avg", client) {
 
             @Override
             public double getValue() {
@@ -73,7 +73,7 @@ public class Realtime_Chart extends MyChartCreator {
         index_bid_ask.setStokeSize(2.25f);
 
         // Bid
-        MyTimeSeries bid = new MyTimeSeries("Bid") {
+        MyTimeSeries bid = new MyTimeSeries("Bid", client) {
 
             @Override
             public double getValue() {
@@ -94,7 +94,7 @@ public class Realtime_Chart extends MyChartCreator {
         bid.setStokeSize(2.25f);
 
         // Ask
-        MyTimeSeries ask = new MyTimeSeries("Ask") {
+        MyTimeSeries ask = new MyTimeSeries("Ask", client) {
 
             @Override
             public double getValue() {
@@ -115,10 +115,10 @@ public class Realtime_Chart extends MyChartCreator {
         ask.setStokeSize(2.25f);
 
         // Future
-        MyTimeSeries future = new MyTimeSeries("Future") {
+        MyTimeSeries future = new MyTimeSeries("Future", client) {
             @Override
             public double getValue() {
-                return TA35.getExps().getMonth().getOptions().getContract();
+                return client.getExps().getMonth().getOptions().getContract();
             }
 
             @Override
@@ -135,10 +135,10 @@ public class Realtime_Chart extends MyChartCreator {
         future.setStokeSize(2.25f);
 
         // Future
-        MyTimeSeries futureWeek = new MyTimeSeries("Future week") {
+        MyTimeSeries futureWeek = new MyTimeSeries("Future week", client) {
             @Override
             public double getValue() {
-                return TA35.getExps().getWeek().getOptions().getContract();
+                return client.getExps().getWeek().getOptions().getContract();
             }
 
             @Override

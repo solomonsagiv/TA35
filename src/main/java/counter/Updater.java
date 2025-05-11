@@ -44,13 +44,10 @@ public class Updater extends MyThread implements Runnable {
         this.window = window;
         setRunnable(this);
 
-        this.df_8_de_corr = client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
-
         this.df_4 = client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD);
         this.df_5 = client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
         this.df_6 = client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD);
         this.df_8 = client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD);
-        this.df_8_de_corr = client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF);
     }
 
     @Override

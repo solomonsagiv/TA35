@@ -1,13 +1,7 @@
 package charts;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.NoSuchElementException;
-
-import javax.swing.JLabel;
-
+import arik.Arik;
+import locals.Themes;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisLocation;
@@ -18,8 +12,11 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import arik.Arik;
-import locals.Themes;
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.NoSuchElementException;
 
 public class MySingleFreeChart {
 

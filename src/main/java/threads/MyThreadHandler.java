@@ -1,18 +1,14 @@
 package threads;
 
-import arik.Arik;
-
 public class MyThreadHandler {
 
 	// Variables
 	MyThread myThread;
 	Thread thread;
-	Arik arik;
 
 	// Constructor
 	public MyThreadHandler(MyThread myThread) {
 		this.myThread = myThread;
-		this.arik = Arik.getInstance();
 	}
 	
 	// ---------- Functions ---------- //

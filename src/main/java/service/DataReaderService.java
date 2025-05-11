@@ -1,8 +1,10 @@
 package service;
 
+import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import api.dde.DDE.DDEConnection;
 import com.pretty_tools.dde.client.DDEClientConversation;
+import dde.DDECells;
 import locals.L;
 import options.Options;
 
@@ -32,7 +34,6 @@ public class DataReaderService extends MyBaseService {
         super(ta35);
         this.ta35 = ta35;
         this.conversation = new DDEConnection().createNewConversation(excel_path);
-
     }
 
     public void update() {
@@ -65,9 +66,32 @@ public class DataReaderService extends MyBaseService {
                 ta35.setLast_price(L.dbl(conversation.request(lastCell)));
                 optionsMonth.setContractBid(L.dbl(conversation.request(futureBidCell)));
                 optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
+
+                // Read stocks
+                read_stocks();
+
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void read_stocks() {
+
+        for (BASE_CLIENT_OBJECT stock : L.stocks) {
+            try {
+                DDECells ddeCells = stock.getDdeCells();
+
+                stock.setLast_price(L.dbl(conversation.request(ddeCells.getCell(DDECells.LAST_PRICE))));
+                stock.setBid(L.dbl(conversation.request(ddeCells.getCell(DDECells.BID))));
+                stock.setAsk(L.dbl(conversation.request(ddeCells.getCell(DDECells.ASK))));
+                stock.setMid(L.dbl(conversation.request(ddeCells.getCell(DDECells.MID))));
+                stock.setOpen(L.dbl(conversation.request(ddeCells.getCell(DDECells.OPEN))));
+                stock.setBase(L.dbl(conversation.request(ddeCells.getCell(DDECells.BASE))));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

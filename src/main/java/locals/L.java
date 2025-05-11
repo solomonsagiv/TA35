@@ -1,5 +1,7 @@
 package locals;
 
+import api.BASE_CLIENT_OBJECT;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.DateFormat;
@@ -7,13 +9,18 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class L {
 
 	private static DecimalFormat df100;
 	private static DecimalFormat df10;
 	private static DecimalFormat df;
+
+	public static Set<BASE_CLIENT_OBJECT> stocks = new LinkedHashSet<>();
+
 
 	public static final double RACE_MARGIN = 0.001;
 
@@ -50,6 +57,42 @@ public class L {
 		return df100;
 	}
 
+	public static int row_to_int(Object o) {
+		int num;
+
+		if (o instanceof Number) {
+			// This covers BigDecimal, Double, Integer, etc.
+			num = ((Number) o).intValue();
+		} else {
+			throw new IllegalArgumentException("Value for key 'p' is not a number: " + o);
+		}
+		return num;
+	}
+
+	public static double row_to_double(Object o) {
+		double num;
+
+		if (o instanceof Number) {
+			// This covers BigDecimal, Double, Integer, etc.
+			num = ((Number) o).doubleValue();
+		} else {
+			throw new IllegalArgumentException("Value for key 'p' is not a number: " + o);
+		}
+
+		return num;
+	}
+
+	public static java.sql.Date row_to_date(Object o) {
+		if (o instanceof java.sql.Timestamp) {
+			java.sql.Timestamp ts = (java.sql.Timestamp) o;
+			return new java.sql.Date(ts.getTime());
+		} else if (o instanceof java.util.Date) {
+			return (java.sql.Date) o;
+		} else {
+			throw new IllegalArgumentException("Invalid type for created_at: " + o);
+		}
+	}
+
 	public static double present(double val, double base) {
 		if (base != 0) {
 			return floor(((val - base) / base) * 100, 100);
@@ -67,6 +110,10 @@ public class L {
 	public static String format_int_2(double val) {
 		DecimalFormat df = new DecimalFormat("#,##0;(#,##0)");
 		return df.format(val);
+	}
+
+	public static String cell(int row, int col) {
+		return String.format("R%sC%s", row, col);
 	}
 
 	public static String coma(double d) {
@@ -146,6 +193,15 @@ public class L {
 			return LocalDate.now();
 		}
 	}
+
+
+	public static String capitalizeFirstLetter(String input) {
+		if (input == null || input.isEmpty()) {
+			return input;
+		}
+		return input.substring(0, 1).toUpperCase() + input.substring(1);
+	}
+
 
 	public static double floor(double d, int zeros) {
 		return Math.floor(d * zeros) / zeros;

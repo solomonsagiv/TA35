@@ -107,7 +107,7 @@ public class DetailsWindow {
 		indStocksArea = new JTextArea();
 		scrollPane_3.setViewportView(indStocksArea);
 
-		JLabel lblStocks = new JLabel("Stocks");
+		JLabel lblStocks = new JLabel("stocks");
 		lblStocks.setForeground(new Color(0, 0, 102));
 		lblStocks.setFont(new Font("Dubai Medium", Font.BOLD, 15));
 		lblStocks.setBounds(674, 11, 84, 37);

@@ -5,6 +5,7 @@ import api.TA35;
 import arik.Arik;
 import dataBase.DataBaseHandler;
 import org.json.JSONArray;
+import races.Stocks_Race_Service;
 import service.DataReaderService;
 import threads.MyThread;
 import javax.swing.*;
@@ -55,7 +56,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
         runner();
     }
 
-
     int i = 0;
 
     // Runner
@@ -97,6 +97,9 @@ public class BackGroundRunner extends MyThread implements Runnable {
                                 WindowTA35.openCharts();
                             }
 
+                            // Start stocks
+                            start_stocks();
+
                             streamMarketBool = true;
                             System.out.println(" Started ");
                         }
@@ -137,6 +140,10 @@ public class BackGroundRunner extends MyThread implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void start_stocks() {
+        TA35.getInstance().setStocks_race_service(new Stocks_Race_Service(TA35.getInstance()));
     }
 
     private String str(Object o) {

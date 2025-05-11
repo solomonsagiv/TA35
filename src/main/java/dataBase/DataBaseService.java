@@ -10,11 +10,11 @@ import dataBase.mySql.MySql;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import races.Race_Logic;
-import service.MyBaseService;
+
 import java.time.Instant;
 import java.util.ArrayList;
 
-public class DataBaseService extends MyBaseService {
+public class DataBaseService extends IDataBaseHandler {
 
     double baskets_0 = 0;
     double index_races_0 = 0;
@@ -26,11 +26,9 @@ public class DataBaseService extends MyBaseService {
 
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> index_races_timeStamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> week_races_timeStamp  = new ArrayList<>();
-    ArrayList<MyTimeStampObject> month_races_wm_timeStamp  = new ArrayList<>();
-    ArrayList<MyTimeStampObject> week_races_wm_timeStamp  = new ArrayList<>();
-    ArrayList<MyTimeStampObject> bid_races_ba_timeStamp  = new ArrayList<>();
-    ArrayList<MyTimeStampObject> ask_races_ba_timeStamp  = new ArrayList<>();
+    ArrayList<MyTimeStampObject> week_races_timeStamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> month_races_wm_timeStamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> week_races_wm_timeStamp = new ArrayList<>();
 
     ExpWeek week;
     ExpMonth month;
@@ -38,6 +36,8 @@ public class DataBaseService extends MyBaseService {
     ArrayList<MyTimeSeries> timeSeriesList;
 
     TA35 client;
+
+    int sleep_count = 100;
 
     public DataBaseService(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -50,13 +50,46 @@ public class DataBaseService extends MyBaseService {
         add_timeseries();
     }
 
+    @Override
+    public void insertData(int sleep) {
+
+        if (Manifest.DB_UPLOAD && BackGroundRunner.streamMarketBool) {
+
+            if (this.exps == null) {
+                this.exps = client.getExps();
+            }
+
+            // Update lists retro
+            if (sleep_count % 15000 == 0) {
+                updateListsRetro();
+            }
+
+            // On changed data
+            on_change_data();
+
+            // Update count
+            sleep_count += sleep;
+        }
+
+    }
+
+    @Override
+    public void loadData() {
+
+    }
+
+    @Override
+    public void initTablesNames() {
+
+    }
+
     private void add_timeseries() {
         // OP AVG
 //        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));
 //        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_900));
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_5));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_15));
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.CONTINUE_OP_AVG_WEEK_240));
+        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_240_CONTINUE));
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900));
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600));
 
@@ -66,27 +99,9 @@ public class DataBaseService extends MyBaseService {
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
         timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
 
-        // VICTOR RACES
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES));
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_FUTURE_RACES));
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES));
-
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_INDEX_RACES_RATIO));
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.VICTOR_ROLL_RACES_RATIO));
-
-        // CDF
-        timeSeriesList.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_9_CDF));
     }
 
-    @Override
-    public void go() {
-        if (Manifest.DB_UPLOAD && BackGroundRunner.streamMarketBool) {
-            //	 Day
-            append_changed_data_to_lists();
-        }
-    }
-
-    private void append_changed_data_to_lists() {
+    private void on_change_data() {
 
         double baskets = client.getBasketFinder_by_stocks().getBasket_up() - client.getBasketFinder_by_stocks().getBasket_down();
 
@@ -141,59 +156,11 @@ public class DataBaseService extends MyBaseService {
             week_races_wm_0 = week_races_wm;
         }
 
-        // Bid races BA
-        double bid_races_ba = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_one_points();
-
-        if (bid_races_ba != bid_races_ba_0) {
-            double last_count = bid_races_ba - bid_races_ba_0;
-            if (last_count == 1 || last_count == -1) {
-                bid_races_ba_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
-            }
-            bid_races_ba_0 = bid_races_ba;
-        }
-
-        // Ask races BA
-        double ask_races_ba = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.BID_ASK).get_r_two_points();
-
-        if (ask_races_ba != ask_races_ba_0) {
-            double last_count = ask_races_ba - ask_races_ba_0;
-            if (last_count == 1 || last_count == -1) {
-                ask_races_ba_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
-            }
-            ask_races_ba_0 = ask_races_ba;
-        }
-
-        // Op avg week
-        if (sleepCount % 1000 == 0) {
-            Instant instant = Instant.now();
-        }
-
-        System.out.println("Stream merket " + BackGroundRunner.streamMarketBool);
-
         // Grabb data and insert data
-        if (sleepCount % 10000 == 0) {
-            insert_data();
+        if (sleep_count % 10000 == 0) {
+            updateListsRetro();
             grab_data();
         }
-
-        // Options status
-//        if (sleepCount % 60000 == 0) {
-//            update_options_status();
-//        }
-    }
-
-    private void insert_data() {
-        new Thread(() -> {
-            insert_data_retro_mega(baskets_timestamp, Factories.IDs.BASKETS);
-            insert_data_retro_mega(index_races_timeStamp, Factories.IDs.INDEX_RACES_WI);
-            insert_data_retro_mega(week_races_timeStamp, Factories.IDs.WEEK_RACES_WI);
-
-            insert_data_retro_mega(week_races_wm_timeStamp, Factories.IDs.WEEK_RACES_WM);
-            insert_data_retro_mega(month_races_wm_timeStamp, Factories.IDs.MONTH_RACES_WM);
-
-            insert_data_retro_mega(bid_races_ba_timeStamp, Factories.IDs.BID_RACES_BA);
-            insert_data_retro_mega(ask_races_ba_timeStamp, Factories.IDs.ASK_RACES_BA);
-        }).start();
     }
 
     private void grab_data() {
@@ -212,19 +179,32 @@ public class DataBaseService extends MyBaseService {
     }
 
     private void update_series() {
-        for (MyTimeSeries serie: timeSeriesList) {
+        for (MyTimeSeries serie : timeSeriesList) {
             serie.updateData();
         }
     }
 
-    @Override
-    public String getName() {
-        return "DataBaseService";
+    protected void insert_dev_prod(ArrayList<MyTimeStampObject> list, int dev_id, int prod_id) {
+        System.out.println("------------------------ Insert start ----------------------------");
+        if (dev_id != 0) {
+            insertListRetro(list, dev_id, MySql.JIBE_DEV_CONNECTION);
+        }
+        if (prod_id != 0) {
+            insertListRetro(list, prod_id, MySql.JIBE_PROD_CONNECTION);
+        }
+        System.out.println("------------------------ Insert End ----------------------------");
+        list.clear();
     }
 
-    @Override
-    public int getSleep() {
-        return 1000;
+    private void updateListsRetro() {
+        // Dev and Prod
+        insert_dev_prod(index_races_timeStamp, client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BASKETS), serie_ids.get(Factories.TimeSeries.INDEX_RACES_WI));
+        insert_data_retro_mega(baskets_timestamp, Factories.TimeSeries.BASKETS);
+        insert_data_retro_mega(index_races_timeStamp, Factories.TimeSeries.INDEX_RACES_WI);
+        insert_data_retro_mega(week_races_timeStamp, Factories.TimeSeries.WEEK_RACES_WI);
+
+        insert_data_retro_mega(week_races_wm_timeStamp, Factories.TimeSeries.WEEK_RACES_WM);
+        insert_data_retro_mega(month_races_wm_timeStamp, Factories.TimeSeries.MONTH_RACES_WM);
     }
 
     void insert_data_retro_mega(ArrayList<MyTimeStampObject> list, String table_location) {

@@ -8,9 +8,12 @@ import java.util.Map;
 public class TimeSeriesHandler {
 
     Map<String, MyTimeSeries> map;
+    Map<String, Integer> ids_map;
+
 
     public TimeSeriesHandler() {
         this.map = new HashMap<>();
+        this.ids_map = new HashMap<>();
     }
 
     public MyTimeSeries get(String serie_type) {
@@ -21,5 +24,11 @@ public class TimeSeriesHandler {
         this.map.put(serie_type, serie);
     }
 
+    public int get_id(String serie_name) {
+        return this.ids_map.get(serie_name);
+    }
 
+    public void put_id(String serie_name, int id) {
+        ids_map.put(serie_name, id);
+    }
 }

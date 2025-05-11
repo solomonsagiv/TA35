@@ -1,7 +1,13 @@
 package api;
 
+import dataBase.Factories;
+import dde.DDECells;
+import handlers.TimeSeriesHandler;
+import locals.Themes;
 import races.Race_Logic;
 import races.RacesService;
+
+import java.awt.*;
 import java.util.HashMap;
 
 public class Poli extends BASE_CLIENT_OBJECT {
@@ -51,6 +57,32 @@ public class Poli extends BASE_CLIENT_OBJECT {
 
     @Override
     protected void init_timeseries_handler() {
+        timeSeriesHandler = new TimeSeriesHandler();
+        timeSeriesHandler.put_id(Factories.TimeSeries.LAST_PRICE, 10069);
+        timeSeriesHandler.put_id(Factories.TimeSeries.BID, 10070);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ASK, 10071);
+        timeSeriesHandler.put_id(Factories.TimeSeries.MID, 10072);
+    }
 
+    @Override
+    protected void init_dde_cells() {
+        ddeCells = new DDECells() {
+
+            @Override
+            public void initCells() {
+//                addCell(DDECells.LAST_PRICE, L.cell());
+//                addCell(DDECells.BID, L.cell());
+//                addCell(DDECells.ASK, L.cell());
+//                addCell(DDECells.MID, L.cell());
+//                addCell(DDECells.OPEN, L.cell());
+//                addCell(DDECells.BASE, L.cell());
+            }
+        };
+//        setDdeCells(ddeCells);
+    }
+
+    @Override
+    public Color get_index_race_serie_color() {
+        return Themes.RED;
     }
 }

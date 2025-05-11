@@ -22,7 +22,7 @@ public abstract class Exp implements IJsonData {
 
 	private double continue_op_avg_240 = 0;
 	private double op_avg_60 = 0;
-	private double op_avg_5 = 0;
+	private double op_avg_15 = 0;
 	private double op_avg = 0;
 
 	private int optimi_count = 0;
@@ -132,12 +132,12 @@ public abstract class Exp implements IJsonData {
 		return symbol;
 	}
 
-	public double getOp_avg_5() {
-		return op_avg_5;
+	public double getOp_avg_15() {
+		return op_avg_15;
 	}
 
-	public void setOp_avg_5(double op_avg_5) {
-		this.op_avg_5 = op_avg_5;
+	public void setOp_avg_15(double op_avg_15) {
+		this.op_avg_15 = op_avg_15;
 	}
 
 	public int getOptimi_count() {

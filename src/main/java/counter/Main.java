@@ -15,6 +15,9 @@ public class Main {
 		JibeConnectionPool.getConnectionsPoolInstance();
 		TA35 client = TA35.getInstance();
 
+//		Poli poli = Poli.getInstance();
+//		L.stocks.add(poli);
+
 		Thread.sleep(1000);
 		new WindowTA35();
 	}
