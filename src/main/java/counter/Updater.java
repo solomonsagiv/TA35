@@ -92,7 +92,6 @@ public class Updater extends MyThread implements Runnable {
                 window.v6_field.colorForgeRound(df_6.getValue());
                 window.v2_field.colorForgeRound(df_4.getValue());
                 window.v7_field.colorForgeRound(df_8.getValue());
-                window.v9_field.colorForgeRound(df_8_de_corr.getValue());
 
                 // Exp
                 // Week
