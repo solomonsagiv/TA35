@@ -466,6 +466,87 @@ public class TimeSeriesFactory {
                     }
                 };
 
+
+            case Factories.TimeSeries.OP_MONTH_INTEREST_PROD:
+                return new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK, client) {
+
+                    @Override
+                    public double getValue() {
+                        return client.getOp_month_interest();
+                    }
+
+                    @Override
+                    public void load() {
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_PROD);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+
+                    @Override
+                    public void updateData() {
+                    }
+                };
+
+            case Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD:
+                return new MyTimeSeries(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD, client) {
+
+                    @Override
+                    public double getValue() {
+                        return client.getOp_month_interest_avg();
+                    }
+
+                    @Override
+                    public void load() {
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+
+                    @Override
+                    public void updateData() {
+                    }
+                };
+
+            case Factories.TimeSeries.ROLL_INTEREST_PROD:
+                return new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK, client) {
+
+                    @Override
+                    public double getValue() {
+                        return client.getRoll_interest();
+                    }
+
+                    @Override
+                    public void load() {
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_PROD);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+
+                    @Override
+                    public void updateData() {
+                    }
+                };
+
+            case Factories.TimeSeries.ROLL_INTEREST_AVG_PROD:
+                return new MyTimeSeries(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD, client) {
+
+                    @Override
+                    public double getValue() {
+                        return client.getRoll_interest_avg();
+                    }
+
+                    @Override
+                    public void load() {
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+                        DataBaseHandler.loadSerieData(rs, this);
+                    }
+
+                    @Override
+                    public void updateData() {
+                    }
+                };
+
             default:
                 break;
         }

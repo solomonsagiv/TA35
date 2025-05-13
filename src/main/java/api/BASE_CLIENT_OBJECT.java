@@ -30,6 +30,12 @@ public abstract class BASE_CLIENT_OBJECT {
     public RacesService racesService;
     protected DDECells ddeCells;
 
+    private double roll_interest = 0;
+    private double op_month_interest = 0;
+    private double roll_interest_avg = 0;
+    private double op_month_interest_avg = 0;
+    private double op_week_interest = 0;
+
     public BASE_CLIENT_OBJECT() {
         init_name();
         init_race_service();
@@ -235,5 +241,45 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setTrading_status(int trading_status) {
         this.trading_status = trading_status;
+    }
+
+    public double getRoll_interest() {
+        return roll_interest;
+    }
+
+    public void setRoll_interest(double roll_interest) {
+        this.roll_interest = roll_interest;
+    }
+
+    public double getOp_month_interest() {
+        return op_month_interest;
+    }
+
+    public void setOp_month_interest(double op_month_interest) {
+        this.op_month_interest = op_month_interest;
+    }
+
+    public double getRoll_interest_avg() {
+        return roll_interest_avg;
+    }
+
+    public void setRoll_interest_avg(double roll_interest_avg) {
+        this.roll_interest_avg = roll_interest_avg;
+    }
+
+    public double getOp_month_interest_avg() {
+        return op_month_interest_avg;
+    }
+
+    public void setOp_month_interest_avg(double op_month_interest_avg) {
+        this.op_month_interest_avg = op_month_interest_avg;
+    }
+
+    public double getOp_week_interest() {
+        return op_week_interest;
+    }
+
+    public void setOp_week_interest(double op_week_interest) {
+        this.op_week_interest = op_week_interest;
     }
 }

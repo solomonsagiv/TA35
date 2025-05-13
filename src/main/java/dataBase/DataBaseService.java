@@ -10,7 +10,6 @@ import dataBase.mySql.MySql;
 import exp.ExpMonth;
 import exp.ExpWeek;
 import races.Race_Logic;
-
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -21,12 +20,18 @@ public class DataBaseService extends IDataBaseHandler {
     double week_races_0 = 0;
     double month_races_wm_0 = 0;
     double week_races_wm_0 = 0;
+    double op_week_interest_0 = 0;
+    double op_month_interest_0 = 0;
+    double op_roll_interest_0 = 0;
 
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> index_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> month_races_wm_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_races_wm_timeStamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> op_week_interest_timeStamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> op_month_interest_timeStamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> op_roll_interest_timeStamp = new ArrayList<>();
 
     ExpWeek week;
     ExpMonth month;
@@ -154,6 +159,41 @@ public class DataBaseService extends IDataBaseHandler {
             week_races_wm_0 = week_races_wm;
         }
 
+        // Month interest
+        double month_interest = client.getOp_month_interest();
+
+        if (month_interest != op_month_interest_0) {
+            double last_count = month_interest - op_month_interest_0;
+            if (last_count == 1 || last_count == -1) {
+                op_month_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
+            op_month_interest_0 = month_interest;
+        }
+
+        // Week interest
+        double week_interest = client.getOp_week_interest();
+
+        if (week_interest != op_week_interest_0) {
+            double last_count = week_interest - op_week_interest_0;
+            if (last_count == 1 || last_count == -1) {
+                op_week_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
+            op_week_interest_0 = week_interest;
+        }
+
+        // Roll interest
+        double roll_interest = client.getRoll_interest();
+
+        if (roll_interest != op_roll_interest_0) {
+            double last_count = roll_interest - op_roll_interest_0;
+            if (last_count == 1 || last_count == -1) {
+                op_roll_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+            }
+            op_roll_interest_0 = roll_interest;
+        }
+
+
+
         // Grabb data and insert data
         if (sleep_count % 10000 == 0) {
             updateListsRetro();
@@ -202,6 +242,12 @@ public class DataBaseService extends IDataBaseHandler {
 
         insert_data_retro_mega(week_races_wm_timeStamp, Factories.TimeSeries.WEEK_RACES_WM);
         insert_data_retro_mega(month_races_wm_timeStamp, Factories.TimeSeries.MONTH_RACES_WM);
+
+        // Interest dev
+        insert_data_retro_mega(op_week_interest_timeStamp, Factories.TimeSeries.OP_WEEK_INTEREST_DEV);
+        insert_data_retro_mega(op_month_interest_timeStamp, Factories.TimeSeries.OP_MONTH_INTEREST_DEV);
+        insert_data_retro_mega(op_roll_interest_timeStamp, Factories.TimeSeries.ROLL_INTEREST_DEV);
+
     }
 
     void insert_data_retro_mega(ArrayList<MyTimeStampObject> list, String table_location) {

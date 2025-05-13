@@ -111,7 +111,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
         setTimeSeriesHandler(timeSeriesHandler);
 
-
         timeSeriesHandler.put_id(Factories.TimeSeries.INDEX, 5);
         timeSeriesHandler.put_id(Factories.TimeSeries.BID, 22);
         timeSeriesHandler.put_id(Factories.TimeSeries.ASK, 21);
@@ -134,6 +133,20 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_RACES_WM, 9788);
         timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_3600, 9542);
         timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_900, 9543);
+
+
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_MONTH_INTEREST_PROD, 10113);
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_WEEK_INTEREST_PROD, 10116);
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD, 10115);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_INTEREST_PROD, 10112);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD, 10114);
+
+
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_MONTH_INTEREST_DEV, 13002);
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_DEV, 13004);
+        timeSeriesHandler.put_id(Factories.TimeSeries.OP_WEEK_INTEREST_DEV, 13005);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_INTEREST_DEV, 13001);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_INTEREST_AVG_DEV, 13003);
 //        timeSeriesHandler.put_id(Factories.TimeSeries.TRADING_STATUS, 5fff);
     }
 

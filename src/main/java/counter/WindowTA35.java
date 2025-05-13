@@ -30,7 +30,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField v6_field;
     public MyGuiComps.MyTextField v2_field;
     public MyGuiComps.MyTextField v7_field;
-    public MyGuiComps.MyTextField v9_field;
 
     public int updater_id = 0;
 
@@ -269,11 +268,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         v6_field = new MyGuiComps.MyTextField();
         v6_field.setBounds(v5_field.getX() + v5_field.getWidth() + 1, v5_field.getY(), 50, 25);
         decisions_panel.add(v6_field);
-
-        // V9
-        v9_field = new MyGuiComps.MyTextField();
-        v9_field.setBounds(v5_field.getX(), v5_field.getY() + v5_field.getHeight() + 3, 50, 25);
-        decisions_panel.add(v9_field);
 
         // ---------------------------  Races --------------------------- //
         MyGuiComps.MyPanel races_panel = new MyGuiComps.MyPanel();

@@ -26,6 +26,9 @@ public class DataReaderService extends MyBaseService {
     String futureBidCell = "R7C2";
     String futureAskCell = "R7C3";
     String trading_status_cell = "RC3";
+    String roll_interest_cell = "R5C5";
+    String op_interest_month_cell = "R5C6";
+    String op_week_interest_cell = "R5C7";
 
     DDEClientConversation conversation;
 
@@ -67,6 +70,11 @@ public class DataReaderService extends MyBaseService {
                 ta35.setLast_price(L.dbl(conversation.request(lastCell)));
                 optionsMonth.setContractBid(L.dbl(conversation.request(futureBidCell)));
                 optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
+
+                // Interest
+                ta35.setOp_week_interest(L.dbl(conversation.request(op_week_interest_cell)));
+                ta35.setOp_month_interest(L.dbl(conversation.request(op_interest_month_cell)));
+                ta35.setRoll_interest(L.dbl(conversation.request(roll_interest_cell)));
 
                 // Read stocks
                 read_stocks();
