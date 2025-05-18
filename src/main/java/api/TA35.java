@@ -77,7 +77,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     @Override
     public Race_Logic get_main_race() {
-        return null;
+        return getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX);
     }
 
 
