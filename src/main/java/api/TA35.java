@@ -2,6 +2,7 @@ package api;
 
 import charts.myChart.TimeSeriesFactory;
 import counter.BackGroundRunner;
+import dataBase.DataBaseHandler_TA35;
 import dataBase.DataBaseService;
 import dataBase.Factories;
 import exp.Exps;
@@ -19,7 +20,6 @@ import service.BasketFinder_by_stocks;
 import service.IndDeltaService;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
-
 import java.awt.*;
 import java.util.HashMap;
 
@@ -38,7 +38,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     @Override
     protected void init_data_base_service() {
-        setDataBaseService(new DataBaseService(this));
+        setDataBaseService(new DataBaseService(this, new DataBaseHandler_TA35(this)));
     }
 
     @Override

@@ -1,6 +1,7 @@
 package dataBase;
 
 import api.BASE_CLIENT_OBJECT;
+import arik.Arik;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
@@ -32,12 +33,11 @@ public abstract class IDataBaseHandler {
         exps = client.getExps();
     }
 
-    public abstract void insertData(int sleep);
-
     public abstract void loadData();
 
     public abstract void initTablesNames();
 
+    public abstract void go(int sleep);
 
     protected void insert_dev_prod(ArrayList<MyTimeStampObject> list, int dev_id, int prod_id) {
         System.out.println("------------------------ Insert start ----------------------------");
@@ -255,6 +255,62 @@ public abstract class IDataBaseHandler {
         }
         return myTicks;
     }
+
+
+    void insert_data_retro_mega(ArrayList<MyTimeStampObject> list, String table_location) {
+        try {
+            if (list.size() > 0) {
+                // Create the query
+                StringBuilder queryBuiler = new StringBuilder("INSERT INTO %s (time, value) VALUES ");
+                int last_item_id = list.get(list.size() - 1).hashCode();
+                for (MyTimeStampObject row : list) {
+                    queryBuiler.append(String.format("(cast('%s' as timestamp with time zone), %s)", row.getInstant(), row.getValue()));
+                    if (row.hashCode() != last_item_id) {
+                        queryBuiler.append(",");
+                    }
+                }
+                queryBuiler.append(";");
+
+                String q = String.format(queryBuiler.toString(), table_location);
+
+                // Insert
+                MySql.insert(q, true);
+
+                // Clear the list
+                list.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Arik.getInstance().sendMessage("Insert data ta35 failed \n to table " + table_location + "\n \n " + e.getCause());
+        }
+    }
+
+    void insert_data_retro_mega(ArrayList<MyTimeStampObject> list, int timeseries_id) {
+        if (list.size() > 0) {
+
+            // Create the query
+            StringBuilder queryBuiler = new StringBuilder("INSERT INTO %s (time, value, timeseries_id) VALUES ");
+            int last_item_id = list.get(list.size() - 1).hashCode();
+            for (MyTimeStampObject row : list) {
+                queryBuiler.append(String.format("(cast('%s' as timestamp with time zone), %s, %s)", row.getInstant(), row.getValue(), timeseries_id));
+                if (row.hashCode() != last_item_id) {
+                    queryBuiler.append(",");
+                }
+            }
+            queryBuiler.append(";");
+
+            String q = String.format(queryBuiler.toString(), "ts.timeseries_data");
+
+            System.out.println(q);
+
+            // Insert
+            MySql.insert(q);
+
+            // Clear the list
+            list.clear();
+        }
+    }
+
 
     public Map<Integer, Integer> getSerie_ids() {
         return serie_ids;

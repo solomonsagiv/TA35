@@ -137,8 +137,6 @@ public abstract class BASE_CLIENT_OBJECT {
         this.timeSeriesHandler = timeSeriesHandler;
     }
 
-
-
     public double getOpen() {
         return open;
     }
