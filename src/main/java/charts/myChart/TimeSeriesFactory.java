@@ -63,7 +63,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX);
                         List<Map<String, Object>> rs = Queries.get_cumulative_avg_serie(id, 15, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -79,7 +79,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_900);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -101,7 +101,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_3600);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -124,7 +124,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_WEEK);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -144,7 +144,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_MONTH);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -167,7 +167,7 @@ public class TimeSeriesFactory {
                         int bid_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BID);
                         int ask_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ASK);
                         List<Map<String, Object>> rs = Queries.get_index_with_bid_ask_series(bid_id, ask_id, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -188,7 +188,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.DF_4_CDF_OLD);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -211,7 +211,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.DF_8_CDF_OLD);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -234,7 +234,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.DF_5_CDF_OLD);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -258,7 +258,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.DF_6_CDF_OLD);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -282,7 +282,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_AVG_WEEK_60);
 
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -309,7 +309,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_AVG_WEEK_15);
 
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -337,7 +337,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_AVG_240_CONTINUE);
 
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -373,7 +373,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX_RACES_WI);
 
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -396,7 +396,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_RACES_WI);
 
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -420,7 +420,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_RACES_WM);
 
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -445,7 +445,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_RACES_WM);
 
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
@@ -479,7 +479,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_PROD);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -499,7 +499,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -519,7 +519,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_PROD);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
@@ -539,7 +539,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD);
                         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
 
                     @Override
