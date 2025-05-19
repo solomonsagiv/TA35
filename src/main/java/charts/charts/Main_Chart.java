@@ -2,6 +2,7 @@ package charts.charts;
 
 import charts.myChart.*;
 import dataBase.Factories;
+import dataBase.IDataBaseHandler;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import locals.Themes;
@@ -65,7 +66,7 @@ public class Main_Chart extends MyChartCreator {
             public void load() {
                 int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_WEEK);
                 List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, Queries.RAW, MySql.JIBE_PROD_CONNECTION);
-                DataBaseHandler.loadSerieData(rs, this);
+                IDataBaseHandler.loadSerieData(rs, this);
             }
 
             @Override
@@ -86,7 +87,7 @@ public class Main_Chart extends MyChartCreator {
             public void load() {
                 int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_MONTH);
                 List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, Queries.RAW, MySql.JIBE_PROD_CONNECTION);
-                DataBaseHandler.loadSerieData(rs, this);
+                IDataBaseHandler.loadSerieData(rs, this);
             }
 
             @Override
