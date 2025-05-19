@@ -3,6 +3,7 @@ package charts.myChart;
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import dataBase.Factories;
+import dataBase.IDataBaseHandler;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import exp.Exp;
@@ -37,7 +38,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX);
                         List<Map<String, Object>> rs = Queries.get_cumulative_avg_serie(id, 60, MySql.JIBE_PROD_CONNECTION);
-                        DataBaseHandler.loadSerieData(rs, this);
+                        IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
