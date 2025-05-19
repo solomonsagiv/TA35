@@ -3,7 +3,6 @@ package counter;
 import api.Manifest;
 import api.TA35;
 import arik.Arik;
-import dataBase.DataBaseHandler;
 import org.json.JSONArray;
 import races.Stocks_Race_Service;
 import service.DataReaderService;
@@ -124,8 +123,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     } else {
                         try {
                             System.out.println("Loading...");
-                            DataBaseHandler dataBaseHandler = new DataBaseHandler(client);
-                            dataBaseHandler.load_data();
+                            client.getDataBaseService().getDataBaseHandler().loadData();
                             System.out.println("Loaded!!!");
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -29,7 +29,6 @@ public class DataBaseHandler_Poli extends IDataBaseHandler {
 
     int sleep_count = 100;
 
-    @Override
     public void insertData(int sleep) {
 
         if (this.exps == null) {
@@ -121,6 +120,11 @@ public class DataBaseHandler_Poli extends IDataBaseHandler {
 
     @Override
     public void initTablesNames() {
+    }
+
+    @Override
+    public void go(int sleep) {
+
     }
 
     private void updateListsRetro() {

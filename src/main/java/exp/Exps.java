@@ -1,8 +1,8 @@
 package exp;
 
 import api.BASE_CLIENT_OBJECT;
-import api.TA35;
-import dataBase.DataBaseHandler;
+import dataBase.IDataBaseHandler;
+
 import java.util.ArrayList;
 
 public class Exps {
@@ -13,8 +13,8 @@ public class Exps {
 
     public Exps(BASE_CLIENT_OBJECT client) {
         this.exps_list = new ArrayList<>();
-        week = new ExpWeek(client, DataBaseHandler.EXP_WEEK);
-        month = new ExpMonth(client, DataBaseHandler.EXP_MONTH);
+        week = new ExpWeek(client, IDataBaseHandler.EXP_WEEK);
+        month = new ExpMonth(client, IDataBaseHandler.EXP_MONTH);
         exps_list.add(week);
         exps_list.add(month);
     }

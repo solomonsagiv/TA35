@@ -2,7 +2,7 @@ package dataBase.mySql;
 
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
-import dataBase.DataBaseHandler;
+import dataBase.IDataBaseHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -218,10 +218,10 @@ public class Queries {
         }
 
         HashMap<String, Integer> map = new HashMap<>();
-        map.put(DataBaseHandler.x, x.intValue());
-        map.put(DataBaseHandler.y, y.intValue());
-        map.put(DataBaseHandler.width, width.intValue());
-        map.put(DataBaseHandler.height, height.intValue());
+        map.put(IDataBaseHandler.x, x.intValue());
+        map.put(IDataBaseHandler.y, y.intValue());
+        map.put(IDataBaseHandler.width, width.intValue());
+        map.put(IDataBaseHandler.height, height.intValue());
 
         return map;
     }

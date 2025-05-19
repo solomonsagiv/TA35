@@ -142,11 +142,27 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             e.printStackTrace();
         }
 
+        // Exp
+        load_exp_data();
+
+        // Baskets
+        load_baskets();
+
         // Load races
-        load_races(Race_Logic.RACE_RUNNER_ENUM.LAST_MID, serie_ids.get(Factories.TimeSeries.INDEX), true);
+        load_all_races();
 
         // Set load
         client.setDb_loaded(true);
+    }
+
+    private void load_all_races() {
+        int index_races_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX_RACES_WI);
+        int week_races_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_RACES_WI);
+        int month_races_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_RACES_WM);
+
+        load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, index_races_id, true);
+        load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, week_races_id, false);
+        load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, month_races_id, true);
     }
 
     @Override

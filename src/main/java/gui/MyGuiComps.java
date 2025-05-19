@@ -1,7 +1,7 @@
 package gui;
 
 import api.BASE_CLIENT_OBJECT;
-import dataBase.DataBaseHandler;
+import dataBase.IDataBaseHandler;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import gui.listeners.MyListeners;
@@ -45,11 +45,11 @@ public class MyGuiComps {
                 int width = 300;
                 int height = 300;
                 try {
-                    setPreferredSize(new Dimension(map.get(DataBaseHandler.x), map.get(DataBaseHandler.y)));
-                    x = map.get(DataBaseHandler.x);
-                    y = map.get(DataBaseHandler.y);
-                    width = map.get(DataBaseHandler.width);
-                    height = map.get(DataBaseHandler.height);
+                    setPreferredSize(new Dimension(map.get(IDataBaseHandler.x), map.get(IDataBaseHandler.y)));
+                    x = map.get(IDataBaseHandler.x);
+                    y = map.get(IDataBaseHandler.y);
+                    width = map.get(IDataBaseHandler.width);
+                    height = map.get(IDataBaseHandler.height);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

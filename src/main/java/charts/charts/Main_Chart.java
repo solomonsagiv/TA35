@@ -1,7 +1,6 @@
 package charts.charts;
 
 import charts.myChart.*;
-import dataBase.DataBaseHandler;
 import dataBase.Factories;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
