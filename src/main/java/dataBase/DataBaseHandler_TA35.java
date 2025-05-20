@@ -3,6 +3,7 @@ package dataBase;
 import api.BASE_CLIENT_OBJECT;
 import locals.L;
 import races.Race_Logic;
+
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -37,24 +38,22 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     @Override
     public void insert_data(int sleep) {
+        // Update count
+        sleep_count += sleep;
+
         if (this.exps == null) {
             this.exps = client.getExps();
         }
 
         // Update lists retro
         if (sleep_count % 15000 == 0) {
-            new Thread(() -> {
-                updateListsRetro();
-                sleep_count = 0;
-            }).start();
+            updateListsRetro();
+            sleep_count = 0;
         }
 
         // On changed da
         // ta
         on_change_data();
-
-        // Update count
-        sleep_count += sleep;
     }
 
     private void on_change_data() {
