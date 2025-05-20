@@ -73,6 +73,11 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
             while (true) {
                 try {
+
+
+                    System.out.println(client.getServiceHandler().toStringServices());
+
+
                     // Sleep
                     Thread.sleep(1000);
 
