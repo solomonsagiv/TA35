@@ -43,8 +43,10 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         // Update lists retro
         if (sleep_count % 15000 == 0) {
-            updateListsRetro();
-            sleep_count = 0;
+            new Thread(() -> {
+                updateListsRetro();
+                sleep_count = 0;
+            }).start();
         }
 
         // On changed da
