@@ -21,7 +21,7 @@ public class DataBaseService extends MyBaseService {
     public void go() {
         // DB runner
         if (Manifest.DB_UPLOAD) {
-            dataBaseHandler.go(getSleep());
+            dataBaseHandler.insert_data(getSleep());
         }
     }
 

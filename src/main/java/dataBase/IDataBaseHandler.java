@@ -53,7 +53,7 @@ public abstract class IDataBaseHandler {
 
     public abstract void initTablesNames();
 
-    public abstract void go(int sleep);
+    public abstract void insert_data(int sleep);
 
     protected void insert_dev_prod(ArrayList<MyTimeStampObject> list, int dev_id, int prod_id) {
         System.out.println("------------------------ Insert start ----------------------------");

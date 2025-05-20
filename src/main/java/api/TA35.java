@@ -38,6 +38,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     @Override
     protected void init_data_base_service() {
+        System.out.println("Setttttttttttttttttttttttttttttttttttttttttttttt");
         setDataBaseService(new DataBaseService(this, new DataBaseHandler_TA35(this)));
     }
 

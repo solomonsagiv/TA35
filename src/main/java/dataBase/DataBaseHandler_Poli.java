@@ -123,7 +123,7 @@ public class DataBaseHandler_Poli extends IDataBaseHandler {
     }
 
     @Override
-    public void go(int sleep) {
+    public void insert_data(int sleep) {
 
     }
 

@@ -36,7 +36,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     int sleep_count = 100;
 
     @Override
-    public void go(int sleep) {
+    public void insert_data(int sleep) {
         if (this.exps == null) {
             this.exps = client.getExps();
         }
@@ -44,6 +44,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Update lists retro
         if (sleep_count % 15000 == 0) {
             updateListsRetro();
+            sleep_count = 0;
         }
 
         // On changed da
