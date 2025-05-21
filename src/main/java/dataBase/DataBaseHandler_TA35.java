@@ -1,6 +1,7 @@
 package dataBase;
 
 import api.BASE_CLIENT_OBJECT;
+import charts.myChart.MyTimeSeries;
 import locals.L;
 import races.Race_Logic;
 
@@ -19,6 +20,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> op_month_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> roll_interest_timeStamp = new ArrayList<>();
 
+    ArrayList<MyTimeSeries> timeSeries;
+
     double bid_0 = 0,
             ask_0 = 0,
             last_0 = 0,
@@ -31,7 +34,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
-        initTablesNames();
+        init_timeseries_to_updater();
     }
 
     int sleep_count = 100;
@@ -48,12 +51,29 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Update lists retro
         if (sleep_count % 15000 == 0) {
             updateListsRetro();
+            update_data();
             sleep_count = 0;
         }
 
         // On changed da
         // ta
         on_change_data();
+    }
+
+    private void update_data() {
+        new Thread(() -> {
+
+            for (MyTimeSeries ts : timeSeries) {
+                try {
+                    System.out.println(ts.getName() + " " + ts.getValue());
+                    System.out.println(ts.getName());
+                    ts.updateData();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }).start();
     }
 
     private void on_change_data() {
@@ -169,7 +189,17 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     }
 
     @Override
-    public void initTablesNames() {
+    public void init_timeseries_to_updater() {
+
+        timeSeries = new ArrayList<>();
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_15));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_240_CONTINUE));
+
     }
 
     private void updateListsRetro() {

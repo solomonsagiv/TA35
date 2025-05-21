@@ -51,7 +51,7 @@ public abstract class IDataBaseHandler {
 
     public abstract void loadData();
 
-    public abstract void initTablesNames();
+    public abstract void init_timeseries_to_updater();
 
     public abstract void insert_data(int sleep);
 

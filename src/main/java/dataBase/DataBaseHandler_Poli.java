@@ -24,7 +24,7 @@ public class DataBaseHandler_Poli extends IDataBaseHandler {
 
     public DataBaseHandler_Poli(BASE_CLIENT_OBJECT client) {
         super(client);
-        initTablesNames();
+        init_timeseries_to_updater();
     }
 
     int sleep_count = 100;
@@ -119,7 +119,7 @@ public class DataBaseHandler_Poli extends IDataBaseHandler {
     }
 
     @Override
-    public void initTablesNames() {
+    public void init_timeseries_to_updater() {
     }
 
     @Override
