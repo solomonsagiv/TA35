@@ -3,6 +3,7 @@ package dataBase;
 import api.BASE_CLIENT_OBJECT;
 import charts.myChart.MyTimeSeries;
 import locals.L;
+import org.aopalliance.reflect.Class;
 import races.Race_Logic;
 
 import java.time.Instant;
@@ -203,6 +204,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     }
 
     private void updateListsRetro() {
+
+        System.out.println("Insert !!!!! -------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + sleep_count );
 
         // Interest
         int dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_WEEK_INTEREST_DEV);

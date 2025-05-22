@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ta_35" />
+        <module name="ta35" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ta_35" target="8" />
+      <module name="ta35" target="11" />
+      <module name="ta_35" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
