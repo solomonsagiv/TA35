@@ -152,7 +152,6 @@ public class Main_Chart extends MyChartCreator {
 
         MyChart roll_chart = new MyChart(series, props);
 
-
         // ----------------------------------------- DF ----------------------------------------- //
 
         MyTimeSeries df_5_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
@@ -201,7 +200,27 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Interest ----------------------------------------- //
 
         // Index races wi
-        MyTimeSeries spot_interest = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
+        MyTimeSeries spot_interest = new MyTimeSeries("Spot interest", client) {
+
+            @Override
+            public double getValue() {
+                return client.getOp_month_interest_avg() * 100;
+            }
+
+            @Override
+            public void load() {
+                int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
+                List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+                IDataBaseHandler.loadSerieData(rs, this);
+            }
+
+            @Override
+            public void updateData() {
+
+            }
+        };
+
+
         spot_interest.setColor(Themes.RED);
         spot_interest.setStokeSize(1.2f);
 
