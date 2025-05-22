@@ -29,6 +29,7 @@ public class DataReaderService extends MyBaseService {
     String roll_interest_cell = "R5C5";
     String op_interest_month_cell = "R5C6";
     String op_week_interest_cell = "R5C7";
+    String index_mid_cell = "R5C8";
 
     DDEClientConversation conversation;
 
@@ -60,7 +61,8 @@ public class DataReaderService extends MyBaseService {
                 optionsWeek.setContractAsk(L.dbl(conversation.request(futureWeekAskCell)));
 
                 // Big
-                ta35.setMid(L.dbl(conversation.request(indexCell)));
+                ta35.setMid(L.dbl(conversation.request(index_mid_cell)));
+                ta35.setIndex(L.dbl(conversation.request(indexCell)));
                 ta35.setBid(L.dbl(conversation.request(indexBidCell)));
                 ta35.setAsk(L.dbl(conversation.request(indexAskCell)));
                 ta35.setHigh(L.dbl(conversation.request(highCell)));
