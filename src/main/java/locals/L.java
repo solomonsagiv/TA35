@@ -1,7 +1,6 @@
 package locals;
 
 import api.BASE_CLIENT_OBJECT;
-
 import javax.swing.*;
 import java.awt.*;
 import java.text.DateFormat;
