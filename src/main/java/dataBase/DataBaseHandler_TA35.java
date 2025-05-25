@@ -167,7 +167,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         }
 
         // Exp
-        load_exp_data();
+//        load_exp_data();
 
         // Baskets
         load_baskets();

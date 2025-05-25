@@ -88,6 +88,8 @@ public class BasketFinder_by_stocks extends MyBaseService {
             }
         }
 
+        System.out.println(changesCount);
+
         return changesCount;
     }
 
