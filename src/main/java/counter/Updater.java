@@ -32,7 +32,7 @@ public class Updater extends MyThread implements Runnable {
     WindowTA35 window;
     int sleep = 500;
 
-    MyTimeSeries df_4, df_5, df_6, df_8, df_8_de_corr;
+    MyTimeSeries df_4, df_5, df_6, df_8;
 
     TA35 client;
 

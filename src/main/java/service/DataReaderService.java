@@ -1,11 +1,12 @@
 package service;
 
-import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import api.dde.DDE.DDEConnection;
+import com.pretty_tools.dde.DDEException;
 import com.pretty_tools.dde.client.DDEClientConversation;
-import dde.DDECells;
 import locals.L;
+import miniStocks.MiniStock;
+import miniStocks.MiniStockDDECells;
 import options.Options;
 
 public class DataReaderService extends MyBaseService {
@@ -31,6 +32,8 @@ public class DataReaderService extends MyBaseService {
     String op_week_interest_cell = "R5C7";
     String index_mid_cell = "R5C8";
 
+    boolean initStocksCells = false;
+
     DDEClientConversation conversation;
 
     TA35 ta35;
@@ -39,6 +42,7 @@ public class DataReaderService extends MyBaseService {
         super(ta35);
         this.ta35 = ta35;
         this.conversation = new DDEConnection().createNewConversation(excel_path);
+
     }
 
     public void update() {
@@ -89,20 +93,21 @@ public class DataReaderService extends MyBaseService {
 
     private void read_stocks() {
 
-        for (BASE_CLIENT_OBJECT stock : L.stocks) {
-            try {
-                DDECells ddeCells = stock.getDdeCells();
+        if (initStocksCells) {
+            for (MiniStock stock : ta35.getStocksHandler().getStocks()) {
+                try {
+                    MiniStockDDECells ddeCells = stock.getDdeCells();
 
-                stock.setLast_price(L.dbl(conversation.request(ddeCells.getCell(DDECells.LAST_PRICE))));
-                stock.setBid(L.dbl(conversation.request(ddeCells.getCell(DDECells.BID))));
-                stock.setAsk(L.dbl(conversation.request(ddeCells.getCell(DDECells.ASK))));
-                stock.setMid(L.dbl(conversation.request(ddeCells.getCell(DDECells.MID))));
-                stock.setOpen(L.dbl(conversation.request(ddeCells.getCell(DDECells.OPEN))));
-                stock.setBase(L.dbl(conversation.request(ddeCells.getCell(DDECells.BASE))));
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                    stock.setLast(L.dbl(conversation.request(ddeCells.getLastPriceCell())));
+                    stock.setBid(L.dbl(conversation.request(ddeCells.getBidCell())));
+                    stock.setAsk(L.dbl(conversation.request(ddeCells.getAskCell())));
+                    stock.setVolume((int) L.dbl(conversation.request(ddeCells.getVolumeCell())));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+        } else {
+            initStockCells(conversation);
         }
     }
 
@@ -119,5 +124,38 @@ public class DataReaderService extends MyBaseService {
     @Override
     public int getSleep() {
         return 200;
+    }
+
+    private void initStockCells(DDEClientConversation conversation) {
+
+        int nameCol = 10;
+        int row = 2;
+
+        while (true) {
+            try {
+                String name = conversation.request(String.format("R%sC%s", row, nameCol));
+
+//                 End
+                if (row > 100) {
+                    break;
+                }
+
+//                 End
+                if (name.replaceAll("\\s+", "").equals("0")) {
+                    break;
+                }
+
+                MiniStock stock = new MiniStock(ta35.getStocksHandler(), row);
+
+//                 Add stock
+                ta35.getStocksHandler().getStocks().add(stock);
+                row++;
+
+            } catch (DDEException e) {
+                e.printStackTrace();
+            }
+        }
+
+        initStocksCells = true;
     }
 }

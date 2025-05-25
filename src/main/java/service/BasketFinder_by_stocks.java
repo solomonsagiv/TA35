@@ -66,7 +66,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
         int last_change_count = find_volume_change_count();
         bigFrame.append_volume(LocalTime.now(), last_change_count);
     }
-
+    
     private int find_volume_change_count() {
         // Reset params
         int changesCount = 0;

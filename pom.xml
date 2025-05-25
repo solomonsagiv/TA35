@@ -40,7 +40,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <classifier>ta35</classifier>
+<!--                            <classifier>ta35</classifier>-->
                             <transformers>
                                 <transformer
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
@@ -60,33 +60,33 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <!-- Specify test framework or additional options here -->
-                    <!-- Example: Specify a different test framework -->
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                    <!-- Example: Add system properties for tests -->
-                    <systemPropertyVariables>
-                        <env>test</env>
-                    </systemPropertyVariables>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>3.0.0</version>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash; Specify test framework or additional options here &ndash;&gt;-->
+<!--                    &lt;!&ndash; Example: Specify a different test framework &ndash;&gt;-->
+<!--                    <includes>-->
+<!--                        <include>**/*Test.java</include>-->
+<!--                    </includes>-->
+<!--                    &lt;!&ndash; Example: Add system properties for tests &ndash;&gt;-->
+<!--                    <systemPropertyVariables>-->
+<!--                        <env>test</env>-->
+<!--                    </systemPropertyVariables>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>counter.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-jar-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <mainClass>counter.Main</mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
 
         </plugins>
     </build>
@@ -122,11 +122,19 @@
             <version>${cxf.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.pretty-tools</groupId>
-            <artifactId>JDDE</artifactId>
-            <version>2.1.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.pretty-tools</groupId>-->
+<!--            <artifactId>JDDE</artifactId>-->
+<!--            <version>2.1.0</version>-->
+<!--        </dependency>-->
+
+
+<!--        <dependency>-->
+<!--            <groupId>com.pretty-tools</groupId>-->
+<!--            <artifactId>jdde-bundle</artifactId>-->
+<!--            <version>2.0.3</version>-->
+<!--        </dependency>-->
+
 
         <dependency>
             <groupId>org.slf4j</groupId>

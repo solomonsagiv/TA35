@@ -20,6 +20,7 @@ import service.BasketFinder_by_stocks;
 import service.IndDeltaService;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
+
 import java.awt.*;
 import java.util.HashMap;
 
@@ -158,7 +159,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     @Override
     protected void init_dde_cells() {
-
     }
 
     @Override

@@ -6,19 +6,18 @@ import miniStocks.MiniStock;
 import myJson.IJsonData;
 import myJson.MyJson;
 
+import java.util.ArrayList;
+
 public class StocksHandler implements IJsonData {
 	
-	MiniStock[] stocks;
+	ArrayList<MiniStock> stocks;
 	
 
 	private MyChartList indDeltaList = new MyChartList();
 	private MyChartList indDeltaNoBasketsList = new MyChartList();
 	
 	public StocksHandler() {
-		stocks = new MiniStock[35];
-		for (int i = 0; i < stocks.length; i++) {
-			stocks[i] = new MiniStock(this);
-		}
+		this.stocks = new ArrayList<>();
 	}
 	
 	public MyJson getData() {
@@ -33,7 +32,7 @@ public class StocksHandler implements IJsonData {
 	}
 	
 
-	public MiniStock[] getStocks() {
+	public ArrayList<MiniStock> getStocks() {
 		return stocks;
 	}
 
