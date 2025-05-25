@@ -5,6 +5,7 @@ import counter.BackGroundRunner;
 import dataBase.DataBaseHandler_TA35;
 import dataBase.DataBaseService;
 import dataBase.Factories;
+import dde.DDECells;
 import exp.Exps;
 import handlers.TimeSeriesHandler;
 import locals.L;
@@ -80,6 +81,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     public Race_Logic get_main_race() {
         return getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX);
     }
+
 
 
     @Override
@@ -192,7 +194,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         json.put("index_ask", ask);
         return json;
     }
-
 
     public double get_index_mid() {
         return (bid + ask) / 2;
