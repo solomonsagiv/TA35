@@ -550,6 +550,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD);
                         double val = Queries.handle_rs(Queries.get_last_record_mega(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION));
                         setValue(val);
+
                     }
                 };
 
