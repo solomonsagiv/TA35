@@ -17,7 +17,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> mid_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> mid_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> month_races_timeStamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> last_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> op_week_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> op_month_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> roll_interest_timeStamp = new ArrayList<>();
@@ -31,7 +30,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             last_0 = 0,
             mid_0 = 0,
             mid_races_0 = 0,
-            last_races_0 = 0,
             op_week_interest_0 = 0,
             op_month_interest_0 = 0,
             roll_interest_0 = 0,
