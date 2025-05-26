@@ -275,6 +275,10 @@ public class BasketFinder_by_stocks extends MyBaseService {
         this.basket_down = basket_down;
     }
 
+    public int get_baskets() {
+        return getBasket_up() - getBasket_down();
+    }
+
     @Override
     public String getName() {
         return client + " " + "basket finder";

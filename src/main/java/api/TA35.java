@@ -5,7 +5,6 @@ import counter.BackGroundRunner;
 import dataBase.DataBaseHandler_TA35;
 import dataBase.DataBaseService;
 import dataBase.Factories;
-import dde.DDECells;
 import exp.Exps;
 import handlers.TimeSeriesHandler;
 import locals.L;
@@ -125,7 +124,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put_id(Factories.TimeSeries.ASK, 21);
         timeSeriesHandler.put_id(Factories.TimeSeries.MID, 11997);
         timeSeriesHandler.put_id(Factories.TimeSeries.LAST_PRICE, 5);
-        timeSeriesHandler.put_id(Factories.TimeSeries.BASKETS, 9513);
+        timeSeriesHandler.put_id(Factories.TimeSeries.BASKETS, 1649);
         timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_WEEK, 23);
         timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_MONTH, 6);
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_AVG_240_CONTINUE, 9486);
@@ -143,13 +142,11 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_3600, 9542);
         timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_900, 9543);
 
-
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_MONTH_INTEREST_PROD, 10113);
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_WEEK_INTEREST_PROD, 10116);
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD, 10115);
         timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_INTEREST_PROD, 10112);
         timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD, 10114);
-
 
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_MONTH_INTEREST_DEV, 13002);
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_DEV, 13004);

@@ -372,7 +372,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX_RACES_WI);
 
-                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_DEV_CONNECTION);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -395,7 +395,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_RACES_WI);
 
-                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_DEV_CONNECTION);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -419,7 +419,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_RACES_WM);
 
-                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_DEV_CONNECTION);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
@@ -444,7 +444,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_RACES_WM);
 
-                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_DEV_CONNECTION);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };

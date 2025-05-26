@@ -1,6 +1,7 @@
 package dataBase;
 
 import api.BASE_CLIENT_OBJECT;
+import api.TA35;
 import charts.myChart.MyTimeSeries;
 import locals.L;
 import races.Race_Logic;
@@ -19,6 +20,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> op_week_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> op_month_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> roll_interest_timeStamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
+
 
     ArrayList<MyTimeSeries> timeSeries;
 
@@ -30,7 +33,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             last_races_0 = 0,
             op_week_interest_0 = 0,
             op_month_interest_0 = 0,
-            roll_interest_0 = 0;
+            roll_interest_0 = 0,
+            baskets_0 = 0;
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -103,6 +107,17 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             if (client.getAsk() != ask_0) {
                 ask_0 = client.getAsk();
                 ask_timestamp.add(new MyTimeStampObject(Instant.now(), ask_0));
+            }
+
+            // Baskets
+            double baskets = ((TA35)client).getBasketFinder_by_stocks().get_baskets();
+
+            if (baskets != baskets_0) {
+                double last_count = baskets - baskets_0;
+                if (last_count == 1 || last_count == -1) {
+                    baskets_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                }
+                baskets_0 = baskets;
             }
 
             // Index races
@@ -221,29 +236,39 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_PROD);
         insert_dev_prod(roll_interest_timeStamp, dev_id, prod_id);
 
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BASKETS);
+        insert_dev_prod(baskets_timestamp, dev_id, prod_id);
+
         // Last
-        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.LAST_PRICE);
-        insert_data_retro_mega(last_timestamp, id);
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.LAST_PRICE);
+        insert_dev_prod(last_timestamp, dev_id, prod_id);
 
         // Mid
-        id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
-        insert_data_retro_mega(last_timestamp, id);
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
+        insert_dev_prod(last_timestamp, dev_id, prod_id);
 
         // Bid
-        id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BID);
-        insert_data_retro_mega(last_timestamp, id);
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BID);
+        insert_dev_prod(last_timestamp, dev_id, prod_id);
 
         // Ask
-        id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ASK);
-        insert_data_retro_mega(last_timestamp, id);
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ASK);
+        insert_dev_prod(last_timestamp, dev_id, prod_id);
 
         // Index race
-        id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX_RACES_WI);
-        insert_data_retro_mega(last_timestamp, id);
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX_RACES_WI);
+        insert_dev_prod(last_timestamp, dev_id, prod_id);
 
         // Month race
-        id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_RACES_WM);
-        insert_data_retro_mega(last_timestamp, id);
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_RACES_WM);
+        insert_dev_prod(last_timestamp, dev_id, prod_id);
 
     }
 }
