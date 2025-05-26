@@ -16,6 +16,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> ask_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> mid_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> mid_races_timeStamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> month_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> last_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> op_week_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> op_month_interest_timeStamp = new ArrayList<>();
@@ -34,7 +35,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             op_week_interest_0 = 0,
             op_month_interest_0 = 0,
             roll_interest_0 = 0,
-            baskets_0 = 0;
+            baskets_0 = 0,
+            month_races_0;
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -110,7 +112,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Baskets
-            double baskets = ((TA35)client).getBasketFinder_by_stocks().get_baskets();
+            double baskets = ((TA35) client).getBasketFinder_by_stocks().get_baskets();
 
             if (baskets != baskets_0) {
                 double last_count = baskets - baskets_0;
@@ -131,15 +133,15 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                 mid_races_0 = index_races;
             }
 
-            // Q1 races
-            double q1_races = client.get_main_race().get_r_two_points();
+            // Month
+            double month_races = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
 
-            if (q1_races != last_races_0) {
-                double last_count = q1_races - last_races_0;
+            if (month_races != month_races_0) {
+                double last_count = month_races - month_races_0;
                 if (last_count == 1 || last_count == -1) {
-                    last_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                    month_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
                 }
-                last_races_0 = q1_races;
+                month_races_0 = month_races;
             }
 
             // OP week interest
@@ -221,7 +223,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void updateListsRetro() {
 
-        System.out.println("Insert !!!!! -------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + sleep_count );
+        System.out.println("Insert !!!!! -------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + sleep_count);
 
         // Interest
         int dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_WEEK_INTEREST_DEV);
@@ -248,27 +250,27 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Mid
         dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
-        insert_dev_prod(last_timestamp, dev_id, prod_id);
+        insert_dev_prod(mid_timestamp, dev_id, prod_id);
 
         // Bid
         dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BID);
-        insert_dev_prod(last_timestamp, dev_id, prod_id);
+        insert_dev_prod(bid_timestamp, dev_id, prod_id);
 
         // Ask
         dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ASK);
-        insert_dev_prod(last_timestamp, dev_id, prod_id);
+        insert_dev_prod(ask_timestamp, dev_id, prod_id);
 
         // Index race
         dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX_RACES_WI);
-        insert_dev_prod(last_timestamp, dev_id, prod_id);
+        insert_dev_prod(mid_races_timeStamp, dev_id, prod_id);
 
         // Month race
         dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_RACES_WM);
-        insert_dev_prod(last_timestamp, dev_id, prod_id);
+        insert_dev_prod(month_races_timeStamp, dev_id, prod_id);
 
     }
 }
