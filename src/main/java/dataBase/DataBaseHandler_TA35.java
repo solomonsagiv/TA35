@@ -248,8 +248,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         insert_dev_prod(last_timestamp, dev_id, prod_id);
 
         // Mid
-        dev_id = 0;
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
+        dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID_DEV);
+        prod_id = 0;
         insert_dev_prod(mid_timestamp, dev_id, prod_id);
 
         // Bid

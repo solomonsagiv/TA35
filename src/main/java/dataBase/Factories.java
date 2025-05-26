@@ -27,7 +27,7 @@ public class Factories {
         public static final String DF_6_CDF_OLD = "DF_6_CDF";
 
         public static final String OP_AVG_240_CONTINUE = "OP_AVG_240_CONTINUE";
-        public static final String MID = "MID";
+        public static final String MID_DEV = "MID";
         public static final String FUTURE_WEEK = "FUTURE_WEEK";
         public static final String FUTURE_MONTH = "FUTURE_MONTH";
         public static final String ROLL_3600 = "ROLL_3600";

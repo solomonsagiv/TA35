@@ -41,7 +41,7 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Index ----------------------------------------- //
 
         // Index
-        MyTimeSeries index_with_bid_ask_Serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.MID, client);
+        MyTimeSeries index_with_bid_ask_Serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.MID_DEV, client);
         index_with_bid_ask_Serie.setColor(Color.BLACK);
         index_with_bid_ask_Serie.setStokeSize(1.2f);
 
@@ -200,27 +200,8 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Interest ----------------------------------------- //
 
         // Index races wi
-        MyTimeSeries spot_interest = new MyTimeSeries("Spot interest", client) {
 
-            @Override
-            public double getValue() {
-                return client.getOp_month_interest_avg() * 100;
-            }
-
-            @Override
-            public void load() {
-                int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
-                List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
-                IDataBaseHandler.loadSerieData(rs, this);
-            }
-
-            @Override
-            public void updateData() {
-
-            }
-        };
-
-
+        MyTimeSeries spot_interest = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
         spot_interest.setColor(Themes.RED);
         spot_interest.setStokeSize(1.2f);
 

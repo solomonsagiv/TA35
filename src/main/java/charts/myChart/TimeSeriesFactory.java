@@ -154,8 +154,8 @@ public class TimeSeriesFactory {
 
 
 
-            case Factories.TimeSeries.MID:
-                return new MyTimeSeries(Factories.TimeSeries.MID, client) {
+            case Factories.TimeSeries.MID_DEV:
+                return new MyTimeSeries(Factories.TimeSeries.MID_DEV, client) {
 
                     @Override
                     public double getValue() {
