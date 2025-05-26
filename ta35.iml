@@ -11,6 +11,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="pretty-tools-JDDE-2.1.01" level="project" />
+    <orderEntry type="library" name="pretty-tools-JDDE-2.1.02" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.nifi:nifi-api:1.12.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-transports-http:2.2.3" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-api:2.2.3" level="project" />
@@ -36,6 +37,7 @@
     <orderEntry type="library" name="Maven: org.mortbay.jetty:jetty-util:6.1.19" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:slf4j-jdk14:1.5.8" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-servlet_2.5_spec:1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.pretty-tools:JDDE:2.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:2.0.9" level="project" />
     <orderEntry type="library" name="Maven: org.apache.cxf:cxf-rt-frontend-jaxws:3.3.6" level="project" />
     <orderEntry type="library" name="Maven: xml-resolver:xml-resolver:1.2" level="project" />
