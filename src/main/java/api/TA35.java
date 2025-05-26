@@ -264,4 +264,12 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     public void setStocks_race_service(Stocks_Race_Service stocks_race_service) {
         this.stocks_race_service = stocks_race_service;
     }
+
+    public double get_ask_last_margin() {
+        return L.abs(ask - index);
+    }
+    public double get_bid_last_margin() {
+        return L.abs(index - bid);
+    }
+
 }

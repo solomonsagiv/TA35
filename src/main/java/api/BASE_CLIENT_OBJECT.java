@@ -66,6 +66,7 @@ public abstract class BASE_CLIENT_OBJECT {
     public double getLowPresent() {
         return L.floor(((low - base) / base) * 100, 100);
     }
+
     public double get_ask_last_margin() {
         return L.abs(ask - last_price);
     }

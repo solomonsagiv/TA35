@@ -99,7 +99,6 @@ public class BasketFinder_by_stocks extends MyBaseService {
 
         // If got enough changes
         if (volume_sum >= targetChanges) {
-
             // Up - last closer to the ask
             if (client.get_ask_last_margin() < client.get_bid_last_margin()) {
                 add_basket_up();
