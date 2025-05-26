@@ -507,6 +507,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
                         double val = Queries.handle_rs(Queries.get_last_record_mega(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION));
                         setValue(val);
+                        client.setOp_month_interest_avg(val);
                     }
                 };
 
@@ -550,6 +551,7 @@ public class TimeSeriesFactory {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD);
                         double val = Queries.handle_rs(Queries.get_last_record_mega(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION));
                         setValue(val);
+                        client.setRoll_interest_avg(val);
 
                     }
                 };
