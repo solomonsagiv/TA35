@@ -136,7 +136,7 @@ public class DataReaderService extends MyBaseService {
                 String name = conversation.request(String.format("R%sC%s", row, nameCol));
 
 //                 End
-                if (row > 100) {
+                if (row > 37) {
                     break;
                 }
 
