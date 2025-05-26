@@ -5,7 +5,9 @@ import java.util.Random;
 
 public class Themes {
 
+
     // Colors
+    public static final Color BLACK = new Color(0, 0, 0);
     public static Color BINANCE_ORANGE = new Color(255, 204, 0);
     public static Color BINANCE_ORANGE_2 = new Color(241, 206, 125);
     public static Color BINANCE_GREY = new Color(38, 45, 51);
