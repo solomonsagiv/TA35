@@ -134,6 +134,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put_id(Factories.TimeSeries.DF_8_CDF_OLD, 9773);
         timeSeriesHandler.put_id(Factories.TimeSeries.DF_5_CDF_OLD, 9491);
         timeSeriesHandler.put_id(Factories.TimeSeries.DF_6_CDF_OLD, 9492);
+        timeSeriesHandler.put_id(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD, 10117);
+        timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD, 10118);
 
         timeSeriesHandler.put_id(Factories.TimeSeries.INDEX_RACES_WI, 9789);
         timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_RACES_WI, 9788);

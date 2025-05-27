@@ -31,6 +31,7 @@ public abstract class Exp implements IJsonData {
 	private int roll_optimi_count = 0;
 	private int roll_pesimi_count = 0;
 
+
 	public Exp(BASE_CLIENT_OBJECT client, String exp_name) {
 		this.client = client;
 		this.exp_name = exp_name;

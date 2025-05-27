@@ -4,8 +4,8 @@ import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import charts.myChart.MyTimeSeries;
 import locals.L;
+import options.Options;
 import races.Race_Logic;
-
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -21,8 +21,12 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> op_month_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> roll_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> month_counter_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> week_counter_timestamp = new ArrayList<>();
 
     ArrayList<MyTimeSeries> timeSeries;
+    Race_Logic wi_race, wm_race;
+    Options week_options, month_options;
 
     double bid_0 = 0,
             ask_0 = 0,
@@ -33,11 +37,17 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             op_month_interest_0 = 0,
             roll_interest_0 = 0,
             baskets_0 = 0,
-            month_races_0;
+            month_races_0 = 0,
+            month_counter_0 = 0,
+            week_counter_0 = 0;
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
         init_timeseries_to_updater();
+        this.wi_race = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX);
+        this.wm_race = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH);
+        this.week_options = client.getExps().getWeek().getOptions();
+        this.month_options = client.getExps().getMonth().getOptions();
     }
 
     int sleep_count = 100;
@@ -113,29 +123,29 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
             if (baskets != baskets_0) {
                 double last_count = baskets - baskets_0;
-                if (last_count == 1 || last_count == -1) {
+                if (L.abs(last_count) < 5) {
                     baskets_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
                 }
                 baskets_0 = baskets;
             }
 
             // Index races
-            double index_races = client.get_main_race().get_r_one_points();
+            double index_races = wi_race.get_r_one_points();
 
             if (index_races != mid_races_0) {
                 double last_count = index_races - mid_races_0;
-                if (last_count == 1 || last_count == -1) {
+                if (L.abs(last_count) < 5) {
                     mid_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
                 }
                 mid_races_0 = index_races;
             }
 
             // Month
-            double month_races = client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
+            double month_races = wm_race.get_r_one_points();
 
             if (month_races != month_races_0) {
                 double last_count = month_races - month_races_0;
-                if (last_count == 1 || last_count == -1) {
+                if (L.abs(last_count) < 5) {
                     month_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
                 }
                 month_races_0 = month_races;
@@ -166,6 +176,28 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                     roll_interest_0 = roll_interest;
                     roll_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), roll_interest_0));
                 }
+            }
+
+            // Month bid ask counter
+            double week_counter = week_options.getBid_ask_counter();
+
+            if (week_counter != week_counter_0) {
+                double last_count = week_counter - week_counter_0;
+                if (L.abs(last_count) < 5) {
+                    week_counter_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                }
+                week_counter_0 = week_counter;
+            }
+
+            // Month bid ask counter
+            double month_counter = month_options.getBid_ask_counter();
+
+            if (month_counter != month_counter_0) {
+                double last_count = month_counter - month_counter_0;
+                if (L.abs(last_count) < 5) {
+                    month_counter_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                }
+                month_counter_0 = month_counter;
             }
         }
     }
@@ -268,6 +300,16 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_RACES_WM);
         insert_dev_prod(month_races_timeStamp, dev_id, prod_id);
+
+        // Month counter
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
+        insert_dev_prod(month_counter_timestamp, dev_id, prod_id);
+
+        // Week counter
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
+        insert_dev_prod(week_counter_timestamp, dev_id, prod_id);
 
     }
 }

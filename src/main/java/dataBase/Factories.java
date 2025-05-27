@@ -48,6 +48,7 @@ public class Factories {
         public static final String ROLL_INTEREST_AVG_DEV = "ROLL_INTEREST_AVG_DEV";
         public static final String OP_MONTH_INTEREST_AVG_DEV = "OP_INTEREST_AVG_DEV";
         public static final String OP_WEEK_INTEREST_DEV = "OP_WEEK_INTEREST_DEV";
-
+        public static final String MONTH_BID_ASK_COUNTER_PROD = "MONTH_BID_ASK_COUNTER_PROD";
+        public static final String WEEK_BID_ASK_COUNTER_PROD = "WEEK_BID_ASK_COUNTER_PROD";
     }
 }

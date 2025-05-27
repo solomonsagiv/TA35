@@ -1,12 +1,10 @@
 package options;
 
 import api.BASE_CLIENT_OBJECT;
-import charts.myChart.MyChartList;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +22,7 @@ public class Options implements IJsonData {
     HashMap<String, Option> optionsMap;
     ArrayList<Option> options_list;
 
-    private MyChartList deltaChartList = new MyChartList();
-    private MyChartList conBidAskCounterList = new MyChartList();
-    private MyChartList opChartList = new MyChartList();
+    private int bid_ask_counter = 0;
 
     protected BASE_CLIENT_OBJECT client;
 
@@ -204,9 +200,11 @@ public class Options implements IJsonData {
         return json;
     }
 
-
     public void setContractBid(double newBid) {
         if (contractBid != 0) {
+            if (newBid > this.contractBid) {
+                bid_ask_counter++;
+            }
             this.contractBid = newBid;
         }
     }
@@ -221,12 +219,11 @@ public class Options implements IJsonData {
 
     public void setContractAsk(double newAsk) {
         if (contractAsk != 0) {
+            if (newAsk < this.contractAsk) {
+                bid_ask_counter--;
+            }
             this.contractAsk = newAsk;
         }
-    }
-
-    public MyChartList getConBidAskCounterList() {
-        return conBidAskCounterList;
     }
 
     public String str(Object o) {
@@ -237,24 +234,12 @@ public class Options implements IJsonData {
         return Math.abs(d);
     }
 
-    public MyChartList getDeltaChartList() {
-        return deltaChartList;
-    }
-
     public double getContract() {
         return contract;
     }
 
     public void setContract(double contract) {
         this.contract = contract;
-    }
-
-    public MyChartList getOpChartList() {
-        return opChartList;
-    }
-
-    public ArrayList<Option> getOptions_list() {
-        return options_list;
     }
 
     @Override
@@ -279,5 +264,12 @@ public class Options implements IJsonData {
         return new MyJson();
     }
 
+    public int getBid_ask_counter() {
+        return bid_ask_counter;
+    }
+
+    public void setBid_ask_counter(int bid_ask_counter) {
+        this.bid_ask_counter = bid_ask_counter;
+    }
 }
 

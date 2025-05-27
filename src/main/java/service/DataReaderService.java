@@ -10,6 +10,7 @@ import miniStocks.MiniStockDDECells;
 import options.Options;
 
 public class DataReaderService extends MyBaseService {
+
     // Cells
     String futureCell = "R2C1";
     String indexCell = "R2C2";

@@ -178,24 +178,28 @@ public class Main_Chart extends MyChartCreator {
         index_races_wi.setColor(Themes.ORANGE);
         index_races_wi.setStokeSize(1.2f);
 
-        // Week races wi
-        MyTimeSeries week_races_wi = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_RACES_WI);
-        week_races_wi.setColor(Themes.PURPLE);
-        week_races_wi.setStokeSize(1.2f);
+        // Week counter
+        MyTimeSeries week_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
+        week_counter.setColor(Themes.GREEN_7);
+        week_counter.setStokeSize(1.2f);
+
+        // Month counter
+        MyTimeSeries month_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
+        month_counter.setColor(Themes.GREEN);
+        month_counter.setStokeSize(1.2f);
 
         // Index races wi
         MyTimeSeries month_races_wm = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
         month_races_wm.setColor(Themes.RED);
         month_races_wm.setStokeSize(1.2f);
 
-
-        series = new MyTimeSeries[3];
+        series = new MyTimeSeries[4];
         series[0] = index_races_wi;
-        series[1] = week_races_wi;
-        series[2] = month_races_wm;
+        series[1] = week_counter;
+        series[2] = month_counter;
+        series[3] = month_races_wm;
 
         MyChart races_chart = new MyChart(series, props);
-
 
         // ----------------------------------------- Interest ----------------------------------------- //
 
