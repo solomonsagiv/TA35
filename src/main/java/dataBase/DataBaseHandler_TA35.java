@@ -22,7 +22,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> roll_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
 
-
     ArrayList<MyTimeSeries> timeSeries;
 
     double bid_0 = 0,

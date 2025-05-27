@@ -78,9 +78,9 @@ public class DataReaderService extends MyBaseService {
                 optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
 
                 // Interest
-                ta35.setOp_week_interest(L.dbl(conversation.request(op_week_interest_cell)));
-                ta35.setOp_month_interest(L.dbl(conversation.request(op_interest_month_cell)));
-                ta35.setRoll_interest(L.dbl(conversation.request(roll_interest_cell)));
+                ta35.setOp_week_interest(L.dbl(conversation.request(op_week_interest_cell)) * 100);
+                ta35.setOp_month_interest(L.dbl(conversation.request(op_interest_month_cell)) * 100);
+                ta35.setRoll_interest(L.dbl(conversation.request(roll_interest_cell)) * 100);
 
                 // Read stocks
                 read_stocks();
