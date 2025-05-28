@@ -249,7 +249,6 @@ public class Options implements IJsonData {
         return json;
     }
 
-
     @Override
     public void loadFromJson(MyJson json) {
     }

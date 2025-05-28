@@ -178,6 +178,11 @@ public class Main_Chart extends MyChartCreator {
         index_races_wi.setColor(Themes.ORANGE);
         index_races_wi.setStokeSize(1.2f);
 
+        // Index races wi
+        MyTimeSeries month_races_wm = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
+        month_races_wm.setColor(Themes.RED);
+        month_races_wm.setStokeSize(1.2f);
+
         // Week counter
         MyTimeSeries week_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
         week_counter.setColor(Themes.GREEN_7);
@@ -188,10 +193,6 @@ public class Main_Chart extends MyChartCreator {
         month_counter.setColor(Themes.GREEN);
         month_counter.setStokeSize(1.2f);
 
-        // Index races wi
-        MyTimeSeries month_races_wm = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
-        month_races_wm.setColor(Themes.RED);
-        month_races_wm.setStokeSize(1.2f);
 
         series = new MyTimeSeries[4];
         series[0] = index_races_wi;
