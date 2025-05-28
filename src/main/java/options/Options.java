@@ -205,8 +205,8 @@ public class Options implements IJsonData {
             if (newBid > this.contractBid) {
                 bid_ask_counter++;
             }
-            this.contractBid = newBid;
         }
+        this.contractBid = newBid;
     }
 
     public double getContractBid() {
@@ -222,8 +222,8 @@ public class Options implements IJsonData {
             if (newAsk < this.contractAsk) {
                 bid_ask_counter--;
             }
-            this.contractAsk = newAsk;
         }
+        this.contractAsk = newAsk;
     }
 
     public String str(Object o) {
