@@ -9,6 +9,7 @@ import dataBase.mySql.Queries;
 import exp.Exp;
 import options.Options;
 import races.Race_Logic;
+
 import java.util.List;
 import java.util.Map;
 
@@ -152,7 +153,6 @@ public class TimeSeriesFactory {
                     public void updateData() {
                     }
                 };
-
 
 
             case Factories.TimeSeries.MID_DEV:
@@ -456,7 +456,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        Options options =client.getExps().getMonth().getOptions();
+                        Options options = client.getExps().getMonth().getOptions();
                         return options.getBid_ask_counter();
                     }
 
@@ -481,7 +481,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        Options options =client.getExps().getWeek().getOptions();
+                        Options options = client.getExps().getWeek().getOptions();
                         return options.getBid_ask_counter();
                     }
 

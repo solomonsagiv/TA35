@@ -154,7 +154,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             // OP week interest
             double week_interest = client.getOp_week_interest();
             if (week_interest != op_week_interest_0) {
-                if (L.abs(week_interest - op_week_interest_0) < 0.1) {
+                if (L.abs(week_interest - op_week_interest_0) < 100) {
                     op_week_interest_0 = week_interest;
                     op_week_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), op_week_interest_0));
                 }
@@ -163,7 +163,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             // OP month interest
             double month_interest = client.getOp_month_interest();
             if (month_interest != op_month_interest_0) {
-                if (L.abs(month_interest - op_month_interest_0) < 0.1) {
+                if (L.abs(month_interest - op_month_interest_0) < 100) {
                     op_month_interest_0 = month_interest;
                     op_month_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), op_month_interest_0));
                 }
@@ -172,7 +172,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             // Roll interest
             double roll_interest = client.getRoll_interest();
             if (roll_interest != roll_interest_0) {
-                if (L.abs(roll_interest - roll_interest_0) < 0.1) {
+                if (L.abs(roll_interest - roll_interest_0) < 100) {
                     roll_interest_0 = roll_interest;
                     roll_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), roll_interest_0));
                 }
