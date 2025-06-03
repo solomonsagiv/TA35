@@ -92,7 +92,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     private void on_change_data() {
 
         // Is live db
-        if (client.isDb_loaded()) {
+        if (client.isStarted()) {
 
             // Index
             if (client.getLast_price() != last_0) {
