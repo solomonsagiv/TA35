@@ -247,6 +247,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_240_CONTINUE));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600));
 
     }
 
