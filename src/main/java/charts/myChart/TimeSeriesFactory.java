@@ -44,7 +44,6 @@ public class TimeSeriesFactory {
                     }
                 };
 
-
             case Factories.TimeSeries.INDEX_AVG_900:
                 return new MyTimeSeries(Factories.TimeSeries.INDEX_AVG_900, client) {
 
@@ -484,7 +483,6 @@ public class TimeSeriesFactory {
                         Options options = client.getExps().getWeek().getOptions();
                         return options.getBid_ask_counter();
                     }
-
 
                     @Override
                     public void updateData() {

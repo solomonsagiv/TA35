@@ -78,7 +78,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void update_data() {
         new Thread(() -> {
-
             for (MyTimeSeries ts : timeSeries) {
                 try {
                     System.out.println(ts.getName() + " " + ts.getValue());
@@ -88,7 +87,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                     e.printStackTrace();
                 }
             }
-
         }).start();
     }
 
@@ -223,6 +221,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Load races
         load_all_races();
 
+        // Load counters
+        load_bid_ask_counter();
+
         // Set load
         client.setDb_loaded(true);
     }
@@ -235,8 +236,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, index_races_id, true);
         load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, week_races_id, false);
         load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, month_races_id, true);
-
-        load_bid_ask_counter();
     }
 
     private void load_bid_ask_counter() {
