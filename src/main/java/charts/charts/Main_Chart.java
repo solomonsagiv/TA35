@@ -153,26 +153,22 @@ public class Main_Chart extends MyChartCreator {
         MyChart roll_chart = new MyChart(series, props);
 
         // ----------------------------------------- DF ----------------------------------------- //
-
-        MyTimeSeries df_5_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD);
-        df_5_old.setColor(Themes.ORANGE);
-        df_5_old.setStokeSize(1.2f);
+        MyTimeSeries df_4_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD);
+        df_4_old.setColor(Themes.ORANGE);
+        df_4_old.setStokeSize(1.2f);
 
         // Op avg 60
-        MyTimeSeries df_6_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD);
-        df_6_old.setColor(Themes.PURPLE);
-        df_6_old.setStokeSize(1.2f);
-
+        MyTimeSeries df_8_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD);
+        df_8_old.setColor(Themes.PURPLE);
+        df_8_old.setStokeSize(1.2f);
 
         series = new MyTimeSeries[2];
-        series[0] = df_5_old;
-        series[1] = df_6_old;
-
+        series[0] = df_4_old;
+        series[1] = df_8_old;
 
         MyChart df_chart = new MyChart(series, props);
 
         // ----------------------------------------- Races ----------------------------------------- //
-
         // Index races wi
         MyTimeSeries index_races_wi = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_RACES_WI);
         index_races_wi.setColor(Themes.ORANGE);
@@ -183,6 +179,13 @@ public class Main_Chart extends MyChartCreator {
         month_races_wm.setColor(Themes.RED);
         month_races_wm.setStokeSize(1.2f);
 
+        series = new MyTimeSeries[2];
+        series[0] = index_races_wi;
+        series[1] = month_races_wm;
+
+        MyChart races_chart = new MyChart(series, props);
+
+        // ----------------------------------------- Bid ask counter ----------------------------------------- //
         // Week counter
         MyTimeSeries week_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
         week_counter.setColor(Themes.GREEN_7);
@@ -193,14 +196,11 @@ public class Main_Chart extends MyChartCreator {
         month_counter.setColor(Themes.GREEN);
         month_counter.setStokeSize(1.2f);
 
+        series = new MyTimeSeries[2];
+        series[0] = week_counter;
+        series[1] = month_counter;
 
-        series = new MyTimeSeries[4];
-        series[0] = index_races_wi;
-        series[1] = week_counter;
-        series[2] = month_counter;
-        series[3] = month_races_wm;
-
-        MyChart races_chart = new MyChart(series, props);
+        MyChart bid_ask_counter_chart = new MyChart(series, props);
 
         // ----------------------------------------- Interest ----------------------------------------- //
 
@@ -224,7 +224,7 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, roll_chart, df_chart, races_chart, interest_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, interest_chart, df_chart, races_chart, bid_ask_counter_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Main chart");
