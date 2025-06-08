@@ -3,11 +3,14 @@ package dataBase;
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import charts.myChart.MyTimeSeries;
+import dataBase.mySql.MySql;
+import dataBase.mySql.Queries;
 import locals.L;
 import options.Options;
 import races.Race_Logic;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
@@ -232,6 +235,19 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, index_races_id, true);
         load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX, week_races_id, false);
         load_races(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH, month_races_id, true);
+
+        load_bid_ask_counter();
+    }
+
+    private void load_bid_ask_counter() {
+        int week_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
+        int week_counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(week_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
+
+        int month_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
+        int month_counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(month_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
+
+        client.getExps().getWeek().getOptions().setBid_ask_counter(week_counter);
+        client.getExps().getMonth().getOptions().setBid_ask_counter(month_counter);
     }
 
     @Override

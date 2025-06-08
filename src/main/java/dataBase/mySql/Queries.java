@@ -226,6 +226,9 @@ public class Queries {
         return map;
     }
 
+
+
+
     public static List<Map<String, Object>> get_index_with_bid_ask_series(int bid_id, int ask_id, String connectionType) {
         String modulu = "%";
         String q = "select time, value\n" +
