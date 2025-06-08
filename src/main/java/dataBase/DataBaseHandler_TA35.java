@@ -248,6 +248,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         client.getExps().getWeek().getOptions().setBid_ask_counter(week_counter);
         client.getExps().getMonth().getOptions().setBid_ask_counter(month_counter);
+
+        System.out.println("---------------------- Counterss ----------------------");
+        System.out.println(week_counter + " " + month_counter);
     }
 
     @Override
