@@ -48,7 +48,7 @@ public class Realtime_Interest_Chart extends MyChartCreator {
             }
         };
         op_cost.setColor(Themes.GREEN);
-        op_cost.setStokeSize(2.25f);
+        op_cost.setStokeSize(1.25f);
 
         // Index
         MyTimeSeries roll_cost = new MyTimeSeries("Roll cost", client) {
@@ -69,7 +69,7 @@ public class Realtime_Interest_Chart extends MyChartCreator {
             }
         };
         roll_cost.setColor(Themes.BLACK);
-        roll_cost.setStokeSize(2.25f);
+        roll_cost.setStokeSize(1.25f);
 
         // Bid
         MyTimeSeries bid = new MyTimeSeries("Bid", client) {
@@ -90,7 +90,7 @@ public class Realtime_Interest_Chart extends MyChartCreator {
             }
         };
         bid.setColor(Themes.BLUE);
-        bid.setStokeSize(2.25f);
+        bid.setStokeSize(1.25f);
         bid.setVisible(false);
 
         // Ask
@@ -112,7 +112,7 @@ public class Realtime_Interest_Chart extends MyChartCreator {
             }
         };
         ask.setColor(Themes.RED);
-        ask.setStokeSize(2.25f);
+        ask.setStokeSize(1.25f);
         ask.setVisible(false);
 
         MyTimeSeries[] series = {op_cost, roll_cost, bid, ask};
