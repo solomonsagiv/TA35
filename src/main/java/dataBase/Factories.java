@@ -50,5 +50,10 @@ public class Factories {
         public static final String OP_WEEK_INTEREST_DEV = "OP_WEEK_INTEREST_DEV";
         public static final String MONTH_BID_ASK_COUNTER_PROD = "MONTH_BID_ASK_COUNTER_PROD";
         public static final String WEEK_BID_ASK_COUNTER_PROD = "WEEK_BID_ASK_COUNTER_PROD";
+
+        public static final String MONTH_OBI_PROD = "MONTH_OBI_PROD";
+        public static final String WEEK_OBI_PROD = "WEEK_OBI_PROD";
+        public static final String MONTH__MPO_PROD = "MONTH__MPO_PROD";
+        public static final String WEEK__MPO_PROD = "WEEK__MPO_PROD";
     }
 }

@@ -4,6 +4,7 @@ import api.TA35;
 import api.dde.DDE.DDEConnection;
 import charts.charts.Main_Chart;
 import charts.charts.Realtime_Chart;
+import charts.charts.Realtime_Interest_Chart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
@@ -442,7 +443,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Realtime", "Main", "Races", "Stocks"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Realtime", "Main", "Races", "Stocks", "Costs real time"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -454,12 +455,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                         Main_Chart main_chart = new Main_Chart(TA35.getInstance());
                         main_chart.createChart();
                         break;
-                    case "Realtime":
+                    case "Real time":
                         Realtime_Chart realtimeChart = new Realtime_Chart(TA35.getInstance());
                         realtimeChart.createChart();
                         break;
                     case "Stocks":
                         new SummeryWindow("Stocks");
+                        break;
+                    case "Costs real time":
+                        Realtime_Interest_Chart realtime_interest_chart = new Realtime_Interest_Chart(TA35.getInstance());
+                        realtime_interest_chart.createChart();
                         break;
                     default:
                         break;
@@ -481,6 +486,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             // Full charts
             Main_Chart main_chart = new Main_Chart(TA35.getInstance());
             main_chart.createChart();
+
+            // Realtime interest chart
+            Realtime_Interest_Chart realtime_interest_chart = new Realtime_Interest_Chart(TA35.getInstance());
+            realtime_interest_chart.createChart();
 
         } catch (Exception e) {
             e.printStackTrace();

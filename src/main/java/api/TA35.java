@@ -81,8 +81,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         return getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX);
     }
 
-
-
     @Override
     protected void init_timeseries_handler() {
         timeSeriesHandler = new TimeSeriesHandler();
