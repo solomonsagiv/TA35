@@ -10,7 +10,7 @@ public class BlackScholesFormula {
     private static final double B3 = 1.781477937;
     private static final double B4 = -1.821255978;
     private static final double B5 = 1.330274429;
-
+    
     /**
      *
      * @param callOption

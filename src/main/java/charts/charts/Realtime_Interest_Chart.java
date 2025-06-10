@@ -17,7 +17,7 @@ public class Realtime_Interest_Chart extends MyChartCreator {
     @SuppressWarnings("serial")
     @Override
     public void init() throws CloneNotSupportedException {
-
+        
         // Props
         props = new MyProps();
         props.setProp(ChartPropsEnum.SECONDS, 900);
