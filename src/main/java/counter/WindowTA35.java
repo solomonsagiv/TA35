@@ -443,7 +443,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Realtime", "Main", "Races", "Stocks", "Costs real time"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Real time", "Main", "Races", "Stocks", "Costs real time"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);

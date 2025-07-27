@@ -19,6 +19,8 @@ public class MiniStock implements IJsonData {
     private double weight = 0;
     private String name = "";
     private int row = 0;
+    private double bid_size = 0;
+    private double ask_size = 0;
 
     MiniStockDDECells ddeCells;
 
@@ -98,6 +100,22 @@ public class MiniStock implements IJsonData {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public double getBid_size() {
+        return bid_size;
+    }
+
+    public void setBid_size(double bid_size) {
+        this.bid_size = bid_size;
+    }
+
+    public double getAsk_size() {
+        return ask_size;
+    }
+
+    public void setAsk_size(double ask_size) {
+        this.ask_size = ask_size;
     }
 
     @Override

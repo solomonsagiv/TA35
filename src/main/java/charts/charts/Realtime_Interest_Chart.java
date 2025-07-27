@@ -34,7 +34,7 @@ public class Realtime_Interest_Chart extends MyChartCreator {
         MyTimeSeries op_cost = new MyTimeSeries("O/P Cost", client) {
             @Override
             public double getValue() {
-                return client.getOp_month_interest() + client.getMid();
+                return client.getSpot_interest_list().getAverage() + client.getMid();
             }
 
             @Override
@@ -55,7 +55,7 @@ public class Realtime_Interest_Chart extends MyChartCreator {
 
             @Override
             public double getValue() {
-                return client.getRoll_interest() + client.getMid();
+                return client.getRoll_interest_list().getAverage() + client.getMid();
             }
 
             @Override

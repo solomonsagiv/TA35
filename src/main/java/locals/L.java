@@ -8,9 +8,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 public class L {
 
@@ -54,6 +53,15 @@ public class L {
 			df100.setNegativePrefix("-");
 		}
 		return df100;
+	}
+
+	public static double list_avg(List<Double> list) {
+
+		double sum = 0.0;
+		for (double num : list) {
+			sum += num;
+		}
+		return list.isEmpty() ? 0.0 : sum / list.size();
 	}
 
 	public static int row_to_int(Object o) {
@@ -200,6 +208,58 @@ public class L {
 		}
 		return input.substring(0, 1).toUpperCase() + input.substring(1);
 	}
+
+
+	public static class FixedSizeDoubleList {
+		private final int capacity;
+		private final LinkedList<Double> list;
+
+		public FixedSizeDoubleList(int capacity) {
+			if (capacity <= 0) {
+				throw new IllegalArgumentException("Capacity must be greater than zero.");
+			}
+			this.capacity = capacity;
+			this.list = new LinkedList<>();
+		}
+
+		public void add(double value) {
+			if (list.size() == capacity) {
+				list.removeFirst();
+			}
+			list.add(value);
+		}
+
+		public Double findMaxAbs() {
+			if (list.isEmpty()) {
+				return null;
+			}
+			double max = list.get(0);
+			for (double val : list) {
+				if (Math.abs(val) > Math.abs(max)) {
+					max = val;
+				}
+			}
+			return max;
+		}
+
+		// ✅ Method to get the average
+		public Double getAverage() {
+			if (list.isEmpty()) {
+				return null;
+			}
+			return list.stream()
+					.mapToDouble(Double::doubleValue)
+					.average()
+					.orElse(0.0);
+		}
+
+		@Override
+		public String toString() {
+			return list.toString();
+		}
+	}
+
+
 
 
 	public static double floor(double d, int zeros) {

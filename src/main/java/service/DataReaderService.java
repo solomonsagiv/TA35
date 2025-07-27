@@ -83,6 +83,10 @@ public class DataReaderService extends MyBaseService {
                 ta35.setOp_month_interest(L.dbl(conversation.request(op_interest_month_cell)) * 100);
                 ta35.setRoll_interest(L.dbl(conversation.request(roll_interest_cell)) * 100);
 
+                // Append data to lists
+                ta35.getRoll_interest_list().add(ta35.getRoll_interest());
+                ta35.getSpot_interest_list().add(ta35.getOp_month_interest());
+
                 // Read stocks
                 read_stocks();
 
@@ -103,6 +107,8 @@ public class DataReaderService extends MyBaseService {
                     stock.setBid(L.dbl(conversation.request(ddeCells.getBidCell())));
                     stock.setAsk(L.dbl(conversation.request(ddeCells.getAskCell())));
                     stock.setVolume((int) L.dbl(conversation.request(ddeCells.getVolumeCell())));
+                    stock.setBid_size(L.dbl(conversation.request(ddeCells.getBidSizeCell())));
+                    stock.setAsk_size(L.dbl(conversation.request(ddeCells.getAskSizeCell())));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

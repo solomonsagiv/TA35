@@ -27,7 +27,6 @@ import java.util.HashMap;
 public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     private static TA35 TA35;
-
     private String status;
 
     private Stocks_Race_Service stocks_race_service;
@@ -156,7 +155,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_WEEK_INTEREST_DEV, 13005);
         timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_INTEREST_DEV, 13001);
         timeSeriesHandler.put_id(Factories.TimeSeries.ROLL_INTEREST_AVG_DEV, 13003);
-//        timeSeriesHandler.put_id(Factories.TimeSeries.TRADING_STATUS, 5fff);
+        timeSeriesHandler.put_id(Factories.TimeSeries.TRADING_STATUS, 10125);
+        timeSeriesHandler.put_id(Factories.TimeSeries.TRADING_STATUS_DEV, 13046);
     }
 
     @Override
@@ -206,11 +206,17 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     public void close() {
         getServiceHandler().getHandler().close();
     }
+
     public String getStatus() {
         return status;
     }
     public void setStatus(String status) {
         this.status = status;
+        if (status.equals(BackGroundRunner.streamMarket)) {
+            setTrading_status(1);
+        } else {
+            setTrading_status(-1);
+        }
     }
 
     public MyServiceHandler getServiceHandler() {

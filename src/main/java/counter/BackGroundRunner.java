@@ -18,10 +18,10 @@ public class BackGroundRunner extends MyThread implements Runnable {
     double ask;
     LocalTime current_time;
 
-    String preOpen = "preopen";
-    String streamMarket = "stream";
-    String randomally = "rando";
-    String endMarket = "end";
+    public static String preOpen = "preopen";
+    public static String streamMarket = "stream";
+    public static String randomally = "rando";
+    public static String endMarket = "end";
 
     public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
 

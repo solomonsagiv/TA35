@@ -36,6 +36,8 @@ public abstract class BASE_CLIENT_OBJECT {
     private double op_month_interest_avg = 0;
     private double op_week_interest = 0;
 
+    private L.FixedSizeDoubleList roll_interest_list, spot_interest_list;
+
     public BASE_CLIENT_OBJECT() {
         init_name();
         init_race_service();
@@ -43,6 +45,8 @@ public abstract class BASE_CLIENT_OBJECT {
         init_exps();
         init_data_base_service();
         init_dde_cells();
+        roll_interest_list = new L.FixedSizeDoubleList(10);
+        spot_interest_list = new L.FixedSizeDoubleList(10);
     }
 
     protected abstract void init_race_service();
@@ -280,5 +284,21 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setOp_week_interest(double op_week_interest) {
         this.op_week_interest = op_week_interest;
+    }
+
+    public L.FixedSizeDoubleList getRoll_interest_list() {
+        return roll_interest_list;
+    }
+
+    public void setRoll_interest_list(L.FixedSizeDoubleList roll_interest_list) {
+        this.roll_interest_list = roll_interest_list;
+    }
+
+    public L.FixedSizeDoubleList getSpot_interest_list() {
+        return spot_interest_list;
+    }
+
+    public void setSpot_interest_list(L.FixedSizeDoubleList spot_interest_list) {
+        this.spot_interest_list = spot_interest_list;
     }
 }
