@@ -54,6 +54,12 @@ public class Race_Logic {
 
     // IN RACE
     private void in_race_r1() {
+
+        // 🛑 אם אחד מהם לא משתנה – לא נמשיך בלוגיקה
+        if (r_one_margin == 0 || r_two_margin == 0) {
+            return;
+        }
+
         // ------------ R_ONE ------------ //
         // UP
         if (R_ONE_UP) {
