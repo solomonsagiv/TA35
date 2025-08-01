@@ -8,6 +8,7 @@ import dataBase.mySql.Queries;
 import locals.L;
 import options.Options;
 import races.Race_Logic;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -27,6 +28,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> month_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> trading_status_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> buy_sell_counter_timestamp = new ArrayList<>();
 
     ArrayList<MyTimeSeries> timeSeries;
     Race_Logic wi_race, wm_race;
@@ -44,7 +46,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             month_races_0 = 0,
             month_counter_0 = 0,
             week_counter_0 = 0,
-            trading_status_0 = 0;
+            trading_status_0 = 0,
+            buy_sell_counter_0 = 0;
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -125,6 +128,15 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             if (client.getAsk() != ask_0) {
                 ask_0 = client.getAsk();
                 ask_timestamp.add(new MyTimeStampObject(Instant.now(), ask_0));
+            }
+
+            // Buy sell counter
+            double counter = client.getBuy_sell_counter();
+
+            if (counter != buy_sell_counter_0) {
+                double last_count = counter - buy_sell_counter_0;
+                buy_sell_counter_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                buy_sell_counter_0 = counter;
             }
 
             // Baskets
@@ -340,9 +352,13 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         insert_dev_prod(week_counter_timestamp, dev_id, prod_id);
 
         // Trading status
-        dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.TRADING_STATUS_DEV);;
+        dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.TRADING_STATUS_DEV);
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.TRADING_STATUS);
         insert_dev_prod(trading_status_timestamp, dev_id, prod_id);
 
+        // Buy sell counter
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BUY_SELL_COUNTER_PROD);
+        insert_dev_prod(buy_sell_counter_timestamp, dev_id, prod_id);
     }
 }

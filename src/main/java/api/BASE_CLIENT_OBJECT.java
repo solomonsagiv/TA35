@@ -13,7 +13,7 @@ import service.MyServiceHandler;
 import java.awt.*;
 
 public abstract class BASE_CLIENT_OBJECT {
-
+    
     private String name;
     protected double last_price, mid, bid, ask, open, high, low, base;
     protected double race_margin = 0.001;
@@ -22,6 +22,8 @@ public abstract class BASE_CLIENT_OBJECT {
     protected Exps exps;
     protected Props props;
     private int trading_status = 0;
+    private double buy_sell_counter = 0,
+            buy_sell_counter_weighted = 0;
 
     // Services
     public MyServiceHandler serviceHandler;
@@ -300,5 +302,21 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setSpot_interest_list(L.FixedSizeDoubleList spot_interest_list) {
         this.spot_interest_list = spot_interest_list;
+    }
+
+    public double getBuy_sell_counter() {
+        return buy_sell_counter;
+    }
+
+    public void setBuy_sell_counter(double buy_sell_counter) {
+        this.buy_sell_counter = buy_sell_counter;
+    }
+
+    public double getBuy_sell_counter_weighted() {
+        return buy_sell_counter_weighted;
+    }
+
+    public void setBuy_sell_counter_weighted(double buy_sell_counter_weighted) {
+        this.buy_sell_counter_weighted = buy_sell_counter_weighted;
     }
 }

@@ -17,7 +17,6 @@ import races.Race_Logic;
 import races.RacesService;
 import races.Stocks_Race_Service;
 import service.BasketFinder_by_stocks;
-import service.IndDeltaService;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
 
@@ -62,7 +61,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     @Override
     protected void init_index_delta_service() {
-        setIndexIndDeltaService(new IndDeltaService(this, BackGroundRunner.excelPath));
     }
 
     @Override
@@ -117,6 +115,9 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD, TimeSeriesFactory.get_serie(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD, this));
         timeSeriesHandler.put(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD, TimeSeriesFactory.get_serie(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD, this));
 
+        timeSeriesHandler.put(Factories.TimeSeries.BUY_SELL_COUNTER_PROD, TimeSeriesFactory.get_serie(Factories.TimeSeries.BUY_SELL_COUNTER_PROD, this));
+
+
         setTimeSeriesHandler(timeSeriesHandler);
 
         timeSeriesHandler.put_id(Factories.TimeSeries.INDEX, 5);
@@ -136,6 +137,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put_id(Factories.TimeSeries.DF_6_CDF_OLD, 9492);
         timeSeriesHandler.put_id(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD, 10117);
         timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD, 10118);
+        timeSeriesHandler.put_id(Factories.TimeSeries.BUY_SELL_COUNTER_PROD,10126);
 
         timeSeriesHandler.put_id(Factories.TimeSeries.INDEX_RACES_WI, 9789);
         timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_RACES_WI, 9788);

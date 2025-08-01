@@ -1,5 +1,6 @@
 package miniStocks;
 
+import api.deltaTest.Calculator;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -19,8 +20,14 @@ public class MiniStock implements IJsonData {
     private double weight = 0;
     private String name = "";
     private int row = 0;
+    private double pre_last = 0;
 //    private double bid_size = 0;
-//    private double ask_size = 0;
+//    private double ask_size =
+
+    private int buy_sell_counter = 0,
+            buy_sell_quantity_counter = 0,
+            buy_sell_counter_0 = 0,
+            buy_sell_uuantity_counter_0 = 0;
 
     MiniStockDDECells ddeCells;
 
@@ -30,6 +37,16 @@ public class MiniStock implements IJsonData {
         this.row = row;
         this.ddeCells = new MiniStockDDECells(row);
 
+    }
+
+    public void stock_buy(int quantity) {
+        buy_sell_counter++;
+        buy_sell_quantity_counter += quantity;
+    }
+
+    public void stock_sell(int quantity) {
+        buy_sell_counter--;
+        buy_sell_quantity_counter -= quantity;
     }
 
     // Getters and Setters
@@ -62,7 +79,10 @@ public class MiniStock implements IJsonData {
     }
 
     public void setLast(double last) {
-        this.last = last;
+        if (last != this.last) {
+            setPre_last(this.last);
+            this.last = last;
+        }
     }
 
     public int getVolume() {
@@ -70,7 +90,11 @@ public class MiniStock implements IJsonData {
     }
 
     public void setVolume(int volume) {
-        this.volume = volume;
+        if (volume != this.volume) {
+            int q = volume - this.volume;
+            this.volume = volume;
+            Calculator.calc_stock_buy_sell_counter(this, q);
+        }
     }
 
     public double getDelta() {
@@ -102,7 +126,47 @@ public class MiniStock implements IJsonData {
         this.weight = weight;
     }
 
-//    public double getBid_size() {
+    public double getPre_last() {
+        return pre_last;
+    }
+
+    public void setPre_last(double pre_last) {
+        this.pre_last = pre_last;
+    }
+
+    public int getBuy_sell_counter() {
+        return buy_sell_counter;
+    }
+
+    public void setBuy_sell_counter(int buy_sell_counter) {
+        this.buy_sell_counter = buy_sell_counter;
+    }
+
+    public int getBuy_sell_quantity_counter() {
+        return buy_sell_quantity_counter;
+    }
+
+    public void setBuy_sell_quantity_counter(int buy_sell_quantity_counter) {
+        this.buy_sell_quantity_counter = buy_sell_quantity_counter;
+    }
+
+    public int getBuy_sell_counter_0() {
+        return buy_sell_counter_0;
+    }
+
+    public void setBuy_sell_counter_0(int buy_sell_counter_0) {
+        this.buy_sell_counter_0 = buy_sell_counter_0;
+    }
+
+    public int getBuy_sell_uuantity_counter_0() {
+        return buy_sell_uuantity_counter_0;
+    }
+
+    public void setBuy_sell_uuantity_counter_0(int buy_sell_uuantity_counter_0) {
+        this.buy_sell_uuantity_counter_0 = buy_sell_uuantity_counter_0;
+    }
+
+    //    public double getBid_size() {
 //        return bid_size;
 //    }
 //
@@ -131,11 +195,11 @@ public class MiniStock implements IJsonData {
         return json;
     }
 
-	public MiniStockDDECells getDdeCells() {
-		return ddeCells;
-	}
+    public MiniStockDDECells getDdeCells() {
+        return ddeCells;
+    }
 
-	@Override
+    @Override
     public void loadFromJson(MyJson json) {
         setDelta(json.getDouble(JsonStrings.delta));
     }

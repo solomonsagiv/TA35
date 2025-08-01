@@ -607,6 +607,29 @@ public class TimeSeriesFactory {
                     }
                 };
 
+            case Factories.TimeSeries.BUY_SELL_COUNTER_PROD:
+                return new MyTimeSeries(Factories.TimeSeries.BUY_SELL_COUNTER_PROD, client) {
+
+                    @Override
+                    public double getValue() {
+                        return TA35.getInstance().getBuy_sell_counter();
+                    }
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BUY_SELL_COUNTER_PROD);
+
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+                        IDataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
+
             default:
                 break;
         }

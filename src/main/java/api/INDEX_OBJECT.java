@@ -2,7 +2,6 @@ package api;
 
 import exp.Exps;
 import service.BasketFinder_by_stocks;
-import service.IndDeltaService;
 import stocksHandler.StocksHandler;
 
 public abstract class INDEX_OBJECT extends BASE_CLIENT_OBJECT {
@@ -29,9 +28,7 @@ public abstract class INDEX_OBJECT extends BASE_CLIENT_OBJECT {
     private double rando = 0;
 
     public BasketFinder_by_stocks basketFinder_by_stocks;
-    public IndDeltaService indDeltaService;
     private StocksHandler stocksHandler;
-    private IndDeltaService indexIndDeltaService;
 
     public Exps getExps() {
         return exps;
@@ -45,18 +42,7 @@ public abstract class INDEX_OBJECT extends BASE_CLIENT_OBJECT {
     public void setStocksHandler(StocksHandler stocksHandler) {
         this.stocksHandler = stocksHandler;
     }
-    public IndDeltaService getIndexIndDeltaService() {
-        return indexIndDeltaService;
-    }
-    public void setIndexIndDeltaService(IndDeltaService indexIndDeltaService) {
-        this.indexIndDeltaService = indexIndDeltaService;
-    }
-    public IndDeltaService getIndDeltaService() {
-        return indDeltaService;
-    }
-    public void setIndDeltaService(IndDeltaService indDeltaService) {
-        this.indDeltaService = indDeltaService;
-    }
+
     public BasketFinder_by_stocks getBasketFinder_by_stocks() {
         return basketFinder_by_stocks;
     }

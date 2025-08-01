@@ -11,10 +11,12 @@ import java.util.ArrayList;
 public class StocksHandler implements IJsonData {
 	
 	ArrayList<MiniStock> stocks;
-	
 
 	private MyChartList indDeltaList = new MyChartList();
 	private MyChartList indDeltaNoBasketsList = new MyChartList();
+
+	private double buy_sell_counter = 0;
+	private double buy_sell_quantity_counter = 0;
 	
 	public StocksHandler() {
 		this.stocks = new ArrayList<>();
@@ -30,7 +32,6 @@ public class StocksHandler implements IJsonData {
 		}
 		return json;
 	}
-	
 
 	public ArrayList<MiniStock> getStocks() {
 		return stocks;
@@ -49,7 +50,7 @@ public class StocksHandler implements IJsonData {
 		MyJson json = new MyJson();
 		return json;
 	}
-		
+
 	@Override
 	public void loadFromJson(MyJson json) {
 	}

@@ -1,10 +1,10 @@
 package service;
 
 import api.TA35;
+import api.deltaTest.Calculator;
 import locals.L;
 import miniStocks.MiniStock;
 import stocksHandler.StocksHandler;
-
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -17,10 +17,12 @@ public class BasketFinder_by_stocks extends MyBaseService {
     private BigFrame bigFrame;
     private int sleep_count = 0;
     private double biggest_change = 0;
-    private int sleep_between_frames = 1000;
+    private final int SLEEP_BETWEEN_FRAMES = 1000;
     private int big_frame_time_in_secondes;
     private double last_0, last;
     private int basket_up = 0, basket_down = 0;
+    int counter = 0;
+    final int BUY_SELL_FRAME = 15000;
 
     public BasketFinder_by_stocks(TA35 client, int targetChanges, int big_frame_time_in_secondes) {
         super(client);
@@ -42,19 +44,31 @@ public class BasketFinder_by_stocks extends MyBaseService {
 
         // Append frame (volume)
         // 1000 millis
-        if (sleep_count % sleep_between_frames == 0) {
+        if (sleep_count % SLEEP_BETWEEN_FRAMES == 0) {
             append_volume_frame();
         }
 
         // Look for basket
         // 1000 millis
-        if (sleep_count % sleep_between_frames == 0) {
+        if (sleep_count % SLEEP_BETWEEN_FRAMES == 0) {
             look_for_basket();
             sleep_count = 0;
         }
 
         // Update data
         update_data();
+
+        // Calc buy sell stocks counters
+        calc_buy_sell_stocks_counters();
+
+    }
+
+    private void calc_buy_sell_stocks_counters() {
+        if (counter == BUY_SELL_FRAME) {
+            Calculator.calc_stocks_buy_sell_counters();
+            counter = 0;
+        }
+        counter += SLEEP_BETWEEN_FRAMES;
     }
 
     private void update_data() {
@@ -66,7 +80,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
         int last_change_count = find_volume_change_count();
         bigFrame.append_volume(LocalTime.now(), last_change_count);
     }
-    
+
     private int find_volume_change_count() {
         // Reset params
         int changesCount = 0;

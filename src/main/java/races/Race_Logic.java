@@ -12,11 +12,12 @@ public class Race_Logic {
         WEEK_INDEX(),
         MONTH_INDEX(),
         LAST_MID();
-
     }
 
     RACE_RUNNER_ENUM race_runners;
     private BASE_CLIENT_OBJECT client;
+
+    private static final double MIN_MOVE = 0.0001;
 
     private boolean R_ONE_UP, R_ONE_DOWN, R_TWO_UP, R_TWO_DOWN = false;
     private double r_one_price = 0, r_two_price = 0;
@@ -38,12 +39,10 @@ public class Race_Logic {
     }
 
     public void race_finder() {
-
-        // First time update data
         first_time_update_data();
-
         out_of_race_r1();
         in_race_r1();
+        update_data();
     }
 
     private void first_time_update_data() {
@@ -52,76 +51,51 @@ public class Race_Logic {
         }
     }
 
-    // IN RACE
     private void in_race_r1() {
-
-        // 🛑 אם אחד מהם לא משתנה – לא נמשיך בלוגיקה
-        if (r_one_margin == 0 || r_two_margin == 0) {
-            return;
-        }
-
-        // ------------ R_ONE ------------ //
-        // UP
+        // R_ONE
         if (R_ONE_UP) {
-            // R one close
             if (r_one_margin < L.opo(RACE_MARGIN)) {
                 R_ONE_UP = false;
                 return;
             }
-
-            // R one win
-            if (r_two_margin > RACE_MARGIN) {
+            if (r_two_margin > RACE_MARGIN && has_moved(r_two_margin)) {
                 r_one_win_up();
                 reset_races();
                 return;
             }
         }
 
-        // DOWN
         if (R_ONE_DOWN) {
-            // R one close
             if (r_one_margin > RACE_MARGIN) {
                 R_ONE_DOWN = false;
                 return;
             }
-
-            // R one win
-            if (r_two_margin < L.opo(RACE_MARGIN)) {
+            if (r_two_margin < L.opo(RACE_MARGIN) && has_moved(r_two_margin)) {
                 r_one_win_down();
                 reset_races();
                 return;
             }
         }
 
-        // ------------ R_TWO ------------ //
-        // UP
+        // R_TWO
         if (R_TWO_UP) {
-
-            // R one win
-            if (r_one_margin > RACE_MARGIN) {
+            if (r_one_margin > RACE_MARGIN && has_moved(r_one_margin)) {
                 r_two_win_up();
                 reset_races();
                 return;
             }
-
-            // R two close
             if (r_two_margin < L.opo(RACE_MARGIN)) {
                 R_TWO_UP = false;
                 return;
             }
         }
 
-        // DOWN
         if (R_TWO_DOWN) {
-
-            // R one win
-            if (r_one_margin < L.opo(RACE_MARGIN)) {
+            if (r_one_margin < L.opo(RACE_MARGIN) && has_moved(r_one_margin)) {
                 r_two_win_down();
                 reset_races();
                 return;
             }
-
-            // R one close
             if (r_two_margin > RACE_MARGIN) {
                 R_TWO_DOWN = false;
                 return;
@@ -129,38 +103,27 @@ public class Race_Logic {
         }
     }
 
-
-
-    // OUT OF RACE
     private void out_of_race_r1() {
-        // If no race
         if (!is_in_race()) {
-
-            // RUNNER ONE UP
             if (r_one_margin > RACE_MARGIN) {
                 R_ONE_UP = true;
                 return;
             }
-
-            // RUNNER ONE DOWN
             if (r_one_margin < L.opo(RACE_MARGIN)) {
                 R_ONE_DOWN = true;
                 return;
             }
-
-            // RUNNER TWO UP
             if (r_two_margin > RACE_MARGIN) {
                 R_TWO_UP = true;
                 return;
             }
-
-            // RUNNER TWO DOWN
             if (r_two_margin < L.opo(RACE_MARGIN)) {
                 R_TWO_DOWN = true;
                 return;
             }
         }
     }
+
 
 
     // Update data
@@ -197,6 +160,10 @@ public class Race_Logic {
                 r_one_price = client.getExps().getMonth().getOptions().getContract();
                 r_two_price = client.getExps().getWeek().getOptions().getContract();
         }
+    }
+
+    private boolean has_moved(double margin) {
+        return Math.abs(margin) >= MIN_MOVE;
     }
 
     public double get_r1_minus_r2() {
