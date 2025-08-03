@@ -2,6 +2,7 @@ package dataBase;
 
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
+import api.deltaTest.Calculator;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
@@ -9,8 +10,11 @@ import locals.L;
 import options.Options;
 import races.Race_Logic;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class DataBaseHandler_TA35 extends IDataBaseHandler {
@@ -28,7 +32,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> month_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> trading_status_timestamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> buy_sell_counter_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> stocks_counter_timestamp = new ArrayList<>();
 
     ArrayList<MyTimeSeries> timeSeries;
     Race_Logic wi_race, wm_race;
@@ -47,7 +51,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             month_counter_0 = 0,
             week_counter_0 = 0,
             trading_status_0 = 0,
-            buy_sell_counter_0 = 0;
+            stocks_counter_0 = 0;
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -131,12 +135,12 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Buy sell counter
-            double counter = client.getBuy_sell_counter();
+            double counter = client.getStocks_counter();
 
-            if (counter != buy_sell_counter_0) {
-                double last_count = counter - buy_sell_counter_0;
-                buy_sell_counter_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
-                buy_sell_counter_0 = counter;
+            if (counter != stocks_counter_0) {
+                double last_count = counter - stocks_counter_0;
+                stocks_counter_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                stocks_counter_0 = counter;
             }
 
             // Baskets
@@ -244,8 +248,33 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Load counters
         load_bid_ask_counter();
 
+        // Load positive tracker
+        load_positive_tracker();
+
         // Set load
         client.setDb_loaded(true);
+    }
+
+    private void load_positive_tracker() {
+
+        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
+        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+
+        for (Map<String, Object> row : rs) {
+            try {
+
+                Object value = row.get("value");
+                if (value == null) {
+                    continue;
+                }
+
+                BigDecimal bigDecimalValue = (BigDecimal) value;
+
+                Calculator.PositiveTracker.update(bigDecimalValue.doubleValue());
+            } catch (ClassCastException throwables) {
+                throwables.printStackTrace();
+            }
+        }
     }
 
     private void load_all_races() {
@@ -358,7 +387,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         // Buy sell counter
         dev_id = 0;
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BUY_SELL_COUNTER_PROD);
-        insert_dev_prod(buy_sell_counter_timestamp, dev_id, prod_id);
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
+        insert_dev_prod(stocks_counter_timestamp, dev_id, prod_id);
     }
 }
