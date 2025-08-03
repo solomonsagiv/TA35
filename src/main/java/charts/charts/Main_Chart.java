@@ -221,10 +221,22 @@ public class Main_Chart extends MyChartCreator {
 
         MyChart interest_chart = new MyChart(series, props);
 
+        // ----------------------------------------- Stocks counter ----------------------------------------- //
+
+        // Index races wi
+        MyTimeSeries stocks_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.BUY_SELL_COUNTER_PROD);
+        stocks_counter.setColor(Themes.LIGHT_BLUE_2);
+        stocks_counter.setStokeSize(1.2f);
+
+        series = new MyTimeSeries[1];
+        series[0] = stocks_counter;
+
+        MyChart stocks_counter_chart = new MyChart(series, props);
+
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, interest_chart, df_chart, races_chart, bid_ask_counter_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, interest_chart, df_chart, races_chart, bid_ask_counter_chart, stocks_counter_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Main chart");

@@ -68,11 +68,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField roll_pesimi_count_month_field;
 
     public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field,
-            week_races_wm_field, month_race_wm_field;
+            week_races_wm_field, month_race_wm_field, stocks_counter_present_field;
 
     // Constructor
     public WindowTA35() {
-        super(TA35.getInstance(),"TA35");
+        super(TA35.getInstance(), "TA35");
         updater = new Updater(this);
         updater.getHandler().start();
         load_on_startup();
@@ -286,6 +286,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         month_race_wm_field = new MyGuiComps.MyTextField();
         month_race_wm_field.setBounds(index_races_iw_field.getX(), index_races_iw_field.getY() + index_races_iw_field.getHeight() + 3, 50, 25);
         races_panel.add(month_race_wm_field);
+
+        stocks_counter_present_field = new MyGuiComps.MyTextField();
+        stocks_counter_present_field.setBounds(month_race_wm_field.getX() + month_race_wm_field.getWidth() + 1, month_race_wm_field.getY(), 50, 25);
+        races_panel.add(stocks_counter_present_field);
 
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));

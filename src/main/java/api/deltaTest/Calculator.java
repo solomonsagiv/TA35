@@ -65,4 +65,54 @@ public class Calculator {
 	    }
     }
 
+    public static class PositiveTracker {
+
+        private static int countPositive = 0;
+        private static int totalCount = 0;
+        private static double sumPositive = 0.0;
+        private static final int intervalSeconds = 15;
+
+        // קריאה בכל 15 שניות עם הערך שאתה רוצה לעקוב אחריו
+        public static void update(double value) {
+            totalCount++;
+            if (value > 0) {
+                countPositive++;
+                sumPositive += value;
+            }
+        }
+
+        // משך הזמן (בשניות) שבו הערך היה חיובי
+        public static int getPositiveDurationInSeconds() {
+            return countPositive * intervalSeconds;
+        }
+
+        // ממוצע של הערכים החיוביים
+        public static double getPositiveAverage() {
+            return countPositive > 0 ? sumPositive / countPositive : 0.0;
+        }
+
+        // אחוז הזמן שהערך היה חיובי מתוך כלל הדגימות
+        public static double getPositivePercentage() {
+            return totalCount > 0 ? (countPositive * 100.0) / totalCount : 0.0;
+        }
+
+        // איפוס לערכים התחלתיים – למשל בתחילת יום חדש
+        public static void reset() {
+            countPositive = 0;
+            totalCount = 0;
+            sumPositive = 0.0;
+        }
+
+        // סיכום כתוב
+        public static String summary() {
+            int seconds = getPositiveDurationInSeconds();
+            return String.format(
+                    "Positive duration: %d sec (%d:%02d)\nAverage while positive: %.2f\nPositive %% of day: %.1f%%",
+                    seconds, seconds / 60, seconds % 60, getPositiveAverage(), getPositivePercentage()
+            );
+        }
+    }
+
+
+
 }

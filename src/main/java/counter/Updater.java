@@ -1,6 +1,7 @@
 package counter;
 
 import api.TA35;
+import api.deltaTest.Calculator;
 import charts.myChart.MyTimeSeries;
 import dataBase.Factories;
 import exp.Exp;
@@ -120,6 +121,9 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.index_races_iw_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points(), false);
                 colorForgeRound(window.week_races_iw_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points(), false);
                 colorForgeRound(window.month_race_wm_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points(), false);
+
+                // Stocks count present
+                setColorPresent(window.stocks_counter_present_field, Calculator.PositiveTracker.getPositivePercentage());
             }
         } catch (Exception e) {
             e.printStackTrace();

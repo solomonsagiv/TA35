@@ -67,6 +67,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
         if (counter == BUY_SELL_FRAME) {
             Calculator.calc_stocks_buy_sell_counters();
             counter = 0;
+            Calculator.PositiveTracker.update(client.getBuy_sell_counter());
         }
         counter += SLEEP_BETWEEN_FRAMES;
     }
