@@ -1,5 +1,6 @@
 package api;
 
+import api.deltaTest.CalcsService;
 import charts.myChart.TimeSeriesFactory;
 import counter.BackGroundRunner;
 import dataBase.DataBaseHandler_TA35;
@@ -38,6 +39,11 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     @Override
     protected void init_data_base_service() {
         setDataBaseService(new DataBaseService(this, new DataBaseHandler_TA35(this)));
+    }
+
+    @Override
+    protected void init_calcs_service() {
+        setCalcsService(new CalcsService(this));
     }
 
     @Override

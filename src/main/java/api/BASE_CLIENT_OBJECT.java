@@ -1,5 +1,6 @@
 package api;
 
+import api.deltaTest.CalcsService;
 import dataBase.DataBaseService;
 import dde.DDECells;
 import exp.Exps;
@@ -30,6 +31,7 @@ public abstract class BASE_CLIENT_OBJECT {
     public DataBaseService dataBaseService;
     protected TimeSeriesHandler timeSeriesHandler;
     public RacesService racesService;
+    public CalcsService calcsService;
     protected DDECells ddeCells;
 
     private double roll_interest = 0;
@@ -47,6 +49,7 @@ public abstract class BASE_CLIENT_OBJECT {
         init_exps();
         init_data_base_service();
         init_dde_cells();
+        init_calcs_service();
         roll_interest_list = new L.FixedSizeDoubleList(10);
         spot_interest_list = new L.FixedSizeDoubleList(10);
     }
@@ -54,6 +57,7 @@ public abstract class BASE_CLIENT_OBJECT {
     protected abstract void init_race_service();
     protected abstract void init_name();
     protected abstract void init_data_base_service();
+    protected abstract void init_calcs_service();
     protected abstract void init_exps();
     public abstract Race_Logic get_main_race();
     protected abstract void init_timeseries_handler();
@@ -318,5 +322,13 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setBuy_sell_counter_weighted(double buy_sell_counter_weighted) {
         this.buy_sell_counter_weighted = buy_sell_counter_weighted;
+    }
+
+    public CalcsService getCalcsService() {
+        return calcsService;
+    }
+
+    public void setCalcsService(CalcsService calcsService) {
+        this.calcsService = calcsService;
     }
 }

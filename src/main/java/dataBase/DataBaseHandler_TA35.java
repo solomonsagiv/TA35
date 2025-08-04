@@ -78,20 +78,12 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             updateListsRetro();
             update_data();
 
-            // Calc stocks counter
-            calc_buy_sell_stocks_counters();
-
             sleep_count = 0;
         }
 
         // On changed da
         // ta
         on_change_data();
-    }
-
-    private void calc_buy_sell_stocks_counters() {
-        Calculator.PositiveTracker.update(client.getStocks_counter());
-        Calculator.calc_stocks_counters();
     }
 
     private void update_data() {
