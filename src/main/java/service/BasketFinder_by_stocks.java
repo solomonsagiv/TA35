@@ -1,10 +1,10 @@
 package service;
 
 import api.TA35;
-import api.deltaTest.Calculator;
 import locals.L;
 import miniStocks.MiniStock;
 import stocksHandler.StocksHandler;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -58,18 +58,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
         // Update data
         update_data();
 
-        // Calc buy sell stocks counters
-//        calc_buy_sell_stocks_counters();
 
-    }
-
-    private void calc_buy_sell_stocks_counters() {
-        if (counter == BUY_SELL_FRAME) {
-            Calculator.calc_stocks_counters();
-            counter = 0;
-            Calculator.PositiveTracker.update(client.getStocks_counter());
-        }
-        counter += SLEEP_BETWEEN_FRAMES;
     }
 
     private void update_data() {

@@ -34,20 +34,19 @@ public class Calculator {
     public static void calc_stocks_counters() {
         StocksHandler stocksHandler = TA35.getInstance().getStocksHandler();
 
-        double buy_sell_counter = 0;
+        int buy_sell_counter = 0;
 
         for (MiniStock stock: stocksHandler.getStocks()) {
-            double weight = stock.getWeight();
             double change = stock.getBuy_sell_counter() - stock.getBuy_sell_counter_0();
 
             if (change > 0) {
                 buy_sell_counter++;
-            } else {
+            } else if (change < 0) {
                 buy_sell_counter--;
             }
 
             // Append buy sell _0
-            stock.setBuy_sell_counter_0(stock.getBuy_sell_counter());
+            stock.setBuy_sell_counter_0(buy_sell_counter);
         }
 
         TA35 client  = TA35.getInstance();
