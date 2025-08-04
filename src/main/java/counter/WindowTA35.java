@@ -289,6 +289,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         stocks_counter_present_field = new MyGuiComps.MyTextField();
         stocks_counter_present_field.setBounds(month_race_wm_field.getX() + month_race_wm_field.getWidth() + 1, month_race_wm_field.getY(), 50, 25);
+        stocks_counter_present_field.setForeground(Color.WHITE);
         races_panel.add(stocks_counter_present_field);
 
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
