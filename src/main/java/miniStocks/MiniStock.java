@@ -27,7 +27,9 @@ public class MiniStock implements IJsonData {
     private int buy_sell_counter = 0,
             buy_sell_quantity_counter = 0,
             buy_sell_counter_0 = 0,
-            buy_sell_uuantity_counter_0 = 0;
+            buy_sell_uuantity_counter_0 = 0,
+            bid_ask_counter = 0,
+            bid_ask_counter_0 = 0;
 
     MiniStockDDECells ddeCells;
 
@@ -63,6 +65,9 @@ public class MiniStock implements IJsonData {
     }
 
     public void setBid(double bid) {
+        if (bid > this.bid) {
+            bid_ask_counter++;
+        }
         this.bid = bid;
     }
 
@@ -71,6 +76,9 @@ public class MiniStock implements IJsonData {
     }
 
     public void setAsk(double ask) {
+        if (ask < this.ask) {
+            bid_ask_counter--;
+        }
         this.ask = ask;
     }
 
@@ -164,6 +172,22 @@ public class MiniStock implements IJsonData {
 
     public void setBuy_sell_uuantity_counter_0(int buy_sell_uuantity_counter_0) {
         this.buy_sell_uuantity_counter_0 = buy_sell_uuantity_counter_0;
+    }
+
+    public int getBid_ask_counter() {
+        return bid_ask_counter;
+    }
+
+    public void setBid_ask_counter(int bid_ask_counter) {
+        this.bid_ask_counter = bid_ask_counter;
+    }
+
+    public int getBid_ask_counter_0() {
+        return bid_ask_counter_0;
+    }
+
+    public void setBid_ask_counter_0(int bid_ask_counter_0) {
+        this.bid_ask_counter_0 = bid_ask_counter_0;
     }
 
     //    public double getBid_size() {

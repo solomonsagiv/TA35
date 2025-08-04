@@ -1,6 +1,7 @@
 package api.deltaTest;
 
 import api.TA35;
+import locals.L;
 import miniStocks.MiniStock;
 import options.Option;
 import stocksHandler.StocksHandler;
@@ -34,23 +35,25 @@ public class Calculator {
     public static void calc_stocks_counters() {
         StocksHandler stocksHandler = TA35.getInstance().getStocksHandler();
 
-        int buy_sell_counter = 0;
+        int bid_ask_counter = 0;
 
         for (MiniStock stock: stocksHandler.getStocks()) {
-            double change = stock.getBuy_sell_counter() - stock.getBuy_sell_counter_0();
+            double change = stock.getBid_ask_counter() - stock.getBuy_sell_counter_0();
 
             if (change > 0) {
-                buy_sell_counter++;
+                bid_ask_counter++;
             } else if (change < 0) {
-                buy_sell_counter--;
+                bid_ask_counter--;
             }
 
             // Append buy sell _0
-            stock.setBuy_sell_counter_0(buy_sell_counter);
+            stock.setBid_ask_counter_0(bid_ask_counter);
         }
 
-        TA35 client  = TA35.getInstance();
-        client.setStocks_counter(buy_sell_counter);
+        if (L.abs(bid_ask_counter) < 35) {
+            TA35 client  = TA35.getInstance();
+            client.setStocks_counter(bid_ask_counter);
+        }
     }
 
     public static void calc_stock_buy_sell_counter(MiniStock miniStock, int quantity) {
@@ -111,7 +114,4 @@ public class Calculator {
             );
         }
     }
-
-
-
 }
