@@ -123,7 +123,7 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.month_race_wm_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points(), false);
 
                 // Stocks count present
-                setColorPresent(window.stocks_counter_present_field, Calculator.PositiveTracker.getPositivePercentage());
+//                setColorPresent(window.stocks_counter_present_field, Calculator.PositiveTracker.getPositivePercentage());
             }
         } catch (Exception e) {
             e.printStackTrace();

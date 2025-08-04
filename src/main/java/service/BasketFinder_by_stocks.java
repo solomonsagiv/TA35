@@ -59,7 +59,7 @@ public class BasketFinder_by_stocks extends MyBaseService {
         update_data();
 
         // Calc buy sell stocks counters
-        calc_buy_sell_stocks_counters();
+//        calc_buy_sell_stocks_counters();
 
     }
 

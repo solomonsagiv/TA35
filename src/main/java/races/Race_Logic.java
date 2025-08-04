@@ -171,15 +171,19 @@ public class Race_Logic {
         return R_ONE_UP || R_ONE_DOWN || R_TWO_UP || R_TWO_DOWN;
     }
     private void r_one_win_up() {
+        System.out.println("win");
         r_one_up_points += r_one_increase_points;
     }
     private void r_one_win_down() {
+        System.out.println("win");
         r_one_down_points += r_one_increase_points;
     }
     private void r_two_win_up() {
+        System.out.println("win");
         r_two_up_points += r_two_increase_points;
     }
     private void r_two_win_down() {
+        System.out.println("win");
         r_two_down_points += r_two_increase_points;
     }
     public void setR_one_up_points(double r_one_up_points) {
