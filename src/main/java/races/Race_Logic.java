@@ -52,11 +52,6 @@ public class Race_Logic {
     }
 
     private void in_race_r1() {
-
-        System.out.println("Logic -------");
-        System.out.println(r_one_price);
-        System.out.println(r_two_price);
-
         // R_ONE
         if (R_ONE_UP) {
             if (r_one_margin < L.opo(RACE_MARGIN)) {
@@ -129,31 +124,20 @@ public class Race_Logic {
         }
     }
 
-
-
-    // Update data
     public void update_data() {
-        // Update pre data
         r_one_price_0 = r_one_price;
         r_two_price_0 = r_two_price;
-
-        // Update runner price
         update_runners_price();
-
-        // Update margin
         r_one_margin = r_one_price - r_one_price_0;
         r_two_margin = r_two_price - r_two_price_0;
-
     }
 
-    // Reset data
     private void reset_races() {
         R_ONE_UP = false;
         R_ONE_DOWN = false;
         R_TWO_UP = false;
         R_TWO_DOWN = false;
     }
-
     // Update runners price
     private void update_runners_price() {
         switch (race_runners) {
