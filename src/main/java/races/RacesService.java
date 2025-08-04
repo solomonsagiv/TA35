@@ -18,7 +18,6 @@ public class RacesService extends MyBaseService {
     public void go() {
         for (Race_Logic logic : map.values()) {
             logic.race_finder();
-            logic.update_data();
         }
     }
 
