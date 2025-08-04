@@ -54,6 +54,8 @@ public class Race_Logic {
     private void in_race_r1() {
 
         System.out.println("Logic -------");
+        System.out.println(r_one_price);
+        System.out.println(r_two_price);
 
         // R_ONE
         if (R_ONE_UP) {
