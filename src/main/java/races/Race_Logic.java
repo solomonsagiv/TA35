@@ -52,6 +52,9 @@ public class Race_Logic {
     }
 
     private void in_race_r1() {
+
+        System.out.println("Logic -------");
+
         // R_ONE
         if (R_ONE_UP) {
             if (r_one_margin < L.opo(RACE_MARGIN)) {
