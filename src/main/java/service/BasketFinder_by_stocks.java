@@ -58,7 +58,6 @@ public class BasketFinder_by_stocks extends MyBaseService {
         // Update data
         update_data();
 
-
     }
 
     private void update_data() {
