@@ -1,6 +1,7 @@
 package counter;
 
 import miniStocks.MiniStock;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ public class MiniStockTable {
         // Sort by weight descending
         stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
 
-        String[] columns = {"Name", "Open %", "Last %", "Bid/Ask Counter", "Weight"};
+        String[] columns = {"שם", "פתיחה %", "אחרון %", "מונה ביקוש/היצע", "משקל"};
         Object[][] data = new Object[stocks.size()][5];
         DecimalFormat df = new DecimalFormat("0.00");
 
@@ -43,15 +44,17 @@ public class MiniStockTable {
         };
 
         JTable table = new JTable(model);
-        table.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        table.setFont(new Font("Arial", Font.PLAIN, 13));
         table.setRowHeight(22);
         table.setIntercellSpacing(new Dimension(5, 2));
         table.setGridColor(Color.LIGHT_GRAY);
         table.setSelectionBackground(new Color(220, 235, 255));
+        table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("SansSerif", Font.BOLD, 15));
+        header.setFont(new Font("Arial", Font.BOLD, 15));
         header.setReorderingAllowed(false);
+        header.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -64,8 +67,9 @@ public class MiniStockTable {
         table.getColumnModel().getColumn(2).setCellRenderer(new LastColorRenderer(stocks));
         table.getColumnModel().getColumn(3).setCellRenderer(new CounterColorRenderer());
 
-        JFrame frame = new JFrame("MiniStocks Table");
+        JFrame frame = new JFrame("טבלת מניות");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         frame.add(new JScrollPane(table));
         frame.setSize(750, 480);
         frame.setLocationRelativeTo(null);
@@ -88,7 +92,7 @@ public class MiniStockTable {
                                                        boolean isSelected, boolean hasFocus,
                                                        int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            c.setFont(new Font("SansSerif", Font.BOLD, 13));
+            c.setFont(new Font("Arial", Font.BOLD, 13));
             return c;
         }
     }
