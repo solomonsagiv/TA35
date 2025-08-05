@@ -13,6 +13,7 @@ public class MiniStockTable {
 
     private static String transliterateName(String hebrewName) {
         hebrewName = hebrewName.trim();
+        System.out.println(hebrewName);
         switch (hebrewName) {
             case "שופרסל": return "Shufersal";
             case "טבע": return "Teva";
