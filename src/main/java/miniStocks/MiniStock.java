@@ -21,6 +21,8 @@ public class MiniStock implements IJsonData {
     private String name = "";
     private int row = 0;
     private double pre_last = 0;
+    private double open = 0;
+    private double base  = 0;
 //    private double bid_size = 0;
 //    private double ask_size =
 
@@ -188,6 +190,22 @@ public class MiniStock implements IJsonData {
 
     public void setBid_ask_counter_0(int bid_ask_counter_0) {
         this.bid_ask_counter_0 = bid_ask_counter_0;
+    }
+
+    public double getOpen() {
+        return open;
+    }
+
+    public void setOpen(double open) {
+        this.open = open;
+    }
+
+    public double getBase() {
+        return base;
+    }
+
+    public void setBase(double base) {
+        this.base = base;
     }
 
     //    public double getBid_size() {

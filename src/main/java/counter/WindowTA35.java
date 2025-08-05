@@ -9,7 +9,6 @@ import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import locals.Themes;
-import stocks.SummeryWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -467,7 +466,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                         realtimeChart.createChart();
                         break;
                     case "Stocks":
-                        new SummeryWindow("Stocks");
+                        MiniStockTable.showTable(TA35.getInstance().getStocksHandler().getStocks());
                         break;
                     case "Costs real time":
                         Realtime_Interest_Chart realtime_interest_chart = new Realtime_Interest_Chart(TA35.getInstance());
