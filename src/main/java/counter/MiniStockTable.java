@@ -11,17 +11,58 @@ import java.util.List;
 
 public class MiniStockTable {
 
+    private static String transliterateName(String hebrewName) {
+        switch (hebrewName) {
+            case "שופרסל": return "Shufersal";
+            case "טבע": return "Teva";
+            case "בזק": return "Bezeq";
+            case "לאומי": return "Leumi";
+            case "פועלים": return "Poalim";
+            case "כלל עסקי ביטוח": return "Clal Insurance";
+            case "מבנה": return "Mivne";
+            case "נייס": return "Nice";
+            case "איי.סי.אל": return "ICL";
+            case "מליסרון": return "Melisron";
+            case "ניו-מד אנרג יהש": return "NewMed Energy";
+            case "מנורה מב החז": return "Menora Mivtachim";
+            case "חברה לישראל": return "Israel Corp";
+            case "הראל השקעות": return "Harel Investments";
+            case "בינלאומי": return "Bank International";
+            case "דיסקונט": return "Discount";
+            case "מזרחי טפחות": return "Mizrahi Tefahot";
+            case "אנלייט אנרגיה": return "Enlight Energy";
+            case "שטראוס": return "Strauss";
+            case "הפניקס": return "Phoenix";
+            case "אלביט מערכות": return "Elbit Systems";
+            case "טאואר": return "Tower";
+            case "דלק קבוצה": return "Delek Group";
+            case "נובה": return "Nova";
+            case "דמרי": return "Dimri";
+            case "קמטק": return "Camtek";
+            case "ביג": return "BIG";
+            case "אמות": return "Amot";
+            case "עזריאלי קבוצה": return "Azrieli Group";
+            case "שפיר הנדסה": return "Shapir Engineering";
+            case "אורמת טכנו": return "Ormat Technologies";
+            case "או פי סי אנרגיה": return "OPC Energy";
+            case "נאוויטס פטר יהש": return "Navitas Petroleum";
+            case "פתאל החזקות": return "Fattal Holdings";
+            case "אנרג'יאן": return "Energean";
+            default: return hebrewName;
+        }
+    }
+
     public static void showTable(List<MiniStock> stocks) {
         // Sort by weight descending
         stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
 
-        String[] columns = {"שם", "פתיחה %", "אחרון %", "מונה ביקוש/היצע", "משקל"};
+        String[] columns = {"Name", "Open %", "Last %", "Bid/Ask Counter", "Weight"};
         Object[][] data = new Object[stocks.size()][5];
         DecimalFormat df = new DecimalFormat("0.00");
 
         for (int i = 0; i < stocks.size(); i++) {
             MiniStock s = stocks.get(i);
-            data[i][0] = s.getName();
+            data[i][0] = transliterateName(s.getName());
 
             if (s.getBase() != 0) {
                 double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
@@ -49,12 +90,10 @@ public class MiniStockTable {
         table.setIntercellSpacing(new Dimension(5, 2));
         table.setGridColor(Color.LIGHT_GRAY);
         table.setSelectionBackground(new Color(220, 235, 255));
-        table.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 15));
         header.setReorderingAllowed(false);
-        header.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -67,9 +106,8 @@ public class MiniStockTable {
         table.getColumnModel().getColumn(2).setCellRenderer(new LastColorRenderer(stocks));
         table.getColumnModel().getColumn(3).setCellRenderer(new CounterColorRenderer());
 
-        JFrame frame = new JFrame("טבלת מניות");
+        JFrame frame = new JFrame("Stock Table");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.applyComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         frame.add(new JScrollPane(table));
         frame.setSize(750, 480);
         frame.setLocationRelativeTo(null);
