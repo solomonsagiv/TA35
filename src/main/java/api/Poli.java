@@ -46,6 +46,11 @@ public class Poli extends BASE_CLIENT_OBJECT {
     }
 
     @Override
+    protected void init_calcs_service() {
+
+    }
+
+    @Override
     protected void init_exps() {
 
     }

@@ -1,27 +1,18 @@
 package counter;
 
-import api.BASE_CLIENT_OBJECT;
-import gui.MyGuiComps;
 import miniStocks.MiniStock;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.table.*;
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.List;
 
-public class MiniStockTable extends MyGuiComps.MyFrame {
-
-    public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
-        super(client, title);
-    }
+public class MiniStockTable {
 
     private static String transliterateName(String hebrewName) {
-        hebrewName = hebrewName.trim();
-        System.out.println(hebrewName);
+        hebrewName = hebrewName.trim().replaceAll("[\u200F\u200E\u202A-\u202E]", "");
         switch (hebrewName) {
             case "שופרסל": return "Shufersal";
             case "טבע": return "Teva";
@@ -67,28 +58,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
 
         String[] columns = {"Name", "Open %", "Last %", "Bid/Ask Counter", "Weight"};
-        Object[][] data = new Object[stocks.size()][5];
         DecimalFormat df = new DecimalFormat("0.00");
 
-        for (int i = 0; i < stocks.size(); i++) {
-            MiniStock s = stocks.get(i);
-            data[i][0] = transliterateName(s.getName());
-
-            if (s.getBase() != 0) {
-                double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
-                double lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100;
-                data[i][1] = formatWithArrow(openPct, df);
-                data[i][2] = formatWithArrow(lastPct, df);
-            } else {
-                data[i][1] = "-";
-                data[i][2] = "-";
-            }
-
-            data[i][3] = s.getBid_ask_counter();
-            data[i][4] = df.format(s.getWeight());
-        }
-
-        DefaultTableModel model = new DefaultTableModel(data, columns) {
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -117,26 +89,42 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         table.getColumnModel().getColumn(3).setCellRenderer(new CounterColorRenderer());
 
         JFrame frame = new JFrame("Stock Table");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.add(new JScrollPane(table));
         frame.setSize(750, 480);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        // Refresh the table every 30 seconds
+        Timer timer = new Timer(30000, e -> {
+            SwingUtilities.invokeLater(() -> {
+                model.setRowCount(0);
+                stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
+                for (MiniStock s : stocks) {
+                    Object[] row = new Object[5];
+                    row[0] = transliterateName(s.getName());
+                    if (s.getBase() != 0) {
+                        double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
+                        double lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100;
+                        row[1] = formatWithArrow(openPct, df);
+                        row[2] = formatWithArrow(lastPct, df);
+                    } else {
+                        row[1] = "-";
+                        row[2] = "-";
+                    }
+                    row[3] = s.getBid_ask_counter();
+                    row[4] = df.format(s.getWeight());
+                    model.addRow(row);
+                }
+            });
+        });
+        timer.setRepeats(true);
+        timer.start();
     }
 
     private static String formatWithArrow(double value, DecimalFormat df) {
         String arrow = value > 0 ? " ↑" : value < 0 ? " ↓" : "";
         return df.format(value) + "%" + arrow;
-    }
-
-    @Override
-    public void initListeners() {
-
-    }
-
-    @Override
-    public void initialize() {
-
     }
 
     // ---- Renderers ----
