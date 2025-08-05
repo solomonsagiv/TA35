@@ -107,6 +107,10 @@ public class DataReaderService extends MyBaseService {
                     stock.setBid(L.dbl(conversation.request(ddeCells.getBidCell())));
                     stock.setAsk(L.dbl(conversation.request(ddeCells.getAskCell())));
                     stock.setVolume((int) L.dbl(conversation.request(ddeCells.getVolumeCell())));
+                    stock.setOpen(L.dbl(conversation.request(ddeCells.getOpenCell())));
+                    stock.setBase(L.dbl(conversation.request(ddeCells.getBaseCell())));
+                    stock.setName(conversation.request(ddeCells.getNameCell()));
+                    stock.setWeight(L.dbl(conversation.request(ddeCells.getWeightCell())));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

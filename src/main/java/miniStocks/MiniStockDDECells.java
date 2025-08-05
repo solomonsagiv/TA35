@@ -10,6 +10,8 @@ public class MiniStockDDECells {
     private String bidCell = "R%sC14";
     private String askCell = "R%sC15";
     private String weightCell = "R%sC16";
+    private String baseCell = "R%sC19";
+    private String openCell = "R%sC18";
 //    private String bidSizeCell = "R%C";
 //    private String askSizeCell = "R%C";
     private int row;
@@ -72,7 +74,15 @@ public class MiniStockDDECells {
         this.row = row;
     }
 
-//    public String getBidSizeCell() {
+    public String getBaseCell() {
+        return baseCell;
+    }
+
+    public String getOpenCell() {
+        return openCell;
+    }
+
+    //    public String getBidSizeCell() {
 //        return bidSizeCell;
 //    }
 //
