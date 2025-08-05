@@ -100,7 +100,8 @@ public class MiniStockTable {
             SwingUtilities.invokeLater(() -> {
                 model.setRowCount(0);
                 stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
-                for (MiniStock s : stocks) {
+                List<MiniStock> safeCopy = new java.util.ArrayList<>(stocks);
+                for (MiniStock s : safeCopy) {
                     Object[] row = new Object[5];
                     row[0] = transliterateName(s.getName());
                     if (s.getBase() != 0) {
