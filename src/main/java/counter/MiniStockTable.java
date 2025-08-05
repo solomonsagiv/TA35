@@ -1,15 +1,23 @@
 package counter;
 
+import api.BASE_CLIENT_OBJECT;
+import gui.MyGuiComps;
 import miniStocks.MiniStock;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.List;
 
-public class MiniStockTable {
+public class MiniStockTable extends MyGuiComps.MyFrame {
+
+    public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
+        super(client, title);
+    }
 
     private static String transliterateName(String hebrewName) {
         hebrewName = hebrewName.trim();
@@ -119,6 +127,16 @@ public class MiniStockTable {
     private static String formatWithArrow(double value, DecimalFormat df) {
         String arrow = value > 0 ? " ↑" : value < 0 ? " ↓" : "";
         return df.format(value) + "%" + arrow;
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initialize() {
+
     }
 
     // ---- Renderers ----

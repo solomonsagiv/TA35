@@ -66,6 +66,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField roll_optimi_count_month_field;
     public MyGuiComps.MyTextField roll_pesimi_count_month_field;
 
+
     public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field,
             week_races_wm_field, month_race_wm_field, stocks_counter_present_field;
 
