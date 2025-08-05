@@ -12,8 +12,6 @@ public class MiniStockDDECells {
     private String weightCell = "R%sC16";
     private String baseCell = "R%sC19";
     private String openCell = "R%sC18";
-//    private String bidSizeCell = "R%C";
-//    private String askSizeCell = "R%C";
     private int row;
 
     // Constructor
@@ -25,8 +23,8 @@ public class MiniStockDDECells {
         this.bidCell = String.format(bidCell, row);
         this.askCell = String.format(askCell, row);
         this.weightCell = String.format(weightCell, row);
-//        this.bidSizeCell = String.format(bidSizeCell, row);
-//        this.askSizeCell = String.format(askSizeCell, row);
+        this.openCell = String.format(openCell, row);
+        this.baseCell = String.format(baseCell, row);
     }
 
     // Getters and Setters
@@ -81,20 +79,4 @@ public class MiniStockDDECells {
     public String getOpenCell() {
         return openCell;
     }
-
-    //    public String getBidSizeCell() {
-//        return bidSizeCell;
-//    }
-//
-//    public void setBidSizeCell(String bidSizeCell) {
-//        this.bidSizeCell = bidSizeCell;
-//    }
-//
-///    public String getAskSizeCell() {
-//        return askSizeCell;
-//    }
-//
-//    public void setAskSizeCell(String askSizeCell) {
-//        this.askSizeCell = askSizeCell;
-//    }
 }
