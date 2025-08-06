@@ -16,6 +16,11 @@ import java.util.List;
 
 public class MiniStockTable extends MyGuiComps.MyFrame {
 
+
+    static Thread runner;
+    static boolean run = true;
+    static DefaultTableModel model;
+
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
     }
@@ -23,43 +28,88 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private static String transliterateName(String hebrewName) {
         hebrewName = hebrewName.trim().replaceAll("[\u200F\u200E\u202A-\u202E]", "");
         switch (hebrewName) {
-            case "שופרסל": return "Shufersal";
-            case "טבע": return "Teva";
-            case "בזק": return "Bezeq";
-            case "לאומי": return "Leumi";
-            case "פועלים": return "Poalim";
-            case "כלל עסקי ביטוח": return "Clal Insurance";
-            case "מבנה": return "Mivne";
-            case "נייס": return "Nice";
-            case "איי.סי.אל": return "ICL";
-            case "מליסרון": return "Melisron";
-            case "ניו-מד אנרג יהש": return "NewMed Energy";
-            case "מנורה מב החז": return "Menora Mivtachim";
-            case "חברה לישראל": return "Israel Corp";
-            case "הראל השקעות": return "Harel Investments";
-            case "בינלאומי": return "Bank International";
-            case "דיסקונט": return "Discount";
-            case "מזרחי טפחות": return "Mizrahi Tefahot";
-            case "אנלייט אנרגיה": return "Enlight Energy";
-            case "שטראוס": return "Strauss";
-            case "הפניקס": return "Phoenix";
-            case "אלביט מערכות": return "Elbit Systems";
-            case "טאואר": return "Tower";
-            case "דלק קבוצה": return "Delek Group";
-            case "נובה": return "Nova";
-            case "דמרי": return "Dimri";
-            case "קמטק": return "Camtek";
-            case "ביג": return "BIG";
-            case "אמות": return "Amot";
-            case "עזריאלי קבוצה": return "Azrieli Group";
-            case "שפיר הנדסה": return "Shapir Engineering";
-            case "אורמת טכנו": return "Ormat Technologies";
-            case "או פי סי אנרגיה": return "OPC Energy";
-            case "נאוויטס פטר יהש": return "Navitas Petroleum";
-            case "פתאל החזקות": return "Fattal Holdings";
-            case "אנרג'יאן": return "Energean";
-            default: return hebrewName;
+            case "שופרסל":
+                return "Shufersal";
+            case "טבע":
+                return "Teva";
+            case "בזק":
+                return "Bezeq";
+            case "לאומי":
+                return "Leumi";
+            case "פועלים":
+                return "Poalim";
+            case "כלל עסקי ביטוח":
+                return "Clal Insurance";
+            case "מבנה":
+                return "Mivne";
+            case "נייס":
+                return "Nice";
+            case "איי.סי.אל":
+                return "ICL";
+            case "מליסרון":
+                return "Melisron";
+            case "ניו-מד אנרג יהש":
+                return "NewMed Energy";
+            case "מנורה מב החז":
+                return "Menora Mivtachim";
+            case "חברה לישראל":
+                return "Israel Corp";
+            case "הראל השקעות":
+                return "Harel Investments";
+            case "בינלאומי":
+                return "Bank International";
+            case "דיסקונט":
+                return "Discount";
+            case "מזרחי טפחות":
+                return "Mizrahi Tefahot";
+            case "אנלייט אנרגיה":
+                return "Enlight Energy";
+            case "שטראוס":
+                return "Strauss";
+            case "הפניקס":
+                return "Phoenix";
+            case "אלביט מערכות":
+                return "Elbit Systems";
+            case "טאואר":
+                return "Tower";
+            case "דלק קבוצה":
+                return "Delek Group";
+            case "נובה":
+                return "Nova";
+            case "דמרי":
+                return "Dimri";
+            case "קמטק":
+                return "Camtek";
+            case "ביג":
+                return "BIG";
+            case "אמות":
+                return "Amot";
+            case "עזריאלי קבוצה":
+                return "Azrieli Group";
+            case "שפיר הנדסה":
+                return "Shapir Engineering";
+            case "אורמת טכנו":
+                return "Ormat Technologies";
+            case "או פי סי אנרגיה":
+                return "OPC Energy";
+            case "נאוויטס פטר יהש":
+                return "Navitas Petroleum";
+            case "פתאל החזקות":
+                return "Fattal Holdings";
+            case "אנרג'יאן":
+                return "Energean";
+            default:
+                return hebrewName;
         }
+    }
+
+
+    @Override
+    public void onClose() {
+        run = false;
+        runner.interrupt();
+        super.onClose();
+
     }
 
     public static void showTable(List<MiniStock> stocks) {
@@ -67,9 +117,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
 
         String[] columns = {"Name", "Open %", "Last %", "Bid/Ask Counter", "Weight"};
-        DecimalFormat df = new DecimalFormat("0.00");
 
-        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+
+        model = new DefaultTableModel(columns, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -104,33 +154,51 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-        // Refresh the table every 30 seconds
-        Timer timer = new Timer(30000, e -> {
-            SwingUtilities.invokeLater(() -> {
-                model.setRowCount(0);
+        // Start runner
+        start_runner(stocks);
 
-                stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
-                ArrayList<MiniStock> safeCopy =  new ArrayList<>(stocks);
-                for (MiniStock s : safeCopy) {
-                    Object[] row = new Object[5];
-                    row[0] = transliterateName(s.getName());
-                    if (s.getBase() != 0) {
-                        double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
-                        double lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100;
-                        row[1] = formatWithArrow(openPct, df);
-                        row[2] = formatWithArrow(lastPct, df);
-                    } else {
-                        row[1] = "-";
-                        row[2] = "-";
+    }
+
+    private static void start_runner(List<MiniStock> stocks) {
+
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        runner = new Thread(() -> {
+
+            while (run) {
+                try {
+                    Thread.sleep(3000);
+
+                    model.setRowCount(0);
+
+                    stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
+                    ArrayList<MiniStock> safeCopy = new ArrayList<>(stocks);
+                    for (MiniStock s : safeCopy) {
+                        Object[] row = new Object[5];
+                        row[0] = transliterateName(s.getName());
+                        if (s.getBase() != 0) {
+                            double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
+                            double lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100;
+                            row[1] = formatWithArrow(openPct, df);
+                            row[2] = formatWithArrow(lastPct, df);
+                        } else {
+                            row[1] = "-";
+                            row[2] = "-";
+                        }
+                        row[3] = s.getBid_ask_counter();
+                        row[4] = df.format(s.getWeight());
+                        model.addRow(row);
                     }
-                    row[3] = s.getBid_ask_counter();
-                    row[4] = df.format(s.getWeight());
-                    model.addRow(row);
+
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            });
+            }
         });
-        timer.setRepeats(true);
-        timer.start();
+
+        runner.start();
+
     }
 
     private static String formatWithArrow(double value, DecimalFormat df) {
