@@ -1,15 +1,24 @@
 package counter;
 
+import api.BASE_CLIENT_OBJECT;
+import gui.MyGuiComps;
 import miniStocks.MiniStock;
 
 import javax.swing.*;
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class MiniStockTable {
+public class MiniStockTable extends MyGuiComps.MyFrame {
+
+    public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
+        super(client, title);
+    }
 
     private static String transliterateName(String hebrewName) {
         hebrewName = hebrewName.trim().replaceAll("[\u200F\u200E\u202A-\u202E]", "");
@@ -99,8 +108,9 @@ public class MiniStockTable {
         Timer timer = new Timer(30000, e -> {
             SwingUtilities.invokeLater(() -> {
                 model.setRowCount(0);
+
                 stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
-                List<MiniStock> safeCopy = new java.util.ArrayList<>(stocks);
+                ArrayList<MiniStock> safeCopy =  new ArrayList<>(stocks);
                 for (MiniStock s : safeCopy) {
                     Object[] row = new Object[5];
                     row[0] = transliterateName(s.getName());
@@ -126,6 +136,15 @@ public class MiniStockTable {
     private static String formatWithArrow(double value, DecimalFormat df) {
         String arrow = value > 0 ? " ↑" : value < 0 ? " ↓" : "";
         return df.format(value) + "%" + arrow;
+    }
+
+    @Override
+    public void initListeners() {
+
+    }
+
+    @Override
+    public void initialize() {
     }
 
     // ---- Renderers ----
