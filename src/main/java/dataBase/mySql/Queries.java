@@ -15,10 +15,10 @@ public class Queries {
     public static final String RAW = "RAW";
     public static final String AVG_TODAY = "AVG_TODAY";
     public static final String CDF = "CDF";
+    public static final String RAW_NO_MODULU = "RAW_NO_MODULU";
     public static final String BY_ROWS = "BY_ROWS";
     public static final String BY_TIME = "BY_TIME";
     public static final String FROM_TODAY = "FROM_TODAY";
-
 
     public static List<Map<String, Object>> get_start_exp_mega(int index_id, TA35 TA35, String exp_prop_name, String connectionType) {
         String q = "WITH week_start_date AS (\n" +
@@ -104,10 +104,11 @@ public class Queries {
                 return get_serie_raw_mega_table(serie_id, connectionType);
             case CDF:
                 return get_serie_cdf_mega_table(serie_id, connectionType);
+            case RAW_NO_MODULU:
+                return get_serie_raw_no_modulo_mega_table(serie_id, connectionType);
         }
         return null;
     }
-
 
     private static List<Map<String, Object>> get_serie_raw_mega_table(int serie_id, String connectionType) {
 
@@ -124,6 +125,22 @@ public class Queries {
         String query = String.format(q, "ts.timeseries_data", serie_id, Filters.TODAY, modulu, step_second);
         return MySql.select(query, connectionType);
     }
+
+    private static List<Map<String, Object>> get_serie_raw_no_modulo_mega_table(int serie_id, String connectionType) {
+
+        String modulu = "%";
+
+        String q = "select time, value\n" +
+                "from (\n" +
+                "         select time, value, row_number() over (order by time) as row\n" +
+                "         from %s\n" +
+                "         where timeseries_id = %s\n" +
+                "           and %s) a";
+
+        String query = String.format(q, "ts.timeseries_data", serie_id, Filters.TODAY);
+        return MySql.select(query, connectionType);
+    }
+
 
     public static List<Map<String, Object>> get_cumulative_avg_serie(int serie_id, int min, String connectionType) {
 
@@ -176,7 +193,6 @@ public class Queries {
         return 0;
     }
 
-
     public static List<Map<String, Object>> get_arik_sessions(String connection_type) {
         String query = "select * \n" +
                 "from sagiv.arik_sessions;";
@@ -198,7 +214,6 @@ public class Queries {
     }
 
     public static HashMap<String, Integer> get_bounds(BASE_CLIENT_OBJECT client, String title, String connectionType) {
-
 
         String query = String.format("SELECT * FROM sagiv.bounds WHERE stock_name = '%s' and item_name = '%s';", client.getName(), title);
         List<Map<String, Object>> rs = MySql.select(query, connectionType);
@@ -226,9 +241,6 @@ public class Queries {
         return map;
     }
 
-
-
-
     public static List<Map<String, Object>> get_index_with_bid_ask_series(int bid_id, int ask_id, String connectionType) {
         String modulu = "%";
         String q = "select time, value\n" +
@@ -246,7 +258,6 @@ public class Queries {
         String query = String.format(q, bid_id, ask_id, modulu, step_second);
         return MySql.select(query, connectionType);
     }
-
 
     public static List<Map<String, Object>> get_races_up_sum(int serie_id, String connection_type) {
         String q = "select sum(value) as value\n" +
@@ -289,7 +300,6 @@ public class Queries {
         String query = String.format(q, r_one_id, r_two_id);
         return MySql.select(query, connectionType);
     }
-
 
     public static class Filters {
         public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";

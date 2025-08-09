@@ -259,7 +259,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     private void load_positive_tracker() {
 
         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
-        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW_NO_MODULU, MySql.JIBE_PROD_CONNECTION);
 
         for (Map<String, Object> row : rs) {
             try {

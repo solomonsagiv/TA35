@@ -1,6 +1,5 @@
 package miniStocks;
 
-import api.deltaTest.Calculator;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -27,8 +26,8 @@ public class MiniStock implements IJsonData {
 //    private double ask_size =
 
     private int buy_sell_counter = 0,
-            buy_sell_quantity_counter = 0,
-            buy_sell_counter_0 = 0,
+//            buy_sell_quantity_counter = 0,
+//            buy_sell_counter_0 = 0,
             buy_sell_uuantity_counter_0 = 0,
             bid_ask_counter = 0,
             bid_ask_counter_0 = 0;
@@ -45,12 +44,10 @@ public class MiniStock implements IJsonData {
 
     public void stock_buy(int quantity) {
         buy_sell_counter++;
-        buy_sell_quantity_counter += quantity;
     }
 
     public void stock_sell(int quantity) {
         buy_sell_counter--;
-        buy_sell_quantity_counter -= quantity;
     }
 
     // Getters and Setters
@@ -103,7 +100,7 @@ public class MiniStock implements IJsonData {
         if (volume != this.volume) {
             int q = volume - this.volume;
             this.volume = volume;
-            Calculator.calc_stock_buy_sell_counter(this, q);
+//            Calculator.calc_stock_buy_sell_counter(this, q);
         }
     }
 
@@ -150,22 +147,6 @@ public class MiniStock implements IJsonData {
 
     public void setBuy_sell_counter(int buy_sell_counter) {
         this.buy_sell_counter = buy_sell_counter;
-    }
-
-    public int getBuy_sell_quantity_counter() {
-        return buy_sell_quantity_counter;
-    }
-
-    public void setBuy_sell_quantity_counter(int buy_sell_quantity_counter) {
-        this.buy_sell_quantity_counter = buy_sell_quantity_counter;
-    }
-
-    public int getBuy_sell_counter_0() {
-        return buy_sell_counter_0;
-    }
-
-    public void setBuy_sell_counter_0(int buy_sell_counter_0) {
-        this.buy_sell_counter_0 = buy_sell_counter_0;
     }
 
     public int getBuy_sell_uuantity_counter_0() {

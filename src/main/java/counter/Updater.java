@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
 import java.time.LocalTime;
 
 public class Updater extends MyThread implements Runnable {
-    
+
     // local variables
     int count = 0;
 

@@ -14,6 +14,7 @@ import java.util.Map;
 public class MySql {
 
     public static final String RAW = "RAW";
+    public static final String RAW_NO_MODULU = "RAW_NO_MODULU";
     public static final String AVG_TODAY = "AVG_TODAY";
     public static final String CDF = "CDF";
     public static final String BY_ROWS = "BY_ROWS";

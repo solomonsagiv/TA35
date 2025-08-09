@@ -9,7 +9,6 @@ import dataBase.mySql.Queries;
 import exp.Exp;
 import options.Options;
 import races.Race_Logic;
-
 import java.util.List;
 import java.util.Map;
 
@@ -625,7 +624,7 @@ public class TimeSeriesFactory {
                     public void load() {
                         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
 
-                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW_NO_MODULU, MySql.JIBE_PROD_CONNECTION);
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };

@@ -6,6 +6,9 @@ import miniStocks.MiniStock;
 import options.Option;
 import stocksHandler.StocksHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Calculator {
 
     public static double calc(Option option, int newLast, int newVolume, double newDelta) {
@@ -34,11 +37,11 @@ public class Calculator {
 
     public static void calc_stocks_counters() {
         StocksHandler stocksHandler = TA35.getInstance().getStocksHandler();
-
+        List<MiniStock> snapshot = new ArrayList<>(stocksHandler.getStocks());
         int bid_ask_counter = 0;
 
-        for (MiniStock stock: stocksHandler.getStocks()) {
-            double change = stock.getBid_ask_counter() - stock.getBuy_sell_counter_0();
+        for (MiniStock stock: snapshot) {
+            double change = stock.getBid_ask_counter() - stock.getBid_ask_counter_0();
 
             if (change > 0) {
                 bid_ask_counter++;

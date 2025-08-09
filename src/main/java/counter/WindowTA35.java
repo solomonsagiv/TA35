@@ -9,7 +9,6 @@ import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import locals.Themes;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

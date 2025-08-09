@@ -3,7 +3,6 @@ package counter;
 import api.BASE_CLIENT_OBJECT;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -20,6 +19,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     static Thread runner;
     static boolean run = true;
     static DefaultTableModel model;
+    static final DecimalFormat DF = new DecimalFormat("0.00");
+
 
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
@@ -103,13 +104,13 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         }
     }
 
-
     @Override
     public void onClose() {
         run = false;
-        runner.interrupt();
+        if (runner != null) {
+            runner.interrupt();
+        }
         super.onClose();
-
     }
 
     public static void showTable(List<MiniStock> stocks) {
@@ -143,8 +144,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         }
 
         table.getColumnModel().getColumn(0).setCellRenderer(new BoldCenterRenderer());
-        table.getColumnModel().getColumn(1).setCellRenderer(new OpenColorRenderer(stocks));
-        table.getColumnModel().getColumn(2).setCellRenderer(new LastColorRenderer(stocks));
+        table.getColumnModel().getColumn(1).setCellRenderer(new OpenColorRenderer());
+        table.getColumnModel().getColumn(2).setCellRenderer(new LastColorRenderer());
         table.getColumnModel().getColumn(3).setCellRenderer(new CounterColorRenderer());
 
         JFrame frame = new JFrame("Stock Table");
@@ -154,52 +155,55 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        // Initial fill
+        refreshModel(stocks);
+
         // Start runner
         start_runner(stocks);
 
     }
 
-    private static void start_runner(List<MiniStock> stocks) {
+    private static void refreshModel(List<MiniStock> stocks) {
+        // snapshot to avoid ConcurrentModificationException
+        List<MiniStock> snapshot = new ArrayList<>(stocks);
+        snapshot.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
 
-        DecimalFormat df = new DecimalFormat("0.00");
-
-        runner = new Thread(() -> {
-
-            while (run) {
-                try {
-                    Thread.sleep(3000);
-
-                    model.setRowCount(0);
-
-                    stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
-                    ArrayList<MiniStock> safeCopy = new ArrayList<>(stocks);
-                    for (MiniStock s : safeCopy) {
-                        Object[] row = new Object[5];
-                        row[0] = transliterateName(s.getName());
-                        if (s.getBase() != 0) {
-                            double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
-                            double lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100;
-                            row[1] = formatWithArrow(openPct, df);
-                            row[2] = formatWithArrow(lastPct, df);
-                        } else {
-                            row[1] = "-";
-                            row[2] = "-";
-                        }
-                        row[3] = s.getBid_ask_counter();
-                        row[4] = df.format(s.getWeight());
-                        model.addRow(row);
-                    }
-
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        SwingUtilities.invokeLater(() -> {
+            model.setRowCount(0);
+            for (MiniStock s : snapshot) {
+                Object[] row = new Object[5];
+                row[0] = transliterateName(s.getName());
+                if (s.getBase() != 0) {
+                    double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
+                    double lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100;
+                    row[1] = formatWithArrow(openPct, DF);
+                    row[2] = formatWithArrow(lastPct, DF);
+                } else {
+                    row[1] = "-";
+                    row[2] = "-";
                 }
+                row[3] = s.getBid_ask_counter();
+                row[4] = DF.format(s.getWeight());
+                model.addRow(row);
             }
         });
-
-        runner.start();
-
     }
+
+    private static void start_runner(List<MiniStock> stocks) {
+        runner = new Thread(() -> {
+            while (run) {
+                try {
+                    Thread.sleep(30000); // 30s refresh
+                } catch (InterruptedException e) {
+                    break;
+                }
+                refreshModel(stocks);
+            }
+        }, "MiniStockTable-Refresher");
+        runner.setDaemon(true);
+        runner.start();
+    }
+
 
     private static String formatWithArrow(double value, DecimalFormat df) {
         String arrow = value > 0 ? " ↑" : value < 0 ? " ↓" : "";
@@ -232,37 +236,39 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     }
 
     static class OpenColorRenderer extends DefaultTableCellRenderer {
-        List<MiniStock> stocks;
-
-        OpenColorRenderer(List<MiniStock> stocks) {
-            this.stocks = stocks;
-            setHorizontalAlignment(SwingConstants.CENTER);
-        }
+        public OpenColorRenderer() { setHorizontalAlignment(SwingConstants.CENTER); }
 
         public Component getTableCellRendererComponent(JTable table, Object value,
                                                        boolean isSelected, boolean hasFocus,
                                                        int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            MiniStock s = stocks.get(row);
-            c.setForeground(s.getOpen() > s.getBase() ? Color.GREEN.darker() : Color.RED);
+            try {
+                String s = (value == null) ? "0" : value.toString();
+                int p = s.indexOf('%');
+                double v = (p > 0) ? Double.parseDouble(s.substring(0, p)) : Double.parseDouble(s);
+                c.setForeground(v > 0 ? Color.GREEN.darker() : (v < 0 ? Color.RED : Color.BLACK));
+            } catch (Exception ex) {
+                c.setForeground(Color.BLACK);
+            }
             return c;
         }
     }
 
     static class LastColorRenderer extends DefaultTableCellRenderer {
-        List<MiniStock> stocks;
-
-        LastColorRenderer(List<MiniStock> stocks) {
-            this.stocks = stocks;
-            setHorizontalAlignment(SwingConstants.CENTER);
-        }
+        public LastColorRenderer() { setHorizontalAlignment(SwingConstants.CENTER); }
 
         public Component getTableCellRendererComponent(JTable table, Object value,
                                                        boolean isSelected, boolean hasFocus,
                                                        int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            MiniStock s = stocks.get(row);
-            c.setForeground(s.getLast() > s.getOpen() ? Color.GREEN.darker() : Color.RED);
+            try {
+                String s = (value == null) ? "0" : value.toString();
+                int p = s.indexOf('%');
+                double v = (p > 0) ? Double.parseDouble(s.substring(0, p)) : Double.parseDouble(s);
+                c.setForeground(v > 0 ? Color.GREEN.darker() : (v < 0 ? Color.RED : Color.BLACK));
+            } catch (Exception ex) {
+                c.setForeground(Color.BLACK);
+            }
             return c;
         }
     }
