@@ -15,12 +15,10 @@ import java.util.List;
 
 public class MiniStockTable extends MyGuiComps.MyFrame {
 
-
     static Thread runner;
     static boolean run = true;
     static DefaultTableModel model;
     static final DecimalFormat DF = new DecimalFormat("0.00");
-
 
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
