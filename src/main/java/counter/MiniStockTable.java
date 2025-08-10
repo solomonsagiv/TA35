@@ -23,6 +23,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     JTextField customField1 = new JTextField(10);
     JTextField customField2 = new JTextField(10);
 
+    static MyGuiComps.MyTextField number_of_positive_stocks_field, weight_of_positive_stocks_field;
+
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
     }
@@ -105,11 +107,14 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         table.getColumnModel().getColumn(3).setCellRenderer(new LastColorRenderer());
         table.getColumnModel().getColumn(4).setCellRenderer(new CounterColorRenderer());
 
+        number_of_positive_stocks_field = new MyGuiComps.MyTextField();
+        weight_of_positive_stocks_field = new MyGuiComps.MyTextField();
+
         JPanel controlPanel = new JPanel();
-        controlPanel.add(new JLabel("Custom 1:"));
-        controlPanel.add(customField1);
-        controlPanel.add(new JLabel("Custom 2:"));
-        controlPanel.add(customField2);
+        controlPanel.add(new JLabel("Positive counter :"));
+        controlPanel.add(number_of_positive_stocks_field);
+        controlPanel.add(new JLabel("Total weight:"));
+        controlPanel.add(weight_of_positive_stocks_field);
 
         JFrame frame = new JFrame("Stock Table");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -146,6 +151,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 row[5] = DF.format(s.getWeight());
                 model.addRow(row);
             }
+
+            number_of_positive_stocks_field.colorForge(20);
+            weight_of_positive_stocks_field.colorForge(60);
         });
     }
 
