@@ -11,6 +11,7 @@ import options.Options;
 import races.Race_Logic;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +65,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     int sleep_count = 100;
 
+    int stocks_sleep = 0;
+
     @Override
     public void insert_data(int sleep) {
         // Update count
@@ -79,11 +82,27 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             update_data();
 
             sleep_count = 0;
+            stocks_sleep++;
+        }
+
+
+        // Update stocks
+        if (stocks_sleep % 4 == 0) {
+            insert_stocks();
+            stocks_sleep = 0;
         }
 
         // On changed da
         // ta
         on_change_data();
+    }
+
+    private void insert_stocks() {
+        try {
+            Queries.insertStocksSnapshot(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     private void update_data() {
@@ -252,8 +271,19 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Load positive tracker
         load_positive_tracker();
 
+        // Load stocks snapshot
+        load_stocks_snapshots();
+
         // Set load
         client.setDb_loaded(true);
+    }
+
+    private void load_stocks_snapshots() {
+        try {
+            Queries.loadLastSnapshotNoId(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     private void load_positive_tracker() {

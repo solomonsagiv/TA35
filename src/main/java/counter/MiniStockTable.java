@@ -20,9 +20,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     static DefaultTableModel model;
     static final DecimalFormat DF = new DecimalFormat("0.00");
 
-    JTextField customField1 = new JTextField(10);
-    JTextField customField2 = new JTextField(10);
-
     static MyGuiComps.MyTextField number_of_positive_stocks_field, weight_of_positive_stocks_field;
 
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {

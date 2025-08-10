@@ -3,7 +3,11 @@ package dataBase.mySql;
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import dataBase.IDataBaseHandler;
-
+import miniStocks.MiniStock;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -222,10 +226,10 @@ public class Queries {
 
         for (Map<String, Object> row : rs) {
             try {
-                 x = (Number) row.get("x");
-                 y = (Number) row.get("y");
-                 width = (Number) row.get("width");
-                 height = (Number) row.get("height");
+                x = (Number) row.get("x");
+                y = (Number) row.get("y");
+                width = (Number) row.get("width");
+                height = (Number) row.get("height");
 
             } catch (ClassCastException throwables) {
                 throwables.printStackTrace();
@@ -300,6 +304,48 @@ public class Queries {
         String query = String.format(q, r_one_id, r_two_id);
         return MySql.select(query, connectionType);
     }
+
+
+    // Insert all stocks into stocks_snapshot with timestamp
+    public static void insertStocksSnapshot(List<MiniStock> stocks, String connectionType) throws SQLException {
+        String sql = "INSERT INTO stocks_snapshot (name, price, weight, counter, snapshot_time) VALUES (?, ?, ?, ?, now()::timestamptz)";
+
+        Connection conn = MySql.getConnection(connectionType);
+
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            for (MiniStock s : stocks) {
+                ps.setString(1, s.getName());
+                ps.setBigDecimal(2, BigDecimal.valueOf(s.getLast()));
+                ps.setBigDecimal(3, BigDecimal.valueOf(s.getWeight()));
+                ps.setInt(4, s.getBid_ask_counter());
+                ps.addBatch();
+            }
+            MySql.insert(ps.toString(), connectionType);
+        }
+    }
+
+    // Load the last snapshot of each stock into the list of stocks
+    public static void loadLastSnapshotNoId(List<MiniStock> stocks, String connectionType) throws SQLException {
+        String sql = "SELECT DISTINCT ON (name) name, price, weight, counter FROM stocks_snapshot_no_id ORDER BY name, snapshot_time DESC";
+        List<Map<String, Object>> rs = MySql.select(sql, connectionType);
+
+        for (Map<String, Object> row : rs) {
+            try {
+                String name = (String) row.get("name");
+                Number counter = (Number) row.get("counter");
+
+                for (MiniStock stock : stocks) {
+                    if (stock.getName().equals(name)) {
+                        stock.setBid_ask_counter((Integer) counter);
+                        break;
+                    }
+                }
+            } catch (ClassCastException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+    }
+
 
     public static class Filters {
         public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";
