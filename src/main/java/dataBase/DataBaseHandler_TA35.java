@@ -65,7 +65,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     int sleep_count = 100;
 
-    int stocks_sleep = 0;
+    int stocks_sleep = 1;
 
     @Override
     public void insert_data(int sleep) {
