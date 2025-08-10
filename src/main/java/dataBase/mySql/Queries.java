@@ -308,7 +308,7 @@ public class Queries {
 
     // Insert all stocks into stocks_snapshot with timestamp
     public static void insertStocksSnapshot(List<MiniStock> stocks, String connectionType) throws SQLException {
-        String sql = "INSERT INTO stocks_snapshot (name, price, weight, counter, snapshot_time) VALUES (?, ?, ?, ?, now()::timestamptz)";
+        String sql = "INSERT INTO stocks_snapshots (name, price, weight, counter, snapshot_time) VALUES (?, ?, ?, ?, now()::timestamptz)";
 
         Connection conn = MySql.getConnection(connectionType);
 
@@ -326,7 +326,7 @@ public class Queries {
 
     // Load the last snapshot of each stock into the list of stocks
     public static void loadLastSnapshotNoId(List<MiniStock> stocks, String connectionType) throws SQLException {
-        String sql = "SELECT DISTINCT ON (name) name, price, weight, counter FROM sagiv.stocks_snapshot ORDER BY name, snapshot_time DESC";
+        String sql = "SELECT DISTINCT ON (name) name, price, weight, counter FROM sagiv.stocks_snapshots ORDER BY name, snapshot_time DESC";
         List<Map<String, Object>> rs = MySql.select(sql, connectionType);
 
         for (Map<String, Object> row : rs) {
