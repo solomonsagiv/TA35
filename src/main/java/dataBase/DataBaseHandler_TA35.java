@@ -85,15 +85,16 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             stocks_sleep++;
         }
 
-        // Update stocks
-        if (stocks_sleep % 2 == 0) {
-            stocks_sleep = 0;
-            System.out.println("Stocks ------------Stockss ------Stockss ------------Stockss ------------");
-            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
-            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
-            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
-            insert_stocks();
-        }
+
+//        // Update stocks
+//        if (stocks_sleep % 2 == 0) {
+//            System.out.println("Stockss ------------Stockss ------Stockss ------------Stockss ------------");
+//            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
+//            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
+//            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
+//            insert_stocks();
+//            stocks_sleep = 0;
+//        }
 
         // On changed da
         // ta
@@ -275,7 +276,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         load_positive_tracker();
 
         // Load stocks snapshot
-        load_stocks_snapshots();
+//        load_stocks_snapshots();
 
         // Set load
         client.setDb_loaded(true);
@@ -420,8 +421,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         insert_dev_prod(trading_status_timestamp, dev_id, prod_id);
 
         // Buy sell counter
-        dev_id = 0;
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
-        insert_dev_prod(stocks_counter_timestamp, dev_id, prod_id);
+//        dev_id = 0;
+//        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
+//        insert_dev_prod(stocks_counter_timestamp, dev_id, prod_id);
     }
 }
