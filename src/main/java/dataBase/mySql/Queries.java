@@ -320,7 +320,7 @@ public class Queries {
                 ps.setInt(4, s.getBid_ask_counter());
                 ps.addBatch();
             }
-            MySql.insert(ps.toString(), connectionType);
+            MySql.insert(ps.toString(), conn);
         }
     }
 

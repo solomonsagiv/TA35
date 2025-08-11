@@ -61,6 +61,20 @@ public class MySql {
     }
 
 
+    // Insert
+    public static void insert(String query, Connection conn) {
+
+        try (PreparedStatement stmt = conn.prepareStatement(query);
+        ) {
+            stmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Arik.getInstance().sendMessage(e.getMessage() + "\n" + e.getCause() + " \n" + "Insert");
+        }
+        System.out.println(LocalTime.now() + "  " + query);
+    }
+
     // Update
     public static void update(String query, String connection_type) {
         try (Connection conn = getConnection(connection_type);
@@ -72,7 +86,6 @@ public class MySql {
             Arik.getInstance().sendMessage(e.getMessage() + "\n" + e.getCause() + " \n" + "Update");
         }
     }
-
 
 
     // Update
@@ -164,7 +177,6 @@ public class MySql {
         System.out.println(query);
         return MySql.select(query, connection_type);
     }
-
 
 
     public static List<Map<String, Object>> get_serie_moving_avg(int serie_id, int min, String connection_type) {

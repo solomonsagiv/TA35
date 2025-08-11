@@ -65,12 +65,13 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     int sleep_count = 100;
 
-    int stocks_sleep = 1;
+    int stocks_sleep_count = 0;
 
     @Override
     public void insert_data(int sleep) {
         // Update count
         sleep_count += sleep;
+        stocks_sleep_count += sleep;
 
         if (this.exps == null) {
             this.exps = client.getExps();
@@ -82,19 +83,13 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             update_data();
 
             sleep_count = 0;
-            stocks_sleep++;
         }
 
-
-//        // Update stocks
-//        if (stocks_sleep % 2 == 0) {
-//            System.out.println("Stockss ------------Stockss ------Stockss ------------Stockss ------------");
-//            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
-//            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
-//            System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
-//            insert_stocks();
-//            stocks_sleep = 0;
-//        }
+        // Insert stocks
+        if (stocks_sleep_count % 60000 == 0) {
+            stocks_sleep_count = 0;
+            insert_stocks();
+        }
 
         // On changed da
         // ta
@@ -276,7 +271,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         load_positive_tracker();
 
         // Load stocks snapshot
-//        load_stocks_snapshots();
+        load_stocks_snapshots();
 
         // Set load
         client.setDb_loaded(true);
