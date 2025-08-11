@@ -85,15 +85,14 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             stocks_sleep++;
         }
 
-
         // Update stocks
         if (stocks_sleep % 2 == 0) {
-            System.out.println("Stockss ------------Stockss ------Stockss ------------Stockss ------------");
+            stocks_sleep = 0;
+            System.out.println("Stocks ------------Stockss ------Stockss ------------Stockss ------------");
             System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
             System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
             System.out.println("StockssStockss ------------Stockss ------------Stockss ------------");
             insert_stocks();
-            stocks_sleep = 0;
         }
 
         // On changed da

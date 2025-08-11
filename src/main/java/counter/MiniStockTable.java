@@ -1,6 +1,7 @@
 package counter;
 
 import api.BASE_CLIENT_OBJECT;
+import api.deltaTest.Calculator;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
 import javax.swing.*;
@@ -149,10 +150,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 model.addRow(row);
             }
 
-            number_of_positive_stocks_field.colorForge(20);
-            weight_of_positive_stocks_field.colorForge(60);
+            number_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_count());
+            weight_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_weight_count());
         });
     }
+
 
     private static void start_runner(List<MiniStock> stocks) {
         runner = new Thread(() -> {

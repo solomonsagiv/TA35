@@ -32,14 +32,12 @@ public class MySql {
     public static Connection getConnection(String connection_type) {
         Connection conn = null;
         try {
-
             // Prod
             if (connection_type.equals(MySql.JIBE_PROD_CONNECTION)) {
                 conn = Prod.getInstance().getConnection();
             } else if (connection_type.equals(MySql.JIBE_DEV_CONNECTION)) {
                 conn = Dev.getInstance().getConnection();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             Arik.getInstance().sendMessage(e.getMessage() + "\n" + e.getCause() + " \n" + "Trunticate");

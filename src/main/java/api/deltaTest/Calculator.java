@@ -35,6 +35,33 @@ public class Calculator {
         return 0;
     }
 
+
+    public static int get_stocks_positive_count() {
+        ArrayList<MiniStock> stocks = TA35.getInstance().getStocksHandler().getStocks();
+        int count = 0;
+        for (MiniStock stock: stocks) {
+            if (stock.getBid_ask_counter() > 0) {
+                count++;
+            } else if (stock.getBid_ask_counter() < 0) {
+                count--;
+            }
+        }
+        return count;
+    }
+
+    public static int get_stocks_positive_weight_count() {
+        ArrayList<MiniStock> stocks = TA35.getInstance().getStocksHandler().getStocks();
+        int count = 0;
+        for (MiniStock stock: stocks) {
+            if (stock.getBid_ask_counter() > 0) {
+                count += stock.getWeight();
+            } else if (stock.getBid_ask_counter() < 0) {
+                count -= stock.getWeight();
+            }
+        }
+        return count;
+    }
+
     public static void calc_stocks_counters() {
         StocksHandler stocksHandler = TA35.getInstance().getStocksHandler();
         List<MiniStock> snapshot = new ArrayList<>(stocksHandler.getStocks());
