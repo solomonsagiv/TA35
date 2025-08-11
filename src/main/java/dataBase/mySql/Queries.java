@@ -336,7 +336,7 @@ public class Queries {
         String ts = java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC).toString(); // e.g. 2025-08-11T12:34:56Z
 
         StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO stocks_snapshot_no_id (name, price, weight, counter, snapshot_time) VALUES ");
+        sb.append("INSERT INTO sagiv.stocks_snapshots (name, price, weight, counter, snapshot_time) VALUES ");
 
         // Build VALUES tuples
         for (int i = 0; i < stocks.size(); i++) {
