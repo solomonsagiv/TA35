@@ -4,9 +4,7 @@ import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import dataBase.IDataBaseHandler;
 import miniStocks.MiniStock;
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -305,25 +303,6 @@ public class Queries {
         return MySql.select(query, connectionType);
     }
 
-
-    // Insert all stocks into stocks_snapshot with timestamp
-    public static void insertStocksSnapshot(List<MiniStock> stocks, String connectionType) throws SQLException {
-        String sql = "INSERT INTO stocks_snapshots (name, price, weight, counter, snapshot_time) VALUES (?, ?, ?, ?, now()::timestamptz)";
-
-        Connection conn = MySql.getConnection(connectionType);
-
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            for (MiniStock s : stocks) {
-                ps.setString(1, s.getName());
-                ps.setBigDecimal(2, BigDecimal.valueOf(s.getLast()));
-                ps.setBigDecimal(3, BigDecimal.valueOf(s.getWeight()));
-                ps.setInt(4, s.getBid_ask_counter());
-                ps.addBatch();
-            }
-            MySql.insert(ps.toString(), conn);
-        }
-    }
-
     // Load the last snapshot of each stock into the list of stocks
     public static void loadLastSnapshotNoId(List<MiniStock> stocks, String connectionType) throws SQLException {
         String sql = "SELECT DISTINCT ON (name) name, price, weight, counter FROM sagiv.stocks_snapshots ORDER BY name, snapshot_time DESC";
@@ -345,6 +324,63 @@ public class Queries {
             }
         }
     }
+
+
+
+    // Insert all stocks (no id column) using a single multi-row INSERT string,
+// same timestamp for all rows (captured once).
+    public static void insertStocksSnapshot(List<MiniStock> stocks, String connection_type) {
+        if (stocks == null || stocks.isEmpty()) return;
+
+        // Fixed timestamp for all rows (UTC ISO-8601)
+        String ts = java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC).toString(); // e.g. 2025-08-11T12:34:56Z
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO stocks_snapshot_no_id (name, price, weight, counter, snapshot_time) VALUES ");
+
+        // Build VALUES tuples
+        for (int i = 0; i < stocks.size(); i++) {
+            MiniStock s = stocks.get(i);
+            String nameLit = "'" + sqlEscape(s.getName()) + "'";
+            String priceLit = formatNum(s.getLast());
+            String weightLit = formatNum(s.getWeight());
+            String counterLit = Integer.toString(s.getBid_ask_counter());
+            String tsLit = "'" + sqlEscape(ts) + "'::timestamptz";
+
+            sb.append("(")
+                    .append(nameLit).append(", ")
+                    .append(priceLit).append(", ")
+                    .append(weightLit).append(", ")
+                    .append(counterLit).append(", ")
+                    .append(tsLit)
+                    .append(")");
+            if (i < stocks.size() - 1) sb.append(", ");
+        }
+        sb.append(";");
+
+        String sql = sb.toString();
+
+        // Log the SQL we executed
+        System.out.println("Executed SQL: " + sql);
+        MySql.insert(sql, MySql.getConnection(connection_type));
+
+    }
+
+    // Escape single-quotes for SQL string literal safety
+    private static String sqlEscape(String s) {
+        if (s == null) return "";
+        // also trim + remove hidden RTL marks to reduce noise from Excel/JDDE
+        s = s.trim().replaceAll("[\\u200F\\u200E\\u202A-\\u202E]", "");
+        return s.replace("'", "''");
+    }
+
+    // Ensure dot-decimal regardless of locale
+    private static String formatNum(double d) {
+        return java.lang.String.format(java.util.Locale.US, "%.6f", d);
+    }
+
+
+
 
     public static class Filters {
         public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";

@@ -97,11 +97,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     }
 
     private void insert_stocks() {
-        try {
-            Queries.insertStocksSnapshot(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        Queries.insertStocksSnapshot(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
     }
 
     private void update_data() {
