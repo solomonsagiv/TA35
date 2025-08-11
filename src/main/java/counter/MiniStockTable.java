@@ -156,6 +156,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     }
 
 
+
+
+
     private static void start_runner(List<MiniStock> stocks) {
         runner = new Thread(() -> {
             while (run) {
