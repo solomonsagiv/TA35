@@ -305,7 +305,15 @@ public class Queries {
 
     // Load the last snapshot of each stock into the list of stocks
     public static void loadLastSnapshotNoId(List<MiniStock> stocks, String connectionType) throws SQLException {
-        String sql = "SELECT DISTINCT ON (name) name, price, weight, counter FROM sagiv.stocks_snapshots ORDER BY name, snapshot_time DESC";
+        String sql = "SELECT DISTINCT ON (name)\n" +
+                "       name,\n" +
+                "       price,\n" +
+                "       weight,\n" +
+                "       counter,\n" +
+                "       snapshot_time\n" +
+                "FROM   sagiv.stocks_snapshots\n" +
+                "ORDER  BY name, snapshot_time DESC;";
+
         List<Map<String, Object>> rs = MySql.select(sql, connectionType);
 
         for (Map<String, Object> row : rs) {
@@ -324,8 +332,6 @@ public class Queries {
             }
         }
     }
-
-
 
     // Insert all stocks (no id column) using a single multi-row INSERT string,
 // same timestamp for all rows (captured once).
@@ -378,9 +384,6 @@ public class Queries {
     private static String formatNum(double d) {
         return java.lang.String.format(java.util.Locale.US, "%.6f", d);
     }
-
-
-
 
     public static class Filters {
         public static final String TIME_BIGGER_THAN_10 = "time::time > time'10:00:00'";

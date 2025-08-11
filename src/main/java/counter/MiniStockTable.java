@@ -104,6 +104,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         table.getColumnModel().getColumn(2).setCellRenderer(new LastColorRenderer());
         table.getColumnModel().getColumn(3).setCellRenderer(new LastColorRenderer());
         table.getColumnModel().getColumn(4).setCellRenderer(new CounterColorRenderer());
+        table.getColumnModel().getColumn(5).setCellRenderer(new WeightRenderer());
 
         number_of_positive_stocks_field = new MyGuiComps.MyTextField();
         weight_of_positive_stocks_field = new MyGuiComps.MyTextField();
@@ -155,10 +156,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         });
     }
 
-
-
-
-
     private static void start_runner(List<MiniStock> stocks) {
         runner = new Thread(() -> {
             while (run) {
@@ -193,6 +190,20 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 int p = str.indexOf('%');
                 double val = (p > 0) ? Double.parseDouble(str.substring(0, p)) : Double.parseDouble(str);
                 comp.setForeground(val > 0 ? Color.GREEN.darker() : (val < 0 ? Color.RED : Color.BLACK));
+            } catch (Exception e) {
+                comp.setForeground(Color.BLACK);
+            }
+            return comp;
+        }
+    }
+
+
+    static class WeightRenderer extends DefaultTableCellRenderer {
+        public WeightRenderer() { setHorizontalAlignment(SwingConstants.CENTER); }
+        public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
+            Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
+            try {
+                comp.setForeground(Color.BLACK);
             } catch (Exception e) {
                 comp.setForeground(Color.BLACK);
             }
