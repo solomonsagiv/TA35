@@ -87,7 +87,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     @Override
     protected void init_timeseries_handler() {
         timeSeriesHandler = new TimeSeriesHandler();
-
+        
         timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_3600, this));
         timeSeriesHandler.put(Factories.TimeSeries.INDEX_AVG_900, TimeSeriesFactory.get_serie(Factories.TimeSeries.INDEX_AVG_900, this));
 

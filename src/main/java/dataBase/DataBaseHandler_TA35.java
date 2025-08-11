@@ -422,7 +422,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         // Buy sell counter
 //        dev_id = 0;
-//        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
-//        insert_dev_prod(stocks_counter_timestamp, dev_id, prod_id);
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
+        insert_dev_prod(stocks_counter_timestamp, dev_id, prod_id);
     }
 }
