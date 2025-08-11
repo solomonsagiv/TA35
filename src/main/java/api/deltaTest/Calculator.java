@@ -42,8 +42,6 @@ public class Calculator {
         for (MiniStock stock: stocks) {
             if (stock.getBid_ask_counter() > 0) {
                 count++;
-            } else if (stock.getBid_ask_counter() < 0) {
-                count--;
             }
         }
         return count;
@@ -55,8 +53,6 @@ public class Calculator {
         for (MiniStock stock: stocks) {
             if (stock.getBid_ask_counter() > 0) {
                 count += stock.getWeight();
-            } else if (stock.getBid_ask_counter() < 0) {
-                count -= stock.getWeight();
             }
         }
         return count;
