@@ -73,7 +73,7 @@ public class Calculator {
             }
 
             // Append buy sell _0
-            stock.setBid_ask_counter_0(bid_ask_counter);
+            stock.setBid_ask_counter_0(stock.getBid_ask_counter());
         }
 
         if (L.abs(bid_ask_counter) < 35) {
