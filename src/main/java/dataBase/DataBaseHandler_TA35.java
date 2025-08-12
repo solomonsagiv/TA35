@@ -89,6 +89,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         if (stocks_sleep_count % 60000 == 0) {
             stocks_sleep_count = 0;
             insert_stocks();
+            System.out.println("Insert");
         }
 
 
