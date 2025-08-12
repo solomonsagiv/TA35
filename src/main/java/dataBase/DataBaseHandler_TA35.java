@@ -91,6 +91,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             insert_stocks();
         }
 
+
         // On changed da
         // ta
         on_change_data();
