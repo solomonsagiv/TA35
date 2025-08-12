@@ -136,7 +136,6 @@ public abstract class IDataBaseHandler {
 
                 BigDecimal bigDecimalValue = (BigDecimal) value;
 
-                System.out.println(bigDecimalValue.doubleValue() + "  " + timeSeries.getName());
                 timeSeries.add(timestamp.toLocalDateTime(), bigDecimalValue.doubleValue());
             } catch (ClassCastException throwables) {
                 throwables.printStackTrace();
@@ -412,11 +411,6 @@ public abstract class IDataBaseHandler {
         String query = String.format(q, target_table_location, Factories.Tables.EXPS_TABLE, exp.toUpperCase());
         return MySql.select(query, MySql.JIBE_PROD_CONNECTION);
     }
-
-
-
-
-
 
     public Map<Integer, Integer> getSerie_ids() {
         return serie_ids;
