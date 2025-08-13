@@ -117,7 +117,7 @@ public class Calculator {
             stock.setBid_ask_counter_0(stock.getBid_ask_counter());
         }
 
-        if (L.abs(bid_ask_counter) < 35) {
+        if (L.abs(bid_ask_counter) < 100) {
             TA35 client  = TA35.getInstance();
             client.setStocks_counter(bid_ask_counter);
         }
