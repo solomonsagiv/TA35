@@ -205,21 +205,21 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Interest ----------------------------------------- //
 
         // Index races wi
-
-        MyTimeSeries spot_interest = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
-        spot_interest.setColor(Themes.GREEN);
-        spot_interest.setStokeSize(1.2f);
-
-        // Week races wi
-        MyTimeSeries roll_interest = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD);
-        roll_interest.setColor(Themes.BLACK);
-        roll_interest.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[2];
-        series[0] = spot_interest;
-        series[1] = roll_interest;
-
-        MyChart interest_chart = new MyChart(series, props);
+//
+//        MyTimeSeries spot_interest = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD);
+//        spot_interest.setColor(Themes.GREEN);
+//        spot_interest.setStokeSize(1.2f);
+//
+//        // Week races wi
+//        MyTimeSeries roll_interest = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD);
+//        roll_interest.setColor(Themes.BLACK);
+//        roll_interest.setStokeSize(1.2f);
+//
+//        series = new MyTimeSeries[2];
+//        series[0] = spot_interest;
+//        series[1] = roll_interest;
+//
+//        MyChart interest_chart = new MyChart(series, props);
 
         // ----------------------------------------- Stocks counter ----------------------------------------- //
 
@@ -233,10 +233,22 @@ public class Main_Chart extends MyChartCreator {
 
         MyChart stocks_counter_chart = new MyChart(series, props);
 
+        // ----------------------------------------- Stocks counter weighted ----------------------------------------- //
+
+//        // Index races wi
+//        MyTimeSeries weighted_stock_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.);
+//        weighted_stock_counter.setColor(Themes.PURPLE);
+//        weighted_stock_counter.setStokeSize(1.2f);
+//
+//        series = new MyTimeSeries[1];
+//        series[0] = weighted_stock_counter;
+
+        MyChart weighted_stocks_counter_chart = new MyChart(series, props);
+
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, interest_chart, df_chart, races_chart, bid_ask_counter_chart, stocks_counter_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, df_chart, races_chart, bid_ask_counter_chart, stocks_counter_chart, weighted_stocks_counter_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Main chart");

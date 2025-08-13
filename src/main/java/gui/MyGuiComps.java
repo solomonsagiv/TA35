@@ -194,8 +194,6 @@ public class MyGuiComps {
             setText(format.format(val));
         }
 
-
-
         public void colorForgeRound(double val) {
             val /= 1000;
 
@@ -207,7 +205,6 @@ public class MyGuiComps {
 
             setText(L.str((int) val));
         }
-
 
         public void colorForge(double val, DecimalFormat format, String sign) {
             if (val >= 0) {
@@ -316,7 +313,6 @@ public class MyGuiComps {
 
             setText(L.coma(val));
         }
-
 
         public void colorForge(int val, Color green) {
             if (val >= 0) {

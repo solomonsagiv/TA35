@@ -5,7 +5,6 @@ import locals.L;
 import miniStocks.MiniStock;
 import options.Option;
 import stocksHandler.StocksHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +34,54 @@ public class Calculator {
         return 0;
     }
 
+    public static double[] calculateWeightedCounters() {
+
+        TA35 client = TA35.getInstance();
+
+        List<MiniStock> snapshot = new ArrayList<>(client.getStocksHandler().getStocks());
+
+        double weightedSum = 0.0;
+        double totalWeight = 0.0;
+        double maxAbsCounter = 0.0;
+
+        // שלב 1: מציאת הערך המוחלט המקסימלי
+        for (MiniStock s : snapshot) {
+            maxAbsCounter = Math.max(maxAbsCounter, Math.abs(s.getBid_ask_counter()));
+        }
+
+        // שלב 2: חישוב weighted רגיל ומנורמל
+        double weightedSumNormalized = 0.0;
+        for (MiniStock s : snapshot) {
+            weightedSum += s.getWeight() * s.getBid_ask_counter();
+            if (maxAbsCounter != 0) {
+                double normalizedCounter = s.getBid_ask_counter() / maxAbsCounter;
+                weightedSumNormalized += s.getWeight() * normalizedCounter;
+            }
+            totalWeight += s.getWeight();
+        }
+
+        double weighted = totalWeight != 0 ? weightedSum / totalWeight : 0.0;
+        double weightedNormalized = totalWeight != 0 ? weightedSumNormalized / totalWeight : 0.0;
+
+        return new double[]{weighted, weightedNormalized};
+    }
 
     public static int get_stocks_positive_count() {
         ArrayList<MiniStock> stocks = TA35.getInstance().getStocksHandler().getStocks();
         int count = 0;
         for (MiniStock stock: stocks) {
             if (stock.getBid_ask_counter() > 0) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static int get_green_stocks() {
+        ArrayList<MiniStock> stocks = TA35.getInstance().getStocksHandler().getStocks();
+        int count = 0;
+        for (MiniStock stock: stocks) {
+            if (stock.getLast() > stock.getBase()) {
                 count++;
             }
         }
@@ -67,9 +108,9 @@ public class Calculator {
             double change = stock.getBid_ask_counter() - stock.getBid_ask_counter_0();
 
             if (change > 0) {
-                bid_ask_counter++;
+                bid_ask_counter += stock.getWeight();
             } else if (change < 0) {
-                bid_ask_counter--;
+                bid_ask_counter -= stock.getWeight();
             }
 
             // Append buy sell _0

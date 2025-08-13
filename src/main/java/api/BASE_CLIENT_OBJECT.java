@@ -14,7 +14,7 @@ import service.MyServiceHandler;
 import java.awt.*;
 
 public abstract class BASE_CLIENT_OBJECT {
-    
+
     private String name;
     protected double last_price, mid, bid, ask, open, high, low, base;
     protected double race_margin = 0.001;
@@ -24,7 +24,8 @@ public abstract class BASE_CLIENT_OBJECT {
     protected Props props;
     private int trading_status = 0;
     private double stocks_counter = 0,
-            buy_sell_counter_weighted = 0;
+            buy_sell_counter_weighted = 0,
+            weighted_stock_counter = 0;
 
     // Services
     public MyServiceHandler serviceHandler;
@@ -55,24 +56,35 @@ public abstract class BASE_CLIENT_OBJECT {
     }
 
     protected abstract void init_race_service();
+
     protected abstract void init_name();
+
     protected abstract void init_data_base_service();
+
     protected abstract void init_calcs_service();
+
     protected abstract void init_exps();
+
     public abstract Race_Logic get_main_race();
+
     protected abstract void init_timeseries_handler();
+
     protected abstract void init_dde_cells();
+
     public abstract Color get_index_race_serie_color();
 
     public double getOpenPresent() {
         return L.floor(((open - base) / base) * 100, 100);
     }
+
     public double getLastPresent() {
         return L.floor(((last_price - base) / base) * 100, 100);
     }
+
     public double getHighPresent() {
         return L.floor(((high - base) / base) * 100, 100);
     }
+
     public double getLowPresent() {
         return L.floor(((low - base) / base) * 100, 100);
     }
@@ -80,6 +92,7 @@ public abstract class BASE_CLIENT_OBJECT {
     public double get_ask_last_margin() {
         return L.abs(ask - last_price);
     }
+
     public double get_bid_last_margin() {
         return L.abs(last_price - bid);
     }
@@ -330,5 +343,13 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setCalcsService(CalcsService calcsService) {
         this.calcsService = calcsService;
+    }
+
+    public double getWeighted_stock_counter() {
+        return weighted_stock_counter;
+    }
+
+    public void setWeighted_stock_counter(double weighted_stock_counter) {
+        this.weighted_stock_counter = weighted_stock_counter;
     }
 }

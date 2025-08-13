@@ -4,6 +4,7 @@ import api.BASE_CLIENT_OBJECT;
 import api.deltaTest.Calculator;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +22,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     static DefaultTableModel model;
     static final DecimalFormat DF = new DecimalFormat("0.00");
 
-    static MyGuiComps.MyTextField number_of_positive_stocks_field, weight_of_positive_stocks_field;
+    static MyGuiComps.MyTextField
+            number_of_positive_stocks_field,
+            weight_of_positive_stocks_field,
+            weighted_counter_field,
+            green_stocks_field;
 
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
@@ -40,42 +45,78 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private static String transliterateName(String hebrewName) {
         hebrewName = hebrewName.trim().replaceAll("[\\u200F\\u200E\\u202A-\\u202E]", "");
         switch (hebrewName) {
-            case "שופרסל": return "Shufersal";
-            case "טבע": return "Teva";
-            case "בזק": return "Bezeq";
-            case "לאומי": return "Leumi";
-            case "פועלים": return "Poalim";
-            case "כלל עסקי ביטוח": return "Clal Insurance";
-            case "מבנה": return "Mivne";
-            case "נייס": return "Nice";
-            case "איי.סי.אל": return "ICL";
-            case "מליסרון": return "Melisron";
-            case "ניו-מד אנרג יהש": return "NewMed Energy";
-            case "מנורה מב החז": return "Menora Mivtachim";
-            case "חברה לישראל": return "Israel Corp";
-            case "הראל השקעות": return "Harel Investments";
-            case "בינלאומי": return "Bank International";
-            case "דיסקונט": return "Discount";
-            case "מזרחי טפחות": return "Mizrahi Tefahot";
-            case "אנלייט אנרגיה": return "Enlight Energy";
-            case "שטראוס": return "Strauss";
-            case "הפניקס": return "Phoenix";
-            case "אלביט מערכות": return "Elbit Systems";
-            case "טאואר": return "Tower";
-            case "דלק קבוצה": return "Delek Group";
-            case "נובה": return "Nova";
-            case "דמרי": return "Dimri";
-            case "קמטק": return "Camtek";
-            case "ביג": return "BIG";
-            case "אמות": return "Amot";
-            case "עזריאלי קבוצה": return "Azrieli Group";
-            case "שפיר הנדסה": return "Shapir Engineering";
-            case "אורמת טכנו": return "Ormat Technologies";
-            case "או פי סי אנרגיה": return "OPC Energy";
-            case "נאוויטס פטר יהש": return "Navitas Petroleum";
-            case "פתאל החזקות": return "Fattal Holdings";
-            case "אנרג'יאן": return "Energean";
-            default: return hebrewName;
+            case "שופרסל":
+                return "Shufersal";
+            case "טבע":
+                return "Teva";
+            case "בזק":
+                return "Bezeq";
+            case "לאומי":
+                return "Leumi";
+            case "פועלים":
+                return "Poalim";
+            case "כלל עסקי ביטוח":
+                return "Clal Insurance";
+            case "מבנה":
+                return "Mivne";
+            case "נייס":
+                return "Nice";
+            case "איי.סי.אל":
+                return "ICL";
+            case "מליסרון":
+                return "Melisron";
+            case "ניו-מד אנרג יהש":
+                return "NewMed Energy";
+            case "מנורה מב החז":
+                return "Menora Mivtachim";
+            case "חברה לישראל":
+                return "Israel Corp";
+            case "הראל השקעות":
+                return "Harel Investments";
+            case "בינלאומי":
+                return "Bank International";
+            case "דיסקונט":
+                return "Discount";
+            case "מזרחי טפחות":
+                return "Mizrahi Tefahot";
+            case "אנלייט אנרגיה":
+                return "Enlight Energy";
+            case "שטראוס":
+                return "Strauss";
+            case "הפניקס":
+                return "Phoenix";
+            case "אלביט מערכות":
+                return "Elbit Systems";
+            case "טאואר":
+                return "Tower";
+            case "דלק קבוצה":
+                return "Delek Group";
+            case "נובה":
+                return "Nova";
+            case "דמרי":
+                return "Dimri";
+            case "קמטק":
+                return "Camtek";
+            case "ביג":
+                return "BIG";
+            case "אמות":
+                return "Amot";
+            case "עזריאלי קבוצה":
+                return "Azrieli Group";
+            case "שפיר הנדסה":
+                return "Shapir Engineering";
+            case "אורמת טכנו":
+                return "Ormat Technologies";
+            case "או פי סי אנרגיה":
+                return "OPC Energy";
+            case "נאוויטס פטר יהש":
+                return "Navitas Petroleum";
+            case "פתאל החזקות":
+                return "Fattal Holdings";
+            case "אנרג'יאן":
+                return "Energean";
+            default:
+                return hebrewName;
         }
     }
 
@@ -88,8 +129,12 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     public static void showTable(List<MiniStock> stocks) {
         stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
-        String[] columns = {"Name", "Open %", "Last %", "Last-Open %", "Bid/Ask Counter", "Weight"};
-        model = new DefaultTableModel(columns, 0) { public boolean isCellEditable(int r, int c) { return false; } };
+        String[] columns = {"Name", "Open", "Last", "Change", "Counter", "Weight"};
+        model = new DefaultTableModel(columns, 0) {
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
+        };
 
         JTable table = new JTable(model);
         table.setFont(new Font("Arial", Font.PLAIN, 13));
@@ -108,12 +153,18 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
         number_of_positive_stocks_field = new MyGuiComps.MyTextField();
         weight_of_positive_stocks_field = new MyGuiComps.MyTextField();
+        weighted_counter_field = new MyGuiComps.MyTextField();
+        green_stocks_field = new MyGuiComps.MyTextField();
 
         JPanel controlPanel = new JPanel();
         controlPanel.add(new JLabel("Positive counter :"));
         controlPanel.add(number_of_positive_stocks_field);
         controlPanel.add(new JLabel("Total weight:"));
         controlPanel.add(weight_of_positive_stocks_field);
+        controlPanel.add(new JLabel("Weighted counter:"));
+        controlPanel.add(weighted_counter_field);
+        controlPanel.add(new JLabel("Green stocks:"));
+        controlPanel.add(green_stocks_field);
 
         JFrame frame = new JFrame("Stock Table");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -153,13 +204,19 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
             number_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_count());
             weight_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_weight_count());
+            green_stocks_field.colorForge(Calculator.get_green_stocks());
+            weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
         });
     }
 
     private static void start_runner(List<MiniStock> stocks) {
         runner = new Thread(() -> {
             while (run) {
-                try { Thread.sleep(30000); } catch (InterruptedException e) { break; }
+                try {
+                    Thread.sleep(30000);
+                } catch (InterruptedException e) {
+                    break;
+                }
                 refreshModel(stocks);
             }
         }, "MiniStockTable-Refresher");
@@ -173,7 +230,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     }
 
     static class BoldCenterRenderer extends DefaultTableCellRenderer {
-        public BoldCenterRenderer() { setHorizontalAlignment(SwingConstants.CENTER); }
+        public BoldCenterRenderer() {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+
         public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
             Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
             comp.setFont(new Font("Arial", Font.BOLD, 13));
@@ -182,7 +242,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     }
 
     static class OpenColorRenderer extends DefaultTableCellRenderer {
-        public OpenColorRenderer() { setHorizontalAlignment(SwingConstants.CENTER); }
+        public OpenColorRenderer() {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+
         public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
             Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
             try {
@@ -197,9 +260,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         }
     }
 
-
     static class WeightRenderer extends DefaultTableCellRenderer {
-        public WeightRenderer() { setHorizontalAlignment(SwingConstants.CENTER); }
+        public WeightRenderer() {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+
         public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
             Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
             try {
@@ -211,10 +276,14 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         }
     }
 
-    static class LastColorRenderer extends OpenColorRenderer { }
+    static class LastColorRenderer extends OpenColorRenderer {
+    }
 
     static class CounterColorRenderer extends DefaultTableCellRenderer {
-        public CounterColorRenderer() { setHorizontalAlignment(SwingConstants.CENTER); }
+        public CounterColorRenderer() {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+
         public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
             Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
             try {
