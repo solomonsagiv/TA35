@@ -25,7 +25,7 @@ public abstract class BASE_CLIENT_OBJECT {
     private int trading_status = 0;
     private double stocks_counter = 0,
             buy_sell_counter_weighted = 0,
-            weighted_stock_counter = 0;
+            stocks_weighted_counter = 0;
 
     // Services
     public MyServiceHandler serviceHandler;
@@ -345,11 +345,11 @@ public abstract class BASE_CLIENT_OBJECT {
         this.calcsService = calcsService;
     }
 
-    public double getWeighted_stock_counter() {
-        return weighted_stock_counter;
+    public double getStocks_weighted_counter() {
+        return stocks_weighted_counter;
     }
 
-    public void setWeighted_stock_counter(double weighted_stock_counter) {
-        this.weighted_stock_counter = weighted_stock_counter;
+    public void setStocks_weighted_counter(double stocks_weighted_counter) {
+        this.stocks_weighted_counter = stocks_weighted_counter;
     }
 }

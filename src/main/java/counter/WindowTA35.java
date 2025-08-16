@@ -466,7 +466,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                         realtimeChart.createChart();
                         break;
                     case "Stocks":
-                        MiniStockTable.showTable(TA35.getInstance().getStocksHandler().getStocks());
+                        new MiniStockTable(TA35.getInstance(), "Stock table");
                         break;
                     case "Costs real time":
                         Realtime_Interest_Chart realtime_interest_chart = new Realtime_Interest_Chart(TA35.getInstance());
@@ -480,7 +480,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         chartsCombo.setForeground(new Color(0, 0, 51));
         chartsCombo.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
         ((JLabel) chartsCombo.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
-
     }
 
     public static void openCharts() {
@@ -493,9 +492,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             Main_Chart main_chart = new Main_Chart(TA35.getInstance());
             main_chart.createChart();
 
-            // Realtime interest chart
-            Realtime_Interest_Chart realtime_interest_chart = new Realtime_Interest_Chart(TA35.getInstance());
-            realtime_interest_chart.createChart();
+            // Stocks table
+            new MiniStockTable(TA35.getInstance(), "Stocks table");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -468,7 +468,6 @@ public class MyGuiComps {
 
 }
 
-
 abstract class AFrame extends JFrame {
 
     public AFrame(String title) throws HeadlessException {

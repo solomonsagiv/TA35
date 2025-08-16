@@ -1,6 +1,7 @@
 package counter;
 
 import api.BASE_CLIENT_OBJECT;
+import api.TA35;
 import api.deltaTest.Calculator;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class MiniStockTable extends MyGuiComps.MyFrame {
 
+    private static TA35 client;
     static Thread runner;
     static boolean run = true;
     static DefaultTableModel model;
@@ -30,6 +32,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
+        MiniStockTable.client = (TA35) client;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     @Override
     public void initialize() {
-
+        showTable(client.getStocksHandler().getStocks());
     }
 
     private static String transliterateName(String hebrewName) {
@@ -127,7 +130,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         super.onClose();
     }
 
-    public static void showTable(List<MiniStock> stocks) {
+    private static void showTable(List<MiniStock> stocks) {
         stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
         String[] columns = {"Name", "Open", "Last", "Change", "Counter", "Weight"};
         model = new DefaultTableModel(columns, 0) {

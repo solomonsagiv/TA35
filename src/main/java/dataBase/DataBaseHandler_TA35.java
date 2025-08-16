@@ -33,7 +33,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> month_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> trading_status_timestamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> stocks_counter_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> stocks_weighted_counter_timestamp = new ArrayList<>();
 
     ArrayList<MyTimeSeries> timeSeries;
     Race_Logic wi_race, wm_race;
@@ -52,7 +52,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             month_counter_0 = 0,
             week_counter_0 = 0,
             trading_status_0 = 0,
-            stocks_counter_0 = 0;
+            stocks_weighted_counter_0 = 0;
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -151,12 +151,12 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Buy sell counter
-            double counter = client.getStocks_counter();
+            double counter = client.getStocks_weighted_counter();
 
-            if (counter != stocks_counter_0) {
-                double last_count = counter - stocks_counter_0;
-                stocks_counter_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
-                stocks_counter_0 = counter;
+            if (counter != stocks_weighted_counter_0) {
+                double last_count = counter - stocks_weighted_counter_0;
+                stocks_weighted_counter_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                stocks_weighted_counter_0 = counter;
             }
 
             // Baskets
@@ -268,15 +268,19 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         load_positive_tracker();
 
         // Load stocks snapshot
-        load_stocks_snapshots();
+        load_stocks_data_and_counter();
 
         // Set load
         client.setDb_loaded(true);
     }
 
-    private void load_stocks_snapshots() {
+    private void load_stocks_data_and_counter() {
         try {
             Queries.loadLastSnapshotNoId(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+
+            int counter_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_COUNTER_PROD);
+            int counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(counter_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
+            client.setStocks_weighted_counter(counter);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -284,7 +288,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void load_positive_tracker() {
 
-        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
+        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_COUNTER_PROD);
         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW_NO_MODULU, MySql.JIBE_PROD_CONNECTION);
 
         for (Map<String, Object> row : rs) {
@@ -414,7 +418,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         // Buy sell counter
 //        dev_id = 0;
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_COUNTER_PROD);
-        insert_dev_prod(stocks_counter_timestamp, dev_id, prod_id);
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_COUNTER_PROD);
+        insert_dev_prod(stocks_weighted_counter_timestamp, dev_id, prod_id);
     }
 }

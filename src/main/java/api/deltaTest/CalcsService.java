@@ -10,6 +10,8 @@ public class CalcsService extends MyBaseService {
 
     BASE_CLIENT_OBJECT client;
 
+    int counter = 0;
+
     public CalcsService(BASE_CLIENT_OBJECT client) {
         super(client);
         this.client = client;
@@ -17,14 +19,28 @@ public class CalcsService extends MyBaseService {
 
     @Override
     public void go() {
-        // DB runner
+
+        // Increment counter
+        counter += getSleep();
+
         if (Manifest.DB_UPLOAD) {
-            // Calc stocks counter
-            calc_stocks_counter();
+            // Calc
+            if (counter % 60000 == 0) {
+                counter = 0;
+                // Calc stocks counter
+                calc_stocks_raw_counter();
+            }
+            // Calc stocks weighted counter
+            calc_stocks_weighted_counter();
         }
     }
 
-    private void calc_stocks_counter() {
+    private void calc_stocks_weighted_counter() {
+        double c = Calculator.calculateWeightedCounters()[0];
+        client.setStocks_weighted_counter(c);
+    }
+
+    private void calc_stocks_raw_counter() {
         Calculator.PositiveTracker.update(client.getStocks_counter());
         Calculator.calc_stocks_counters();
     }
@@ -37,7 +53,7 @@ public class CalcsService extends MyBaseService {
 
     @Override
     public int getSleep() {
-        return 60000;
+        return 1000;
     }
 
     @Override

@@ -4,7 +4,6 @@ import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import dataBase.IDataBaseHandler;
 import miniStocks.MiniStock;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -311,7 +310,7 @@ public class Queries {
                 "       weight,\n" +
                 "       counter,\n" +
                 "       snapshot_time\n" +
-                "FROM   sagiv.stocks_snapshots\n" +
+                "FROM   sagiv.stocks_data\n" +
                 "ORDER  BY name, snapshot_time DESC;";
 
         List<Map<String, Object>> rs = MySql.select(sql, connectionType);
@@ -342,7 +341,7 @@ public class Queries {
         String ts = java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC).toString(); // e.g. 2025-08-11T12:34:56Z
 
         StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO sagiv.stocks_snapshots (name, price, weight, counter, snapshot_time) VALUES ");
+        sb.append("INSERT INTO sagiv.stocks_data (name, price, weight, counter, snapshot_time, index_name) VALUES ");
 
         // Build VALUES tuples
         for (int i = 0; i < stocks.size(); i++) {
@@ -352,13 +351,15 @@ public class Queries {
             String weightLit = formatNum(s.getWeight());
             String counterLit = Integer.toString(s.getBid_ask_counter());
             String tsLit = "'" + sqlEscape(ts) + "'::timestamptz";
+            String index_name = "TA35";
 
             sb.append("(")
                     .append(nameLit).append(", ")
                     .append(priceLit).append(", ")
                     .append(weightLit).append(", ")
                     .append(counterLit).append(", ")
-                    .append(tsLit)
+                    .append(tsLit).append(", ")
+                    .append(index_name)
                     .append(")");
             if (i < stocks.size() - 1) sb.append(", ");
         }
