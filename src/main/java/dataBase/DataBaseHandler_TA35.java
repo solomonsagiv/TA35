@@ -88,7 +88,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Insert stocks
         if (stocks_sleep_count % 60000 == 0) {
             stocks_sleep_count = 0;
-          //  insert_stocks();
+//            insert_stocks();
             System.out.println("Insert");
         }
 
@@ -276,7 +276,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void load_stocks_data_and_counter() {
         try {
-            Queries.loadLastSnapshotNoId(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+            Queries.loadLastSnapshotStocksData(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
 
             int counter_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_COUNTER_PROD);
             int counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(counter_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));

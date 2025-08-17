@@ -5,6 +5,7 @@ import api.TA35;
 import api.deltaTest.Calculator;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
+import stocksHandler.StocksHandler;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -18,7 +19,6 @@ import java.util.List;
 
 public class MiniStockTable extends MyGuiComps.MyFrame {
 
-    private static TA35 client;
     static Thread runner;
     static boolean run = true;
     static DefaultTableModel model;
@@ -32,7 +32,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
-        MiniStockTable.client = (TA35) client;
+
     }
 
     @Override
@@ -42,7 +42,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     @Override
     public void initialize() {
-        showTable(client.getStocksHandler().getStocks());
+        showTable(((TA35) client).getStocksHandler().getStocks());
     }
 
     private static String transliterateName(String hebrewName) {
@@ -130,7 +130,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         super.onClose();
     }
 
-    private static void showTable(List<MiniStock> stocks) {
+    private void showTable(List<MiniStock> stocks) {
         stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
         String[] columns = {"Name", "Open", "Last", "Change", "Counter", "Weight"};
         model = new DefaultTableModel(columns, 0) {
@@ -155,19 +155,31 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         table.getColumnModel().getColumn(5).setCellRenderer(new WeightRenderer());
 
         number_of_positive_stocks_field = new MyGuiComps.MyTextField();
+        number_of_positive_stocks_field.setWidth(30);
+        number_of_positive_stocks_field.setHeight(20);
+        number_of_positive_stocks_field.setFontSize(12);
+
         weight_of_positive_stocks_field = new MyGuiComps.MyTextField();
+        weight_of_positive_stocks_field.setWidth(30);
+        weight_of_positive_stocks_field.setHeight(20);
+        weight_of_positive_stocks_field.setFontSize(12);
+
         weighted_counter_field = new MyGuiComps.MyTextField();
+        weighted_counter_field.setWidth(30);
+        weighted_counter_field.setHeight(20);
+        weighted_counter_field.setFontSize(12);
+
         green_stocks_field = new MyGuiComps.MyTextField();
+        green_stocks_field.setWidth(30);
+        green_stocks_field.setHeight(20);
+        green_stocks_field.setFontSize(12);
 
         JPanel controlPanel = new JPanel();
-        controlPanel.add(new JLabel("Positive counter :"));
-        controlPanel.add(number_of_positive_stocks_field);
-        controlPanel.add(new JLabel("Total weight:"));
-        controlPanel.add(weight_of_positive_stocks_field);
-        controlPanel.add(new JLabel("Weighted counter:"));
-        controlPanel.add(weighted_counter_field);
-        controlPanel.add(new JLabel("Green stocks:"));
-        controlPanel.add(green_stocks_field);
+        controlPanel.setLayout(new GridLayout(1, 4, 15, 0)); // 1 שורה, 4 עמודות
+        controlPanel.add(createColumn("Positive counter :", new JTextField(10)));
+        controlPanel.add(createColumn("Total weight:", new JTextField(10)));
+        controlPanel.add(createColumn("Weighted counter:", new JTextField(10)));
+        controlPanel.add(createColumn("Green stocks:", new JTextField(10)));
 
         JFrame frame = new JFrame("Stock Table");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -189,7 +201,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             model.setRowCount(0);
             for (MiniStock s : snapshot) {
                 Object[] row = new Object[6];
-                row[0] = transliterateName(s.getName());
+                row[0] = s.getName();
                 if (s.getBase() != 0) {
                     double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
                     double lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100;
@@ -300,4 +312,34 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             return comp;
         }
     }
+
+
+    private static JPanel createColumn(String labelText, JTextField textField) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        JLabel label = new JLabel(labelText, SwingConstants.CENTER);
+        panel.add(label, BorderLayout.NORTH);      // כותרת למעלה
+        panel.add(textField, BorderLayout.CENTER); // השדה מתחת
+        return panel;
+    }
+
+
+    public static void main(String[] args) {
+        ArrayList<MiniStock> stocks = new ArrayList<>();
+        MiniStock poli = new MiniStock(new StocksHandler(), 1);
+        MiniStock bezeq = new MiniStock(new StocksHandler(), 2);
+        MiniStock lumi = new MiniStock(new StocksHandler(), 3);
+        MiniStock nice = new MiniStock(new StocksHandler(), 4);
+
+        stocks.add(poli);
+        stocks.add(bezeq);
+        stocks.add(lumi);
+        stocks.add(nice);
+
+        TA35 client = TA35.getInstance();
+        client.getStocksHandler().setStocks(stocks);
+
+        new MiniStockTable(client, "Mini");
+    }
+
 }

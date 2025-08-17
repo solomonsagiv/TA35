@@ -4,6 +4,7 @@ import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import dataBase.IDataBaseHandler;
 import miniStocks.MiniStock;
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -303,15 +304,18 @@ public class Queries {
     }
 
     // Load the last snapshot of each stock into the list of stocks
-    public static void loadLastSnapshotNoId(List<MiniStock> stocks, String connectionType) throws SQLException {
-        String sql = "SELECT DISTINCT ON (name)\n" +
-                "       name,\n" +
-                "       price,\n" +
-                "       weight,\n" +
-                "       counter,\n" +
-                "       snapshot_time\n" +
-                "FROM   sagiv.stocks_data\n" +
-                "ORDER  BY name, snapshot_time DESC;";
+    public static void loadLastSnapshotStocksData(List<MiniStock> stocks, String connectionType) throws SQLException {
+
+        TA35 client  = TA35.getInstance();
+
+        String sql = String.format("SELECT *\n" +
+                "FROM sagiv.stocks_data\n" +
+                "WHERE index_name = '%s'\n" +
+                "  AND snapshot_time = (\n" +
+                "    SELECT MAX(snapshot_time)\n" +
+                "    FROM sagiv.stocks_data\n" +
+                "    WHERE index_name = '%s'\n" +
+                ");", client.getName(), client.getName());
 
         List<Map<String, Object>> rs = MySql.select(sql, connectionType);
 
@@ -335,23 +339,26 @@ public class Queries {
     // Insert all stocks (no id column) using a single multi-row INSERT string,
 // same timestamp for all rows (captured once).
     public static void insertStocksSnapshot(List<MiniStock> stocks, String connection_type) {
-        if (stocks == null || stocks.isEmpty()) return;
-
         // Fixed timestamp for all rows (UTC ISO-8601)
         String ts = java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC).toString(); // e.g. 2025-08-11T12:34:56Z
+
+        if (stocks == null || stocks.isEmpty()) return;
 
         StringBuilder sb = new StringBuilder();
         sb.append("INSERT INTO sagiv.stocks_data (name, price, weight, counter, snapshot_time, index_name) VALUES ");
 
-        // Build VALUES tuples
         for (int i = 0; i < stocks.size(); i++) {
             MiniStock s = stocks.get(i);
+
             String nameLit = "'" + sqlEscape(s.getName()) + "'";
-            String priceLit = formatNum(s.getLast());
+            String priceLit = formatNum(s.getLast());    // uses Locale.US, e.g. 1234.560000
             String weightLit = formatNum(s.getWeight());
             String counterLit = Integer.toString(s.getBid_ask_counter());
             String tsLit = "'" + sqlEscape(ts) + "'::timestamptz";
-            String index_name = "TA35";
+
+            // constant index name (change if you have per-stock index)
+            String indexName = "TA35";
+            String indexNameLit = "'" + sqlEscape(indexName) + "'";
 
             sb.append("(")
                     .append(nameLit).append(", ")
@@ -359,24 +366,27 @@ public class Queries {
                     .append(weightLit).append(", ")
                     .append(counterLit).append(", ")
                     .append(tsLit).append(", ")
-                    .append(index_name)
+                    .append(indexNameLit)
                     .append(")");
+
             if (i < stocks.size() - 1) sb.append(", ");
         }
         sb.append(";");
 
         String sql = sb.toString();
 
-        // Log the SQL we executed
+        // Log + execute
         System.out.println("Executed SQL: " + sql);
-        MySql.insert(sql, MySql.getConnection(connection_type));
+        MySql.insert(sql, connection_type);
 
     }
 
-    // Escape single-quotes for SQL string literal safety
+    /**
+     * Helpers
+     **/
     private static String sqlEscape(String s) {
         if (s == null) return "";
-        // also trim + remove hidden RTL marks to reduce noise from Excel/JDDE
+        // Trim & remove hidden RTL marks that may arrive from Excel/JDDE
         s = s.trim().replaceAll("[\\u200F\\u200E\\u202A-\\u202E]", "");
         return s.replace("'", "''");
     }

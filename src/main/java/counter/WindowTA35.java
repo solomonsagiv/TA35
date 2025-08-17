@@ -185,7 +185,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         week_races_lbl.setBounds(index_races_lbl.getX() + index_races_lbl.getWidth(), index_races_lbl.getY(), 55, 25);
         races_panel_header.add(week_races_lbl);
 
-
         // Exp
         MyGuiComps.MyPanel exp_header_panel = new MyGuiComps.MyPanel();
         exp_header_panel.setLayout(null);
@@ -465,7 +464,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                         Realtime_Chart realtimeChart = new Realtime_Chart(TA35.getInstance());
                         realtimeChart.createChart();
                         break;
-                    case "Stocks":
+                    case "Stocks table":
                         new MiniStockTable(TA35.getInstance(), "Stock table");
                         break;
                     case "Costs real time":

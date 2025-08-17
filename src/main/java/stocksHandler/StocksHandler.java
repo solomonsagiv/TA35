@@ -37,6 +37,10 @@ public class StocksHandler implements IJsonData {
 		return stocks;
 	}
 
+	public void setStocks(ArrayList<MiniStock> stocks) {
+		this.stocks = stocks;
+	}
+
 	public MyChartList getIndDeltaList() {
 		return indDeltaList;
 	}

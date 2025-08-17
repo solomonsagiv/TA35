@@ -20,7 +20,7 @@ public class MyGuiComps {
     // ---------- JFrame ---------- //
     public static abstract class MyFrame extends JFrame {
 
-        BASE_CLIENT_OBJECT client;
+        public BASE_CLIENT_OBJECT client;
 
         public MyFrame(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
             super(title);
