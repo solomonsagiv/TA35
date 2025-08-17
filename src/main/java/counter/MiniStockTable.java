@@ -155,24 +155,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         table.getColumnModel().getColumn(5).setCellRenderer(new WeightRenderer());
 
         number_of_positive_stocks_field = new MyGuiComps.MyTextField();
-        number_of_positive_stocks_field.setWidth(30);
-        number_of_positive_stocks_field.setHeight(20);
-        number_of_positive_stocks_field.setFontSize(12);
-
         weight_of_positive_stocks_field = new MyGuiComps.MyTextField();
-        weight_of_positive_stocks_field.setWidth(30);
-        weight_of_positive_stocks_field.setHeight(20);
-        weight_of_positive_stocks_field.setFontSize(12);
-
         weighted_counter_field = new MyGuiComps.MyTextField();
-        weighted_counter_field.setWidth(30);
-        weighted_counter_field.setHeight(20);
-        weighted_counter_field.setFontSize(12);
-
         green_stocks_field = new MyGuiComps.MyTextField();
-        green_stocks_field.setWidth(30);
-        green_stocks_field.setHeight(20);
-        green_stocks_field.setFontSize(12);
 
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new GridLayout(1, 4, 15, 0)); // 1 שורה, 4 עמודות
