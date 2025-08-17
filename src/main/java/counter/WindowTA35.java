@@ -465,7 +465,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                         realtimeChart.createChart();
                         break;
                     case "Stocks table":
-                        new MiniStockTable(TA35.getInstance(), "Stock table");
+                        new MiniStockTable(TA35.getInstance(), "Stocks table");
                         break;
                     case "Costs real time":
                         Realtime_Interest_Chart realtime_interest_chart = new Realtime_Interest_Chart(TA35.getInstance());
