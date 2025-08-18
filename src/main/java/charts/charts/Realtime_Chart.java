@@ -5,7 +5,7 @@ import charts.myChart.*;
 import locals.Themes;
 import java.awt.*;
 
-public class Realtime_Chart extends MyChartCreator {
+public class    Realtime_Chart extends MyChartCreator {
 
     TA35 client;
 
@@ -50,6 +50,7 @@ public class Realtime_Chart extends MyChartCreator {
         };
         index.setColor(Color.BLACK);
         index.setStokeSize(2.25f);
+        index.setVisible(false);
 
         // Index
         MyTimeSeries index_bid_ask = new MyTimeSeries("Index bid ask avg", client) {
