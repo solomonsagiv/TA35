@@ -23,7 +23,7 @@ public abstract class BASE_CLIENT_OBJECT {
     protected Exps exps;
     protected Props props;
     private int trading_status = 0;
-    private double stocks_counter = 0,
+    private double stocks_counter_change = 0,
             buy_sell_counter_weighted = 0,
             stocks_weighted_counter = 0;
 
@@ -321,12 +321,12 @@ public abstract class BASE_CLIENT_OBJECT {
         this.spot_interest_list = spot_interest_list;
     }
 
-    public double getStocks_counter() {
-        return stocks_counter;
+    public double getStocks_counter_change() {
+        return stocks_counter_change;
     }
 
-    public void setStocks_counter(double stocks_counter) {
-        this.stocks_counter = stocks_counter;
+    public void setStocks_counter_change(double stocks_counter_change) {
+        this.stocks_counter_change = stocks_counter_change;
     }
 
     public double getBuy_sell_counter_weighted() {

@@ -119,7 +119,7 @@ public class Calculator {
 
         if (L.abs(bid_ask_counter) < 100) {
             TA35 client  = TA35.getInstance();
-            client.setStocks_counter(bid_ask_counter);
+            client.setStocks_counter_change(bid_ask_counter);
         }
     }
 
