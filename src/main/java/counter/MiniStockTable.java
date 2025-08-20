@@ -138,9 +138,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                     Thread.sleep(10000);
                     refreshModel(stocks);
                 } catch (InterruptedException e) {
-                    Arik.getInstance().sendMessage("Table stopped TA35");
                     Arik.getInstance().sendErrorMessage(e);
-                    break;
                 }
 
             }
