@@ -41,7 +41,7 @@ public class CalcsService extends MyBaseService {
     }
 
     private void calc_stocks_raw_counter() {
-        Calculator.PositiveTracker.update(client.getStocks_counter());
+        Calculator.PositiveTracker.update(client.getStocks_counter_change());
         Calculator.calc_stocks_counters();
     }
 

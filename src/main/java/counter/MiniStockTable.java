@@ -134,7 +134,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         runner = new Thread(() -> {
             while (run) {
                 try {
-                    Thread.sleep(30000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     break;
                 }
