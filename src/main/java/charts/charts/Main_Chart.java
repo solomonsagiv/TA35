@@ -205,7 +205,7 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Stocks counter ----------------------------------------- //
 
         // Index races wi
-        MyTimeSeries stocks_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.STOCKS_WEIGHTED_COUNTER_PROD);
+        MyTimeSeries stocks_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
         stocks_counter.setColor(Themes.BLUE3);
         stocks_counter.setStokeSize(1.2f);
 

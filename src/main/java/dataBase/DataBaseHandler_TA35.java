@@ -278,7 +278,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         try {
             Queries.loadLastSnapshotStocksData(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
 
-            int counter_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_COUNTER_PROD);
+            int counter_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
             int counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(counter_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
             client.setStocks_weighted_counter(counter);
         } catch (SQLException throwables) {
@@ -288,7 +288,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void load_positive_tracker() {
 
-        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_COUNTER_PROD);
+        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW_NO_MODULU, MySql.JIBE_PROD_CONNECTION);
 
         for (Map<String, Object> row : rs) {
@@ -418,7 +418,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         // Buy sell counter
 //        dev_id = 0;
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_COUNTER_PROD);
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
         insert_dev_prod(stocks_counter_change_timestamp, dev_id, prod_id);
     }
 }

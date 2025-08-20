@@ -3,6 +3,7 @@ package counter;
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import api.deltaTest.Calculator;
+import arik.Arik;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
 import stocksHandler.StocksHandler;
@@ -137,6 +138,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                     Thread.sleep(10000);
                     refreshModel(stocks);
                 } catch (InterruptedException e) {
+                    Arik.getInstance().sendMessage("Table stopped TA35");
+                    Arik.getInstance().sendErrorMessage(e);
                     break;
                 }
 
