@@ -3,6 +3,7 @@ package dataBase;
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import api.deltaTest.Calculator;
+import arik.Arik;
 import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
@@ -86,9 +87,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         }
 
         // Insert stocks
-        if (stocks_sleep_count % 60000 == 0) {
+        if (stocks_sleep_count % 30000 == 0) {
             stocks_sleep_count = 0;
-//            insert_stocks();
+            insert_stocks();
             System.out.println("Insert");
         }
 
@@ -98,7 +99,13 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     }
 
     private void insert_stocks() {
-        Queries.insertStocksSnapshot(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+        try {
+            Queries.insertStocksSnapshot(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Arik.getInstance().sendMessage("TA35 Index stocks Failed ");
+            Arik.getInstance().sendErrorMessage(e);
+        }
     }
 
     private void update_data() {
