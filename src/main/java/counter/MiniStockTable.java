@@ -32,7 +32,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
-
     }
 
     @Override
@@ -83,10 +82,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
         JPanel controlPanel = new JPanel();
         controlPanel.setLayout(new GridLayout(1, 4, 15, 0)); // 1 שורה, 4 עמודות
-        controlPanel.add(createColumn("Positive counter :", new JTextField(10)));
-        controlPanel.add(createColumn("Total weight:", new JTextField(10)));
-        controlPanel.add(createColumn("Weighted counter:", new JTextField(10)));
-        controlPanel.add(createColumn("Green stocks:", new JTextField(10)));
+        controlPanel.add(createColumn("Positive counter :", number_of_positive_stocks_field));
+        controlPanel.add(createColumn("Total weight:", weight_of_positive_stocks_field));
+        controlPanel.add(createColumn("Weighted counter:", weighted_counter_field));
+        controlPanel.add(createColumn("Green stocks:", green_stocks_field));
 
         JFrame frame = new JFrame("Stock Table");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
