@@ -136,10 +136,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             while (run) {
                 try {
                     Thread.sleep(10000);
+                    refreshModel(stocks);
                 } catch (InterruptedException e) {
                     break;
                 }
-                refreshModel(stocks);
+
             }
         }, "MiniStockTable-Refresher");
         runner.setDaemon(true);
