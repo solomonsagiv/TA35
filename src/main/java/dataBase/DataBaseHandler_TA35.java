@@ -103,7 +103,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             Queries.insertStocksSnapshot(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
         } catch (Exception e) {
             e.printStackTrace();
-            Arik.getInstance().sendMessage("TA35 Index stocks Failed ");
+            Arik.getInstance().sendMessage("TA35 Index Insert stocks Failed ");
             Arik.getInstance().sendErrorMessage(e);
         }
     }
