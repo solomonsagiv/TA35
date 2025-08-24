@@ -325,7 +325,11 @@ public class Queries {
                 Number counter = (Number) row.get("counter");
 
                 for (MiniStock stock : stocks) {
+
+                    System.out.println(stock.getName() + "  " + name);
+
                     if (stock.getName().equals(name)) {
+                        System.out.println("Found  -------------------- ");
                         stock.setBid_ask_counter((Integer) counter);
                         break;
                     }
