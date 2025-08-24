@@ -325,8 +325,8 @@ public class Queries {
                 Number counter = (Number) row.get("counter");
 
                 for (MiniStock stock : stocks) {
-
-                    System.out.println(stock.getName() + "  " + name);
+                    System.out.println("My stocks = " + stock.getName());
+                    System.out.println("Database stock = " + name);
 
                     if (stock.getName().equals(name)) {
                         System.out.println("Found  -------------------- ");
