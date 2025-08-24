@@ -318,9 +318,6 @@ public class Queries {
                 "    WHERE index_name = '%s'\n" +
                 ");", client.getName().toUpperCase(), client.getName().toUpperCase());
 
-
-        System.out.println(sql);
-
         List<Map<String, Object>> rs = MySql.select(sql, connectionType);
 
         for (Map<String, Object> row : rs) {
@@ -329,9 +326,6 @@ public class Queries {
                 Number counter = (Number) row.get("counter");
 
                 for (MiniStock stock : stocks) {
-                    System.out.println("My stocks = " + stock.getName());
-                    System.out.println("Database stock = " + name);
-
                     if (L.equalsIgnoreCaseAndSpaces(stock.getName(), name)) {
                         System.out.println("Found  -------------------- ");
                         stock.setBid_ask_counter((Integer) counter);
