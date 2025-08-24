@@ -3,6 +3,7 @@ package dataBase.mySql;
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import dataBase.IDataBaseHandler;
+import locals.L;
 import miniStocks.MiniStock;
 
 import java.sql.SQLException;
@@ -331,7 +332,7 @@ public class Queries {
                     System.out.println("My stocks = " + stock.getName());
                     System.out.println("Database stock = " + name);
 
-                    if (stock.getName().equals(name)) {
+                    if (L.equalsIgnoreCaseAndSpaces(stock.getName(), name)) {
                         System.out.println("Found  -------------------- ");
                         stock.setBid_ask_counter((Integer) counter);
                         break;

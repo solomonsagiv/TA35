@@ -260,6 +260,13 @@ public class L {
 	}
 
 
+	public static boolean equalsIgnoreCaseAndSpaces(String s1, String s2) {
+		if (s1 == null || s2 == null) return false;
+		String normalized1 = s1.replaceAll("\\s+", "").toLowerCase();
+		String normalized2 = s2.replaceAll("\\s+", "").toLowerCase();
+		return normalized1.equals(normalized2);
+	}
+
 
 
 	public static double floor(double d, int zeros) {
