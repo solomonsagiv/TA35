@@ -317,6 +317,9 @@ public class Queries {
                 "    WHERE index_name = '%s'\n" +
                 ");", client.getName().toUpperCase(), client.getName().toUpperCase());
 
+
+        System.out.println(sql);
+
         List<Map<String, Object>> rs = MySql.select(sql, connectionType);
 
         for (Map<String, Object> row : rs) {
