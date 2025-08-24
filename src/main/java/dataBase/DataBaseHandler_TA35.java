@@ -303,20 +303,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     }
 
-
-
-    private void load_stocks_data_and_counter() {
-        try {
-            Queries.loadLastSnapshotStocksData(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
-
-            int counter_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
-            int counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(counter_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
-            client.setStocks_weighted_counter(counter);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
     private void load_positive_tracker() {
 
         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);

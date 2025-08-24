@@ -315,7 +315,7 @@ public class Queries {
                 "    SELECT MAX(snapshot_time)\n" +
                 "    FROM sagiv.stocks_data\n" +
                 "    WHERE index_name = '%s'\n" +
-                ");", client.getName(), client.getName());
+                ");", client.getName().toUpperCase(), client.getName().toUpperCase());
 
         List<Map<String, Object>> rs = MySql.select(sql, connectionType);
 
