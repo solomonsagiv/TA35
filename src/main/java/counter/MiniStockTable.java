@@ -19,12 +19,12 @@ import java.util.List;
 
 public class MiniStockTable extends MyGuiComps.MyFrame {
 
-    static Thread runner;
-    static boolean run = true;
-    static DefaultTableModel model;
-    static final DecimalFormat DF = new DecimalFormat("0.00");
+    private Thread runner;
+    private boolean run = true;
+    private DefaultTableModel model;
+    private final DecimalFormat DF = new DecimalFormat("0.00");
 
-    static MyGuiComps.MyTextField
+    private MyGuiComps.MyTextField
             number_of_positive_stocks_field,
             weight_of_positive_stocks_field,
             weighted_counter_field,
@@ -87,19 +87,16 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         controlPanel.add(createColumn("Weighted counter:", weighted_counter_field));
         controlPanel.add(createColumn("Green stocks:", green_stocks_field));
 
-        JFrame frame = new JFrame("Stock Table");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.add(controlPanel, BorderLayout.NORTH);
-        frame.add(new JScrollPane(table), BorderLayout.CENTER);
-        frame.setSize(850, 500);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(controlPanel, BorderLayout.NORTH);
+        getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
 
         refreshModel(stocks);
         start_runner(stocks);
     }
 
-    private static void refreshModel(List<MiniStock> stocks) {
+    private void refreshModel(List<MiniStock> stocks) {
         List<MiniStock> snapshot = new ArrayList<>(stocks);
         snapshot.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
 
@@ -130,8 +127,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         });
     }
 
-    private static void start_runner(List<MiniStock> stocks) {
+    private void start_runner(List<MiniStock> stocks) {
         runner = new Thread(() -> {
+            run = true;
             while (run) {
                 try {
                     Thread.sleep(10000);

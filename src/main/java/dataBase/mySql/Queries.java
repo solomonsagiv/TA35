@@ -131,8 +131,6 @@ public class Queries {
 
     private static List<Map<String, Object>> get_serie_raw_no_modulo_mega_table(int serie_id, String connectionType) {
 
-        String modulu = "%";
-
         String q = "select time, value\n" +
                 "from (\n" +
                 "         select time, value, row_number() over (order by time) as row\n" +
