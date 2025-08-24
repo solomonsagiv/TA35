@@ -7,7 +7,6 @@ import arik.Arik;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
 import stocksHandler.StocksHandler;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;

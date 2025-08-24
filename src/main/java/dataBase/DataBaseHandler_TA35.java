@@ -68,6 +68,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     int stocks_sleep_count = 0;
 
+    int load_stocks_data_count = 0;
+
     @Override
     public void insert_data(int sleep) {
         // Update count
@@ -84,6 +86,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             update_data();
 
             sleep_count = 0;
+
+            // Try load stocks data
+            load_stocks_data();
         }
 
         // Insert stocks
@@ -274,12 +279,31 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Load positive tracker
         load_positive_tracker();
 
-        // Load stocks snapshot
-        load_stocks_data_and_counter();
 
         // Set load
         client.setDb_loaded(true);
     }
+
+
+    private void load_stocks_data() {
+
+        if (load_stocks_data_count > 3 ) return;
+
+        if (TA35.getInstance().getStocksHandler().getStocks().size() == 0) return;
+
+        try {
+            load_stocks_data_count++;
+            Queries.loadLastSnapshotStocksData(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+            load_stocks_data_count = 10;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            Arik.getInstance().sendMessage("TA35 load stocks data");
+            Arik.getInstance().sendErrorMessage(throwables);
+        }
+
+    }
+
+
 
     private void load_stocks_data_and_counter() {
         try {

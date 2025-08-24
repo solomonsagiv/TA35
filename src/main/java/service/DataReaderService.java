@@ -118,6 +118,7 @@ public class DataReaderService extends MyBaseService {
         } else {
 
             initStockCells(conversation);
+
         }
     }
 
