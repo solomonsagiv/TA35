@@ -5,6 +5,7 @@ import api.TA35;
 import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
+import locals.Themes;
 import miniStocks.MiniStock;
 import stocksHandler.StocksHandler;
 import javax.swing.*;
@@ -200,23 +201,57 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     }
 
     static class CounterColorRenderer extends DefaultTableCellRenderer {
+        // שמירת הערכים הקודמים לפי שורה
+        private final java.util.Map<Integer, Integer> prevValues = new java.util.HashMap<>();
+
         public CounterColorRenderer() {
             setHorizontalAlignment(SwingConstants.CENTER);
         }
 
+        @Override
         public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
             Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
             try {
-                int val = Integer.parseInt(v.toString());
-                if (val > 0) comp.setForeground(Color.GREEN.darker());
-                else if (val < 0) comp.setForeground(Color.RED);
-                else comp.setForeground(Color.BLACK);
+                int currentVal = Integer.parseInt(v.toString());
+                Integer prevVal = prevValues.get(r);
+
+                if (prevVal != null) {
+
+                    if (currentVal > 0) {
+                        if (currentVal > prevVal) {
+                            comp.setBackground(Themes.GREEN_LIGHT);
+                            comp.setFont(comp.getFont().deriveFont(Font.BOLD));
+                        } else if (currentVal < prevVal) {
+                            comp.setFont(comp.getFont().deriveFont(Font.PLAIN));
+                            comp.setBackground(Themes.BINANCE_RED);
+                        }
+                        comp.setForeground(Themes.GREEN); // עלה
+                    } else if (currentVal < 0) {
+                        if (currentVal > prevVal) {
+                            comp.setBackground(Themes.GREEN_LIGHT);
+                            comp.setFont(comp.getFont().deriveFont(Font.PLAIN));
+                        } else if (currentVal < prevVal) {
+                            comp.setBackground(Themes.BINANCE_RED);
+                            comp.setFont(getFont().deriveFont(Font.BOLD));
+                        }
+                        comp.setForeground(Themes.RED_2); // ירד
+                    } else {
+                        comp.setFont(comp.getFont().deriveFont(Font.PLAIN));
+                        comp.setBackground(Color.WHITE);
+                        comp.setForeground(Themes.BLACK);
+                    }
+                }
+
+                // עדכון הערך האחרון
+                prevValues.put(r, currentVal);
+
             } catch (Exception e) {
                 comp.setForeground(Color.BLACK);
             }
             return comp;
         }
     }
+
 
 
     private static JPanel createColumn(String labelText, JTextField textField) {

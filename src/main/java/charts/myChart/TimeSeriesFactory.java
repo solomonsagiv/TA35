@@ -455,9 +455,8 @@ public class TimeSeriesFactory {
                     @Override
                     public double getValue() {
                         Options options = client.getExps().getMonth().getOptions();
-                        return options.getBid_ask_counter();
+                        return options.getBidAskCounter();
                     }
-
 
                     @Override
                     public void updateData() {
@@ -480,7 +479,7 @@ public class TimeSeriesFactory {
                     @Override
                     public double getValue() {
                         Options options = client.getExps().getWeek().getOptions();
-                        return options.getBid_ask_counter();
+                        return options.getBidAskCounter();
                     }
 
                     @Override

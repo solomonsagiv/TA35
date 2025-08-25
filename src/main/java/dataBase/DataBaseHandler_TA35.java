@@ -232,7 +232,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Month bid ask counter
-            double week_counter = week_options.getBid_ask_counter();
+            double week_counter = week_options.getBidAskCounter();
 
             if (week_counter != week_counter_0) {
                 double last_count = week_counter - week_counter_0;
@@ -243,7 +243,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Month bid ask counter
-            double month_counter = month_options.getBid_ask_counter();
+            double month_counter = month_options.getBidAskCounter();
 
             if (month_counter != month_counter_0) {
                 double last_count = month_counter - month_counter_0;
@@ -342,8 +342,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         int month_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
         int month_counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(month_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
 
-        client.getExps().getWeek().getOptions().setBid_ask_counter(week_counter);
-        client.getExps().getMonth().getOptions().setBid_ask_counter(month_counter);
+        client.getExps().getWeek().getOptions().setBidAskCounter(week_counter);
+        client.getExps().getMonth().getOptions().setBidAskCounter(month_counter);
 
         System.out.println("---------------------- Counterss ----------------------");
         System.out.println(week_counter + " " + month_counter);

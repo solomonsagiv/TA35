@@ -5,252 +5,196 @@ import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
 import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Options implements IJsonData {
 
     public static final int MONTH = 1;
-    public static final int WEEK = 0;
+    public static final int WEEK  = 0;
 
-    private double contract = 0;
-    private double contractBid = 0;
-    private double contractAsk = 0;
+    private double contract = 0.0;
+    private double contractBid = 0.0;
+    private double contractAsk = 0.0;
 
-    List<Strike> strikes;
-    HashMap<String, Option> optionsMap;
-    ArrayList<Option> options_list;
+    // --- Collections ---
+    private final List<Strike> strikes;                       // לשמירה על סדר/איטרציה
+    private final Map<Double, Strike> strikesByPrice;         // גישה מהירה לפי סטרייק
+    private final Map<String, Option> optionsByName;          // גישה לפי שם (למשל "C1875")
+    private final Map<Integer, Option> optionsById;           // גישה לפי מזהה (אם קיים)
+    private final List<Option> optionsList;                   // שמירת סדר הכנסת אופציות (אם חשוב)
 
-    private int bid_ask_counter = 0;
+    // --- Internal state ---
+    private int bidAskCounter = 0;
 
     protected BASE_CLIENT_OBJECT client;
 
     public Options(BASE_CLIENT_OBJECT client) {
         this.client = client;
-        strikes = new ArrayList<>();
-        optionsMap = new HashMap<>();
-        this.options_list = new ArrayList<>();
+        this.strikes = new ArrayList<>();
+        this.strikesByPrice = new HashMap<>();
+        this.optionsByName = new HashMap<>();
+        this.optionsById = new HashMap<>();
+        this.optionsList = new ArrayList<>();
     }
 
+    /* ============================== Option Access ============================== */
+
+    /** קבלת אופציה לפי שם בפורמט "C1875" או "P1900" */
     public Option getOption(String name) {
+        if (name == null || name.length() < 2) return null;
+        // נסה קודם מהמפה
+        Option direct = optionsByName.get(name);
+        if (direct != null) return direct;
 
-        double targetStrike = Double.parseDouble(name.substring(1));
-
-        for (Strike strike : strikes) {
-            if (strike.getStrike() == targetStrike) {
-                if (name.toLowerCase().contains("c")) {
-                    return strike.getCall();
-                } else {
-                    return strike.getPut();
-                }
-            }
+        // פרסינג fallback
+        char sideChar = Character.toUpperCase(name.charAt(0));
+        String strikeStr = name.substring(1).trim();
+        double targetStrike;
+        try {
+            targetStrike = Double.parseDouble(strikeStr);
+        } catch (NumberFormatException e) {
+            return null;
         }
-        return null;
+        Strike strike = strikesByPrice.get(targetStrike);
+        if (strike == null) return null;
+        return (sideChar == 'C') ? strike.getCall() : strike.getPut();
     }
 
-    public Option getOption(String side, double targetStrike) {
-        for (Strike strike : strikes) {
-            if (strike.getStrike() == targetStrike) {
-                if (side.toLowerCase().contains("c")) {
-                    return strike.getCall();
-                } else {
-                    return strike.getPut();
-                }
-            }
-        }
-        return null;
+    /** קבלת אופציה לפי צד וסטרייק */
+    public Option getOption(Option.Side side, double targetStrike) {
+        Strike strike = strikesByPrice.get(targetStrike);
+        if (strike == null) return null;
+        return (side == Option.Side.CALL) ? strike.getCall() : strike.getPut();
     }
 
-    // Return single strike by strike price (double)
+    /** לפי ID (אם קיים) */
+    public Option getOptionById(int id) {
+        return optionsById.get(id);
+    }
+
+    /* ============================== Strike Access ============================== */
+
+    /** קבלת Strike לפי מחיר סטרייק */
     public Strike getStrike(double strikePrice) {
-        for (Strike strike : strikes) {
-            if (strikePrice == strike.getStrike()) {
-                return strike;
-            }
-        }
-        return null;
+        return strikesByPrice.get(strikePrice);
     }
 
-    // Return list of strikes prices
+    /** רשימת מחירי סטרייקים (לא ממוינת) */
     public ArrayList<Double> getStrikePricesList() {
-        ArrayList<Double> list = new ArrayList<>();
-        strikes.forEach(strike -> list.add(strike.getStrike()));
-        return list;
+        return new ArrayList<>(strikesByPrice.keySet());
     }
 
-    // Remove strike from strikes arr by strike price (double)
-    public void removeStrike(double strike) {
-        int indexToRemove = 0;
-
-        for (int i = 0; i < strikes.size(); i++) {
-            if (strikes.get(i).getStrike() == strike) {
-                indexToRemove = i;
-            }
-        }
-        strikes.remove(indexToRemove);
-    }
-
-    // Remove strike from strikes arr by strike class
-    public void removeStrike(Strike strike) {
-        strikes.remove(strike);
-    }
-
-    // Add strike to strikes arr
+    /** הוספת סטרייק (אם לא קיים) */
     public void addStrike(Strike strike) {
-        boolean contains = getStrikePricesList().contains(strike.getStrike());
-        // Not inside
-        if (!contains) {
+        if (strike == null) return;
+        double k = strike.getStrike();
+        if (!strikesByPrice.containsKey(k)) {
+            strikesByPrice.put(k, strike);
             strikes.add(strike);
         }
     }
 
-    public Option getOptionById(int id) {
-        return optionsMap.get(id);
+    /** הסרת סטרייק לפי מחיר */
+    public void removeStrike(double strikePrice) {
+        Strike s = strikesByPrice.remove(strikePrice);
+        if (s != null) {
+            strikes.remove(s);
+        }
     }
 
-    // Set option in strikes arr
+    /** הסרת סטרייק לפי מופע */
+    public void removeStrike(Strike strike) {
+        if (strike == null) return;
+        strikesByPrice.remove(strike.getStrike());
+        strikes.remove(strike);
+    }
+
+    /* ============================== Mutations ============================== */
+
+    /** רישום אופציה במבנים (שם/ID/סטרייק) והלבשה על Strike */
     public void setOption(Option option) {
-        // HashMap
-        optionsMap.put(option.getName(), option);
-        options_list.add(option);
+        if (option == null) return;
 
-        // Strikes list
-        boolean callPut = option.getSide().toLowerCase().contains("c") ? true : false;
+        // מפות לפי שם ו־ID
+        if (option.getName() != null) {
+            optionsByName.put(option.getName(), option);
+        }
+        Integer oid = option.getId(); // בגרסה שלי זה Integer; אם אצלך int, זה עדיין יעבוד ע"י auto-boxing
+        if (oid != null && oid > 0) {
+            optionsById.put(oid, option);
+        }
+        optionsList.add(option);
 
-        Strike strike = getStrike(option.getStrike());
-
-        if (strike != null) {
-            if (callPut) {
-                if (strike.getCall() == null) {
-                    strike.setCall(option);
-                }
-            } else {
-                if (strike.getPut() == null) {
-                    strike.setPut(option);
-                }
-            }
-        } else {
-            // Create new if doesn't exist
+        // שידוך לסטרייק המתאים
+        double k = option.getStrike();
+        Strike strike = strikesByPrice.get(k);
+        if (strike == null) {
             strike = new Strike();
-            strike.setStrike(option.getStrike());
+            strike.setStrike(k);
+            strikesByPrice.put(k, strike);
+            strikes.add(strike);
+        }
 
-            if (callPut) {
-                strike.setCall(option);
-            } else {
-                strike.setPut(option);
-            }
+        Option.Side side = option.getSideEnum();
+        boolean isCall = (side == Option.Side.CALL) ||
+                (side == null && (option.getSide() != null && option.getSide().equalsIgnoreCase("C")));
 
-            // Add strike
-            addStrike(strike);
+        if (isCall) {
+            if (strike.getCall() == null) strike.setCall(option);
+        } else {
+            if (strike.getPut() == null) strike.setPut(option);
         }
     }
 
-    public List<Strike> getStrikes() {
-        return strikes;
-    }
-
-    public void setStrikes(List<Strike> strikes) {
-        this.strikes = strikes;
-    }
-
-    public String toStringVertical() {
-        String string = "";
-        for (Strike strike : strikes) {
-            string += strike.toString() + "\n\n";
-        }
-        return string;
-    }
-
-    public JSONObject getOptionsWithDataAsJson() {
-        JSONObject json = getAsJson();
-        json.put(JsonStrings.data.toString(), getData());
-        return json;
-    }
-
-    @Override
-    public String toString() {
-        return "Options [contractBid=" + contractBid + ", contractAsk=" + contractAsk + ", contract=" + contract + "]";
-    }
-
+    /** טעינת נתוני אופציות מ־MyJson: מפתח = שם אופציה */
     public void load_options_data_from_json(MyJson json) {
         for (String key : json.keySet()) {
             try {
-                MyJson json_option = json.getMyJson(key);
-
-                Option option = optionsMap.get(key);
-                option.loadFromJson(json_option);
+                MyJson jsonOption = json.getMyJson(key);
+                Option option = optionsByName.get(key);
+                if (option != null) {
+                    option.loadFromJson(jsonOption);
+                } // else: אפשר לוג אזהרה
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public MyJson getData() {
-        // Main json
-        MyJson json = new MyJson();
+    /* ============================== Serialization ============================== */
 
-        for (Option option : options_list) {
-            // Json option
-            MyJson option_json = option.getAsJson();
-
-            // Put option json
-            json.put(option.getName(), option_json);
-        }
+    /** JSON בסיסי של הקונטרקט + דאטה של כל האופציות */
+    public JSONObject getOptionsWithDataAsJson() {
+        JSONObject json = getAsJson(); // MyJson כנראה יורש/מתנהג כ-JSONObject בפרויקט שלך
+        json.put(JsonStrings.data.toString(), getData());
         return json;
     }
 
-    public void setContractBid(double newBid) {
-        if (contractBid != 0) {
-            if (newBid > this.contractBid) {
-                bid_ask_counter++;
-            }
+    /** מחזיר MyJson עם כל האופציות: key=name, value=option.getAsJson() */
+    public MyJson getData() {
+        MyJson json = new MyJson();
+        for (Option option : optionsList) {
+            if (option == null || option.getName() == null) continue;
+            json.put(option.getName(), option.getAsJson());
         }
-        this.contractBid = newBid;
-    }
-
-    public double getContractBid() {
-        return contractBid;
-    }
-
-    public double getContractAsk() {
-        return contractAsk;
-    }
-
-    public void setContractAsk(double newAsk) {
-        if (contractAsk != 0) {
-            if (newAsk < this.contractAsk) {
-                bid_ask_counter--;
-            }
-        }
-        this.contractAsk = newAsk;
-    }
-
-    public String str(Object o) {
-        return String.valueOf(o);
-    }
-
-    public double absolute(double d) {
-        return Math.abs(d);
-    }
-
-    public double getContract() {
-        return contract;
-    }
-
-    public void setContract(double contract) {
-        this.contract = contract;
+        return json;
     }
 
     @Override
     public MyJson getAsJson() {
         MyJson json = new MyJson();
         json.put(JsonStrings.con, getContract());
+        json.put("contractBid", getContractBid());
+        json.put("contractAsk", getContractAsk());
+        json.put("bidAskCounter", getBidAskCounter());
         return json;
     }
 
     @Override
     public void loadFromJson(MyJson json) {
+        // אם תרצה לטעון חזרה contract/bid/ask — אפשר להוסיף כאן
     }
 
     @Override
@@ -263,12 +207,85 @@ public class Options implements IJsonData {
         return new MyJson();
     }
 
-    public int getBid_ask_counter() {
-        return bid_ask_counter;
+    /* ============================== Presentation ============================== */
+
+    /** הדפסה אנכית של ה־Strikes, ממוינת לפי סטרייק */
+    public String toStringVertical() {
+        StringBuilder sb = new StringBuilder();
+        List<Strike> sorted = strikes.stream()
+                .sorted(Comparator.comparingDouble(Strike::getStrike))
+                .collect(Collectors.toList());
+        for (Strike s : sorted) {
+            sb.append(s.toString()).append("\n\n");
+        }
+        return sb.toString();
     }
 
-    public void setBid_ask_counter(int bid_ask_counter) {
-        this.bid_ask_counter = bid_ask_counter;
+    @Override
+    public String toString() {
+        return "Options{contractBid=" + contractBid +
+                ", contractAsk=" + contractAsk +
+                ", contract=" + contract +
+                ", bidAskCounter=" + bidAskCounter +
+                ", strikes=" + strikes.size() +
+                ", options=" + optionsList.size() +
+                "}";
+    }
+
+    /* ============================== Contract & Ticks ============================== */
+
+    public void setContractBid(double newBid) {
+        if (this.contractBid != 0.0 && newBid > this.contractBid) {
+            bidAskCounter++;
+        }
+        this.contractBid = newBid;
+    }
+
+    public double getContractBid() { return contractBid; }
+
+    public void setContractAsk(double newAsk) {
+        if (this.contractAsk != 0.0 && newAsk < this.contractAsk) {
+            bidAskCounter--;
+        }
+        this.contractAsk = newAsk;
+    }
+
+    public double getContractAsk() { return contractAsk; }
+
+    public double getContract() { return contract; }
+    public void setContract(double contract) { this.contract = contract; }
+
+    public int getBidAskCounter() { return bidAskCounter; }
+    public void setBidAskCounter(int bidAskCounter) { this.bidAskCounter = bidAskCounter; }
+
+    /* ============================== Bulk Getters/Setters ============================== */
+
+    public List<Strike> getStrikes() { return strikes; }
+
+    /** החלפה מלאה של רשימת סטרייקים (תנקה גם את המפה) */
+    public void setStrikes(List<Strike> newStrikes) {
+        strikes.clear();
+        strikesByPrice.clear();
+        if (newStrikes != null) {
+            for (Strike s : newStrikes) {
+                if (s == null) continue;
+                strikes.add(s);
+                strikesByPrice.put(s.getStrike(), s);
+            }
+        }
+    }
+
+    public List<Option> getOptionsList() { return optionsList; }
+    public Map<String, Option> getOptionsByName() { return optionsByName; }
+    public Map<Integer, Option> getOptionsById() { return optionsById; }
+
+    /* ============================== Utilities ============================== */
+
+    /** מחזיר סטרייק ה‑ATM הקרוב ביותר למחיר נתון */
+    public Strike getAtmStrike(double underlying) {
+        if (strikes.isEmpty()) return null;
+        return strikes.stream()
+                .min(Comparator.comparingDouble(s -> Math.abs(s.getStrike() - underlying)))
+                .orElse(null);
     }
 }
-

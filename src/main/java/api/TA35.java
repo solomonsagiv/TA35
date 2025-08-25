@@ -13,6 +13,8 @@ import locals.Themes;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
+import options.OptionsMonth;
+import options.OptionsWeek;
 import org.json.JSONObject;
 import races.Race_Logic;
 import races.RacesService;
@@ -20,7 +22,6 @@ import races.Stocks_Race_Service;
 import service.BasketFinder_by_stocks;
 import service.MyServiceHandler;
 import stocksHandler.StocksHandler;
-
 import java.awt.*;
 import java.util.HashMap;
 
@@ -28,6 +29,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     private static TA35 TA35;
     private String status;
+    private OptionsWeek optionsWeek;
+    private OptionsMonth optionsMonth;
 
     private Stocks_Race_Service stocks_race_service;
 
@@ -267,6 +270,22 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         json.put(JsonStrings.expWeek, exps.getWeek().getResetJson());
         json.put(JsonStrings.expMonth, exps.getMonth().getResetJson());
         return json;
+    }
+
+    public OptionsWeek getOptionsWeek() {
+        return optionsWeek;
+    }
+
+    public void setOptionsWeek(OptionsWeek optionsWeek) {
+        this.optionsWeek = optionsWeek;
+    }
+
+    public OptionsMonth getOptionsMonth() {
+        return optionsMonth;
+    }
+
+    public void setOptionsMonth(OptionsMonth optionsMonth) {
+        this.optionsMonth = optionsMonth;
     }
 
     @Override

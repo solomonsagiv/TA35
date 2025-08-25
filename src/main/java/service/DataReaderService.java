@@ -90,11 +90,46 @@ public class DataReaderService extends MyBaseService {
                 // Read stocks
                 read_stocks();
 
+                // Read options
+//                read_options();
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void read_options() {
+        // Read week
+//        read_week();
+
+
+    }
+
+    private void init_options() {
+
+
+        for (int i = 0; i < 10; i++) {
+
+        }
+
+
+    }
+
+//    private void read_week() {
+//        OptionsWeek optionsWeek = TA35.getInstance().getOptionsWeek();
+//        for (Strike strike: optionsWeek.getStrikes()) {
+//            // Call
+//            Option call = strike.getCall();
+//            call.setBid();
+//
+//
+//
+//            Option put = strike.getPut();
+//
+//
+//        }
+//    }
 
     private void read_stocks() {
 
