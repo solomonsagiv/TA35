@@ -29,22 +29,11 @@ public class Option implements IJsonData {
 	private double stDev = 0;
 	private double delta = 0;
 	private ArrayList<Integer> cycleState = new ArrayList<>();
-
+	
 	private int bidAskCounter = 0;
-	private ArrayList<Integer> bidAskCounterList = new ArrayList<>();
-
-	private int bidAskCalcCounter = 0;
-	private ArrayList<Integer> bidAskCalcCounterList = new ArrayList<>();
-	
 	private int deltaCounter = 0;
-	private ArrayList<Double> deltaCounterList = new ArrayList<>();
-	
+
 	private HashMap<Integer, Level> levels;
-	private ArrayList<Integer> lastList = new ArrayList<>();
-
-	private ArrayList<Integer> bidStateList = new ArrayList<>();
-	private ArrayList<Integer> askStateList = new ArrayList<>();
-
 	Options options;
 
 	// Constructor
@@ -60,15 +49,6 @@ public class Option implements IJsonData {
 		levels.put(3, new Level(3));
 		levels.put(4, new Level(4));
 		levels.put(5, new Level(5));
-	}
-	
-	
-	public void increaseCalcCounter() {
-		bidAskCalcCounter++;
-	}
-	
-	public void decreaseCalcCounter() {
-		bidAskCalcCounter--;
 	}
 	
 	// Getters and Setters
@@ -144,14 +124,6 @@ public class Option implements IJsonData {
 		this.levels = levels;
 	}
 
-	public ArrayList<Integer> getLastList() {
-		return lastList;
-	}
-
-	public void setLastList(ArrayList<Integer> lastList) {
-		this.lastList = lastList;
-	}
-
 	public int getBidAskCounter() {
 		return bidAskCounter;
 	}
@@ -160,22 +132,6 @@ public class Option implements IJsonData {
 		this.bidAskCounter = bidAskCounter;
 	}
 
-	public ArrayList<Integer> getBidStateList() {
-		return bidStateList;
-	}
-
-	public void setBidStateList(ArrayList<Integer> bidStateList) {
-		this.bidStateList = bidStateList;
-	}
-
-	public ArrayList<Integer> getAskStateList() {
-		return askStateList;
-	}
-
-	public void setAskStateList(ArrayList<Integer> askStateList) {
-		this.askStateList = askStateList;
-	}
-	
 	public int lastCycle() throws NullPointerException {
 		return cycleState.get(1);
 	}
@@ -191,48 +147,6 @@ public class Option implements IJsonData {
 			cycleState.remove(0);
 			cycleState.add(cycle);
 		}
-	}
-	
-	public void addBidState(int bid) {
-		if (bidStateList.size() < 2) {
-			bidStateList.add(bid);
-		} else {
-			bidStateList.remove(0);
-			bidStateList.add(bid);
-		}
-	}
-	
-	public int lastBid() throws NullPointerException {
-		return bidStateList.get(1);
-	}
-	
-	public int pretBid() throws NullPointerException {
-		return bidStateList.get(0);
-	}
-	
-	public int lastAsk() throws NullPointerException {
-		return askStateList.get(1);
-	}
-	
-	public int preAsk() throws NullPointerException {
-		return askStateList.get(0);
-	}
-
-	public void addAskState(int ask) {
-		if (askStateList.size() < 2) {
-			askStateList.add(ask);
-		} else {
-			askStateList.remove(0);
-			askStateList.add(ask);
-		}
-	}
-	
-	public ArrayList<Integer> getBidAskCounterList() {
-		return bidAskCounterList;
-	}
-
-	public void setBidAskCounterList(ArrayList<Integer> bidAskCounterList) {
-		this.bidAskCounterList = bidAskCounterList;
 	}
 
 	public double getStDev() {
@@ -261,24 +175,6 @@ public class Option implements IJsonData {
 				", volume=" + volume +
 				", delta=" + delta +
 				'}';
-	}
-
-
-
-	public int getBidAskCalcCounter() {
-		return bidAskCalcCounter;
-	}
-
-	public void setBidAskCalcCounter(int bidAskCalcCounter) {
-		this.bidAskCalcCounter = bidAskCalcCounter;
-	}
-
-	public ArrayList<Integer> getBidAskCalcCounterList() {
-		return bidAskCalcCounterList;
-	}
-
-	public void setBidAskCalcCounterList(ArrayList<Integer> bidAskCalcCounterList) {
-		this.bidAskCalcCounterList = bidAskCalcCounterList;
 	}
 
 	public int getBid() {
@@ -329,10 +225,6 @@ public class Option implements IJsonData {
 		this.deltaCounter = deltaCounter;
 	}
 
-	public ArrayList<Double> getDeltaCounterList() {
-		return deltaCounterList;
-	}
-	
 	public void increaseDeltaCounter() {
 		deltaCounter++;
 	}
@@ -363,10 +255,6 @@ public class Option implements IJsonData {
 
 	public int getOpen_pos() {
 		return open_pos;
-	}
-
-	public void setDeltaCounterList(ArrayList<Double> deltaCounterList) {
-		this.deltaCounterList = deltaCounterList;
 	}
 
 	@Override

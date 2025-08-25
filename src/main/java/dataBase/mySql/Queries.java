@@ -305,11 +305,12 @@ public class Queries {
     // Load the last snapshot of each stock into the list of stocks
     public static void loadLastSnapshotStocksData(List<MiniStock> stocks, String connectionType) throws SQLException {
 
-        TA35 client  = TA35.getInstance();
+        TA35 client = TA35.getInstance();
 
         String sql = String.format("SELECT *\n" +
                 "FROM sagiv.stocks_data\n" +
-                "WHERE index_name = '%s'\n" +
+                "WHERE" +
+                "  date_trunc('day', time) between date_trunc('day', now()) and date_trunc('day', now() + interval '1' day) and index_name = '%s'\n" +
                 "  AND snapshot_time = (\n" +
                 "    SELECT MAX(snapshot_time)\n" +
                 "    FROM sagiv.stocks_data\n" +
