@@ -41,8 +41,8 @@ public class MyBlackScholes {
 //		double timeToExp = TA35.getDaysToExp() / 365.0;
 		double timeToExp = 1;
 		double stDev = 0.001;
-		double bid = option.lastBid() / 100;
-		double ask = option.lastAsk() / 100;
+		double bid = option.getBid() / 100;
+		double ask = option.getAsk() / 100;
 		double interest = 1.045;
 		Boolean callPut = option.getSide().toLowerCase().contains("c") ? true : false;
 
@@ -107,7 +107,7 @@ public class MyBlackScholes {
 
 		Boolean callPut = option.getSide().toLowerCase().contains("c") ? true : false;
 		double calcPrice = (getGreeaks(option.getStrike(), callPut, targetPrice, interest, timeToExp, stDev)[0]) * 100;
-		double avgPrice = (option.lastBid() + option.lastAsk()) / 2;
+		double avgPrice = (option.getBid() + option.getAsk()) / 2;
 
 		// If bigger than ask
 		if (calcPrice > avgPrice) {
