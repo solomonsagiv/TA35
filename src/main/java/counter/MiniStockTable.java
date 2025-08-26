@@ -1,3 +1,4 @@
+
 package counter;
 
 import api.BASE_CLIENT_OBJECT;
@@ -5,25 +6,42 @@ import api.TA35;
 import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
-import locals.Themes;
 import miniStocks.MiniStock;
-import stocksHandler.StocksHandler;
+
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import javax.swing.table.*;
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * טבלת מניות מעוצבת (תואם Java 11):
+ * Name | Open% | Last% | Change% | Counter | Weight
+ * - צביעת שינוי בין ריענונים (ירוק/אדום)
+ * - זברה-רואו, כותרת מעוצבת, גריד עדין, מיון עמודות
+ * - פורמט מספרים עם % וחץ ↑/↓
+ */
 public class MiniStockTable extends MyGuiComps.MyFrame {
 
-    private Thread runner;
-    private boolean run = true;
-    private DefaultTableModel model;
-    private final DecimalFormat DF = new DecimalFormat("0.00");
+    /* ======== Colors / Styles ======== */
+    private static final Color BG_WHITE      = Color.WHITE;
+    private static final Color BG_STRIPE     = new Color(0xFAFAFA);
+    private static final Color BG_GREEN_SOFT = new Color(0xE6F4EA);
+    private static final Color BG_RED_SOFT   = new Color(0xFDE7E9);
+    private static final Color GRID_COLOR    = new Color(0xEEEEEE);
+    private static final Color HEADER_BG     = new Color(0xF5F7FA);
+    private static final Color HEADER_FG     = new Color(0x263238);
+    private static final Color SELECTION_BG  = new Color(0xE3F2FD);
+    private static final Color SELECTION_FG  = new Color(0x000000);
+
+    private static final DecimalFormat DF_PCT = new DecimalFormat("0.00");
+    private static final DecimalFormat DF_WGT = new DecimalFormat("0.00");
+
+    /* ======== UI ======== */
+    private JTable table;
+    private Model model;
 
     private MyGuiComps.MyTextField
             number_of_positive_stocks_field,
@@ -31,18 +49,27 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             weighted_counter_field,
             green_stocks_field;
 
+    /* ======== Data ======== */
+    private List<MiniStock> stocksRef;
+
+    /* ======== Refresh Thread ======== */
+    private Thread runner;
+    private volatile boolean run = true;
+
+
     public MiniStockTable(BASE_CLIENT_OBJECT client, String title) throws HeadlessException {
         super(client, title);
     }
 
     @Override
-    public void initListeners() {
-
-    }
+    public void initListeners() { /* no-op */ }
 
     @Override
     public void initialize() {
-        showTable(((TA35) client).getStocksHandler().getStocks());
+        this.stocksRef = new ArrayList<MiniStock>(TA35.getInstance().getStocksHandler().getStocks());
+        buildUI();
+        refreshNow();     // טעינה ראשונה
+        startRunner();    // רענון מחזורי
     }
 
     @Override
@@ -52,233 +79,389 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         super.onClose();
     }
 
-    private void showTable(List<MiniStock> stocks) {
-        stocks.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
-        String[] columns = {"Name", "Open", "Last", "Change", "Counter", "Weight"};
-        model = new DefaultTableModel(columns, 0) {
-            public boolean isCellEditable(int r, int c) {
-                return false;
-            }
-        };
+    /* ======================== UI Build ======================== */
 
-        JTable table = new JTable(model);
-        table.setFont(new Font("Arial", Font.PLAIN, 13));
-        table.setRowHeight(22);
-        table.setIntercellSpacing(new Dimension(5, 2));
+    private void buildUI() {
+        setLayout(new BorderLayout());
 
-        JTableHeader header = table.getTableHeader();
-        header.setFont(new Font("Arial", Font.BOLD, 15));
+        // ---- Controls (KPIs) ----
+        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(15);
+        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(15);
+        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(15);
+        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(15);
 
-        table.getColumnModel().getColumn(0).setCellRenderer(new BoldCenterRenderer());
-        table.getColumnModel().getColumn(1).setCellRenderer(new OpenColorRenderer());
-        table.getColumnModel().getColumn(2).setCellRenderer(new LastColorRenderer());
-        table.getColumnModel().getColumn(3).setCellRenderer(new LastColorRenderer());
-        table.getColumnModel().getColumn(4).setCellRenderer(new CounterColorRenderer());
-        table.getColumnModel().getColumn(5).setCellRenderer(new WeightRenderer());
-
-        number_of_positive_stocks_field = new MyGuiComps.MyTextField();
-        weight_of_positive_stocks_field = new MyGuiComps.MyTextField();
-        weighted_counter_field = new MyGuiComps.MyTextField();
-        green_stocks_field = new MyGuiComps.MyTextField();
-
-        JPanel controlPanel = new JPanel();
-        controlPanel.setLayout(new GridLayout(1, 4, 15, 0)); // 1 שורה, 4 עמודות
+        JPanel controlPanel = new JPanel(new GridLayout(1, 4, 15, 0));
         controlPanel.add(createColumn("Positive counter :", number_of_positive_stocks_field));
-        controlPanel.add(createColumn("Total weight:", weight_of_positive_stocks_field));
-        controlPanel.add(createColumn("Weighted counter:", weighted_counter_field));
-        controlPanel.add(createColumn("Green stocks:", green_stocks_field));
+        controlPanel.add(createColumn("Total weight:",      weight_of_positive_stocks_field));
+        controlPanel.add(createColumn("Weighted counter:",  weighted_counter_field));
+        controlPanel.add(createColumn("Green stocks:",      green_stocks_field));
+        add(controlPanel, BorderLayout.NORTH);
 
+        // ---- Table ----
+        model = new Model();
+        table = new JTable(model);
+        table.setRowHeight(28);
+        table.setFillsViewportHeight(true);
+        table.setAutoCreateRowSorter(true);
+        table.setShowHorizontalLines(true);
+        table.setShowVerticalLines(false);
+        table.setGridColor(GRID_COLOR);
+        table.setIntercellSpacing(new Dimension(0, 1));
+        table.setSelectionBackground(SELECTION_BG);
+        table.setSelectionForeground(SELECTION_FG);
 
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(controlPanel, BorderLayout.NORTH);
-        getContentPane().add(new JScrollPane(table), BorderLayout.CENTER);
+        // Header style
+        JTableHeader header = table.getTableHeader();
+        JTableHeaderStyled.apply(header);
 
-        refreshModel(stocks);
-        start_runner(stocks);
+        // Renderers
+        CellRenderer renderer = new CellRenderer(model);
+        for (int c = 0; c < model.getColumnCount(); c++) {
+            TableColumn col = table.getColumnModel().getColumn(c);
+            if (c == Model.COL_NAME) {
+                col.setCellRenderer(new NameRenderer());
+            } else {
+                col.setCellRenderer(renderer);
+            }
+        }
+
+        // Column widths
+        int[] widths = {160, 100, 100, 110, 100, 100};
+        TableColumnModel cm = table.getColumnModel();
+        for (int i = 0; i < Math.min(widths.length, cm.getColumnCount()); i++) {
+            cm.getColumn(i).setPreferredWidth(widths[i]);
+        }
+
+        add(new JScrollPane(table), BorderLayout.CENTER);
     }
 
-    private void refreshModel(List<MiniStock> stocks) {
-        List<MiniStock> snapshot = new ArrayList<>(stocks);
-        snapshot.sort(Comparator.comparingDouble(MiniStock::getWeight).reversed());
+    private static JPanel createColumn(String labelText, JTextField textField) {
+        JPanel panel = new JPanel(new BorderLayout());
+        JLabel label = new JLabel(labelText, SwingConstants.CENTER);
+        label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        panel.add(label, BorderLayout.NORTH);
+        panel.add(textField, BorderLayout.CENTER);
+        return panel;
+    }
 
-        SwingUtilities.invokeLater(() -> {
-            model.setRowCount(0);
-            for (MiniStock s : snapshot) {
-                Object[] row = new Object[6];
-                row[0] = s.getName();
-                if (s.getBase() != 0) {
-                    double openPct = ((s.getOpen() - s.getBase()) / s.getBase()) * 100;
-                    double lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100;
-                    double diffPct = lastPct - openPct;
-                    row[1] = formatWithArrow(openPct, DF);
-                    row[2] = formatWithArrow(lastPct, DF);
-                    row[3] = formatWithArrow(diffPct, DF);
-                } else {
-                    row[1] = row[2] = row[3] = "-";
-                }
-                row[4] = s.getBid_ask_counter();
-                row[5] = DF.format(s.getWeight());
-                model.addRow(row);
+    /* ======================== Refresh & Runner ======================== */
+
+    private void refreshNow() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                // עדכון מודל הטבלה
+                model.refreshFrom(stocksRef);
+
+                // עדכון ה-KPIs העליונים
+                number_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_count());
+                weight_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_weight_count());
+                green_stocks_field.colorForge(Calculator.get_green_stocks());
+                weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
             }
-
-            number_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_count());
-            weight_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_weight_count());
-            green_stocks_field.colorForge(Calculator.get_green_stocks());
-            weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
         });
     }
 
-    private void start_runner(List<MiniStock> stocks) {
-        runner = new Thread(() -> {
-            run = true;
-            while (run) {
-                try {
-                    Thread.sleep(10000);
-                    refreshModel(stocks);
-                } catch (InterruptedException e) {
-                    Arik.getInstance().sendErrorMessage(e);
+    private void startRunner() {
+        runner = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                run = true;
+                while (run) {
+                    try {
+                        Thread.sleep(10_000);
+                        // משיכת רשימת המניות העדכנית (אם האובייקטים מתעדכנים במקום – אפשר להשאיר את אותה רשימה)
+                        stocksRef = new ArrayList<MiniStock>(TA35.getInstance().getStocksHandler().getStocks());
+                        refreshNow();
+                    } catch (InterruptedException e) {
+                        Arik.getInstance().sendErrorMessage(e);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
-
             }
         }, "MiniStockTable-Refresher");
         runner.setDaemon(true);
         runner.start();
     }
 
-    private static String formatWithArrow(double value, DecimalFormat df) {
-        String arrow = value > 0 ? " ↑" : value < 0 ? " ↓" : "";
-        return df.format(value) + "%" + arrow;
-    }
+    /* ======================== Table Model ======================== */
 
-    static class BoldCenterRenderer extends DefaultTableCellRenderer {
-        public BoldCenterRenderer() {
-            setHorizontalAlignment(SwingConstants.CENTER);
-        }
+    private static class Model extends AbstractTableModel {
+        static final int COL_NAME    = 0;
+        static final int COL_OPEN    = 1;
+        static final int COL_LAST    = 2;
+        static final int COL_CHANGE  = 3;
+        static final int COL_COUNTER = 4;
+        static final int COL_WEIGHT  = 5;
 
-        public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
-            Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
-            comp.setFont(new Font("Arial", Font.BOLD, 13));
-            return comp;
-        }
-    }
+        private final String[] cols = {"Name", "Open", "Last", "Change", "Counter", "Weight"};
 
-    static class OpenColorRenderer extends DefaultTableCellRenderer {
-        public OpenColorRenderer() {
-            setHorizontalAlignment(SwingConstants.CENTER);
-        }
+        /** Row holder */
+        private static class Row {
+            final String name;
+            final double openPct;   // NaN אם base=0
+            final double lastPct;
+            final double changePct; // last-open
+            final int    counter;
+            final double weight;
 
-        public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
-            Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
-            try {
-                String str = (v == null) ? "0" : v.toString();
-                int p = str.indexOf('%');
-                double val = (p > 0) ? Double.parseDouble(str.substring(0, p)) : Double.parseDouble(str);
-                comp.setForeground(val > 0 ? Color.GREEN.darker() : (val < 0 ? Color.RED : Color.BLACK));
-            } catch (Exception e) {
-                comp.setForeground(Color.BLACK);
+            Row(String name, double openPct, double lastPct, double changePct, int cnt, double weight) {
+                this.name = name;
+                this.openPct = openPct;
+                this.lastPct = lastPct;
+                this.changePct = changePct;
+                this.counter = cnt;
+                this.weight = weight;
             }
-            return comp;
-        }
-    }
-
-    static class WeightRenderer extends DefaultTableCellRenderer {
-        public WeightRenderer() {
-            setHorizontalAlignment(SwingConstants.CENTER);
         }
 
-        public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
-            Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
-            try {
-                comp.setForeground(Color.BLACK);
-            } catch (Exception e) {
-                comp.setForeground(Color.BLACK);
+        private final List<Row> rows = new ArrayList<Row>();
+
+        /** Prev snapshot by stock name -> values per column (numeric only) */
+        private final Map<String, double[]> prevByName = new ConcurrentHashMap<String, double[]>();
+        /** Curr snapshot by stock name -> values per column (numeric only) */
+        private final Map<String, double[]> currByName = new ConcurrentHashMap<String, double[]>();
+
+        void refreshFrom(List<MiniStock> stocks) {
+            if (stocks == null) return;
+
+            // prev <- curr
+            prevByName.clear();
+            prevByName.putAll(currByName);
+            currByName.clear();
+
+            // build rows
+            List<MiniStock> sorted = new ArrayList<MiniStock>(stocks);
+            Collections.sort(sorted, new Comparator<MiniStock>() {
+                @Override
+                public int compare(MiniStock a, MiniStock b) {
+                    return Double.compare(b.getWeight(), a.getWeight()); // ירידה
+                }
+            });
+
+            List<Row> newRows = new ArrayList<Row>(sorted.size());
+            for (MiniStock s : sorted) {
+                String name = s.getName();
+                double openPct = Double.NaN, lastPct = Double.NaN, diffPct = Double.NaN;
+                if (s.getBase() != 0) {
+                    openPct = ((s.getOpen()      - s.getBase()) / s.getBase()) * 100.0;
+                    lastPct = ((s.getPre_last() - s.getBase()) / s.getBase()) * 100.0;
+                    diffPct = lastPct - openPct;
+                }
+                int counter = s.getBid_ask_counter();
+                double weight = s.getWeight();
+
+                // fill curr map for change detection (name-based)
+                double[] currVals = new double[6];
+                currVals[COL_NAME]    = Double.NaN;    // לא מספרי
+                currVals[COL_OPEN]    = openPct;
+                currVals[COL_LAST]    = lastPct;
+                currVals[COL_CHANGE]  = diffPct;
+                currVals[COL_COUNTER] = counter;
+                currVals[COL_WEIGHT]  = weight;
+                currByName.put(name, currVals);
+
+                newRows.add(new Row(name, openPct, lastPct, diffPct, counter, weight));
             }
-            return comp;
+
+            rows.clear();
+            rows.addAll(newRows);
+            fireTableDataChanged();
+        }
+
+        @Override public int getRowCount() { return rows.size(); }
+        @Override public int getColumnCount() { return cols.length; }
+        @Override public String getColumnName(int column) { return cols[column]; }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            if (columnIndex == COL_NAME) return String.class;
+            return Double.class; // כדי שמיון יהיה מספרי
+        }
+
+        @Override public boolean isCellEditable(int r, int c) { return false; }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            Row r = rows.get(rowIndex);
+            switch (columnIndex) {
+                case COL_NAME:    return r.name;
+                case COL_OPEN:    return Double.isNaN(r.openPct)   ? null : r.openPct;
+                case COL_LAST:    return Double.isNaN(r.lastPct)   ? null : r.lastPct;
+                case COL_CHANGE:  return Double.isNaN(r.changePct) ? null : r.changePct;
+                case COL_COUNTER: return (double) r.counter; // נשמר Double למיון
+                case COL_WEIGHT:  return r.weight;
+                default:          return null;
+            }
+        }
+
+        /** -1 ירד, 0 ללא שינוי/לא ידוע, +1 עלה — לפי שם המניה */
+        int getChangeDirection(int viewRow, int col, JTable table) {
+            if (viewRow < 0 || viewRow >= rows.size()) return 0;
+            int modelRow = table.convertRowIndexToModel(viewRow);
+            String name = rows.get(modelRow).name;
+
+            double[] prev = prevByName.get(name);
+            double[] curr = currByName.get(name);
+            if (prev == null || curr == null) return 0;
+
+            double p = prev[col], c = curr[col];
+            if (Double.isNaN(p) || Double.isNaN(c)) return 0;
+            if (c > p) return 1;
+            if (c < p) return -1;
+            return 0;
+        }
+
+        Double getDiffValue(int viewRow, int col, JTable table) {
+            if (viewRow < 0 || viewRow >= rows.size()) return null;
+            int modelRow = table.convertRowIndexToModel(viewRow);
+            String name = rows.get(modelRow).name;
+
+            double[] prev = prevByName.get(name);
+            double[] curr = currByName.get(name);
+            if (prev == null || curr == null) return null;
+
+            double p = prev[col], c = curr[col];
+            if (Double.isNaN(p) || Double.isNaN(c)) return null;
+            return Double.valueOf(c - p);
         }
     }
 
-    static class LastColorRenderer extends OpenColorRenderer {
+    /* ======================== Renderers ======================== */
+
+    private static class JTableHeaderStyled {
+        static void apply(JTableHeader header) {
+            header.setReorderingAllowed(true);
+            header.setResizingAllowed(true);
+            header.setBackground(HEADER_BG);
+            header.setForeground(HEADER_FG);
+            header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+            header.setOpaque(true);
+
+            final TableCellRenderer base = header.getDefaultRenderer();
+            header.setDefaultRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable tbl, Object value, boolean isSelected,
+                                                               boolean hasFocus, int row, int column) {
+                    Component comp = base.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+                    if (comp instanceof JComponent) {
+                        ((JComponent) comp).setOpaque(true);
+                    }
+                    comp.setBackground(HEADER_BG);
+                    comp.setForeground(HEADER_FG);
+                    if (comp instanceof JLabel) {
+                        ((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
+                    }
+                    return comp;
+                }
+            });
+        }
     }
 
-    static class CounterColorRenderer extends DefaultTableCellRenderer {
-        // שמירת הערכים הקודמים לפי שורה
-        private final java.util.Map<Integer, Integer> prevValues = new java.util.HashMap<>();
-
-        public CounterColorRenderer() {
+    private static class NameRenderer extends DefaultTableCellRenderer {
+        NameRenderer() {
             setHorizontalAlignment(SwingConstants.CENTER);
+            setFont(new Font("Segoe UI", Font.BOLD, 13));
+        }
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            // Zebra / selection
+            if (isSelected) {
+                c.setBackground(SELECTION_BG); c.setForeground(SELECTION_FG);
+            } else {
+                c.setBackground((row % 2 == 0) ? BG_WHITE : BG_STRIPE); c.setForeground(Color.BLACK);
+            }
+            return c;
+        }
+    }
+
+    /** Renderer כללי: פורמט, חצים, הדגשת שינוי, זברה */
+    private static class CellRenderer extends DefaultTableCellRenderer {
+        private final Model model;
+        CellRenderer(Model model) {
+            this.model = model;
+            setHorizontalAlignment(SwingConstants.CENTER);
+            setFont(new Font("Consolas", Font.PLAIN, 13));
         }
 
         @Override
-        public Component getTableCellRendererComponent(JTable t, Object v, boolean s, boolean f, int r, int c) {
-            Component comp = super.getTableCellRendererComponent(t, v, s, f, r, c);
-            try {
-                int currentVal = Integer.parseInt(v.toString());
-                Integer prevVal = prevValues.get(r);
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                if (prevVal != null) {
-
-                    if (currentVal > 0) {
-                        if (currentVal > prevVal) {
-                            comp.setBackground(Themes.GREEN_LIGHT);
-                        } else if (currentVal < prevVal) {
-                            comp.setBackground(Themes.BINANCE_RED);
-                        } else {
-                            comp.setBackground(Color.WHITE);
-                        }
-                        comp.setForeground(Themes.GREEN); // עלה
-                    } else if (currentVal < 0) {
-                        if (currentVal > prevVal) {
-                            comp.setBackground(Themes.GREEN_LIGHT);
-                        } else if (currentVal < prevVal) {
-                            comp.setBackground(Themes.BINANCE_RED);
-                        } else {
-                            comp.setBackground(Color.WHITE);
-                        }
-                        comp.setForeground(Themes.RED_2); // ירד
-                    } else {
-                        comp.setBackground(Color.WHITE);
-                        comp.setForeground(Themes.BLACK);
-                    }
+            // ----- Text format -----
+            String text;
+            if (value == null) {
+                text = "-";
+            } else if (value instanceof Number) {
+                double v = ((Number) value).doubleValue();
+                if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE) {
+                    String arrow = v > 0 ? " ↑" : (v < 0 ? " ↓" : "");
+                    text = DF_PCT.format(v) + "%" + arrow;
+                } else if (column == Model.COL_WEIGHT) {
+                    text = DF_WGT.format(v);
+                } else if (column == Model.COL_COUNTER) {
+                    text = String.valueOf((int) v);
+                } else {
+                    text = DF_WGT.format(v);
                 }
-
-                // עדכון הערך האחרון
-                prevValues.put(r, currentVal);
-
-            } catch (Exception e) {
-                comp.setForeground(Color.BLACK);
+            } else {
+                text = value.toString();
             }
-            return comp;
+            setText(text);
+
+            // ----- Tooltip: שינוי מול הקודם -----
+            Double diff = model.getDiffValue(row, column, table);
+            if (diff != null) {
+                String tip;
+                if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE) {
+                    tip = "Δ שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + DF_PCT.format(diff.doubleValue()) + "%";
+                } else if (column == Model.COL_COUNTER) {
+                    tip = "שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + ((int) Math.round(diff.doubleValue()));
+                } else {
+                    tip = "שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + DF_WGT.format(diff.doubleValue());
+                }
+                setToolTipText(tip);
+            } else {
+                setToolTipText(null);
+            }
+
+            // ----- Foreground by sign -----
+            if (!isSelected) {
+                if (value instanceof Number) {
+                    double v = ((Number) value).doubleValue();
+                    if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE || column == Model.COL_COUNTER) {
+                        setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
+                    } else {
+                        setForeground(Color.BLACK);
+                    }
+                } else {
+                    setForeground(Color.BLACK);
+                }
+            }
+
+            // ----- Background priority: selection > change highlight > zebra -----
+            if (isSelected) {
+                c.setBackground(SELECTION_BG); c.setForeground(SELECTION_FG);
+            } else {
+                boolean paintable =
+                        column == Model.COL_OPEN || column == Model.COL_LAST ||
+                                column == Model.COL_CHANGE || column == Model.COL_COUNTER;
+
+                int dir = paintable ? model.getChangeDirection(row, column, table) : 0;
+                if (dir > 0) {
+                    c.setBackground(BG_GREEN_SOFT);
+                } else if (dir < 0) {
+                    c.setBackground(BG_RED_SOFT);
+                } else {
+                    c.setBackground((row % 2 == 0) ? BG_WHITE : BG_STRIPE);
+                }
+            }
+
+            return c;
         }
     }
-
-
-
-    private static JPanel createColumn(String labelText, JTextField textField) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        JLabel label = new JLabel(labelText, SwingConstants.CENTER);
-        panel.add(label, BorderLayout.NORTH);      // כותרת למעלה
-        panel.add(textField, BorderLayout.CENTER); // השדה מתחת
-        return panel;
-    }
-
-
-    public static void main(String[] args) {
-        ArrayList<MiniStock> stocks = new ArrayList<>();
-        MiniStock poli = new MiniStock(new StocksHandler(), 1);
-        MiniStock bezeq = new MiniStock(new StocksHandler(), 2);
-        MiniStock lumi = new MiniStock(new StocksHandler(), 3);
-        MiniStock nice = new MiniStock(new StocksHandler(), 4);
-
-        stocks.add(poli);
-        stocks.add(bezeq);
-        stocks.add(lumi);
-        stocks.add(nice);
-
-        TA35 client = TA35.getInstance();
-        client.getStocksHandler().setStocks(stocks);
-
-        new MiniStockTable(client, "Mini");
-    }
-
 }

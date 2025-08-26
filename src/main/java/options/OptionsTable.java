@@ -3,9 +3,9 @@ package options;
 import api.TA35;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.*;
 import java.awt.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,13 +19,13 @@ import java.util.List;
  * OptionsTable table = new OptionsTable(options);
  * JScrollPane sp = new JScrollPane(table);
  * ...
- * // בכל ריענון נתונים:
+ * // בכל עדכון נתונים:
  * table.refresh();
  */
 public class OptionsTable extends JTable {
 
-
     public static void main(String[] args) {
+
         Options options = new Options(TA35.getInstance());
 
         for (int i = 10; i < 100; i += 10) {
@@ -39,6 +39,7 @@ public class OptionsTable extends JTable {
         }
 
 
+
         OptionsTable table = new OptionsTable(options);
         JFrame f = new JFrame();
         f.setContentPane(new JScrollPane(table));
@@ -50,8 +51,18 @@ public class OptionsTable extends JTable {
 
     }
 
-
     private final OptionsTableModel model;
+
+    // צבעים וסגנונות
+    private static final Color BG_WHITE = Color.WHITE;
+    private static final Color BG_STRIPE = new Color(0xFAFAFA);
+    private static final Color BG_GREEN_SOFT = new Color(0xE6F4EA);
+    private static final Color BG_RED_SOFT = new Color(0xFDE7E9);
+    private static final Color GRID_COLOR = new Color(0xEEEEEE);
+    private static final Color HEADER_BG = new Color(0xF5F7FA);
+    private static final Color HEADER_FG = new Color(0x263238);
+    private static final Color SELECTION_BG = new Color(0xE3F2FD);
+    private static final Color SELECTION_FG = new Color(0x000000);
 
     public OptionsTable() {
         this(null);
@@ -60,13 +71,31 @@ public class OptionsTable extends JTable {
     public OptionsTable(Options options) {
         this.model = new OptionsTableModel();
         setModel(model);
-        setRowHeight(24);
         setFillsViewportHeight(true);
+        setRowHeight(28);
+        setAutoCreateRowSorter(true);
 
+        // גריד עדין
+        setShowHorizontalLines(true);
+        setShowVerticalLines(false);
+        setGridColor(GRID_COLOR);
+        setIntercellSpacing(new Dimension(0, 1));
+
+        // בחירה
+        setSelectionBackground(SELECTION_BG);
+        setSelectionForeground(SELECTION_FG);
+
+        // רנדרר תאים מעוצב
         ChangeHighlightRenderer renderer = new ChangeHighlightRenderer(model);
         for (int c = 0; c < model.getColumnCount(); c++) {
             getColumnModel().getColumn(c).setCellRenderer(renderer);
         }
+
+        // כותרת מעוצבת
+        JTableHeaderStyled.apply(getTableHeader());
+
+        // רוחבי עמודות נוחים
+        setNiceColumnWidths();
 
         setOptions(options);
     }
@@ -84,6 +113,15 @@ public class OptionsTable extends JTable {
      */
     public void refresh() {
         model.refresh();
+    }
+
+    private void setNiceColumnWidths() {
+        TableColumnModel cm = getColumnModel();
+        // Delta Call | Bid/Ask (Call) | Strike | Bid/Ask (Put) | Delta Put
+        int[] widths = {110, 140, 100, 140, 110};
+        for (int i = 0; i < widths.length && i < cm.getColumnCount(); i++) {
+            cm.getColumn(i).setPreferredWidth(widths[i]);
+        }
     }
 
     // ======================= מודל הטבלה =======================
@@ -241,6 +279,7 @@ public class OptionsTable extends JTable {
 
         @Override
         public Class<?> getColumnClass(int columnIndex) {
+            // Double כדי שמיון יהיה מספרי ולא לקסיקוגרפי
             return Double.class;
         }
 
@@ -268,16 +307,60 @@ public class OptionsTable extends JTable {
             if (curr < prev) return -1;
             return 0;
         }
+
+        /**
+         * הפרש נוכחי-קודם להצגת tooltip
+         */
+        Double getDeltaVsPrev(int row, int col) {
+            if (row < 0 || row >= rows.size()) return null;
+            double prev = prevValues[row][col];
+            double curr = currValues[row][col];
+            if (Double.isNaN(prev) || Double.isNaN(curr)) return null;
+            return curr - prev;
+        }
     }
 
-    // ======================= רנדרר לצביעה =======================
+    // ======================= רנדררים מעוצבים =======================
 
+    private static class JTableHeaderStyled {
+        static void apply(JTableHeader header) {
+            header.setReorderingAllowed(true);
+            header.setResizingAllowed(true);
+            header.setBackground(HEADER_BG);
+            header.setForeground(HEADER_FG);
+            header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+            header.setOpaque(true);
+
+            // Renderer מותאם כדי לשמר צבע רקע גם בח部分 מערכות
+            TableCellRenderer base = header.getDefaultRenderer();
+            header.setDefaultRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
+                Component comp = base.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+                if (comp instanceof JComponent) {
+                    ((JComponent) comp).setOpaque(true);
+                }
+                comp.setBackground(HEADER_BG);
+                comp.setForeground(HEADER_FG);
+                if (comp instanceof JLabel) {
+                    ((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
+                }
+                return comp;
+            });
+        }
+    }
+
+    /**
+     * רנדרר שמדגיש שינוי, עם זברה-סטייל ופורמט מספרים
+     */
     private static class ChangeHighlightRenderer extends DefaultTableCellRenderer {
         private final OptionsTableModel model;
+        private final DecimalFormat fmtDelta = new DecimalFormat("0.000");
+        private final DecimalFormat fmtInt = new DecimalFormat("0");
+        private final DecimalFormat fmtK = new DecimalFormat("#,##0.##");
 
         ChangeHighlightRenderer(OptionsTableModel model) {
             this.model = model;
             setHorizontalAlignment(SwingConstants.CENTER);
+            setFont(new Font("Consolas", Font.PLAIN, 13)); // ספרות מונוספייס
         }
 
         @Override
@@ -286,25 +369,59 @@ public class OptionsTable extends JTable {
                                                        int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-            // צבע רקע בסיסי כשלא מסומן
-            if (!isSelected) c.setBackground(Color.WHITE);
+            // טקסט: פורמט מספרי לפי עמודה
+            if (value instanceof Number) {
 
-            boolean paintable =
-                    column == OptionsTableModel.COL_DELTA_CALL ||
-                            column == OptionsTableModel.COL_BIDASK_CALL ||
-                            column == OptionsTableModel.COL_BIDASK_PUT ||
-                            column == OptionsTableModel.COL_DELTA_PUT;
-
-            if (paintable && !isSelected) {
-                int dir = model.getChangeDirection(row, column);
-                if (dir > 0) {
-                    c.setBackground(new Color(0xE6F4EA)); // ירוק בהיר
-                } else if (dir < 0) {
-                    c.setBackground(new Color(0xFDE7E9)); // אדום בהיר
+                String txt;
+                if (column == OptionsTableModel.COL_DELTA_CALL || column == OptionsTableModel.COL_DELTA_PUT) {
+                    txt = fmtDelta.format(((Number) value).doubleValue());
+                } else if (column == OptionsTableModel.COL_STRIKE) {
+                    txt = fmtK.format(((Number) value).doubleValue());
                 } else {
-                    c.setBackground(Color.WHITE);
+                    txt = fmtInt.format(((Number) value).doubleValue());
+                }
+                setText(txt);
+            } else {
+                setText(value == null ? "" : value.toString());
+            }
+
+            // Tooltip: מראה שינוי מול הקודם
+            Double diff = model.getDeltaVsPrev(row, column);
+            if (diff != null) {
+                String s;
+                if (column == OptionsTableModel.COL_DELTA_CALL || column == OptionsTableModel.COL_DELTA_PUT) {
+                    s = "Δ שינוי: " + (diff >= 0 ? "+" : "") + fmtDelta.format(diff);
+                } else if (column == OptionsTableModel.COL_STRIKE) {
+                    s = "Strike";
+                } else {
+                    s = "שינוי: " + (diff >= 0 ? "+" : "") + fmtInt.format(diff);
+                }
+                setToolTipText(s);
+            } else {
+                setToolTipText(null);
+            }
+
+            // רקע: בחירה גוברת; אחרת—הדגשת שינוי; אחרת—זברה
+            if (isSelected) {
+                c.setBackground(SELECTION_BG);
+                c.setForeground(SELECTION_FG);
+            } else {
+                int dir = model.getChangeDirection(row, column);
+                boolean paintable =
+                        column == OptionsTableModel.COL_DELTA_CALL ||
+                                column == OptionsTableModel.COL_BIDASK_CALL ||
+                                column == OptionsTableModel.COL_BIDASK_PUT ||
+                                column == OptionsTableModel.COL_DELTA_PUT;
+
+                if (paintable && dir != 0) {
+                    c.setBackground(dir > 0 ? BG_GREEN_SOFT : BG_RED_SOFT);
+                    c.setForeground(Color.BLACK);
+                } else {
+                    c.setBackground((row % 2 == 0) ? BG_WHITE : BG_STRIPE);
+                    c.setForeground(Color.BLACK);
                 }
             }
+
             return c;
         }
     }
