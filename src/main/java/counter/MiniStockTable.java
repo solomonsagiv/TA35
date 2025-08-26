@@ -1,4 +1,3 @@
-
 package counter;
 
 import api.BASE_CLIENT_OBJECT;
@@ -7,7 +6,6 @@ import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
-
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -24,6 +22,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * - פורמט מספרים עם % וחץ ↑/↓
  */
 public class MiniStockTable extends MyGuiComps.MyFrame {
+
+    // פונטים בטוחים (נגזרים מה-UI)
+    private static Font deriveUI(int style, float size) {
+        Font base = UIManager.getFont("Label.font");
+        if (base == null) base = new JLabel().getFont();
+        return base.deriveFont(style, size);
+    }
+    private static final Font HEADER_FONT = deriveUI(Font.BOLD, 16f);
+    private static final Font CELL_FONT   = deriveUI(Font.PLAIN, 16f);
+    private static final Font NAME_FONT   = deriveUI(Font.BOLD, 16f);
+    private static final Font KPI_FONT    = deriveUI(Font.PLAIN, 16f);
 
     /* ======== Colors / Styles ======== */
     private static final Color BG_WHITE      = Color.WHITE;
@@ -66,7 +75,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     @Override
     public void initialize() {
-        this.stocksRef = new ArrayList<MiniStock>(TA35.getInstance().getStocksHandler().getStocks());
+        this.stocksRef = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
         buildUI();
         refreshNow();     // טעינה ראשונה
         startRunner();    // רענון מחזורי
@@ -85,10 +94,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         setLayout(new BorderLayout());
 
         // ---- Controls (KPIs) ----
-        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(15);
-        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(15);
-        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(15);
-        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(15);
+        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(18);
+        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(18);
+        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(18);
+        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(18);
+
+        number_of_positive_stocks_field.setFont(KPI_FONT);
+        weight_of_positive_stocks_field.setFont(KPI_FONT);
+        weighted_counter_field.setFont(KPI_FONT);
+        green_stocks_field.setFont(KPI_FONT);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 4, 15, 0));
         controlPanel.add(createColumn("Positive counter :", number_of_positive_stocks_field));
@@ -138,12 +152,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private static JPanel createColumn(String labelText, JTextField textField) {
         JPanel panel = new JPanel(new BorderLayout());
         JLabel label = new JLabel(labelText, SwingConstants.CENTER);
-        label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        label.setFont(HEADER_FONT);
         panel.add(label, BorderLayout.NORTH);
         panel.add(textField, BorderLayout.CENTER);
         return panel;
     }
-
     /* ======================== Refresh & Runner ======================== */
 
     private void refreshNow() {
@@ -169,7 +182,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 run = true;
                 while (run) {
                     try {
-                        Thread.sleep(10_000);
+                        Thread.sleep(10000);
                         // משיכת רשימת המניות העדכנית (אם האובייקטים מתעדכנים במקום – אפשר להשאיר את אותה רשימה)
                         stocksRef = new ArrayList<MiniStock>(TA35.getInstance().getStocksHandler().getStocks());
                         refreshNow();
@@ -336,7 +349,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             header.setResizingAllowed(true);
             header.setBackground(HEADER_BG);
             header.setForeground(HEADER_FG);
-            header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+            header.setFont(new Font("Ariel", Font.BOLD, 15));
             header.setOpaque(true);
 
             final TableCellRenderer base = header.getDefaultRenderer();
@@ -345,6 +358,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 public Component getTableCellRendererComponent(JTable tbl, Object value, boolean isSelected,
                                                                boolean hasFocus, int row, int column) {
                     Component comp = base.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+
+                    comp.setFont(HEADER_FONT);
+
+
                     if (comp instanceof JComponent) {
                         ((JComponent) comp).setOpaque(true);
                     }
@@ -362,12 +379,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private static class NameRenderer extends DefaultTableCellRenderer {
         NameRenderer() {
             setHorizontalAlignment(SwingConstants.CENTER);
-            setFont(new Font("Segoe UI", Font.BOLD, 13));
+            setFont(new Font("Ariel", Font.BOLD, 22));
         }
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                        boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            c.setFont(NAME_FONT);
+
             // Zebra / selection
             if (isSelected) {
                 c.setBackground(SELECTION_BG); c.setForeground(SELECTION_FG);
@@ -384,13 +404,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         CellRenderer(Model model) {
             this.model = model;
             setHorizontalAlignment(SwingConstants.CENTER);
-            setFont(new Font("Consolas", Font.PLAIN, 13));
+            setFont(new Font("Ariel", Font.PLAIN, 24));
         }
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                        boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            c.setFont(CELL_FONT);
 
             // ----- Text format -----
             String text;
@@ -465,3 +487,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         }
     }
 }
+
+
+
+//  for (int i = 10; i < 100; i+=10) {
+//        Option call = new Option(Option.Side.CALL.toString(), i, options);
+//        Option put = new Option(Option.Side.PUT.toString(), i, options);
+//        Strike strike = new Strike(i);
+//        strike.setCall(call);
+//        strike.setPut(put);
+//        options.addStrike(strike);
+//        System.out.println(strike.getStrike());
+//        }
