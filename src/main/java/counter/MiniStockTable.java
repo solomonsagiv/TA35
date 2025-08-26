@@ -224,6 +224,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                         } else if (currentVal < prevVal) {
                             comp.setFont(comp.getFont().deriveFont(Font.PLAIN));
                             comp.setBackground(Themes.BINANCE_RED);
+                        } else {
+                            comp.setBackground(Color.WHITE);
                         }
                         comp.setForeground(Themes.GREEN); // עלה
                     } else if (currentVal < 0) {
@@ -233,6 +235,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                         } else if (currentVal < prevVal) {
                             comp.setBackground(Themes.BINANCE_RED);
                             comp.setFont(getFont().deriveFont(Font.BOLD));
+                        } else {
+                            comp.setBackground(Color.WHITE);
                         }
                         comp.setForeground(Themes.RED_2); // ירד
                     } else {

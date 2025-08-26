@@ -12,7 +12,7 @@ public class Themes {
     public static Color BINANCE_ORANGE_2 = new Color(241, 206, 125);
     public static Color BINANCE_GREY = new Color(38, 45, 51);
     public static Color BINANCE_GREEN = new Color(111, 207, 31);
-    public static Color BINANCE_RED = new Color(255, 53, 157);
+    public static Color BINANCE_RED = new Color(255, 182, 182);
     public static Color BINANCE_RED_2 = new Color(197, 136, 196);
 
     // Races
@@ -58,7 +58,7 @@ public class Themes {
     public static Color BLUE_LIGHT_2 = new Color(79, 229, 255, 255);
 
     public static Color VERY_LIGHT_BLUE = new Color(235, 228, 235);
-    public static Color GREEN_LIGHT = new Color(181, 217, 171);
+    public static Color GREEN_LIGHT = new Color(202, 226, 197);
     public static Color PINK_LIGHT = new Color(255, 124, 176);
     public static Color PINK_LIGHT_2 = new Color(191, 115, 154);
 
