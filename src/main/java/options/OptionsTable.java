@@ -328,7 +328,7 @@ public class OptionsTable extends JTable {
             header.setResizingAllowed(true);
             header.setBackground(HEADER_BG);
             header.setForeground(HEADER_FG);
-            header.setFont(new Font("Segoe UI", Font.BOLD, 13));
+            header.setFont(new Font("Segoe UI", Font.BOLD, 15));
             header.setOpaque(true);
 
             // Renderer מותאם כדי לשמר צבע רקע גם בח部分 מערכות
@@ -360,7 +360,7 @@ public class OptionsTable extends JTable {
         ChangeHighlightRenderer(OptionsTableModel model) {
             this.model = model;
             setHorizontalAlignment(SwingConstants.CENTER);
-            setFont(new Font("Consolas", Font.PLAIN, 13)); // ספרות מונוספייס
+            setFont(new Font("Consolas", Font.PLAIN, 15)); // ספרות מונוספייס
         }
 
         @Override
