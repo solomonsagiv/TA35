@@ -246,7 +246,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 double openPct = Double.NaN, lastPct = Double.NaN, diffPct = Double.NaN;
                 if (s.getBase() != 0) {
                     openPct = ((s.getOpen()      - s.getBase()) / s.getBase()) * 100.0;
-                    lastPct = ((s.getPre_last() - s.getBase()) / s.getBase()) * 100.0;
+                    lastPct = ((s.getLast() - s.getBase()) / s.getBase()) * 100.0;
                     diffPct = lastPct - openPct;
                 }
                 int counter = s.getBid_ask_counter();
