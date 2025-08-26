@@ -72,7 +72,7 @@ public class OptionsTable extends JTable {
         this.model = new OptionsTableModel();
         setModel(model);
         setFillsViewportHeight(true);
-        setRowHeight(28);
+        setRowHeight(35);
         setAutoCreateRowSorter(true);
 
         // גריד עדין
