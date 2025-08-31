@@ -19,6 +19,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
     /* ===================== Demo ===================== */
     public static void main(String[] args) {
+
+
         // Demo options data
         Options options = new Options(TA35.getInstance());
         try {
