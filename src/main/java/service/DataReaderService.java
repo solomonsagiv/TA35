@@ -56,8 +56,10 @@ public class DataReaderService extends MyBaseService {
     final int START_ROW_WEEK = 66;
     final int END_ROW_WEEK = 86;
 
-    private OptionsWeek optionsWeek;
-    private OptionsMonth optionsMonth;
+    private Options optionsWeek;
+    private Options optionsMonth;
+
+    boolean set_options = false;
 
     public DataReaderService(TA35 ta35, String excel_path) {
         super(ta35);
@@ -74,40 +76,43 @@ public class DataReaderService extends MyBaseService {
 
             if (ta35.getStatus() != "preopen") {
 
-                Options optionsWeek = ta35.getExps().getWeek().getOptions();
-                Options optionsMonth = ta35.getExps().getMonth().getOptions();
+                if (ta35.getExps().getMonth().getOptions() != null) {
+                    this.optionsWeek = ta35.getExps().getWeek().getOptions();
+                    this.optionsMonth = ta35.getExps().getMonth().getOptions();
+                    set_options = true;
+                }
 
-                optionsMonth.setContract(L.dbl(conversation.request(futureCell)));
+//                optionsMonth.setContract(L.dbl(conversation.request(futureCell)));
 
                 // Week
-                optionsWeek.setContract(L.dbl(conversation.request(futureWeekCell)));
-                optionsWeek.setContractBid(L.dbl(conversation.request(futureWeekBidCell)));
-                optionsWeek.setContractAsk(L.dbl(conversation.request(futureWeekAskCell)));
+//                optionsWeek.setContract(L.dbl(conversation.request(futureWeekCell)));
+//                optionsWeek.setContractBid(L.dbl(conversation.request(futureWeekBidCell)));
+//                optionsWeek.setContractAsk(L.dbl(conversation.request(futureWeekAskCell)));
 
                 // Big
-                ta35.setMid(L.dbl(conversation.request(index_mid_cell)));
-                ta35.setIndex(L.dbl(conversation.request(indexCell)));
-                ta35.setBid(L.dbl(conversation.request(indexBidCell)));
-                ta35.setAsk(L.dbl(conversation.request(indexAskCell)));
-                ta35.setHigh(L.dbl(conversation.request(highCell)));
-                ta35.setLow(L.dbl(conversation.request(lowCell)));
-                ta35.setBase(L.dbl(conversation.request(baseCell)));
-                ta35.setOpen(L.dbl(conversation.request(openCell)));
-                ta35.setLast_price(L.dbl(conversation.request(lastCell)));
-                optionsMonth.setContractBid(L.dbl(conversation.request(futureBidCell)));
-                optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
+//                ta35.setMid(L.dbl(conversation.request(index_mid_cell)));
+//                ta35.setIndex(L.dbl(conversation.request(indexCell)));
+//                ta35.setBid(L.dbl(conversation.request(indexBidCell)));
+//                ta35.setAsk(L.dbl(conversation.request(indexAskCell)));
+//                ta35.setHigh(L.dbl(conversation.request(highCell)));
+//                ta35.setLow(L.dbl(conversation.request(lowCell)));
+//                ta35.setBase(L.dbl(conversation.request(baseCell)));
+//                ta35.setOpen(L.dbl(conversation.request(openCell)));
+//                ta35.setLast_price(L.dbl(conversation.request(lastCell)));
+//                optionsMonth.setContractBid(L.dbl(conversation.request(futureBidCell)));
+//                optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
 
                 // Interest
-                ta35.setOp_week_interest(L.dbl(conversation.request(op_week_interest_cell)) * 100);
-                ta35.setOp_month_interest(L.dbl(conversation.request(op_interest_month_cell)) * 100);
-                ta35.setRoll_interest(L.dbl(conversation.request(roll_interest_cell)) * 100);
+//                ta35.setOp_week_interest(L.dbl(conversation.request(op_week_interest_cell)) * 100);
+//                ta35.setOp_month_interest(L.dbl(conversation.request(op_interest_month_cell)) * 100);
+//                ta35.setRoll_interest(L.dbl(conversation.request(roll_interest_cell)) * 100);
 
                 // Append data to lists
-                ta35.getRoll_interest_list().add(ta35.getRoll_interest());
-                ta35.getSpot_interest_list().add(ta35.getOp_month_interest());
+//                ta35.getRoll_interest_list().add(ta35.getRoll_interest());
+//                ta35.getSpot_interest_list().add(ta35.getOp_month_interest());
 
                 // Read stocks
-                read_stocks();
+//                read_stocks();
 
                 // Read options
                 handle_read_options();
@@ -121,14 +126,13 @@ public class DataReaderService extends MyBaseService {
     boolean init_options = false;
 
     private void handle_read_options() throws DDEException {
+        if (optionsMonth == null) return;
+
         if (init_options) {
 //            read_options(optionsWeek, START_ROW_WEEK, END_ROW_WEEK);
             read_options(optionsMonth, START_ROW_MONTH, END_ROW_MONTH);
         } else {
             try {
-//                this.optionsWeek = (OptionsWeek) client.getExps().getWeek().getOptions();
-                this.optionsMonth = (OptionsMonth) client.getExps().getMonth().getOptions();
-
 //                init_options(optionsWeek, START_ROW_WEEK, END_ROW_WEEK);
                 init_options(optionsMonth, START_ROW_MONTH, END_ROW_MONTH);
             } catch (DDEException e) {

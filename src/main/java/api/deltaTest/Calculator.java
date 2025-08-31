@@ -123,17 +123,6 @@ public class Calculator {
         }
     }
 
-    public static void calc_stock_buy_sell_counter(MiniStock miniStock, int quantity) {
-	    // Buy
-        if (miniStock.getLast() >= miniStock.getAsk() && miniStock.getLast() > miniStock.getPre_last()) {
-        		miniStock.stock_buy(quantity);
-        }
-	    // Sell
-	    if (miniStock.getLast() <= miniStock.getBid() && miniStock.getLast() < miniStock.getPre_last()) {
-		    miniStock.stock_sell(quantity);
-	    }
-    }
-
     public static class PositiveTracker {
 
         private static int countPositive = 0;

@@ -29,10 +29,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         if (base == null) base = new JLabel().getFont();
         return base.deriveFont(style, size);
     }
-    private static final Font HEADER_FONT = deriveUI(Font.BOLD, 16f);
-    private static final Font CELL_FONT   = deriveUI(Font.PLAIN, 16f);
-    private static final Font NAME_FONT   = deriveUI(Font.BOLD, 16f);
-    private static final Font KPI_FONT    = deriveUI(Font.PLAIN, 16f);
+    private static final Font HEADER_FONT = deriveUI(Font.BOLD, 14f);
+    private static final Font CELL_FONT   = deriveUI(Font.PLAIN, 18f);
+    private static final Font NAME_FONT   = deriveUI(Font.BOLD, 14f);
+    private static final Font KPI_FONT    = deriveUI(Font.PLAIN, 18f);
 
     /* ======== Colors / Styles ======== */
     private static final Color BG_WHITE      = Color.WHITE;
@@ -94,10 +94,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         setLayout(new BorderLayout());
 
         // ---- Controls (KPIs) ----
-        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(18);
-        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(18);
-        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(18);
-        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(18);
+        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(24);
+        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(24);
+        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(24);
+        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(24);
 
         number_of_positive_stocks_field.setFont(KPI_FONT);
         weight_of_positive_stocks_field.setFont(KPI_FONT);
