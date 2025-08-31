@@ -7,7 +7,6 @@ import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
-
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -138,7 +137,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private static JPanel createColumn(String labelText, JTextField textField) {
         JPanel panel = new JPanel(new BorderLayout());
         JLabel label = new JLabel(labelText, SwingConstants.CENTER);
-        label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        label.setFont(new Font("Consolas", Font.PLAIN, 15));
         panel.add(label, BorderLayout.NORTH);
         panel.add(textField, BorderLayout.CENTER);
         return panel;

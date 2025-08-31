@@ -93,6 +93,8 @@ public class Options implements IJsonData {
         if (!strikesByPrice.containsKey(k)) {
             strikesByPrice.put(k, strike);
             strikes.add(strike);
+            optionsByName.put(strike.getCall().getName(), strike.getCall());
+            optionsByName.put(strike.getPut().getName(), strike.getPut());
         }
     }
 

@@ -4,11 +4,13 @@ import api.TA35;
 import api.dde.DDE.DDEConnection;
 import charts.charts.Main_Chart;
 import charts.charts.Realtime_Chart;
-import charts.charts.Realtime_Interest_Chart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
 import locals.Themes;
+import options.Options;
+import options.OptionsTableWindow;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -448,7 +450,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         bottomPanel.add(btnDetails);
 
         @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Real time", "Main", "Races", "Stocks", "Costs real time"});
+        JComboBox chartsCombo = new JComboBox(new String[]{"Real time", "Main", "Races", "Stocks", "Options"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
@@ -467,9 +469,9 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                     case "Stocks table":
                         new MiniStockTable(TA35.getInstance(), "Stocks table");
                         break;
-                    case "Costs real time":
-                        Realtime_Interest_Chart realtime_interest_chart = new Realtime_Interest_Chart(TA35.getInstance());
-                        realtime_interest_chart.createChart();
+                    case "Options":
+                        Options options = TA35.getInstance().getExps().getMonth().getOptions();
+                        new OptionsTableWindow(TA35.getInstance(), "Options", options);
                         break;
                     default:
                         break;

@@ -31,4 +31,11 @@ public class Exps {
         return month;
     }
 
+    public void setWeek(ExpWeek week) {
+        this.week = week;
+    }
+
+    public void setMonth(ExpMonth month) {
+        this.month = month;
+    }
 }

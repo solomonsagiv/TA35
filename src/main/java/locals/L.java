@@ -164,7 +164,7 @@ public class L {
 		String text = e.getMessage() + "\n" + e.getCause();
 		JOptionPane.showMessageDialog(frame, text);
 	}
-
+	
 	// noisy
 	public static void noisy(JTextField textField, Color color) {
 		Runnable r = () -> {
@@ -201,6 +201,13 @@ public class L {
 		}
 	}
 
+	public static double max_value(List<Double> list) {
+		return Collections.max(list);
+	}
+
+	public static double min_value(List<Double> list) {
+		return Collections.min(list);
+	}
 
 	public static String capitalizeFirstLetter(String input) {
 		if (input == null || input.isEmpty()) {

@@ -7,7 +7,7 @@ import com.pretty_tools.dde.client.DDEClientConversation;
 import locals.L;
 import miniStocks.MiniStock;
 import miniStocks.MiniStockDDECells;
-import options.Options;
+import options.*;
 
 public class DataReaderService extends MyBaseService {
 
@@ -39,11 +39,30 @@ public class DataReaderService extends MyBaseService {
 
     TA35 ta35;
 
+    // Columns
+    final int CALL_BID = 2;
+    final int CALL_LAST = 3;
+    final int CALL_ASK = 4;
+    final int CALL_VOLUME = 5;
+    final int STRIKE = 6;
+    final int PUT_BID = 7;
+    final int PUT_LAST = 8;
+    final int PUT_ASK = 7;
+    final int PUT_VOLUME = 9;
+
+    // Rows
+    final int START_ROW_MONTH = 44;
+    final int END_ROW_MONTH = 57;
+    final int START_ROW_WEEK = 66;
+    final int END_ROW_WEEK = 86;
+
+    private OptionsWeek optionsWeek;
+    private OptionsMonth optionsMonth;
+
     public DataReaderService(TA35 ta35, String excel_path) {
         super(ta35);
         this.ta35 = ta35;
         this.conversation = new DDEConnection().createNewConversation(excel_path);
-
     }
 
     public void update() {
@@ -91,7 +110,7 @@ public class DataReaderService extends MyBaseService {
                 read_stocks();
 
                 // Read options
-//                read_options();
+                handle_read_options();
 
             }
         } catch (Exception e) {
@@ -99,37 +118,60 @@ public class DataReaderService extends MyBaseService {
         }
     }
 
-    private void read_options() {
-        // Read week
-//        read_week();
+    boolean init_options = false;
 
+    private void handle_read_options() throws DDEException {
+        if (init_options) {
+//            read_options(optionsWeek, START_ROW_WEEK, END_ROW_WEEK);
+            read_options(optionsMonth, START_ROW_MONTH, END_ROW_MONTH);
+        } else {
+            try {
+//                this.optionsWeek = (OptionsWeek) client.getExps().getWeek().getOptions();
+                this.optionsMonth = (OptionsMonth) client.getExps().getMonth().getOptions();
 
-    }
-
-    private void init_options() {
-
-
-        for (int i = 0; i < 10; i++) {
-
+//                init_options(optionsWeek, START_ROW_WEEK, END_ROW_WEEK);
+                init_options(optionsMonth, START_ROW_MONTH, END_ROW_MONTH);
+            } catch (DDEException e) {
+                e.printStackTrace();
+            }
         }
-
-
     }
 
-//    private void read_week() {
-//        OptionsWeek optionsWeek = TA35.getInstance().getOptionsWeek();
-//        for (Strike strike: optionsWeek.getStrikes()) {
-//            // Call
-//            Option call = strike.getCall();
-//            call.setBid();
-//
-//
-//
-//            Option put = strike.getPut();
-//
-//
-//        }
-//    }
+    private void read_options(Options options, int start_row, int end_row) throws DDEException {
+        Option call, put;
+        double strike;
+
+        for (int row = start_row; row < end_row; row++) {
+            strike = L.dbl(conversation.request(L.cell(row, STRIKE)));
+
+            // Call
+            call = options.getOption(Option.Side.CALL, strike);
+            call.setBid((int) L.dbl(conversation.request(L.cell(row, CALL_BID))));
+            call.setAsk((int) L.dbl(conversation.request(L.cell(row, CALL_ASK))));
+            call.setVolume((int) L.dbl(conversation.request(L.cell(row, CALL_VOLUME))));
+            call.setLast((int) L.dbl(conversation.request(L.cell(row, CALL_LAST))));
+
+            // Put
+            put = options.getOption(Option.Side.PUT, strike);
+            put.setBid((int) L.dbl(conversation.request(L.cell(row, PUT_BID))));
+            put.setAsk((int) L.dbl(conversation.request(L.cell(row, PUT_ASK))));
+            put.setVolume((int) L.dbl(conversation.request(L.cell(row, PUT_VOLUME))));
+            put.setLast((int) L.dbl(conversation.request(L.cell(row, PUT_LAST))));
+        }
+    }
+
+    private double read_double_from_dde(String cell) throws DDEException {
+        return L.dbl(conversation.request(cell));
+    }
+
+    private void init_options(Options options, int start_row, int end_row) throws DDEException {
+        for (int row = start_row; row < end_row; row++) {
+            double strike = read_double_from_dde(L.cell(row, STRIKE));
+            Option call = new Option(Option.Side.CALL, strike, options);
+            Option put = new Option(Option.Side.PUT, strike, options);
+            options.addStrike(new Strike(call, put,strike));
+        }
+    }
 
     private void read_stocks() {
 

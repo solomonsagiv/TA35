@@ -41,12 +41,15 @@ public class Option implements IJsonData {
 	private int volume = 0;
 	private double stDev = 0;
 	private double delta = 0;
+	private int pre_bid = 0;
+	private int pre_ask = 0;
 
 	// מחזיקים שני מצבים אחרונים בלבד
 	private final Deque<Integer> cycleState = new ArrayDeque<>(2);
 
 	private int bidAskCounter = 0;
 	private int deltaCounter = 0;
+	private int deltaQuanCounter = 0;
 
 	private HashMap<Integer, Level> levels;
 	Options options;
@@ -88,10 +91,30 @@ public class Option implements IJsonData {
 	public void setId(int id) { this.id = id; }
 
 	public int getBid() { return bid; }
-	public void setBid(int bid) { this.bid = bid; }
+	public void setBid(int bid) {
+		// Pre bid
+		if (bid != this.bid) {
+			this.pre_bid = this.bid;
+		}
+		// Counter
+		if (bid > this.bid) {
+			bidAskCounter++;
+		}
+		this.bid = bid;
+	}
 
 	public int getAsk() { return ask; }
-	public void setAsk(int ask) { this.ask = ask; }
+	public void setAsk(int ask) {
+		// Pre ask
+		if (ask != this.ask) {
+			this.pre_ask = this.ask;
+		}
+		// Counter
+		if (ask < this.ask) {
+			bidAskCounter--;
+		}
+		this.ask = ask;
+	}
 
 	public int getLast() { return last; }
 	public void setLast(int last) { this.last = last; }
@@ -126,8 +149,33 @@ public class Option implements IJsonData {
 	public double getCalcPrice() { return calcPrice; }
 	public void setCalcPrice(double calcPrice) { this.calcPrice = calcPrice; }
 
+	public int getDeltaQuanCounter() {
+		return deltaQuanCounter;
+	}
+
+	public void setDeltaQuanCounter(int deltaQuanCounter) {
+		this.deltaQuanCounter = deltaQuanCounter;
+	}
+
 	public int getVolume() { return volume; }
-	public void setVolume(int volume) { this.volume = volume; }
+	public void setVolume(int volume) {
+		if (volume > this.volume) {
+			int change = volume - this.volume;
+			calc_delta(change);
+		}
+		this.volume = volume;
+	}
+
+	private void calc_delta(int change) {
+		if (last >= pre_ask) {
+			deltaCounter++;
+			deltaQuanCounter += change;
+		}
+		if (last <= pre_bid) {
+			deltaCounter--;
+			deltaQuanCounter -= change;
+		}
+	}
 
 	public double getStDev() { return stDev; }
 	public void setStDev(double stDev) { this.stDev = stDev; }

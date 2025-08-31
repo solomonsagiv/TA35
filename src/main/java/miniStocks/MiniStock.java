@@ -15,20 +15,19 @@ public class MiniStock implements IJsonData {
     private double last = 0;
     private int volume = 0;
     private int preVolume = 0;
-    private double delta = 0;
     private double weight = 0;
     private String name = "";
     private int row = 0;
     private double pre_last = 0;
     private double open = 0;
     private double base  = 0;
-//    private double bid_size = 0;
-//    private double ask_size =
-
-    private int buy_sell_counter = 0,
-//            buy_sell_quantity_counter = 0,
-//            buy_sell_counter_0 = 0,
-            buy_sell_uuantity_counter_0 = 0,
+    private double
+            pre_bid = 0,
+            pre_ask = 0;
+    private int
+            delta_counter = 0,
+            delta_quan_counter = 0;
+    private int
             bid_ask_counter = 0,
             bid_ask_counter_0 = 0;
 
@@ -40,14 +39,6 @@ public class MiniStock implements IJsonData {
         this.row = row;
         this.ddeCells = new MiniStockDDECells(row);
 
-    }
-
-    public void stock_buy(int quantity) {
-        buy_sell_counter++;
-    }
-
-    public void stock_sell(int quantity) {
-        buy_sell_counter--;
     }
 
     // Getters and Setters
@@ -64,9 +55,12 @@ public class MiniStock implements IJsonData {
     }
 
     public void setBid(double bid) {
-        if (bid > this.bid) {
-            bid_ask_counter++;
-        }
+        // Counter
+        if (bid > this.bid) bid_ask_counter++;
+
+        // Set pre bid
+        if (bid != this.bid) this.pre_bid = this.bid;
+
         this.bid = bid;
     }
 
@@ -75,9 +69,13 @@ public class MiniStock implements IJsonData {
     }
 
     public void setAsk(double ask) {
-        if (ask < this.ask) {
-            bid_ask_counter--;
-        }
+
+        // Counter
+        if (ask < this.ask) bid_ask_counter--;
+
+        // Set pre ask
+        if (ask != this.ask) this.pre_ask = this.ask;
+
         this.ask = ask;
     }
 
@@ -98,18 +96,24 @@ public class MiniStock implements IJsonData {
 
     public void setVolume(int volume) {
         if (volume != this.volume) {
-            int q = volume - this.volume;
+            int change = volume - this.volume;
             this.volume = volume;
-//            Calculator.calc_stock_buy_sell_counter(this, q);
+            calc_delta(change);
         }
     }
 
-    public double getDelta() {
-        return delta;
-    }
+    private void calc_delta(int change) {
+        // Buy
+        if (last >= pre_ask) {
+            delta_counter++;
+            delta_quan_counter += change;
+        }
 
-    public void setDelta(double delta) {
-        this.delta = delta;
+        // Sell
+        if (last <= pre_bid) {
+            delta_counter--;
+            delta_quan_counter -= change;
+        }
     }
 
     public int getPreVolume() {
@@ -118,11 +122,6 @@ public class MiniStock implements IJsonData {
 
     public void setPreVolume(int preVolume) {
         this.preVolume = preVolume;
-    }
-
-    public void appendDelta(double newDelta) {
-        this.delta += newDelta;
-
     }
 
     public double getWeight() {
@@ -139,22 +138,6 @@ public class MiniStock implements IJsonData {
 
     public void setPre_last(double pre_last) {
         this.pre_last = pre_last;
-    }
-
-    public int getBuy_sell_counter() {
-        return buy_sell_counter;
-    }
-
-    public void setBuy_sell_counter(int buy_sell_counter) {
-        this.buy_sell_counter = buy_sell_counter;
-    }
-
-    public int getBuy_sell_uuantity_counter_0() {
-        return buy_sell_uuantity_counter_0;
-    }
-
-    public void setBuy_sell_uuantity_counter_0(int buy_sell_uuantity_counter_0) {
-        this.buy_sell_uuantity_counter_0 = buy_sell_uuantity_counter_0;
     }
 
     public int getBid_ask_counter() {
@@ -189,21 +172,21 @@ public class MiniStock implements IJsonData {
         this.base = base;
     }
 
-    //    public double getBid_size() {
-//        return bid_size;
-//    }
-//
-//    public void setBid_size(double bid_size) {
-//        this.bid_size = bid_size;
-//    }
-//
-//    public double getAsk_size() {
-//        return ask_size;
-//    }
-//
-//    public void setAsk_size(double ask_size) {
-//        this.ask_size = ask_size;
-//    }
+    public int getDelta_counter() {
+        return delta_counter;
+    }
+
+    public void setDelta_counter(int delta_counter) {
+        this.delta_counter = delta_counter;
+    }
+
+    public int getDelta_quan_counter() {
+        return delta_quan_counter;
+    }
+
+    public void setDelta_quan_counter(int delta_quan_counter) {
+        this.delta_quan_counter = delta_quan_counter;
+    }
 
     @Override
     public MyJson getAsJson() {
@@ -212,7 +195,6 @@ public class MiniStock implements IJsonData {
         json.put(JsonStrings.last, last);
         json.put(JsonStrings.bid, bid);
         json.put(JsonStrings.ask, ask);
-        json.put(JsonStrings.delta, delta);
         json.put(JsonStrings.volume, volume);
         json.put(JsonStrings.weight, weight);
         return json;
@@ -224,7 +206,6 @@ public class MiniStock implements IJsonData {
 
     @Override
     public void loadFromJson(MyJson json) {
-        setDelta(json.getDouble(JsonStrings.delta));
     }
 
     @Override
