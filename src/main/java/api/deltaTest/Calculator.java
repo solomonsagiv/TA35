@@ -5,10 +5,17 @@ import locals.L;
 import miniStocks.MiniStock;
 import options.Option;
 import stocksHandler.StocksHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Calculator {
+
+
+    public static final int BA_NUMBER_POSITIVE_STOCKS = 0,
+            BA_WEIGHT_POSITIVE_STOCKS = 1,
+            GREEN_STOCKS = 2,
+            DELTA_WEIGHT_POSITIVE_STOCKKS = 3;
 
     public static double calc(Option option, int newLast, int newVolume, double newDelta) {
 
@@ -66,45 +73,49 @@ public class Calculator {
         return new double[]{weighted, weightedNormalized};
     }
 
-    public static int get_stocks_positive_count() {
-        ArrayList<MiniStock> stocks = TA35.getInstance().getStocksHandler().getStocks();
-        int count = 0;
-        for (MiniStock stock: stocks) {
-            if (stock.getBid_ask_counter() > 0) {
-                count++;
-            }
-        }
-        return count;
-    }
 
-    public static int get_green_stocks() {
+    public static int[] get_stocks_counters() {
         ArrayList<MiniStock> stocks = TA35.getInstance().getStocksHandler().getStocks();
-        int count = 0;
-        for (MiniStock stock: stocks) {
+        int ba_number_of_positive = 0,
+                ba_weight_positive = 0,
+                green_stocks = 0,
+                delta_weight_positive = 0;
+
+        for (MiniStock stock : stocks) {
+
+            // BA positive number
+            if (stock.getBid_ask_counter() > 0) {
+                ba_number_of_positive++;
+                ba_weight_positive += stock.getWeight();
+            }
+
+            // Green stocks
             if (stock.getLast() > stock.getBase()) {
-                count++;
+                green_stocks++;
+            }
+
+            // Delta weight
+            if (stock.getDelta_quan_counter() > 0) {
+                delta_weight_positive += stock.getWeight();
             }
         }
-        return count;
+
+        int[] vals = new int[4];
+        vals[BA_NUMBER_POSITIVE_STOCKS] = ba_number_of_positive;
+        vals[BA_WEIGHT_POSITIVE_STOCKS] = ba_weight_positive;
+        vals[GREEN_STOCKS]              = green_stocks;
+        vals[DELTA_WEIGHT_POSITIVE_STOCKKS] = delta_weight_positive;
+
+        return vals;
     }
 
-    public static int get_stocks_positive_weight_count() {
-        ArrayList<MiniStock> stocks = TA35.getInstance().getStocksHandler().getStocks();
-        int count = 0;
-        for (MiniStock stock: stocks) {
-            if (stock.getBid_ask_counter() > 0) {
-                count += stock.getWeight();
-            }
-        }
-        return count;
-    }
 
     public static void calc_stocks_counters() {
         StocksHandler stocksHandler = TA35.getInstance().getStocksHandler();
         List<MiniStock> snapshot = new ArrayList<>(stocksHandler.getStocks());
         int bid_ask_counter = 0;
 
-        for (MiniStock stock: snapshot) {
+        for (MiniStock stock : snapshot) {
             double change = stock.getBid_ask_counter() - stock.getBid_ask_counter_0();
 
             if (change > 0) {
@@ -118,7 +129,7 @@ public class Calculator {
         }
 
         if (L.abs(bid_ask_counter) < 100) {
-            TA35 client  = TA35.getInstance();
+            TA35 client = TA35.getInstance();
             client.setStocks_counter_change(bid_ask_counter);
         }
     }

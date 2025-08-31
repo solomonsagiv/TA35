@@ -1,6 +1,5 @@
 package stocksHandler;
 
-import charts.myChart.MyChartList;
 import locals.L;
 import miniStocks.MiniStock;
 import myJson.IJsonData;
@@ -11,9 +10,6 @@ import java.util.ArrayList;
 public class StocksHandler implements IJsonData {
 	
 	ArrayList<MiniStock> stocks;
-
-	private MyChartList indDeltaList = new MyChartList();
-	private MyChartList indDeltaNoBasketsList = new MyChartList();
 
 	private double buy_sell_counter = 0;
 	private double buy_sell_quantity_counter = 0;
@@ -41,14 +37,6 @@ public class StocksHandler implements IJsonData {
 		this.stocks = stocks;
 	}
 
-	public MyChartList getIndDeltaList() {
-		return indDeltaList;
-	}
-	
-	public MyChartList getIndDeltaNoBasketsList() {
-		return indDeltaNoBasketsList;
-	}
-	
 	@Override
 	public MyJson getAsJson() {
 		MyJson json = new MyJson();

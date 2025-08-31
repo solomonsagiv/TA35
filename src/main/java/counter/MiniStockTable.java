@@ -29,10 +29,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         if (base == null) base = new JLabel().getFont();
         return base.deriveFont(style, size);
     }
-    private static final Font HEADER_FONT = deriveUI(Font.BOLD, 14f);
-    private static final Font CELL_FONT   = deriveUI(Font.PLAIN, 18f);
-    private static final Font NAME_FONT   = deriveUI(Font.BOLD, 14f);
-    private static final Font KPI_FONT    = deriveUI(Font.PLAIN, 18f);
+    private static final Font HEADER_FONT = deriveUI(Font.BOLD, 16f);
+    private static final Font CELL_FONT   = deriveUI(Font.PLAIN, 16f);
+    private static final Font NAME_FONT   = deriveUI(Font.BOLD, 16f);
+    private static final Font KPI_FONT    = deriveUI(Font.PLAIN, 16f);
 
     /* ======== Colors / Styles ======== */
     private static final Color BG_WHITE      = Color.WHITE;
@@ -56,7 +56,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             number_of_positive_stocks_field,
             weight_of_positive_stocks_field,
             weighted_counter_field,
-            green_stocks_field;
+            green_stocks_field,
+            delta_field;
 
     /* ======== Data ======== */
     private List<MiniStock> stocksRef;
@@ -94,21 +95,25 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         setLayout(new BorderLayout());
 
         // ---- Controls (KPIs) ----
-        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(24);
-        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(24);
-        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(24);
-        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(24);
+        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(18);
+        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(18);
+        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(18);
+        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(18);
+        delta_field                     = new MyGuiComps.MyTextField();delta_field.setFontSize(18);
+
 
         number_of_positive_stocks_field.setFont(KPI_FONT);
         weight_of_positive_stocks_field.setFont(KPI_FONT);
         weighted_counter_field.setFont(KPI_FONT);
         green_stocks_field.setFont(KPI_FONT);
+        delta_field.setFont(KPI_FONT);
 
-        JPanel controlPanel = new JPanel(new GridLayout(1, 4, 15, 0));
+        JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
         controlPanel.add(createColumn("Positive counter :", number_of_positive_stocks_field));
         controlPanel.add(createColumn("Total weight:",      weight_of_positive_stocks_field));
         controlPanel.add(createColumn("Weighted counter:",  weighted_counter_field));
         controlPanel.add(createColumn("Green stocks:",      green_stocks_field));
+        controlPanel.add(createColumn("Positive delta:",   delta_field));
         add(controlPanel, BorderLayout.NORTH);
 
         // ---- Table ----
@@ -166,11 +171,14 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 // עדכון מודל הטבלה
                 model.refreshFrom(stocksRef);
 
+                int[] vals = Calculator.get_stocks_counters();
+
                 // עדכון ה-KPIs העליונים
-                number_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_count());
-                weight_of_positive_stocks_field.colorForge(Calculator.get_stocks_positive_weight_count());
-                green_stocks_field.colorForge(Calculator.get_green_stocks());
+                number_of_positive_stocks_field.colorForge(vals[Calculator.BA_NUMBER_POSITIVE_STOCKS]);
+                weight_of_positive_stocks_field.colorForge(vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
+                green_stocks_field.colorForge(vals[Calculator.GREEN_STOCKS]);
                 weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
+                delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKKS]);
             }
         });
     }
@@ -206,9 +214,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         static final int COL_LAST    = 2;
         static final int COL_CHANGE  = 3;
         static final int COL_COUNTER = 4;
-        static final int COL_WEIGHT  = 5;
+        static final int COL_DELTA   = 5;
+        static final int COL_WEIGHT  = 6;
 
-        private final String[] cols = {"Name", "Open", "Last", "Change", "Counter", "Weight"};
+        private final String[] cols = {"Name", "Open", "Last", "Change", "Counter","Delta", "Weight"};
 
         /** Row holder */
         private static class Row {
@@ -217,14 +226,16 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             final double lastPct;
             final double changePct; // last-open
             final int    counter;
+            final int    delta;
             final double weight;
 
-            Row(String name, double openPct, double lastPct, double changePct, int cnt, double weight) {
+            Row(String name, double openPct, double lastPct, double changePct, int cnt,int delta,  double weight) {
                 this.name = name;
                 this.openPct = openPct;
                 this.lastPct = lastPct;
                 this.changePct = changePct;
                 this.counter = cnt;
+                this.delta = delta;
                 this.weight = weight;
             }
         }
@@ -264,18 +275,20 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 }
                 int counter = s.getBid_ask_counter();
                 double weight = s.getWeight();
+                int delta = s.getDelta_quan_counter();
 
                 // fill curr map for change detection (name-based)
-                double[] currVals = new double[6];
+                double[] currVals = new double[7];
                 currVals[COL_NAME]    = Double.NaN;    // לא מספרי
                 currVals[COL_OPEN]    = openPct;
                 currVals[COL_LAST]    = lastPct;
                 currVals[COL_CHANGE]  = diffPct;
                 currVals[COL_COUNTER] = counter;
+                currVals[COL_DELTA]   = delta;
                 currVals[COL_WEIGHT]  = weight;
                 currByName.put(name, currVals);
 
-                newRows.add(new Row(name, openPct, lastPct, diffPct, counter, weight));
+                newRows.add(new Row(name, openPct, lastPct, diffPct, counter, delta, weight));
             }
 
             rows.clear();
@@ -304,6 +317,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 case COL_LAST:    return Double.isNaN(r.lastPct)   ? null : r.lastPct;
                 case COL_CHANGE:  return Double.isNaN(r.changePct) ? null : r.changePct;
                 case COL_COUNTER: return (double) r.counter; // נשמר Double למיון
+                case COL_DELTA:   return r.delta;
                 case COL_WEIGHT:  return r.weight;
                 default:          return null;
             }
@@ -425,7 +439,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                     text = DF_PCT.format(v) + "%" + arrow;
                 } else if (column == Model.COL_WEIGHT) {
                     text = DF_WGT.format(v);
-                } else if (column == Model.COL_COUNTER) {
+                } else if (column == Model.COL_COUNTER || column == Model.COL_DELTA) {
                     text = String.valueOf((int) v);
                 } else {
                     text = DF_WGT.format(v);
@@ -455,7 +469,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             if (!isSelected) {
                 if (value instanceof Number) {
                     double v = ((Number) value).doubleValue();
-                    if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE || column == Model.COL_COUNTER) {
+                    if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_DELTA) {
                         setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
                     } else {
                         setForeground(Color.BLACK);
@@ -471,7 +485,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             } else {
                 boolean paintable =
                         column == Model.COL_OPEN || column == Model.COL_LAST ||
-                                column == Model.COL_CHANGE || column == Model.COL_COUNTER;
+                                column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_DELTA;
 
                 int dir = paintable ? model.getChangeDirection(row, column, table) : 0;
                 if (dir > 0) {
