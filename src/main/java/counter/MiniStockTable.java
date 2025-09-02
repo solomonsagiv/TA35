@@ -393,7 +393,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private static class NameRenderer extends DefaultTableCellRenderer {
         NameRenderer() {
             setHorizontalAlignment(SwingConstants.CENTER);
-            setFont(new Font("Ariel", Font.BOLD, 22));
+            setFont(new Font("Ariel", Font.BOLD, 18));
         }
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -418,7 +418,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         CellRenderer(Model model) {
             this.model = model;
             setHorizontalAlignment(SwingConstants.CENTER);
-            setFont(new Font("Ariel", Font.PLAIN, 24));
+            setFont(new Font("Ariel", Font.PLAIN, 22));
         }
 
         @Override
