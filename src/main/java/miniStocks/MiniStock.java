@@ -20,13 +20,12 @@ public class MiniStock implements IJsonData {
     private int row = 0;
     private double pre_last = 0;
     private double open = 0;
-    private double base  = 0;
+    private double base = 0;
     private double
             pre_bid = 0,
             pre_ask = 0;
     private int
-            delta_counter = 0,
-            delta_quan_counter = 0;
+            delta_counter = 0;
     private int
             bid_ask_counter = 0,
             bid_ask_counter_0 = 0;
@@ -105,14 +104,12 @@ public class MiniStock implements IJsonData {
     private void calc_delta(int change) {
         // Buy
         if (last >= pre_ask) {
-            delta_counter++;
-            delta_quan_counter += change;
+            delta_counter += change;
         }
 
         // Sell
         if (last <= pre_bid) {
-            delta_counter--;
-            delta_quan_counter -= change;
+            delta_counter -= change;
         }
     }
 
@@ -178,14 +175,6 @@ public class MiniStock implements IJsonData {
 
     public void setDelta_counter(int delta_counter) {
         this.delta_counter = delta_counter;
-    }
-
-    public int getDelta_quan_counter() {
-        return delta_quan_counter;
-    }
-
-    public void setDelta_quan_counter(int delta_quan_counter) {
-        this.delta_quan_counter = delta_quan_counter;
     }
 
     @Override

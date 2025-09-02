@@ -95,7 +95,7 @@ public class Calculator {
             }
 
             // Delta weight
-            if (stock.getDelta_quan_counter() > 0) {
+            if (stock.getDelta_counter() > 0) {
                 delta_weight_positive += stock.getWeight();
             }
         }

@@ -275,7 +275,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 }
                 int counter = s.getBid_ask_counter();
                 double weight = s.getWeight();
-                int delta = s.getDelta_quan_counter();
+                int delta = s.getDelta_counter();
 
                 // fill curr map for change detection (name-based)
                 double[] currVals = new double[7];
