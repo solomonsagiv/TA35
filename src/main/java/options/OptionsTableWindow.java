@@ -64,11 +64,11 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     }
 
     // Slightly larger fonts
-    private static final Font FONT_TEXT    = FontPick.pickSans(14f, Font.PLAIN);
-    private static final Font FONT_TEXT_B  = FontPick.pickSans(14f, Font.BOLD);
-    private static final Font FONT_NUM     = FontPick.pickMono(14f, Font.PLAIN);
-    private static final Font FONT_NUM_B   = FontPick.pickMono(14f, Font.BOLD);   // bold for Strike column
-    private static final Font FONT_KPI     = FontPick.pickSans(16f, Font.PLAIN);
+    private static final Font FONT_TEXT    = FontPick.pickSans(16f, Font.PLAIN);
+    private static final Font FONT_TEXT_B  = FontPick.pickSans(16f, Font.BOLD);
+    private static final Font FONT_NUM     = FontPick.pickMono(16f, Font.PLAIN);
+    private static final Font FONT_NUM_B   = FontPick.pickMono(16f, Font.BOLD);   // bold for Strike column
+    private static final Font FONT_KPI     = FontPick.pickSans(18f, Font.PLAIN);
 
     /* ===================== Colors / Styles ===================== */
     private static final Color BG_WHITE       = Color.WHITE;
