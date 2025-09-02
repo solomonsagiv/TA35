@@ -348,7 +348,7 @@ public class Queries {
         if (stocks == null || stocks.isEmpty()) return;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO sagiv.stocks_data (name, price, weight, counter, delta_counter, snapshot_time, index_name) VALUES ");
+        sb.append("INSERT INTO sagiv.stocks_data (name, price, weight, counter, snapshot_time, index_name, delta_counter) VALUES ");
 
         for (int i = 0; i < stocks.size(); i++) {
             MiniStock s = stocks.get(i);
@@ -357,21 +357,21 @@ public class Queries {
             String priceLit = formatNum(s.getLast());    // uses Locale.US, e.g. 1234.560000
             String weightLit = formatNum(s.getWeight());
             String counterLit = Integer.toString(s.getBid_ask_counter());
-            String deltaCounterLit = Integer.toString(s.getDelta_counter());
             String tsLit = "'" + sqlEscape(ts) + "'::timestamptz";
 
             // constant index name (change if you have per-stock index)
             String indexName = "TA35";
             String indexNameLit = "'" + sqlEscape(indexName) + "'";
+            String deltaCounterLit = Integer.toString(s.getDelta_counter());
 
             sb.append("(")
                     .append(nameLit).append(", ")
                     .append(priceLit).append(", ")
                     .append(weightLit).append(", ")
                     .append(counterLit).append(", ")
-                    .append(deltaCounterLit).append(", ")
                     .append(tsLit).append(", ")
-                    .append(indexNameLit)
+                    .append(indexNameLit).append(", ")
+                    .append(deltaCounterLit)
                     .append(")");
 
             if (i < stocks.size() - 1) sb.append(", ");

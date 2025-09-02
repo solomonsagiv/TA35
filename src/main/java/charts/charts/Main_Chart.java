@@ -7,6 +7,8 @@ import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import locals.Themes;
 import api.TA35;
+import org.jfree.chart.plot.ValueMarker;
+
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
@@ -130,27 +132,17 @@ public class Main_Chart extends MyChartCreator {
         series[1] = opavg_60_week;
         series[2] = continue_opavg_240_week;
 
+        ValueMarker plus0_3 = new ValueMarker(0.3);
+        plus0_3.setStroke(new BasicStroke(1.5f));
+
+        ValueMarker minus0_3 = new ValueMarker(-0.3);
+        minus0_3.setStroke(new BasicStroke(1.5f));
 
         MyChart op_avg_chart = new MyChart(series, props);
+        op_avg_chart.add_marker(plus0_3);
+        op_avg_chart.add_marker(minus0_3);
 
         // --------------- ROLL --------------- //
-
-        // Op avg 5
-        MyTimeSeries roll_3600 = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600);
-        roll_3600.setColor(Themes.BLUE3);
-        roll_3600.setStokeSize(1.2f);
-        
-        // Op avg 60
-        MyTimeSeries roll_900 = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900);
-        roll_900.setColor(Themes.PURPLE);
-        roll_900.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[2];
-        series[0] = roll_3600;
-        series[1] = roll_900;
-
-
-        MyChart roll_chart = new MyChart(series, props);
 
         // ----------------------------------------- DF ----------------------------------------- //
         MyTimeSeries df_4_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD);
