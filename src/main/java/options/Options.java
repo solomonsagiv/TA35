@@ -225,13 +225,12 @@ public class Options implements IJsonData {
 
     @Override
     public String toString() {
-        return "Options{contractBid=" + contractBid +
-                ", contractAsk=" + contractAsk +
-                ", contract=" + contract +
+        return "Options{" +
+                "contract=" + contract +
+                ", strikesByPrice=" + strikesByPrice +
+                ", optionsList=" + optionsList +
                 ", bidAskCounter=" + bidAskCounter +
-                ", strikes=" + strikes.size() +
-                ", options=" + optionsList.size() +
-                "}";
+                '}';
     }
 
     /* ============================== Contract & Ticks ============================== */
