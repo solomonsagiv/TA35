@@ -55,7 +55,7 @@ public class MiniStock implements IJsonData {
 
     public void setBid(double bid) {
         // Counter
-        if (bid > this.bid) bid_ask_counter++;
+        if (bid > this.bid && this.bid != 0) bid_ask_counter++;
 
         // Set pre bid
         if (bid != this.bid) this.pre_bid = this.bid;
@@ -70,7 +70,7 @@ public class MiniStock implements IJsonData {
     public void setAsk(double ask) {
 
         // Counter
-        if (ask < this.ask) bid_ask_counter--;
+        if (ask < this.ask && this.ask != 0) bid_ask_counter--;
 
         // Set pre ask
         if (ask != this.ask) this.pre_ask = this.ask;
@@ -95,9 +95,11 @@ public class MiniStock implements IJsonData {
 
     public void setVolume(int volume) {
         if (volume != this.volume) {
-            int change = volume - this.volume;
+            if (this.volume != 0) {
+                int change = volume - this.volume;
+                calc_delta(change);
+            }
             this.volume = volume;
-            calc_delta(change);
         }
     }
 
