@@ -497,7 +497,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             new MiniStockTable(TA35.getInstance(), "Stocks table");
 
             // Options window
-            new OptionsTableWindow(TA35.getInstance(), "Options", TA35.getInstance().getExps().getMonth().getOptions());
+//            new OptionsTableWindow(TA35.getInstance(), "Options", TA35.getInstance().getExps().getMonth().getOptions());
 
         } catch (Exception e) {
             e.printStackTrace();

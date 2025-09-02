@@ -116,7 +116,7 @@ public class DataReaderService extends MyBaseService {
                 read_stocks();
 
                 // Read options
-                handle_read_options();
+//                handle_read_options();
 
             }
         } catch (Exception e) {
