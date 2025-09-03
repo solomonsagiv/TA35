@@ -135,7 +135,6 @@ public class DataReaderService extends MyBaseService {
         if (init_options) {
 //            read_options(optionsWeek, START_ROW_WEEK, END_ROW_WEEK);
             read_options(optionsMonth, START_ROW_MONTH, END_ROW_MONTH);
-            System.out.println(optionsMonth.toString());
         } else {
             try {
                 init_options = true;
