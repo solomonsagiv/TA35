@@ -203,7 +203,7 @@ public class Main_Chart extends MyChartCreator {
 
         // Index races wi
         MyTimeSeries delta_tot_weight = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
-        delta_tot_weight.setColor(Themes.BLUE_4);
+        delta_tot_weight.setColor(Themes.OPEN_RACE);
         delta_tot_weight.setStokeSize(1.2f);
 
         series = new MyTimeSeries[2];
