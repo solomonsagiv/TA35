@@ -610,7 +610,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return TA35.getInstance().getStocks_counter_change();
+                        return TA35.getInstance().getBa_total_positive_weight();
                     }
 
                     @Override

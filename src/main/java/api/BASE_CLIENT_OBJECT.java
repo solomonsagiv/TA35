@@ -41,6 +41,11 @@ public abstract class BASE_CLIENT_OBJECT {
     private double op_month_interest_avg = 0;
     private double op_week_interest = 0;
 
+    private int ba_total_positive_weight = 0,
+                delta_potisive_weight = 0;
+
+
+
     private L.FixedSizeDoubleList roll_interest_list, spot_interest_list;
 
     public BASE_CLIENT_OBJECT() {
@@ -351,5 +356,21 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setStocks_weighted_counter(double stocks_weighted_counter) {
         this.stocks_weighted_counter = stocks_weighted_counter;
+    }
+
+    public int getBa_total_positive_weight() {
+        return ba_total_positive_weight;
+    }
+
+    public void setBa_total_positive_weight(int ba_total_positive_weight) {
+        this.ba_total_positive_weight = ba_total_positive_weight;
+    }
+
+    public int getDelta_potisive_weight() {
+        return delta_potisive_weight;
+    }
+
+    public void setDelta_potisive_weight(int delta_potisive_weight) {
+        this.delta_potisive_weight = delta_potisive_weight;
     }
 }

@@ -34,7 +34,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> month_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> trading_status_timestamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> stocks_counter_change_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> ba_tot_pos_weight_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> delta_tot_pos_weight_timestamp = new ArrayList<>();
 
     ArrayList<MyTimeSeries> timeSeries;
     Race_Logic wi_race, wm_race;
@@ -53,7 +54,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             month_counter_0 = 0,
             week_counter_0 = 0,
             trading_status_0 = 0,
-            stocks_counter_change_0 = 0;
+            ba_tot_pos_weight_0 = 0,
+            delta_tot_pos_weight_0 = 0;        ;
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -162,13 +164,13 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                 ask_timestamp.add(new MyTimeStampObject(Instant.now(), ask_0));
             }
 
-            // Buy sell counter
-            double stocks_counter_change = client.getStocks_counter_change();
+            // BA tot pos weight
+            double ba_tot_pos_weight = client.getBa_total_positive_weight();
 
-            if (stocks_counter_change != stocks_counter_change_0) {
-                double last_count = stocks_counter_change - stocks_counter_change_0;
-                stocks_counter_change_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
-                stocks_counter_change_0 = stocks_counter_change;
+            if (ba_tot_pos_weight != ba_tot_pos_weight_0) {
+                double last_count = ba_tot_pos_weight - ba_tot_pos_weight_0;
+                ba_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                ba_tot_pos_weight_0 = ba_tot_pos_weight;
             }
 
             // Baskets
@@ -436,6 +438,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Buy sell counter
 //        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
-        insert_dev_prod(stocks_counter_change_timestamp, dev_id, prod_id);
+        insert_dev_prod(ba_tot_pos_weight_timestamp, dev_id, prod_id);
     }
 }
