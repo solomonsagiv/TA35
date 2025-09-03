@@ -373,4 +373,5 @@ public abstract class BASE_CLIENT_OBJECT {
     public void setDelta_potisive_weight(int delta_potisive_weight) {
         this.delta_potisive_weight = delta_potisive_weight;
     }
+
 }

@@ -95,11 +95,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         setLayout(new BorderLayout());
 
         // ---- Controls (KPIs) ----
-        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(18);
-        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(18);
-        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(18);
-        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(18);
-        delta_field                     = new MyGuiComps.MyTextField();delta_field.setFontSize(18);
+        number_of_positive_stocks_field = new MyGuiComps.MyTextField(); number_of_positive_stocks_field.setFontSize(22);
+        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(22);
+        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(22);
+        green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(22);
+        delta_field                     = new MyGuiComps.MyTextField();delta_field.setFontSize(22);
 
 
         number_of_positive_stocks_field.setFont(KPI_FONT);
@@ -275,7 +275,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 }
                 int counter = s.getBid_ask_counter();
                 double weight = s.getWeight();
-                int delta = s.getDelta_counter();
+                int delta = s.getDeltaCounterInMillions();
 
                 // fill curr map for change detection (name-based)
                 double[] currVals = new double[7];
