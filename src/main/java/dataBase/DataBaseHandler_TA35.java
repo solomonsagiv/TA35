@@ -173,6 +173,15 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                 ba_tot_pos_weight_0 = ba_tot_pos_weight;
             }
 
+            // BA tot pos weight
+            double delta_tot_pos_weight = client.getDelta_potisive_weight();
+
+            if (delta_tot_pos_weight != delta_tot_pos_weight_0) {
+                double last_count = delta_tot_pos_weight - delta_tot_pos_weight_0;
+                delta_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                delta_tot_pos_weight_0 = delta_tot_pos_weight;
+            }
+
             // Baskets
             double baskets = ((TA35) client).getBasketFinder_by_stocks().get_baskets();
 
@@ -307,7 +316,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void load_positive_tracker() {
 
-        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
+        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
         List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW_NO_MODULU, MySql.JIBE_PROD_CONNECTION);
 
         for (Map<String, Object> row : rs) {
@@ -435,9 +444,16 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.TRADING_STATUS);
         insert_dev_prod(trading_status_timestamp, dev_id, prod_id);
 
-        // Buy sell counter
+        // Total weight BA
 //        dev_id = 0;
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
         insert_dev_prod(ba_tot_pos_weight_timestamp, dev_id, prod_id);
+
+        // Total weight Delta
+//        dev_id = 0;
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
+        insert_dev_prod(delta_tot_pos_weight_timestamp, dev_id, prod_id);
     }
 }

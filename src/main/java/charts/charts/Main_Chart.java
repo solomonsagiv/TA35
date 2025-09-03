@@ -196,15 +196,27 @@ public class Main_Chart extends MyChartCreator {
 
         // ----------------------------------------- Stocks counter ----------------------------------------- //
 
-        // Index races wi
-        MyTimeSeries stocks_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.STOCKS_WEIGHTED_CHNGE_PROD);
-        stocks_counter.setColor(Themes.BLUE3);
-        stocks_counter.setStokeSize(1.2f);
+        // BA tot weight
+        MyTimeSeries ba_total_weight = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
+        ba_total_weight.setColor(Themes.BLUE3);
+        ba_total_weight.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[1];
-        series[0] = stocks_counter;
+        // Index races wi
+        MyTimeSeries delta_tot_weight = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
+        delta_tot_weight.setColor(Themes.BLUE_4);
+        delta_tot_weight.setStokeSize(1.2f);
+
+        series = new MyTimeSeries[2];
+        series[0] = ba_total_weight;
+        series[1] = delta_tot_weight;
+
+        ValueMarker fifty = new ValueMarker(50);
+        fifty.setStroke(new BasicStroke(1.5f));
+        fifty.setPaint(Themes.BLACK);
+
 
         MyChart weighted_stocks_counter_chart = new MyChart(series, props);
+        weighted_stocks_counter_chart.add_marker(fifty);
 
         // ----------------------------------------- Chart ----------------------------------------- //
 

@@ -52,7 +52,8 @@ public class Factories {
         public static final String MONTH_BID_ASK_COUNTER_PROD = "MONTH_BID_ASK_COUNTER_PROD";
         public static final String WEEK_BID_ASK_COUNTER_PROD = "WEEK_BID_ASK_COUNTER_PROD";
 
-        public static final String STOCKS_WEIGHTED_CHNGE_PROD = "STOCKS_WEIGHTED_CHNGE_PROD";
+        public static final String STOCKS_TOT_BA_WEIGHT_PROD = "STOCKS_TOT_BA_WEIGHT_PROD";
+        public static final String STOCKS_TOT_DELTA_WEIGHT_PROD = "STOCKS_TOT_DELTA_WEIGHT_PROD";
 
         public static final String MONTH_OBI_PROD = "MONTH_OBI_PROD";
         public static final String WEEK_OBI_PROD = "WEEK_OBI_PROD";
