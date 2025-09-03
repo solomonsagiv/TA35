@@ -114,7 +114,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             Arik.getInstance().sendErrorMessage(e);
         }
     }
-
+    
     private void update_data() {
         new Thread(() -> {
             for (MyTimeSeries ts : timeSeries) {
