@@ -203,8 +203,8 @@ public class DataReaderService extends MyBaseService {
                 }
             }
         } else {
-
             initStockCells(conversation);
+            initStocksCells = true;
 
         }
     }
@@ -227,37 +227,22 @@ public class DataReaderService extends MyBaseService {
     private void initStockCells(DDEClientConversation conversation) {
 
         int nameCol = 21;
-        int row = 2;
+        int start_row = 2;
+        int end_row = 37;
 
-        while (true) {
-
-            System.out.println("Row : " + row + " Col: " + nameCol);
+        for (int row = start_row; row < end_row; row++) {
             try {
                 String name = conversation.request(String.format("R%sC%s", row, nameCol));
-
                 System.out.println("Name : " + name);
-
 //                 End
-                if (row > 37) {
-                    break;
-                }
-
-//                 End
-                if (name.replaceAll("\\s+", "").equals("0")) {
-                    break;
-                }
-
                 MiniStock stock = new MiniStock(ta35.getStocksHandler(), row);
-
 //                 Add stock
                 ta35.getStocksHandler().getStocks().add(stock);
-                row++;
 
             } catch (DDEException e) {
                 e.printStackTrace();
             }
         }
-
         initStocksCells = true;
     }
 }
