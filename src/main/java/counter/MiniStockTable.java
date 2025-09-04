@@ -6,6 +6,7 @@ import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
+
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -32,7 +33,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private static final Font HEADER_FONT = deriveUI(Font.BOLD, 16f);
     private static final Font CELL_FONT   = deriveUI(Font.PLAIN, 16f);
     private static final Font NAME_FONT   = deriveUI(Font.BOLD, 16f);
-    private static final Font KPI_FONT    = deriveUI(Font.PLAIN, 16f);
+    private static final Font KPI_FONT    = deriveUI(Font.PLAIN, 20f);
 
     /* ======== Colors / Styles ======== */
     private static final Color BG_WHITE      = Color.WHITE;
@@ -109,11 +110,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         delta_field.setFont(KPI_FONT);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
-        controlPanel.add(createColumn("Positive counter :", number_of_positive_stocks_field));
-        controlPanel.add(createColumn("Total weight:",      weight_of_positive_stocks_field));
-        controlPanel.add(createColumn("Weighted counter:",  weighted_counter_field));
-        controlPanel.add(createColumn("Green stocks:",      green_stocks_field));
-        controlPanel.add(createColumn("Positive delta:",   delta_field));
+        controlPanel.add(createColumn("P C :", number_of_positive_stocks_field));
+        controlPanel.add(createColumn("TOT W:",      weight_of_positive_stocks_field));
+        controlPanel.add(createColumn("W F:",  weighted_counter_field));
+        controlPanel.add(createColumn("GREEN:",      green_stocks_field));
+        controlPanel.add(createColumn("TOT D:",   delta_field));
         add(controlPanel, BorderLayout.NORTH);
 
         // ---- Table ----
