@@ -115,7 +115,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             Arik.getInstance().sendErrorMessage(e);
         }
     }
-    
+
     private void update_data() {
         new Thread(() -> {
             for (MyTimeSeries ts : timeSeries) {
@@ -169,8 +169,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             double ba_tot_pos_weight = client.getBa_total_positive_weight();
 
             if (ba_tot_pos_weight != ba_tot_pos_weight_0) {
-                double last_count = ba_tot_pos_weight - ba_tot_pos_weight_0;
-                ba_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                ba_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), ba_tot_pos_weight));
                 ba_tot_pos_weight_0 = ba_tot_pos_weight;
             }
 
@@ -178,8 +177,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             double delta_tot_pos_weight = client.getDelta_potisive_weight();
 
             if (delta_tot_pos_weight != delta_tot_pos_weight_0) {
-                double last_count = delta_tot_pos_weight - delta_tot_pos_weight_0;
-                delta_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                delta_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), delta_tot_pos_weight));
                 delta_tot_pos_weight_0 = delta_tot_pos_weight;
             }
 
