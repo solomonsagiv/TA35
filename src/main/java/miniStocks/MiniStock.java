@@ -176,7 +176,7 @@ public class MiniStock implements IJsonData {
     }
 
     public int getDeltaCounterInMillions() {
-        return delta_counter / 1_000_000;
+        return delta_counter / 100_000_000;
     }
 
     public void setDelta_counter(int delta_counter) {
