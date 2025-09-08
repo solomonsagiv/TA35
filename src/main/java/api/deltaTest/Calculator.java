@@ -75,7 +75,7 @@ public class Calculator {
 
 
     public static int[] get_stocks_counters() {
-        ArrayList<MiniStock> stocks = TA35.getInstance().getStocksHandler().getStocks();
+        ArrayList<MiniStock> stocks = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
         int ba_number_of_positive = 0,
                 ba_weight_positive = 0,
                 green_stocks = 0,

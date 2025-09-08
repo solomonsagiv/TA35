@@ -29,6 +29,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
     public static boolean streamMarketBool = false;
     public static boolean randomallyBool = false;
     public static boolean endMarketBool = false;
+    public static boolean open_charts = false;
     boolean exported = false;
 
     Color lightGreen = new Color(12, 135, 0);
@@ -86,6 +87,10 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     // Wait for load
                     if (client.isDb_loaded()) {
 
+                        System.out.println();
+                        System.out.println(client.getStocksHandler().toString());
+                        System.out.println(" " + client.getStocksHandler().getStocks().size());
+
                         // Pre trading
                         if (client.getStatus().contains(preOpen) && !preTradingBool) {
                             preTradingBool = true;
@@ -95,15 +100,17 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         if (client.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 59, 0)) && !client.isStarted() && ask > bid && ask - bid < 10) {
                             client.start();
 
-                            if (Manifest.OPEN_CHART) {
-                                WindowTA35.openCharts();
-                            }
-
                             // Start stocks
                             start_stocks();
 
                             streamMarketBool = true;
                             System.out.println(" Started ");
+                        }
+
+                        // Open charts
+                        if (Manifest.OPEN_CHART && DataReaderService.initStocksCells && streamMarketBool && !open_charts) {
+                            WindowTA35.openCharts();
+                            open_charts = true;
                         }
 
                         // Rando
@@ -144,6 +151,8 @@ public class BackGroundRunner extends MyThread implements Runnable {
     }
 
     private void start_stocks() {
+
+
         TA35.getInstance().setStocks_race_service(new Stocks_Race_Service(TA35.getInstance()));
     }
 

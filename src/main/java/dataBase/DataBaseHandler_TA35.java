@@ -8,16 +8,14 @@ import charts.myChart.MyTimeSeries;
 import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import locals.L;
+import miniStocks.MiniStock;
 import options.Options;
 import races.Race_Logic;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
@@ -107,7 +105,10 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void insert_stocks() {
         try {
-            Queries.insertStocksSnapshot(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+
+            List<MiniStock> stocks = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+
+            Queries.insertStocksSnapshot(stocks, MySql.JIBE_DEV_CONNECTION);
         } catch (Exception e) {
             e.printStackTrace();
             Arik.getInstance().sendMessage("TA35 Index Insert stocks Failed ");
@@ -304,7 +305,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         try {
             load_stocks_data_count++;
-            Queries.loadLastSnapshotStocksData(TA35.getInstance().getStocksHandler().getStocks(), MySql.JIBE_DEV_CONNECTION);
+            List<MiniStock> stocks = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+
+            Queries.loadLastSnapshotStocksData(stocks, MySql.JIBE_DEV_CONNECTION);
             load_stocks_data_count = 10;
         } catch (SQLException throwables) {
             throwables.printStackTrace();

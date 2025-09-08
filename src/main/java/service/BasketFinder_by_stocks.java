@@ -70,12 +70,18 @@ public class BasketFinder_by_stocks extends MyBaseService {
         bigFrame.append_volume(LocalTime.now(), last_change_count);
     }
 
+
+    ArrayList<MiniStock> stocks_snapshot;
+
     private int find_volume_change_count() {
         // Reset params
         int changesCount = 0;
 
+        stocks_snapshot = new ArrayList<>(stocksHandler.getStocks());
+
+
         // Look for changes
-        for (MiniStock stock : stocksHandler.getStocks()) {
+        for (MiniStock stock : stocks_snapshot) {
             try {
 
                 // If changed

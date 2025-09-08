@@ -33,7 +33,7 @@ public class DataReaderService extends MyBaseService {
     String op_week_interest_cell = "R5C7";
     String index_mid_cell = "R5C8";
 
-    boolean initStocksCells = false;
+    public static boolean initStocksCells = false;
 
     DDEClientConversation conversation;
 
@@ -233,11 +233,12 @@ public class DataReaderService extends MyBaseService {
         for (int row = start_row; row < end_row; row++) {
             try {
                 String name = conversation.request(String.format("R%sC%s", row, nameCol));
-                System.out.println("Name : " + name);
+                System.out.println("Name : " + name + " " + row);
 //                 End
                 MiniStock stock = new MiniStock(ta35.getStocksHandler(), row);
+                stock.setName(name);
 //                 Add stock
-                ta35.getStocksHandler().getStocks().add(stock);
+                ta35.getStocksHandler().addStock(stock);
 
             } catch (DDEException e) {
                 e.printStackTrace();

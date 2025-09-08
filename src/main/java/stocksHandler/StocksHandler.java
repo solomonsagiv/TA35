@@ -6,21 +6,23 @@ import myJson.IJsonData;
 import myJson.MyJson;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class StocksHandler implements IJsonData {
 	
-	ArrayList<MiniStock> stocks;
+	private Set<MiniStock> stocks;
 
 	private double buy_sell_counter = 0;
 	private double buy_sell_quantity_counter = 0;
 	
 	public StocksHandler() {
-		this.stocks = new ArrayList<>();
+		this.stocks = new HashSet<>();
 	}
-	
+
 	public MyJson getData() {
 		MyJson json = new MyJson();
-		
+
 		int i = 0;
 		for (MiniStock miniStock : stocks) {
 			json.put(L.str(i), miniStock.getAsJson());
@@ -29,11 +31,24 @@ public class StocksHandler implements IJsonData {
 		return json;
 	}
 
-	public ArrayList<MiniStock> getStocks() {
+	public Set<MiniStock> getStocks() {
 		return stocks;
 	}
 
-	public void setStocks(ArrayList<MiniStock> stocks) {
+
+	public void addStock(MiniStock stock) {
+		for (MiniStock s : stocks) {
+			if (stock.getName().equals(s.getName())) {
+				System.out.println(stock.getName() + " Already inside ):");
+				return;
+			}
+		}
+
+		System.out.println(stock.getName() + " ADD :)");
+		stocks.add(stock);
+	}
+
+	public void setStocks(Set<MiniStock> stocks) {
 		this.stocks = stocks;
 	}
 
