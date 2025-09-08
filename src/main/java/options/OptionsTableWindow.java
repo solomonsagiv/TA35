@@ -35,7 +35,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             w.setVisible(true);
         });
     }
-
+    
     /* ===================== Font picker (cross-platform) ===================== */
     private static final class FontPick {
         private static Set<String> installed() {
