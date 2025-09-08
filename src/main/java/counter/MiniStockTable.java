@@ -189,7 +189,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 run = true;
                 while (run) {
                     try {
-                        Thread.sleep(10000);
+                        Thread.sleep(2000);
                         // משיכת רשימת המניות העדכנית (אם האובייקטים מתעדכנים במקום – אפשר להשאיר את אותה רשימה)
                         stocksRef = new ArrayList<MiniStock>(TA35.getInstance().getStocksHandler().getStocks());
                         refreshNow();

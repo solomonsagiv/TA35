@@ -8,7 +8,8 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -25,7 +26,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             Option c = new Option("C", k, options);
             Option p = new Option("P", k, options);
             Strike s = new Strike(k);
-            s.setCall(c); s.setPut(p);
+            s.setCall(c);
+            s.setPut(p);
             options.addStrike(s);
         }
         SwingUtilities.invokeLater(() -> {
@@ -37,58 +39,39 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     }
 
     /* ===================== Font picker (cross-platform) ===================== */
-    private static final class FontPick {
-        private static Set<String> installed() {
-            return new HashSet<>(Arrays.asList(
-                    GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()
-            ));
-        }
-        static Font pickSans(float size, int style) {
-            String[] prefs = {
-                    "Segoe UI","Helvetica Neue","Arial","Verdana","Tahoma",
-                    "DejaVu Sans","Liberation Sans","Noto Sans","SansSerif"
-            };
-            return firstAvailable(prefs, style, size);
-        }
-        static Font pickMono(float size, int style) {
-            String[] prefs = {
-                    "Consolas","Menlo","DejaVu Sans Mono","Liberation Mono","Monospaced"
-            };
-            return firstAvailable(prefs, style, size);
-        }
-        private static Font firstAvailable(String[] families, int style, float size) {
-            Set<String> inst = installed();
-            for (String fam : families) if (inst.contains(fam)) return new Font(fam, style, Math.round(size));
-            return new Font("SansSerif", style, Math.round(size));
-        }
+
+    private static Font deriveUI(int style, float size) {
+        Font base = UIManager.getFont("Label.font");
+        if (base == null) base = new JLabel().getFont();
+        return base.deriveFont(style, size);
     }
 
     // Slightly larger fonts
-    private static final Font FONT_TEXT    = FontPick.pickSans(16f, Font.PLAIN);
-    private static final Font FONT_TEXT_B  = FontPick.pickSans(16f, Font.BOLD);
-    private static final Font FONT_NUM     = FontPick.pickMono(16f, Font.PLAIN);
-    private static final Font FONT_NUM_B   = FontPick.pickMono(16f, Font.BOLD);   // bold for Strike column
-    private static final Font FONT_KPI     = FontPick.pickSans(18f, Font.PLAIN);
+    private static final Font FONT_TEXT = deriveUI(Font.PLAIN, 16);
+    private static final Font FONT_TEXT_B = deriveUI(Font.BOLD, 16);
+    private static final Font FONT_NUM = deriveUI(Font.PLAIN, 16);
+    private static final Font FONT_NUM_B = deriveUI(Font.BOLD, 16);   // bold for Strike column
+    private static final Font FONT_KPI = deriveUI(Font.PLAIN, 18);
 
     /* ===================== Colors / Styles ===================== */
-    private static final Color BG_WHITE       = Color.WHITE;
-    private static final Color BG_STRIPE      = new Color(0xFAFAFA);
-    private static final Color GRID_COLOR     = new Color(0xEEEEEE);
-    private static final Color HEADER_BG      = new Color(0xF5F7FA);
-    private static final Color HEADER_FG      = new Color(0x263238);
-    private static final Color SELECTION_BG   = new Color(0xE3F2FD);
-    private static final Color SELECTION_FG   = new Color(0x000000);
+    private static final Color BG_WHITE = Color.WHITE;
+    private static final Color BG_STRIPE = new Color(0xFAFAFA);
+    private static final Color GRID_COLOR = new Color(0xEEEEEE);
+    private static final Color HEADER_BG = new Color(0xF5F7FA);
+    private static final Color HEADER_FG = new Color(0x263238);
+    private static final Color SELECTION_BG = new Color(0xE3F2FD);
+    private static final Color SELECTION_FG = new Color(0x000000);
 
     // Stronger change highlights (a bit more saturated)
-    private static final Color HL_GREEN       = new Color(0xC8E6C9); // stronger green
-    private static final Color HL_RED         = new Color(0xFFCDD2); // stronger red
+    private static final Color HL_GREEN = new Color(0xC8E6C9); // stronger green
+    private static final Color HL_RED = new Color(0xFFCDD2); // stronger red
 
     // Value foreground colors for sign
-    private static final Color VAL_GREEN_FG   = new Color(0x1B5E20);
-    private static final Color VAL_RED_FG     = new Color(0xB71C1C);
+    private static final Color VAL_GREEN_FG = new Color(0x1B5E20);
+    private static final Color VAL_RED_FG = new Color(0xB71C1C);
 
     // Strike column base background (distinct, subtle)
-    private static final Color STRIKE_BG      = new Color(0xEEF3FF);
+    private static final Color STRIKE_BG = new Color(0xEEF3FF);
 
     /* ===================== UI / Data ===================== */
     private Options optionsRef;
@@ -106,23 +89,29 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         startRunner();
     }
 
-    @Override public void initListeners() {}
+    @Override
+    public void initListeners() {
+    }
 
     @Override
     public void initialize() {
         setLayout(new BorderLayout());
 
         // KPIs
-        kpi1 = new MyGuiComps.MyTextField(); kpi1.setFont(FONT_KPI);
-        kpi2 = new MyGuiComps.MyTextField(); kpi2.setFont(FONT_KPI);
-        kpi3 = new MyGuiComps.MyTextField(); kpi3.setFont(FONT_KPI);
-        kpi4 = new MyGuiComps.MyTextField(); kpi4.setFont(FONT_KPI);
+        kpi1 = new MyGuiComps.MyTextField();
+        kpi1.setFont(FONT_KPI);
+        kpi2 = new MyGuiComps.MyTextField();
+        kpi2.setFont(FONT_KPI);
+        kpi3 = new MyGuiComps.MyTextField();
+        kpi3.setFont(FONT_KPI);
+        kpi4 = new MyGuiComps.MyTextField();
+        kpi4.setFont(FONT_KPI);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 4, 15, 0));
         controlPanel.add(createColumn("Positive counter :", kpi1));
-        controlPanel.add(createColumn("Total weight:",      kpi2));
-        controlPanel.add(createColumn("Weighted counter:",  kpi3));
-        controlPanel.add(createColumn("Green stocks:",      kpi4));
+        controlPanel.add(createColumn("Total weight:", kpi2));
+        controlPanel.add(createColumn("Weighted counter:", kpi3));
+        controlPanel.add(createColumn("Green stocks:", kpi4));
         add(controlPanel, BorderLayout.NORTH);
 
         // Table
@@ -196,8 +185,14 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             setOptions(options);
         }
 
-        public void setOptions(Options options) { model.setOptions(options); model.initialLoad(); }
-        public void refresh() { model.refresh(); }
+        public void setOptions(Options options) {
+            model.setOptions(options);
+            model.initialLoad();
+        }
+
+        public void refresh() {
+            model.refresh();
+        }
 
         private void setNiceColumnWidths() {
             TableColumnModel cm = getColumnModel();
@@ -211,19 +206,26 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     /* ======================= MODEL ======================= */
 
     static class OptionsTableModel extends AbstractTableModel {
-        static final int COL_BIDASK_CALL             = 0;
-        static final int COL_DELTA_COUNTER_CALL      = 1;
+        static final int COL_BIDASK_CALL = 0;
+        static final int COL_DELTA_COUNTER_CALL = 1;
         static final int COL_DELTA_QUAN_COUNTER_CALL = 2;
-        static final int COL_STRIKE                  = 3;
-        static final int COL_DELTA_QUAN_COUNTER_PUT  = 4;
-        static final int COL_DELTA_COUNTER_PUT       = 5;
-        static final int COL_BIDASK_PUT              = 6;
+        static final int COL_STRIKE = 3;
+        static final int COL_DELTA_QUAN_COUNTER_PUT = 4;
+        static final int COL_DELTA_COUNTER_PUT = 5;
+        static final int COL_BIDASK_PUT = 6;
 
         private final String[] cols = {"B/A", "Delta", "Delta q", "Strike", "Delta q", "Delta", "B/A"};
 
         private static class Row {
-            final double strike; final Option call; final Option put;
-            Row(double strike, Option call, Option put) { this.strike = strike; this.call = call; this.put = put; }
+            final double strike;
+            final Option call;
+            final Option put;
+
+            Row(double strike, Option call, Option put) {
+                this.strike = strike;
+                this.call = call;
+                this.put = put;
+            }
         }
 
         private Options options;
@@ -231,10 +233,18 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         private double[][] prevValues = new double[0][0];
         private double[][] currValues = new double[0][0];
 
-        void setOptions(Options options) { this.options = options; }
+        void setOptions(Options options) {
+            this.options = options;
+        }
 
         void initialLoad() {
-            if (options == null) { rows.clear(); prevValues = new double[0][0]; currValues = new double[0][0]; fireTableDataChanged(); return; }
+            if (options == null) {
+                rows.clear();
+                prevValues = new double[0][0];
+                currValues = new double[0][0];
+                fireTableDataChanged();
+                return;
+            }
             List<Strike> strikes = new ArrayList<>(options.getStrikes());
             strikes.sort(Comparator.comparingDouble(Strike::getStrike));
             rows.clear();
@@ -255,8 +265,10 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             double[][] newCurr = buildMatrixFromRows(newRows);
             double[][] newPrev = remapPrevByStrike(rows, prevValues, newRows, getColumnCount());
 
-            rows.clear(); rows.addAll(newRows);
-            prevValues = newPrev; currValues = newCurr;
+            rows.clear();
+            rows.addAll(newRows);
+            prevValues = newPrev;
+            currValues = newCurr;
             fireTableDataChanged();
         }
 
@@ -265,13 +277,13 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             double[][] m = new double[rc][cc];
             for (int r = 0; r < rc; r++) {
                 Row row = rs.get(r);
-                m[r][COL_DELTA_COUNTER_CALL]      = (row.call != null) ? row.call.getDeltaCounter()      : Double.NaN;
+                m[r][COL_DELTA_COUNTER_CALL] = (row.call != null) ? row.call.getDeltaCounter() : Double.NaN;
                 m[r][COL_DELTA_QUAN_COUNTER_CALL] = (row.call != null) ? row.call.getDeltaQuanCounter() : Double.NaN;
-                m[r][COL_BIDASK_CALL]             = (row.call != null) ? row.call.getBidAskCounter()    : Double.NaN;
-                m[r][COL_STRIKE]                  = row.strike;
-                m[r][COL_BIDASK_PUT]              = (row.put  != null) ? row.put.getBidAskCounter()     : Double.NaN;
-                m[r][COL_DELTA_COUNTER_PUT]       = (row.put  != null) ? row.put.getDeltaCounter()      : Double.NaN;
-                m[r][COL_DELTA_QUAN_COUNTER_PUT]  = (row.put  != null) ? row.put.getDeltaQuanCounter()  : Double.NaN;
+                m[r][COL_BIDASK_CALL] = (row.call != null) ? row.call.getBidAskCounter() : Double.NaN;
+                m[r][COL_STRIKE] = row.strike;
+                m[r][COL_BIDASK_PUT] = (row.put != null) ? row.put.getBidAskCounter() : Double.NaN;
+                m[r][COL_DELTA_COUNTER_PUT] = (row.put != null) ? row.put.getDeltaCounter() : Double.NaN;
+                m[r][COL_DELTA_QUAN_COUNTER_PUT] = (row.put != null) ? row.put.getDeltaQuanCounter() : Double.NaN;
             }
             return m;
         }
@@ -293,16 +305,38 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                 double k = newRows.get(r).strike;
                 int oldIndex = findRowIndexByStrike(oldRows, k);
                 if (oldIndex >= 0) remapped[r] = oldPrev[oldIndex].clone();
-                else { remapped[r] = new double[cols]; for (int c = 0; c < cols; c++) remapped[r][c] = Double.NaN; }
+                else {
+                    remapped[r] = new double[cols];
+                    for (int c = 0; c < cols; c++) remapped[r][c] = Double.NaN;
+                }
             }
             return remapped;
         }
 
-        @Override public int getRowCount() { return rows.size(); }
-        @Override public int getColumnCount() { return cols.length; }
-        @Override public String getColumnName(int column) { return cols[column]; }
-        @Override public Class<?> getColumnClass(int columnIndex) { return Double.class; }
-        @Override public boolean isCellEditable(int rowIndex, int columnIndex) { return false; }
+        @Override
+        public int getRowCount() {
+            return rows.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return cols.length;
+        }
+
+        @Override
+        public String getColumnName(int column) {
+            return cols[column];
+        }
+
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return Double.class;
+        }
+
+        @Override
+        public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return false;
+        }
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
@@ -353,13 +387,14 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
         // Formats: integers (no decimals) for Delta, Strike, B/A
         private final DecimalFormat fmtIntNoDec = new DecimalFormat("0");
-        private final DecimalFormat fmtStrike0  = new DecimalFormat("#,##0");
-        private final DecimalFormat fmtInt      = new DecimalFormat("0"); // Delta q shown as int (change if needed)
+        private final DecimalFormat fmtStrike0 = new DecimalFormat("#,##0");
+        private final DecimalFormat fmtInt = new DecimalFormat("0"); // Delta q shown as int (change if needed)
 
         private static boolean isDeltaCounterCol(int col) {
             return col == OptionsTableModel.COL_DELTA_COUNTER_CALL ||
                     col == OptionsTableModel.COL_DELTA_COUNTER_PUT;
         }
+
         private static boolean isBidAskCol(int col) {
             return col == OptionsTableModel.COL_BIDASK_CALL ||
                     col == OptionsTableModel.COL_BIDASK_PUT;
@@ -419,9 +454,9 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             if (!isSelected && value instanceof Number) {
                 double d = ((Number) value).doubleValue();
                 if (isDeltaCounterCol(column) || isBidAskCol(column)) {
-                    if (d > 0)      c.setForeground(VAL_GREEN_FG);
+                    if (d > 0) c.setForeground(VAL_GREEN_FG);
                     else if (d < 0) c.setForeground(VAL_RED_FG);
-                    else            c.setForeground(Color.BLACK);
+                    else c.setForeground(Color.BLACK);
                 } else {
                     c.setForeground(Color.BLACK);
                 }
@@ -429,7 +464,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
             // ----- Background: selection > change highlight > column base > zebra -----
             if (isSelected) {
-                c.setBackground(SELECTION_BG); c.setForeground(SELECTION_FG);
+                c.setBackground(SELECTION_BG);
+                c.setForeground(SELECTION_FG);
             } else {
                 boolean paintable =
                         isDeltaCounterCol(column) ||
