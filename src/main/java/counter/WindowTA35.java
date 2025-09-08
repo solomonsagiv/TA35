@@ -10,7 +10,6 @@ import gui.details.DetailsWindow;
 import locals.Themes;
 import options.Options;
 import options.OptionsTableWindow;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

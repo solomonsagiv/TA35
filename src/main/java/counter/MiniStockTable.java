@@ -6,7 +6,6 @@ import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
 import miniStocks.MiniStock;
-
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -132,7 +131,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
         // Header style
         JTableHeader header = table.getTableHeader();
-        JTableHeaderStyled.apply(header);
 
         // Renderers
         CellRenderer renderer = new CellRenderer(model);
