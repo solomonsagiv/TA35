@@ -133,13 +133,17 @@ public class DataReaderService extends MyBaseService {
                 ta35.getSpot_interest_list().add(ta35.getOp_month_interest());
 
                 // Read stocks – עכשיו ב-Thread נפרד עם Batch
-                if (sleepCount % 1000 == 0) {
+                if (sleepCount % 600 == 0) {
                     read_stocks();
+                }
+
+                // Reset sleep count
+                if (sleepCount == 10000)  {
+                    sleepCount = 0;
                 }
 
                 // Read options – נשמר כתגובה (מושבת)
                 // handle_read_options();
-
 
             }
         } catch (Exception e) {
