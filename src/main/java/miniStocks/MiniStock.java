@@ -183,6 +183,14 @@ public class MiniStock implements IJsonData {
         this.delta_counter = delta_counter;
     }
 
+    public int getRow() {
+        return row;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
     @Override
     public MyJson getAsJson() {
         MyJson json = new MyJson();
