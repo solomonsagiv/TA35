@@ -214,18 +214,13 @@ public class DataReaderService extends MyBaseService {
             initStockCells(stocksConversation); // אתחול בבאטצ' דרך הערוץ של המניות
             initStocksCells = true;
         }
-        // נימנע מלהעמיס תורים: רק אם אין ריצה פעילה נזניק בקשה חדשה
-        if (stocksInFlight.compareAndSet(false, true)) {
-            stocksExecutor.submit(() -> {
-                try {
-                    batchReadStocks();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    stocksInFlight.set(false);
-                }
-            });
-        }
+        new Thread(() -> {
+            try {
+                batchReadStocks();
+            } catch (DDEException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     private void initStockCells(DDEClientConversation conv) {
