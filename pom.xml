@@ -122,11 +122,11 @@
             <version>${cxf.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.pretty-tools</groupId>
-            <artifactId>JDDE</artifactId>
-            <version>2.1.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.pretty-tools</groupId>-->
+<!--            <artifactId>JDDE</artifactId>-->
+<!--            <version>2.1.0</version>-->
+<!--        </dependency>-->
 
 
 <!--        <dependency>-->
