@@ -51,6 +51,11 @@ public class TA90 extends BASE_CLIENT_OBJECT {
     }
 
     @Override
+    protected void init_stocks_reader_service() {
+
+    }
+
+    @Override
     protected void init_exps() {
 
     }
