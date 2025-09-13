@@ -15,7 +15,8 @@ public class Calculator {
     public static final int BA_NUMBER_POSITIVE_STOCKS = 0,
             BA_WEIGHT_POSITIVE_STOCKS = 1,
             GREEN_STOCKS = 2,
-            DELTA_WEIGHT_POSITIVE_STOCKKS = 3;
+            DELTA_WEIGHT_POSITIVE_STOCKKS = 3,
+            TOTAL_DELTA = 4;
 
     public static double calc(Option option, int newLast, int newVolume, double newDelta) {
 
@@ -79,7 +80,8 @@ public class Calculator {
         int ba_number_of_positive = 0,
                 ba_weight_positive = 0,
                 green_stocks = 0,
-                delta_weight_positive = 0;
+                delta_weight_positive = 0,
+                total_delta = 0;
 
         for (MiniStock stock : stocks) {
 
@@ -98,6 +100,9 @@ public class Calculator {
             if (stock.getDelta_counter() > 0) {
                 delta_weight_positive += stock.getWeight();
             }
+
+            // Total delta
+            total_delta += stock.getDelta_counter();
         }
 
         TA35 ta35 = TA35.getInstance();
@@ -107,8 +112,9 @@ public class Calculator {
         int[] vals = new int[4];
         vals[BA_NUMBER_POSITIVE_STOCKS] = ba_number_of_positive;
         vals[BA_WEIGHT_POSITIVE_STOCKS] = ba_weight_positive;
-        vals[GREEN_STOCKS]              = green_stocks;
+        vals[GREEN_STOCKS] = green_stocks;
         vals[DELTA_WEIGHT_POSITIVE_STOCKKS] = delta_weight_positive;
+        vals[TOTAL_DELTA]                   = total_delta;
 
         return vals;
     }

@@ -10,6 +10,7 @@ import props.Props;
 import races.Race_Logic;
 import races.RacesService;
 import service.MyServiceHandler;
+import service.StocksReaderService;
 
 import java.awt.*;
 
@@ -33,6 +34,7 @@ public abstract class BASE_CLIENT_OBJECT {
     protected TimeSeriesHandler timeSeriesHandler;
     public RacesService racesService;
     public CalcsService calcsService;
+    public StocksReaderService stocksReaderService;
     protected DDECells ddeCells;
 
     private double roll_interest = 0;
@@ -56,6 +58,7 @@ public abstract class BASE_CLIENT_OBJECT {
         init_data_base_service();
         init_dde_cells();
         init_calcs_service();
+        init_stocks_reader_service();
         roll_interest_list = new L.FixedSizeDoubleList(10);
         spot_interest_list = new L.FixedSizeDoubleList(10);
     }
@@ -67,6 +70,8 @@ public abstract class BASE_CLIENT_OBJECT {
     protected abstract void init_data_base_service();
 
     protected abstract void init_calcs_service();
+
+    protected abstract void init_stocks_reader_service();
 
     protected abstract void init_exps();
 
@@ -374,4 +379,11 @@ public abstract class BASE_CLIENT_OBJECT {
         this.delta_potisive_weight = delta_potisive_weight;
     }
 
+    public StocksReaderService getStocksReaderService() {
+        return stocksReaderService;
+    }
+
+    public void setStocksReaderService(StocksReaderService stocksReaderService) {
+        this.stocksReaderService = stocksReaderService;
+    }
 }

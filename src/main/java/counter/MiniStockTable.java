@@ -57,7 +57,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             weight_of_positive_stocks_field,
             weighted_counter_field,
             green_stocks_field,
-            delta_field;
+            delta_field,
+            total_delta_field;
 
     /* ======== Data ======== */
     private List<MiniStock> stocksRef;
@@ -99,7 +100,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(22);
         weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(22);
         green_stocks_field              = new MyGuiComps.MyTextField(); green_stocks_field.setFontSize(22);
-        delta_field                     = new MyGuiComps.MyTextField();delta_field.setFontSize(22);
+        delta_field                     = new MyGuiComps.MyTextField(); delta_field.setFontSize(22);
+        total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
 
 
         number_of_positive_stocks_field.setFont(KPI_FONT);
@@ -107,13 +109,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         weighted_counter_field.setFont(KPI_FONT);
         green_stocks_field.setFont(KPI_FONT);
         delta_field.setFont(KPI_FONT);
+        total_delta_field.setFont(KPI_FONT);
 
-        JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
+        JPanel controlPanel = new JPanel(new GridLayout(1, 6, 15, 0));
         controlPanel.add(createColumn("P C :", number_of_positive_stocks_field));
         controlPanel.add(createColumn("TOT W:",      weight_of_positive_stocks_field));
         controlPanel.add(createColumn("W F:",  weighted_counter_field));
         controlPanel.add(createColumn("GREEN:",      green_stocks_field));
         controlPanel.add(createColumn("TOT D:",   delta_field));
+        controlPanel.add(createColumn("DELTA: ", total_delta_field));
         add(controlPanel, BorderLayout.NORTH);
 
         // ---- Table ----
@@ -178,6 +182,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 green_stocks_field.colorForge(vals[Calculator.GREEN_STOCKS]);
                 weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
                 delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKKS]);
+                total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
             }
         });
     }

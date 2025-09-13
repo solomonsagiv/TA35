@@ -21,6 +21,7 @@ import races.RacesService;
 import races.Stocks_Race_Service;
 import service.BasketFinder_by_stocks;
 import service.MyServiceHandler;
+import service.StocksReaderService;
 import stocksHandler.StocksHandler;
 import java.awt.*;
 import java.util.HashMap;
@@ -43,6 +44,11 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     @Override
     protected void init_data_base_service() {
         setDataBaseService(new DataBaseService(this, new DataBaseHandler_TA35(this)));
+    }
+
+    @Override
+    protected void init_stocks_reader_service() {
+        setStocksReaderService(new StocksReaderService(this, BackGroundRunner.excelPath));
     }
 
     @Override

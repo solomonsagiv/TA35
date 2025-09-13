@@ -7,38 +7,23 @@ import com.pretty_tools.dde.client.DDEClientConversation;
 import locals.L;
 import miniStocks.MiniStock;
 import miniStocks.MiniStockDDECells;
-import options.*;
-import java.util.*;
-import java.util.concurrent.*;
+import options.Option;
+import options.Options;
+import options.Strike;
+
+import java.util.Iterator;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class DataReaderService extends MyBaseService {
+public class StocksReaderService extends MyBaseService {
 
     // Cells
-    String futureCell = "R2C1";
-    String indexCell = "R2C2";
-    String indexBidCell = "R2C3";
-    String indexAskCell = "R2C4";
-    String openCell = "R2C5";
-    String highCell = "R2C6";
-    String lowCell = "R2C7";
-    String baseCell = "R2C8";
-    String lastCell = "R2C9";
-    String futureWeekBidCell = "R9C2";
-    String futureWeekAskCell = "R9C3";
-    String futureWeekCell = "R9C4";
     String statusCell = "R7C1";
-    String futureBidCell = "R7C2";
-    String futureAskCell = "R7C3";
-    String trading_status_cell = "RC3";
-    String roll_interest_cell = "R5C5";
-    String op_interest_month_cell = "R5C6";
-    String op_week_interest_cell = "R5C7";
-    String index_mid_cell = "R5C8";
 
     public static boolean initStocksCells = false;
 
-    DDEClientConversation conversation;        // נשאר ל-HEAD/אופציות (כמו שהיה)
     DDEClientConversation stocksConversation;  // חדש: שיחה נפרדת למניות (Thread-safe בפועל)
 
     TA35 ta35;
@@ -66,9 +51,9 @@ public class DataReaderService extends MyBaseService {
     boolean set_options = false;
 
     // ==== הגדרות Batch למניות ====
-    private final int STOCKS_START_ROW   = 2;   // כולל
+    private final int STOCKS_START_ROW = 2;   // כולל
     private final int STOCKS_END_ROW_EXC = 37;  // בלעדי (2..36)
-    private final int NAME_COL_DEFAULT   = 21;  // אם שם המניה בעמודה אחרת – עדכן כאן
+    private final int NAME_COL_DEFAULT = 21;  // אם שם המניה בעמודה אחרת – עדכן כאן
 
     // Thread ייעודי למניות
     private final ExecutorService stocksExecutor = Executors.newSingleThreadExecutor(r -> {
@@ -78,59 +63,22 @@ public class DataReaderService extends MyBaseService {
     });
     private final AtomicBoolean stocksInFlight = new AtomicBoolean(false);
 
-    public DataReaderService(TA35 ta35, String excel_path) {
+    public StocksReaderService(TA35 ta35, String excel_path) {
         super(ta35);
         this.ta35 = ta35;
-        this.conversation = new DDEConnection().createNewConversation(excel_path);
         this.stocksConversation = new DDEConnection().createNewConversation(excel_path); // ערוץ נפרד למניות
     }
 
     public void update() {
         try {
-            String status = conversation.request(statusCell).replaceAll("\\s+", "");
+            String status = stocksConversation.request(statusCell).replaceAll("\\s+", "");
             ta35.setStatus(status);
 
             if (ta35.getStatus() != "preopen") {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
 
                 sleepCount += getSleep();
 
-                // קישור אופציות (נשמר 1:1)
-                if (ta35.getExps().getMonth().getOptions() != null) {
-                    this.optionsWeek = ta35.getExps().getWeek().getOptions();
-                    this.optionsMonth = ta35.getExps().getMonth().getOptions();
-                    set_options = true;
-                }
-
-                // Futures (נשמר)
-                optionsMonth.setContract(L.dbl(conversation.request(futureCell)));
-                optionsMonth.setContractBid(L.dbl(conversation.request(futureBidCell)));
-                optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
-
-                // Week (נשמר)
-                optionsWeek.setContract(L.dbl(conversation.request(futureWeekCell)));
-                optionsWeek.setContractBid(L.dbl(conversation.request(futureWeekBidCell)));
-                optionsWeek.setContractAsk(L.dbl(conversation.request(futureWeekAskCell)));
-
-                // Big (נשמר)
-                ta35.setMid(L.dbl(conversation.request(index_mid_cell)));
-                ta35.setIndex(L.dbl(conversation.request(indexCell)));
-                ta35.setBid(L.dbl(conversation.request(indexBidCell)));
-                ta35.setAsk(L.dbl(conversation.request(indexAskCell)));
-                ta35.setHigh(L.dbl(conversation.request(highCell)));
-                ta35.setLow(L.dbl(conversation.request(lowCell)));
-                ta35.setBase(L.dbl(conversation.request(baseCell)));
-                ta35.setOpen(L.dbl(conversation.request(openCell)));
-                ta35.setLast_price(L.dbl(conversation.request(lastCell)));
-
-                // Read stocks – עכשיו ב-Thread נפרד עם Batch
-//                if (sleepCount % 600 == 0) {
-//                    read_stocks();
-//                }
-
-                // Reset sleep count
-                if (sleepCount == 10000)  {
-                    sleepCount = 0;
-                }
+                read_stocks();
 
                 // Read options – נשמר כתגובה (מושבת)
                 // handle_read_options();
@@ -144,10 +92,9 @@ public class DataReaderService extends MyBaseService {
     boolean init_options = false;
 
     private void handle_read_options() throws DDEException {
-        if (optionsMonth == null){
+        if (optionsMonth == null) {
             return;
         }
-
         if (init_options) {
 //            read_options(optionsWeek, START_ROW_WEEK, END_ROW_WEEK);
             read_options(optionsMonth, START_ROW_MONTH, END_ROW_MONTH);
@@ -167,26 +114,26 @@ public class DataReaderService extends MyBaseService {
         double strike;
 
         for (int row = start_row; row < end_row; row++) {
-            strike = L.dbl(conversation.request(L.cell(row, STRIKE)));
+            strike = L.dbl(stocksConversation.request(L.cell(row, STRIKE)));
 
             // Call
             call = options.getOption(Option.Side.CALL, strike);
-            call.setBid((int) L.dbl(conversation.request(L.cell(row, CALL_BID))));
-            call.setAsk((int) L.dbl(conversation.request(L.cell(row, CALL_ASK))));
-            call.setVolume((int) L.dbl(conversation.request(L.cell(row, CALL_VOLUME))));
-            call.setLast((int) L.dbl(conversation.request(L.cell(row, CALL_LAST))));
+            call.setBid((int) L.dbl(stocksConversation.request(L.cell(row, CALL_BID))));
+            call.setAsk((int) L.dbl(stocksConversation.request(L.cell(row, CALL_ASK))));
+            call.setVolume((int) L.dbl(stocksConversation.request(L.cell(row, CALL_VOLUME))));
+            call.setLast((int) L.dbl(stocksConversation.request(L.cell(row, CALL_LAST))));
 
             // Put
             put = options.getOption(Option.Side.PUT, strike);
-            put.setBid((int) L.dbl(conversation.request(L.cell(row, PUT_BID))));
-            put.setAsk((int) L.dbl(conversation.request(L.cell(row, PUT_ASK))));
-            put.setVolume((int) L.dbl(conversation.request(L.cell(row, PUT_VOLUME))));
-            put.setLast((int) L.dbl(conversation.request(L.cell(row, PUT_LAST))));
+            put.setBid((int) L.dbl(stocksConversation.request(L.cell(row, PUT_BID))));
+            put.setAsk((int) L.dbl(stocksConversation.request(L.cell(row, PUT_ASK))));
+            put.setVolume((int) L.dbl(stocksConversation.request(L.cell(row, PUT_VOLUME))));
+            put.setLast((int) L.dbl(stocksConversation.request(L.cell(row, PUT_LAST))));
         }
     }
 
     private double read_double_from_dde(String cell) throws DDEException {
-        return L.dbl(conversation.request(cell));
+        return L.dbl(stocksConversation.request(cell));
     }
 
     private void init_options(Options options, int start_row, int end_row) throws DDEException {
@@ -251,24 +198,24 @@ public class DataReaderService extends MyBaseService {
         MiniStock sample = it.next();
         MiniStockDDECells c0 = sample.getDdeCells();
 
-        int colName   = colOf(c0.getNameCell());
-        int colLast   = colOf(c0.getLastPriceCell());
-        int colBid    = colOf(c0.getBidCell());
-        int colAsk    = colOf(c0.getAskCell());
-        int colVol    = colOf(c0.getVolumeCell());
-        int colOpen   = colOf(c0.getOpenCell());
-        int colBase   = colOf(c0.getBaseCell());
+        int colName = colOf(c0.getNameCell());
+        int colLast = colOf(c0.getLastPriceCell());
+        int colBid = colOf(c0.getBidCell());
+        int colAsk = colOf(c0.getAskCell());
+        int colVol = colOf(c0.getVolumeCell());
+        int colOpen = colOf(c0.getOpenCell());
+        int colBase = colOf(c0.getBaseCell());
         int colWeight = colOf(c0.getWeightCell());
 
         // בקשות Range לעמודות דרך ערוץ המניות
-        String[] names  = lines(stocksConversation.request(range(colName, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] last   = parseDoubles(stocksConversation.request(range(colLast, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] bid    = parseDoubles(stocksConversation.request(range(colBid,  STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] ask    = parseDoubles(stocksConversation.request(range(colAsk,  STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        int[]    vol    = parseInts   (stocksConversation.request(range(colVol,  STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] open   = parseDoubles(stocksConversation.request(range(colOpen, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] base   = parseDoubles(stocksConversation.request(range(colBase, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] weight = parseDoubles(stocksConversation.request(range(colWeight,STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
+        String[] names = lines(stocksConversation.request(range(colName, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
+        double[] last = parseDoubles(stocksConversation.request(range(colLast, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
+        double[] bid = parseDoubles(stocksConversation.request(range(colBid, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
+        double[] ask = parseDoubles(stocksConversation.request(range(colAsk, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
+        int[] vol = parseInts(stocksConversation.request(range(colVol, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
+        double[] open = parseDoubles(stocksConversation.request(range(colOpen, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
+        double[] base = parseDoubles(stocksConversation.request(range(colBase, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
+        double[] weight = parseDoubles(stocksConversation.request(range(colWeight, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
 
         int rows = maxLen(names.length, last.length, bid.length, ask.length,
                 vol.length, open.length, base.length, weight.length);
@@ -277,19 +224,24 @@ public class DataReaderService extends MyBaseService {
             int idx = s.getRow() - STOCKS_START_ROW;
             if (idx < 0 || idx >= rows) continue;
 
-            if (idx < names.length)  { String nm = safeTrim(names[idx]); if (!nm.isEmpty()) s.setName(nm); }
-            if (idx < last.length)   s.setLast(last[idx]);
-            if (idx < bid.length)    s.setBid(bid[idx]);
-            if (idx < ask.length)    s.setAsk(ask[idx]);
-            if (idx < vol.length)    s.setVolume(vol[idx]);
-            if (idx < open.length)   s.setOpen(open[idx]);
-            if (idx < base.length)   s.setBase(base[idx]);
+            if (idx < names.length) {
+                String nm = safeTrim(names[idx]);
+                if (!nm.isEmpty()) s.setName(nm);
+            }
+            if (idx < last.length) s.setLast(last[idx]);
+            if (idx < bid.length) s.setBid(bid[idx]);
+            if (idx < ask.length) s.setAsk(ask[idx]);
+            if (idx < vol.length) s.setVolume(vol[idx]);
+            if (idx < open.length) s.setOpen(open[idx]);
+            if (idx < base.length) s.setBase(base[idx]);
             if (idx < weight.length) s.setWeight(weight[idx]);
         }
     }
 
     // ==== Helpers ====
-    private static String safeTrim(String s) { return s == null ? "" : s.trim(); }
+    private static String safeTrim(String s) {
+        return s == null ? "" : s.trim();
+    }
 
     private static String range(int col, int startRow, int endRowExc) {
         return "R" + startRow + "C" + col + ":R" + (endRowExc - 1) + "C" + col;
@@ -315,7 +267,11 @@ public class DataReaderService extends MyBaseService {
         String[] ls = lines(raw);
         int[] out = new int[ls.length];
         for (int i = 0; i < ls.length; i++) {
-            try { out[i] = (int) Math.round(parseDoubleFast(ls[i])); } catch (Exception e) { out[i] = 0; }
+            try {
+                out[i] = (int) Math.round(parseDoubleFast(ls[i]));
+            } catch (Exception e) {
+                out[i] = 0;
+            }
         }
         return out;
     }
@@ -324,11 +280,17 @@ public class DataReaderService extends MyBaseService {
         if (s == null) return 0.0;
         s = s.trim();
         if (s.isEmpty()) return 0.0;
-        try { return Double.parseDouble(s.replace(",", "")); } catch (Exception e) { return 0.0; }
+        try {
+            return Double.parseDouble(s.replace(",", ""));
+        } catch (Exception e) {
+            return 0.0;
+        }
     }
 
     private static int maxLen(int... arr) {
-        int m = 0; for (int v : arr) if (v > m) m = v; return m;
+        int m = 0;
+        for (int v : arr) if (v > m) m = v;
+        return m;
     }
 
     // === API קיים נשמר ===
@@ -344,6 +306,6 @@ public class DataReaderService extends MyBaseService {
 
     @Override
     public int getSleep() {
-        return 200;
+        return 400;
     }
 }
