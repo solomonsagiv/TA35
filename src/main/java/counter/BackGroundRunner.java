@@ -6,6 +6,7 @@ import arik.Arik;
 import org.json.JSONArray;
 import races.Stocks_Race_Service;
 import service.DataReaderService;
+import service.StocksReaderService;
 import threads.MyThread;
 import javax.swing.*;
 import java.awt.*;
@@ -70,6 +71,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
             // Data reader
             new DataReaderService(client, BackGroundRunner.excelPath);
+            new StocksReaderService(client, BackGroundRunner.excelPath);
             client.getServiceHandler().getHandler().start();
 
             while (true) {
@@ -108,7 +110,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         }
 
                         // Open charts
-                        if (Manifest.OPEN_CHART && DataReaderService.initStocksCells && streamMarketBool && !open_charts) {
+                        if (Manifest.OPEN_CHART && StocksReaderService.initStocksCells && streamMarketBool && !open_charts) {
                             WindowTA35.openCharts();
                             open_charts = true;
                         }

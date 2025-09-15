@@ -37,8 +37,6 @@ public class DataReaderService extends MyBaseService {
     String op_week_interest_cell = "R5C7";
     String index_mid_cell = "R5C8";
 
-    public static boolean initStocksCells = false;
-
     DDEClientConversation conversation;        // נשאר ל-HEAD/אופציות (כמו שהיה)
 
     TA35 ta35;

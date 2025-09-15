@@ -183,7 +183,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 green_stocks_field.colorForge(vals[Calculator.GREEN_STOCKS]);
                 weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
                 delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKKS]);
-                total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
+                total_delta_field.colorForge((int)(vals[Calculator.TOTAL_DELTA] / 1_000_000));
             }
         });
     }
