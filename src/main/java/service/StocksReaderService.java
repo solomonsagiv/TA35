@@ -301,7 +301,7 @@ public class StocksReaderService extends MyBaseService {
 
     @Override
     public String getName() {
-        return "Data sheet service";
+        return "Stocks sheet service";
     }
 
     @Override

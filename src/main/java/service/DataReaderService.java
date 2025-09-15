@@ -5,11 +5,12 @@ import api.dde.DDE.DDEConnection;
 import com.pretty_tools.dde.DDEException;
 import com.pretty_tools.dde.client.DDEClientConversation;
 import locals.L;
-import miniStocks.MiniStock;
-import miniStocks.MiniStockDDECells;
-import options.*;
-import java.util.*;
-import java.util.concurrent.*;
+import options.Option;
+import options.Options;
+import options.Strike;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DataReaderService extends MyBaseService {
@@ -39,7 +40,6 @@ public class DataReaderService extends MyBaseService {
     public static boolean initStocksCells = false;
 
     DDEClientConversation conversation;        // נשאר ל-HEAD/אופציות (כמו שהיה)
-    DDEClientConversation stocksConversation;  // חדש: שיחה נפרדת למניות (Thread-safe בפועל)
 
     TA35 ta35;
 
@@ -82,7 +82,6 @@ public class DataReaderService extends MyBaseService {
         super(ta35);
         this.ta35 = ta35;
         this.conversation = new DDEConnection().createNewConversation(excel_path);
-        this.stocksConversation = new DDEConnection().createNewConversation(excel_path); // ערוץ נפרד למניות
     }
 
     public void update() {
@@ -196,95 +195,6 @@ public class DataReaderService extends MyBaseService {
             Option put = new Option(Option.Side.PUT, strike, options);
             options.addStrike(new Strike(call, put, strike));
             System.out.println(strike);
-        }
-    }
-
-    private void read_stocks() {
-        if (!initStocksCells) {
-            initStockCells(stocksConversation); // אתחול בבאטצ' דרך הערוץ של המניות
-            initStocksCells = true;
-        }
-        new Thread(() -> {
-            try {
-                batchReadStocks();
-            } catch (DDEException e) {
-                e.printStackTrace();
-            }
-        }).start();
-    }
-
-    private void initStockCells(DDEClientConversation conv) {
-        int nameCol = NAME_COL_DEFAULT;
-        int start_row = STOCKS_START_ROW;
-        int end_row = STOCKS_END_ROW_EXC;
-
-        try {
-            // בקשה אחת לכל שמות המניות (Range)
-            String raw = conv.request(range(nameCol, start_row, end_row));
-            String[] names = lines(raw);
-
-            for (int i = 0; i < names.length; i++) {
-                int row = start_row + i;
-                String name = names[i];
-                System.out.println("Name : " + name + " " + row);
-
-                String nm = (name == null) ? "" : name.trim();
-                if (nm.isEmpty()) continue;
-
-                MiniStock stock = new MiniStock(ta35.getStocksHandler(), row);
-                stock.setName(nm);
-                ta35.getStocksHandler().addStock(stock);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // ==== קריאת מניות בבאטצ' (Thread נפרד) ====
-    private void batchReadStocks() throws DDEException {
-        Set<MiniStock> stocks = ta35.getStocksHandler().getStocks();
-        if (stocks == null || stocks.isEmpty()) return;
-
-        // ניקח דוגמה כדי לגזור מספרי עמודות מתוך ה-cells (R{row}C{col})
-        Iterator<MiniStock> it = stocks.iterator();
-        if (!it.hasNext()) return;
-        MiniStock sample = it.next();
-        MiniStockDDECells c0 = sample.getDdeCells();
-
-        int colName   = colOf(c0.getNameCell());
-        int colLast   = colOf(c0.getLastPriceCell());
-        int colBid    = colOf(c0.getBidCell());
-        int colAsk    = colOf(c0.getAskCell());
-        int colVol    = colOf(c0.getVolumeCell());
-        int colOpen   = colOf(c0.getOpenCell());
-        int colBase   = colOf(c0.getBaseCell());
-        int colWeight = colOf(c0.getWeightCell());
-
-        // בקשות Range לעמודות דרך ערוץ המניות
-        String[] names  = lines(stocksConversation.request(range(colName, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] last   = parseDoubles(stocksConversation.request(range(colLast, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] bid    = parseDoubles(stocksConversation.request(range(colBid,  STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] ask    = parseDoubles(stocksConversation.request(range(colAsk,  STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        int[]    vol    = parseInts   (stocksConversation.request(range(colVol,  STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] open   = parseDoubles(stocksConversation.request(range(colOpen, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] base   = parseDoubles(stocksConversation.request(range(colBase, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-        double[] weight = parseDoubles(stocksConversation.request(range(colWeight,STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
-
-        int rows = maxLen(names.length, last.length, bid.length, ask.length,
-                vol.length, open.length, base.length, weight.length);
-
-        for (MiniStock s : stocks) {
-            int idx = s.getRow() - STOCKS_START_ROW;
-            if (idx < 0 || idx >= rows) continue;
-
-            if (idx < names.length)  { String nm = safeTrim(names[idx]); if (!nm.isEmpty()) s.setName(nm); }
-            if (idx < last.length)   s.setLast(last[idx]);
-            if (idx < bid.length)    s.setBid(bid[idx]);
-            if (idx < ask.length)    s.setAsk(ask[idx]);
-            if (idx < vol.length)    s.setVolume(vol[idx]);
-            if (idx < open.length)   s.setOpen(open[idx]);
-            if (idx < base.length)   s.setBase(base[idx]);
-            if (idx < weight.length) s.setWeight(weight[idx]);
         }
     }
 

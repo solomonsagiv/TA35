@@ -29,6 +29,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         if (base == null) base = new JLabel().getFont();
         return base.deriveFont(style, size);
     }
+
     private static final Font HEADER_FONT = deriveUI(Font.BOLD, 16f);
     private static final Font CELL_FONT   = deriveUI(Font.PLAIN, 16f);
     private static final Font NAME_FONT   = deriveUI(Font.BOLD, 16f);

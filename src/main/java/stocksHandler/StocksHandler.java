@@ -5,7 +5,6 @@ import miniStocks.MiniStock;
 import myJson.IJsonData;
 import myJson.MyJson;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
