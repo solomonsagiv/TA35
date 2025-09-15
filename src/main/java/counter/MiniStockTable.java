@@ -115,9 +115,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         JPanel controlPanel = new JPanel(new GridLayout(1, 6, 15, 0));
         controlPanel.add(createColumn("P C :", number_of_positive_stocks_field));
         controlPanel.add(createColumn("TOT W:",      weight_of_positive_stocks_field));
+        controlPanel.add(createColumn("TOT D:",   delta_field));
         controlPanel.add(createColumn("W F:",  weighted_counter_field));
         controlPanel.add(createColumn("GREEN:",      green_stocks_field));
-        controlPanel.add(createColumn("TOT D:",   delta_field));
         controlPanel.add(createColumn("DELTA: ", total_delta_field));
         add(controlPanel, BorderLayout.NORTH);
 
