@@ -508,7 +508,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 }
 
 
-
 //  for (int i = 10; i < 100; i+=10) {
 //        Option call = new Option(Option.Side.CALL.toString(), i, options);
 //        Option put = new Option(Option.Side.PUT.toString(), i, options);
