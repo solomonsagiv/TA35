@@ -97,7 +97,7 @@ public class MiniStock implements IJsonData {
         if (volume != this.volume) {
             if (this.volume != 0) {
                 int change = volume - this.volume;
-                if (this.volume != 0 && volume != 0) {
+                if (this.volume != 0 && volume != 0 && pre_ask != 0 && pre_bid != 0) {
                     calc_delta(change);
                 }
             }
