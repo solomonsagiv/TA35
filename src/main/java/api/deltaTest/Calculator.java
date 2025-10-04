@@ -10,8 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Calculator {
-
-
+    
     public static final int BA_NUMBER_POSITIVE_STOCKS = 0,
             BA_WEIGHT_POSITIVE_STOCKS = 1,
             GREEN_STOCKS = 2,

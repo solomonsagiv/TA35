@@ -152,11 +152,11 @@ public class StocksReaderService extends MyBaseService {
             initStocksCells = true;
         }
         new Thread(() -> {
-            try {
-                batchReadStocks();
-            } catch (DDEException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                batchReadStocks();
+//            } catch (DDEException e) {
+//                e.printStackTrace();
+//            }
         }).start();
     }
 
