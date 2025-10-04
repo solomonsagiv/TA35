@@ -105,6 +105,11 @@ public class MiniStock implements IJsonData {
         }
     }
 
+
+    public double get_open_close() {
+        return last - open;
+    }
+
     private void calc_delta(int change) {
         // Buy
         if (last >= pre_ask) {

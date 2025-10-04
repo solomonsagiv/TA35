@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Calculator {
-    
+
+
     public static final int BA_NUMBER_POSITIVE_STOCKS = 0,
             BA_WEIGHT_POSITIVE_STOCKS = 1,
             GREEN_STOCKS = 2,
             DELTA_WEIGHT_POSITIVE_STOCKKS = 3,
-            TOTAL_DELTA = 4;
+            TOTAL_DELTA = 4,
+            TOTAL_UP_WITH_SHORT_DELTA = 5,
+            TOTAL_DOWN_WITH_LONG_DELTA = 6;
 
     public static double calc(Option option, int newLast, int newVolume, double newDelta) {
 
@@ -80,7 +83,9 @@ public class Calculator {
                 ba_weight_positive = 0,
                 green_stocks = 0,
                 delta_weight_positive = 0,
-                total_delta = 0;
+                total_delta = 0,
+                total_up_with_short_delta = 0,
+                total_down_with_long_delta = 0;
 
         for (MiniStock stock : stocks) {
 
@@ -100,21 +105,31 @@ public class Calculator {
                 delta_weight_positive += stock.getWeight();
             }
 
+            // Up with short delta
+            if (stock.get_open_close() > 0 && stock.getDelta_counter() < 0 ) {
+                total_up_with_short_delta += stock.getWeight();
+            }
+
+            // Down with long delta
+            if (stock.get_open_close() < 0 && stock.getDelta_counter() > 0) {
+                total_down_with_long_delta += stock.getWeight();
+            }
+
             // Total delta
-            total_delta += stock.getDelta_counter();
+            total_delta += stock.getDeltaCounterInMillions();
         }
 
-        TA35 ta35 = TA35.getInstance();
-        ta35.setBa_total_positive_weight(ba_weight_positive);
-        ta35.setDelta_potisive_weight(delta_weight_positive);
+        TA35.getInstance().setBa_total_positive_weight(ba_weight_positive);
+        TA35.getInstance().setDelta_potisive_weight(delta_weight_positive);
 
-        int[] vals = new int[5];
-        vals[BA_NUMBER_POSITIVE_STOCKS] = ba_number_of_positive;
-        vals[BA_WEIGHT_POSITIVE_STOCKS] = ba_weight_positive;
-        vals[GREEN_STOCKS] = green_stocks;
+        int[] vals = new int[7];
+        vals[BA_NUMBER_POSITIVE_STOCKS]     = ba_number_of_positive;
+        vals[BA_WEIGHT_POSITIVE_STOCKS]     = ba_weight_positive;
+        vals[GREEN_STOCKS]                  = green_stocks;
         vals[DELTA_WEIGHT_POSITIVE_STOCKKS] = delta_weight_positive;
         vals[TOTAL_DELTA]                   = total_delta;
-
+        vals[TOTAL_UP_WITH_SHORT_DELTA]     = total_up_with_short_delta;
+        vals[TOTAL_DOWN_WITH_LONG_DELTA]    = total_down_with_long_delta;
         return vals;
     }
 
