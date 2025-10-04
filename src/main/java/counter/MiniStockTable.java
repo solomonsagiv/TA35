@@ -106,12 +106,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         long_stocks_field               = new MyGuiComps.MyTextField(); long_stocks_field.setFontSize(22);
         short_stocks_field              = new MyGuiComps.MyTextField(); short_stocks_field.setFontSize(22);
 
-
-        weight_of_positive_stocks_field.setFont(KPI_FONT);
-        weighted_counter_field.setFont(KPI_FONT);
-        delta_field.setFont(KPI_FONT);
-        total_delta_field.setFont(KPI_FONT);
-
         JPanel controlPanel = new JPanel(new GridLayout(1, 6, 15, 0));
         controlPanel.add(createColumn("TOT W:",      weight_of_positive_stocks_field));
         controlPanel.add(createColumn("TOT D: ",        delta_field));
