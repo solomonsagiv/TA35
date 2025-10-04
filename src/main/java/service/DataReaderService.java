@@ -91,7 +91,7 @@ public class DataReaderService extends MyBaseService {
 
                 sleepCount += getSleep();
 
-                // קישור אופציות (נשמר 1:1)
+//                 קישור אופציות (נשמר 1:1)
                 if (ta35.getExps().getMonth().getOptions() != null) {
                     this.optionsWeek = ta35.getExps().getWeek().getOptions();
                     this.optionsMonth = ta35.getExps().getMonth().getOptions();
