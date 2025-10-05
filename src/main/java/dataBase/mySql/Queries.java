@@ -329,7 +329,7 @@ public class Queries {
                     if (L.equalsIgnoreCaseAndSpaces(stock.getName(), name)) {
                         System.out.println("Found  -------------------- ");
                         stock.setBid_ask_counter((Integer) counter);
-                        stock.setDelta_counter((Integer) delta_counter);
+                        stock.setDelta_counter(delta_counter.doubleValue());
                         break;
                     }
                 }
@@ -362,7 +362,7 @@ public class Queries {
             // constant index name (change if you have per-stock index)
             String indexName = "TA35";
             String indexNameLit = "'" + sqlEscape(indexName) + "'";
-            String deltaCounterLit = Integer.toString(s.getDelta_counter());
+            String deltaCounterLit = Double.toString(s.getDelta_counter());
 
             sb.append("(")
                     .append(nameLit).append(", ")

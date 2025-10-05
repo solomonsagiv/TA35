@@ -24,7 +24,7 @@ public class MiniStock implements IJsonData {
     private double
             pre_bid = 0,
             pre_ask = 0;
-    private int
+    private double
             delta_counter = 0;
     private int
             bid_ask_counter = 0,
@@ -178,15 +178,15 @@ public class MiniStock implements IJsonData {
         this.base = base;
     }
 
-    public int getDelta_counter() {
+    public double getDelta_counter() {
         return delta_counter;
     }
 
-    public int getDeltaCounterInMillions() {
+    public double getDeltaCounterInMillions() {
         return delta_counter / 1_000_000;
     }
 
-    public void setDelta_counter(int delta_counter) {
+    public void setDelta_counter(double delta_counter) {
         this.delta_counter = delta_counter;
     }
 
