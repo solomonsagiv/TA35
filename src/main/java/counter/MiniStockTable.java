@@ -245,10 +245,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             final double lastPct;
             final double changePct; // last-open
             final int    counter;
-            final int    delta;
+            final double    delta;
             final double weight;
 
-            Row(String name, double openPct, double lastPct, double changePct, int cnt,int delta,  double weight) {
+            Row(String name, double openPct, double lastPct, double changePct, int cnt,double delta,  double weight) {
                 this.name = name;
                 this.openPct = openPct;
                 this.lastPct = lastPct;
@@ -294,7 +294,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 }
                 int counter = s.getBid_ask_counter();
                 double weight = s.getWeight();
-                int delta = s.getDeltaCounterInMillions();
+                double delta = s.getDeltaCounterInMillions();
 
                 // fill curr map for change detection (name-based)
                 double[] currVals = new double[7];
