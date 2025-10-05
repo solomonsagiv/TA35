@@ -104,9 +104,6 @@ public class MiniStock implements IJsonData {
     }
 
 
-
-
-
     public double get_open_close() {
         return last - open;
     }
