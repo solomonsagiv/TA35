@@ -7,8 +7,8 @@ import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import locals.Themes;
 import api.TA35;
+import api.deltaTest.Calculator;
 import org.jfree.chart.plot.ValueMarker;
-
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
@@ -218,10 +218,66 @@ public class Main_Chart extends MyChartCreator {
         MyChart weighted_stocks_counter_chart = new MyChart(series, props);
         weighted_stocks_counter_chart.add_marker(fifty);
 
+
+        // ------------------ Stocks weighted counter hourly ------------------- //
+
+        // Total BA counter by weight
+        MyTimeSeries ba_tot_pos_weight_hourly = new MyTimeSeries("BA Total Pos Weight Hourly", client) {
+
+            @Override
+            public double getValue() {
+                return Calculator.get_stocks_ba_counter_hourly();
+            }
+
+            @Override
+            public void updateData() {
+
+            }
+
+            @Override
+            public void load() {
+
+            }
+        };
+
+        ba_tot_pos_weight_hourly.setColor(Themes.BLUE3);
+        ba_tot_pos_weight_hourly.setStokeSize(1.2f);
+
+        // Total delta by weight
+        MyTimeSeries delta_tot_pos_weight_hourly = new MyTimeSeries("Delta Total Pos Weight Hourly", client) {
+
+            @Override
+            public double getValue() {
+                return Calculator.get_stocks_delta_counter_hourly();
+            }
+
+            @Override
+            public void updateData() {
+
+            }
+
+            @Override
+            public void load() {
+
+            }
+        };
+
+        delta_tot_pos_weight_hourly.setColor(Themes.OPEN_RACE);
+        delta_tot_pos_weight_hourly.setStokeSize(1.2f);
+
+        series = new MyTimeSeries[2];
+        series[0] = delta_tot_pos_weight_hourly;
+        series[1] = ba_tot_pos_weight_hourly;
+
+        // Chart
+        MyChart stocks_weighted_counter_chart_hourly = new MyChart(series, props);
+        stocks_weighted_counter_chart_hourly.add_marker(fifty);
+
+
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, df_chart, races_chart, bid_ask_counter_chart, weighted_stocks_counter_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, df_chart, races_chart, bid_ask_counter_chart, stocks_weighted_counter_chart_hourly, weighted_stocks_counter_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Main chart");

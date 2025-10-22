@@ -21,16 +21,17 @@ public class MiniStock implements IJsonData {
     private double pre_last = 0;
     private double open = 0;
     private double base = 0;
-    private double
-            pre_bid = 0,
+    private double pre_bid = 0,
             pre_ask = 0;
-    private int
-            delta_counter = 0;
-    private int
-            bid_ask_counter = 0,
+    private int delta_counter = 0;
+    private int bid_ask_counter = 0,
             bid_ask_counter_0 = 0;
 
     MiniStockDDECells ddeCells;
+
+    // ערכים ראשונים מהשעה האחרונה (לחישוב הפרש)
+    private int first_hour_counter = 0;
+    private int first_hour_delta_counter = 0;
 
     // Constructor
     public MiniStock(StocksHandler handler, int row) {
@@ -55,10 +56,12 @@ public class MiniStock implements IJsonData {
 
     public void setBid(double bid) {
         // Counter
-        if (bid > this.bid && this.bid != 0) bid_ask_counter++;
+        if (bid > this.bid && this.bid != 0)
+            bid_ask_counter++;
 
         // Set pre bid
-        if (bid != this.bid) this.pre_bid = this.bid;
+        if (bid != this.bid)
+            this.pre_bid = this.bid;
 
         this.bid = bid;
     }
@@ -70,10 +73,12 @@ public class MiniStock implements IJsonData {
     public void setAsk(double ask) {
 
         // Counter
-        if (ask < this.ask && this.ask != 0) bid_ask_counter--;
+        if (ask < this.ask && this.ask != 0)
+            bid_ask_counter--;
 
         // Set pre ask
-        if (ask != this.ask) this.pre_ask = this.ask;
+        if (ask != this.ask)
+            this.pre_ask = this.ask;
 
         this.ask = ask;
     }
@@ -103,6 +108,41 @@ public class MiniStock implements IJsonData {
         }
     }
 
+    // ===== First Hour Values (for hourly delta calculation) =====
+
+    public int getFirst_hour_counter() {
+        return first_hour_counter;
+    }
+
+    public void setFirst_hour_counter(int first_hour_counter) {
+        this.first_hour_counter = first_hour_counter;
+    }
+
+    public int getFirst_hour_delta_counter() {
+        return first_hour_delta_counter;
+    }
+
+    public void setFirst_hour_delta_counter(int first_hour_delta_counter) {
+        this.first_hour_delta_counter = first_hour_delta_counter;
+    }
+
+    /**
+     * מחשב את ההפרש של counter ביחס לשעה האחרונה
+     * 
+     * @return ההפרש (נוכחי - ראשון)
+     */
+    public int getCounterHourlyDelta() {
+        return this.bid_ask_counter - this.first_hour_counter;
+    }
+
+    /**
+     * מחשב את ההפרש של delta_counter ביחס לשעה האחרונה
+     * 
+     * @return ההפרש (נוכחי - ראשון)
+     */
+    public int getDeltaCounterHourlyDelta() {
+        return this.delta_counter - this.first_hour_delta_counter;
+    }
 
     public double get_open_close() {
         return last - open;
@@ -111,12 +151,12 @@ public class MiniStock implements IJsonData {
     private void calc_delta(int change) {
         // Buy
         if (last >= pre_ask) {
-            delta_counter += (int)((change * last) / 1_000_000);
+            delta_counter += (int) ((change * last) / 1_000_000);
         }
 
         // Sell
         if (last <= pre_bid) {
-            delta_counter -= (int)((change * last) / 1_000_000);
+            delta_counter -= (int) ((change * last) / 1_000_000);
         }
     }
 
@@ -222,8 +262,4 @@ public class MiniStock implements IJsonData {
         return getResetJson();
     }
 
-
 }
-
-
-

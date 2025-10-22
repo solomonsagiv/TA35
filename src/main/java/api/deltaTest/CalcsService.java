@@ -2,6 +2,7 @@ package api.deltaTest;
 
 import api.BASE_CLIENT_OBJECT;
 import api.Manifest;
+import dataBase.mySql.MySql;
 import service.MyBaseService;
 import service.ServiceEnum;
 
@@ -25,13 +26,26 @@ public class CalcsService extends MyBaseService {
 
         if (Manifest.DB_UPLOAD) {
             // Calc
-            if (counter % 60000 == 0) {
+            if (counter >= 60000) {
                 counter = 0;
                 // Calc stocks counter
                 calc_stocks_raw_counter();
+                updateFirstHourCounters();
             }
             // Calc stocks weighted counter
             calc_stocks_weighted_counter();
+        }
+    }
+
+    /**
+     * מעדכן את הערכים הראשונים מהשעה האחרונה לכל המניות
+     * מתבצע כל דקה
+     */
+    private void updateFirstHourCounters() {
+        try {
+            MySql.update_first_hour_counters(MySql.JIBE_DEV_CONNECTION);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
