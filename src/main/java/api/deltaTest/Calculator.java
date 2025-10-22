@@ -44,6 +44,30 @@ public class Calculator {
         return 0;
     }
 
+
+    public static double get_stocks_ba_counter_hourly() {
+        List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+        double counter_hourly = 0.0;
+        for (MiniStock s : snapshot) {
+
+            if (s.getFirst_hour_counter() > 0) {
+                counter_hourly += s.getFirst_hour_counter();
+            }
+        }
+        return counter_hourly;
+    }
+
+    public static double get_stocks_delta_counter_hourly() {
+        List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+        double delta_counter_hourly = 0.0;
+        for (MiniStock s : snapshot) {
+            if (s.getFirst_hour_delta_counter() > 0) {
+                delta_counter_hourly += s.getFirst_hour_delta_counter();
+            }
+        }
+        return delta_counter_hourly;
+    }
+
     public static double[] calculateWeightedCounters() {
 
         TA35 client = TA35.getInstance();
