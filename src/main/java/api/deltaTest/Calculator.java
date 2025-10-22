@@ -50,8 +50,8 @@ public class Calculator {
         double counter_hourly = 0.0;
         for (MiniStock s : snapshot) {
 
-            if (s.getFirst_hour_counter() > 0) {
-                counter_hourly += s.getFirst_hour_counter();
+            if (s.getCounterHourlyDelta() > 0) {
+                counter_hourly += s.getWeight();
             }
         }
         return counter_hourly;
@@ -61,8 +61,8 @@ public class Calculator {
         List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
         double delta_counter_hourly = 0.0;
         for (MiniStock s : snapshot) {
-            if (s.getFirst_hour_delta_counter() > 0) {
-                delta_counter_hourly += s.getFirst_hour_delta_counter();
+            if (s.getDeltaCounterHourlyDelta() > 0) {
+                delta_counter_hourly += s.getWeight();
             }
         }
         return delta_counter_hourly;
