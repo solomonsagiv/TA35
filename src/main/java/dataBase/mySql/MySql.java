@@ -1,8 +1,12 @@
 package dataBase.mySql;
 
+import api.TA35;
 import arik.Arik;
 import dataBase.Dev;
 import dataBase.Prod;
+import locals.L;
+import miniStocks.MiniStock;
+import stocksHandler.StocksHandler;
 
 import java.sql.*;
 import java.time.LocalTime;
@@ -449,5 +453,51 @@ public class MySql {
         public static final String ORDER_BY_TIME_DESC_LIMIT_1 = "order by time desc limit 1";
         public static final String ORDER_BY_TIME_DESC_OFFSET_1_LIMIT_1 = "order by time desc offset 1 limit 1";
     }
+
+
+     /**
+     * מעדכן את הערכים הראשונים מהשעה האחרונה לכל המניות
+     * משתמש ב-query שמביא את ה-snapshot הראשון מהשעה האחרונה
+     */
+    public static void update_first_hour_counters(String connectionType) {
+
+
+        StocksHandler stocksHandler = TA35.getInstance().getStocksHandler();
+        List<MiniStock> stocks = new ArrayList<>(stocksHandler.getStocks());
+        
+        String sql = String.format(
+                "SELECT DISTINCT ON (name) " +
+                "    name, " +
+                "    counter, " +
+                "    delta_counter " +
+                "FROM sagiv.stocks_data " +
+                "WHERE index_name = '%s' " +
+                "  AND snapshot_time >= NOW() - INTERVAL '1 hour' " +
+                "ORDER BY name, snapshot_time ASC",
+                TA35.getInstance().getName().toUpperCase()
+        );
+
+        List<Map<String, Object>> rs = MySql.select(sql, connectionType);
+
+        for (Map<String, Object> row : rs) {
+            try {
+                String name = (String) row.get("name");
+                Number counter = (Number) row.get("counter");
+                Number delta_counter = (Number) row.get("delta_counter");
+
+                for (MiniStock stock : stocks) {
+                    if (L.equalsIgnoreCaseAndSpaces(stock.getName(), name)) {
+                        stock.setFirst_hour_counter(counter != null ? counter.intValue() : 0);
+                        stock.setFirst_hour_delta_counter(delta_counter != null ? delta_counter.intValue() : 0);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Error updating first hour counters: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 }
