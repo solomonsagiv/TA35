@@ -61,7 +61,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             delta_field,
             total_delta_field,
             long_stocks_field,
-            short_stocks_field;
+            short_stocks_field,
+            counter_2_weight_field;
 
     /* ======== Data ======== */
     private List<MiniStock> stocksRef;
@@ -105,9 +106,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
         long_stocks_field               = new MyGuiComps.MyTextField(); long_stocks_field.setFontSize(22);
         short_stocks_field              = new MyGuiComps.MyTextField(); short_stocks_field.setFontSize(22);
+        counter_2_weight_field         = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
 
-        JPanel controlPanel = new JPanel(new GridLayout(1, 6, 15, 0));
-        controlPanel.add(createColumn("TOT W:",      weight_of_positive_stocks_field));
+        JPanel controlPanel = new JPanel(new GridLayout(1, 7, 15, 0));
+        controlPanel.add(createColumn("C1 W:",      weight_of_positive_stocks_field));
+        controlPanel.add(createColumn("C2 W:",      counter_2_weight_field));
         controlPanel.add(createColumn("TOT D: ",        delta_field));
         controlPanel.add(createColumn("W F:",  weighted_counter_field));
         controlPanel.add(createColumn("DELTA: ", total_delta_field));
@@ -173,6 +176,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
                 // עדכון ה-KPIs העליונים
                 weight_of_positive_stocks_field.colorForge(vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
+                counter_2_weight_field.colorForge(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
                 weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
                 delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKKS]);
                 total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
