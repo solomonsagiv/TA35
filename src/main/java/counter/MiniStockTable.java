@@ -5,8 +5,6 @@ import api.TA35;
 import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
-import locals.L;
-import locals.Themes;
 import miniStocks.MiniStock;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -60,8 +58,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             weighted_counter_field,
             delta_field,
             total_delta_field,
-            long_stocks_field,
-            short_stocks_field;
+            counter_2_weight_field;
 
     /* ======== Data ======== */
     private List<MiniStock> stocksRef;
@@ -103,16 +100,14 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(22);
         delta_field                     = new MyGuiComps.MyTextField(); delta_field.setFontSize(22);
         total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
-        long_stocks_field               = new MyGuiComps.MyTextField(); long_stocks_field.setFontSize(22);
-        short_stocks_field              = new MyGuiComps.MyTextField(); short_stocks_field.setFontSize(22);
+        counter_2_weight_field         = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
 
-        JPanel controlPanel = new JPanel(new GridLayout(1, 6, 15, 0));
-        controlPanel.add(createColumn("TOT W:",      weight_of_positive_stocks_field));
+        JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
+        controlPanel.add(createColumn("C1 W:",      weight_of_positive_stocks_field));
+        controlPanel.add(createColumn("C2 W:",      counter_2_weight_field));
         controlPanel.add(createColumn("TOT D: ",        delta_field));
         controlPanel.add(createColumn("W F:",  weighted_counter_field));
         controlPanel.add(createColumn("DELTA: ", total_delta_field));
-        controlPanel.add(createColumn("LONG : ", long_stocks_field));
-        controlPanel.add(createColumn("SHORT:", short_stocks_field));
         add(controlPanel, BorderLayout.NORTH);
 
         // ---- Table ----
@@ -173,31 +168,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
                 // עדכון ה-KPIs העליונים
                 weight_of_positive_stocks_field.colorForge(vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
+                counter_2_weight_field.colorForge(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
                 weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
                 delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKKS]);
                 total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
-                set_short_long(vals);
-
-            }
-
-            private void set_short_long(int[] vals) {
-                int lo = vals[Calculator.TOTAL_UP_WITH_SHORT_DELTA];
-                int sh = vals[Calculator.TOTAL_DOWN_WITH_LONG_DELTA];
-
-                if (lo > sh) {
-                    long_stocks_field.setText(L.str(lo));
-                    long_stocks_field.setForeground(Themes.BINANCE_GREEN);
-
-                    short_stocks_field.setText(L.str(sh));
-                    short_stocks_field.setForeground(Themes.BLACK);
-                } else {
-                    long_stocks_field.setText(L.str(lo));
-                    long_stocks_field.setForeground(Themes.BLACK);
-
-                    short_stocks_field.setText(L.str(sh));
-                    short_stocks_field.setForeground(Themes.RED);
-                }
-                throw new UnsupportedOperationException("Unimplemented method 'set_short_long'");
             }
         });
     }
