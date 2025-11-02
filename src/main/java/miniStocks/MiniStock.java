@@ -26,12 +26,21 @@ public class MiniStock implements IJsonData {
     private int delta_counter = 0;
     private int bid_ask_counter = 0,
             bid_ask_counter_0 = 0;
+    private int counter_2 = 0; // BA2 counter
 
     MiniStockDDECells ddeCells;
 
     // ערכים ראשונים מהשעה האחרונה (לחישוב הפרש)
     private int first_hour_counter = 0;
     private int first_hour_delta_counter = 0;
+
+    // BA2 אינדיקטור - משתנים לחישוב ממוצע ועוצמה
+    private int movement_sample_count_bid = 0;
+    private int movement_sample_count_ask = 0;
+    private double average_bid_change = 0.0;
+    private double average_ask_change = 0.0;
+    private int bid_strength_score = 0;
+    private int ask_strength_score = 0;
 
     // Constructor
     public MiniStock(StocksHandler handler, int row) {
@@ -59,6 +68,12 @@ public class MiniStock implements IJsonData {
         if (bid > this.bid && this.bid != 0)
             bid_ask_counter++;
 
+        // BA2: חישוב שינוי bid והשוואה לממוצע
+        if (this.bid != 0 && bid != this.bid) {
+            double bidChange = bid - this.bid;
+            updateBA2Bid(bidChange);
+        }
+
         // Set pre bid
         if (bid != this.bid)
             this.pre_bid = this.bid;
@@ -75,6 +90,12 @@ public class MiniStock implements IJsonData {
         // Counter
         if (ask < this.ask && this.ask != 0)
             bid_ask_counter--;
+
+        // BA2: חישוב שינוי ask והשוואה לממוצע
+        if (this.ask != 0 && ask != this.ask) {
+            double askChange = this.ask - ask; // שינוי הפוך (כשאסק יורד זה חיובי)
+            updateBA2Ask(askChange);
+        }
 
         // Set pre ask
         if (ask != this.ask)
@@ -200,6 +221,14 @@ public class MiniStock implements IJsonData {
         this.bid_ask_counter_0 = bid_ask_counter_0;
     }
 
+    public int getCounter_2() {
+        return counter_2;
+    }
+
+    public void setCounter_2(int counter_2) {
+        this.counter_2 = counter_2;
+    }
+
     public double getOpen() {
         return open;
     }
@@ -260,6 +289,86 @@ public class MiniStock implements IJsonData {
     @Override
     public MyJson getFullResetJson() {
         return getResetJson();
+    }
+
+    /**
+     * מעדכן את BA2 counter לפי שינויי bid
+     */
+    private void updateBA2Bid(double change) {
+        if (change == 0) return;
+
+        double changeSize = Math.abs(change);
+        boolean isUp = change > 0;
+        
+        updateBidMovement(changeSize, isUp);
+        
+        // עדכון counter_2 כחיבור של bid ו-ask scores
+        counter_2 = bid_strength_score + ask_strength_score;
+    }
+
+    /**
+     * מעדכן את BA2 counter לפי שינויי ask
+     */
+    private void updateBA2Ask(double change) {
+        if (change == 0) return;
+
+        double changeSize = Math.abs(change);
+        // ask: כשעולה זה bearish, כשיורד זה bullish
+        // change > 0 אומר ask ירד (זה bullish), change < 0 אומר ask עלה (זה bearish)
+        boolean isUp = change < 0; // ask עולה = true
+        
+        updateAskMovement(changeSize, isUp);
+        
+        // עדכון counter_2 כחיבור של bid ו-ask scores
+        counter_2 = bid_strength_score + ask_strength_score;
+    }
+
+    /**
+     * מעדכן ממוצע שינוי bid ואינדיקטור
+     * @param changeSize גודל השינוי (ערך מוחלט)
+     * @param isUp האם bid עלה
+     */
+    private void updateBidMovement(double changeSize, boolean isUp) {
+        // First time - initialize
+        if (movement_sample_count_bid == 0) {
+            average_bid_change = changeSize;
+            movement_sample_count_bid = 1;
+            return;
+        }
+        
+        // Update average
+        average_bid_change = (average_bid_change * movement_sample_count_bid + changeSize) / (movement_sample_count_bid + 1);
+        movement_sample_count_bid++;
+        
+        // Update indicator only if change is significant
+        // Bid עולה = bullish, Bid יורד = bearish
+        if (changeSize > average_bid_change) {
+            bid_strength_score += (isUp ? 1 : -1);
+        }
+    }
+
+    /**
+     * מעדכן ממוצע שינוי ask ואינדיקטור
+     * @param changeSize גודל השינוי (ערך מוחלט)
+     * @param isUp האם ask עלה
+     */
+    private void updateAskMovement(double changeSize, boolean isUp) {
+        // First time - initialize
+        if (movement_sample_count_ask == 0) {
+            average_ask_change = changeSize;
+            movement_sample_count_ask = 1;
+            return;
+        }
+        
+        // Update average
+        average_ask_change = (average_ask_change * movement_sample_count_ask + changeSize) / (movement_sample_count_ask + 1);
+        movement_sample_count_ask++;
+        
+        // Update indicator only if change is significant
+        // Ask עולה = bearish, Ask יורד = bullish
+        if (changeSize > average_ask_change) {
+            ask_strength_score += (isUp ? -1 : 1);
+        }
     }
 
 }

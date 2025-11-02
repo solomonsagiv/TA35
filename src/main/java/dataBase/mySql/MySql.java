@@ -469,7 +469,8 @@ public class MySql {
                 "SELECT DISTINCT ON (name) " +
                 "    name, " +
                 "    counter, " +
-                "    delta_counter " +
+                "    delta_counter, " +
+                "    counter_2 " +
                 "FROM sagiv.stocks_data " +
                 "WHERE index_name = '%s' " +
                 "  AND snapshot_time >= NOW() - INTERVAL '1 hour' " +
@@ -484,11 +485,15 @@ public class MySql {
                 String name = (String) row.get("name");
                 Number counter = (Number) row.get("counter");
                 Number delta_counter = (Number) row.get("delta_counter");
+                Number counter_2 = (Number) row.get("counter_2");
 
                 for (MiniStock stock : stocks) {
                     if (L.equalsIgnoreCaseAndSpaces(stock.getName(), name)) {
                         stock.setFirst_hour_counter(counter != null ? counter.intValue() : 0);
                         stock.setFirst_hour_delta_counter(delta_counter != null ? delta_counter.intValue() : 0);
+                        if (counter_2 != null) {
+                            stock.setCounter_2(counter_2.intValue());
+                        }
                         break;
                     }
                 }
