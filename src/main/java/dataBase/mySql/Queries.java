@@ -324,12 +324,20 @@ public class Queries {
                 String name = (String) row.get("name");
                 Number counter = (Number) row.get("counter");
                 Number delta_counter = (Number) row.get("delta_counter");
+                Number counter_2 = (Number) row.get("counter_2"); // BA2 indicator
 
                 for (MiniStock stock : stocks) {
                     if (L.equalsIgnoreCaseAndSpaces(stock.getName(), name)) {
                         System.out.println("Found  -------------------- ");
-                        stock.setBid_ask_counter((Integer) counter);
-                        stock.setDelta_counter(delta_counter.intValue());
+                        if (counter != null) {
+                            stock.setBid_ask_counter(counter.intValue());
+                        }
+                        if (delta_counter != null) {
+                            stock.setDelta_counter(delta_counter.intValue());
+                        }
+                        if (counter_2 != null) {
+                            stock.setCounter_2(counter_2.intValue());
+                        }
                         break;
                     }
                 }
@@ -348,7 +356,7 @@ public class Queries {
         if (stocks == null || stocks.isEmpty()) return;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO sagiv.stocks_data (name, price, weight, counter, snapshot_time, index_name, delta_counter) VALUES ");
+        sb.append("INSERT INTO sagiv.stocks_data (name, price, weight, counter, snapshot_time, index_name, delta_counter, counter_2) VALUES ");
 
         for (int i = 0; i < stocks.size(); i++) {
             MiniStock s = stocks.get(i);
@@ -363,6 +371,7 @@ public class Queries {
             String indexName = "TA35";
             String indexNameLit = "'" + sqlEscape(indexName) + "'";
             String deltaCounterLit = Integer.toString(s.getDelta_counter());
+            String counter2Lit = Integer.toString(s.getCounter_2()); // BA2 indicator
 
             sb.append("(")
                     .append(nameLit).append(", ")
@@ -371,7 +380,8 @@ public class Queries {
                     .append(counterLit).append(", ")
                     .append(tsLit).append(", ")
                     .append(indexNameLit).append(", ")
-                    .append(deltaCounterLit)
+                    .append(deltaCounterLit).append(", ")
+                    .append(counter2Lit)
                     .append(")");
 
             if (i < stocks.size() - 1) sb.append(", ");

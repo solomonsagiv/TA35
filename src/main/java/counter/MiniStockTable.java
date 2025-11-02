@@ -143,7 +143,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         }
 
         // Column widths
-        int[] widths = {160, 100, 100, 110, 100, 100};
+        int[] widths = {160, 100, 100, 110, 100, 100, 100, 100};
         TableColumnModel cm = table.getColumnModel();
         for (int i = 0; i < Math.min(widths.length, cm.getColumnCount()); i++) {
             cm.getColumn(i).setPreferredWidth(widths[i]);
@@ -233,10 +233,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         static final int COL_LAST    = 2;
         static final int COL_CHANGE  = 3;
         static final int COL_COUNTER = 4;
-        static final int COL_DELTA   = 5;
-        static final int COL_WEIGHT  = 6;
+        static final int COL_BA2     = 5;
+        static final int COL_DELTA   = 6;
+        static final int COL_WEIGHT  = 7;
 
-        private final String[] cols = {"Name", "Open", "Last", "Change", "Counter","Delta", "Weight"};
+        private final String[] cols = {"Name", "Open", "Last", "Change", "Counter", "BA2", "Delta", "Weight"};
 
         /** Row holder */
         private static class Row {
@@ -245,15 +246,17 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             final double lastPct;
             final double changePct; // last-open
             final int    counter;
+            final int    ba2;
             final int    delta;
             final double weight;
 
-            Row(String name, double openPct, double lastPct, double changePct, int cnt, int delta,  double weight) {
+            Row(String name, double openPct, double lastPct, double changePct, int cnt, int ba2, int delta,  double weight) {
                 this.name = name;
                 this.openPct = openPct;
                 this.lastPct = lastPct;
                 this.changePct = changePct;
                 this.counter = cnt;
+                this.ba2 = ba2;
                 this.delta = delta;
                 this.weight = weight;
             }
@@ -293,21 +296,23 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                     diffPct = lastPct - openPct;
                 }
                 int counter = s.getBid_ask_counter();
+                int ba2 = s.getCounter_2();
                 double weight = s.getWeight();
                 int delta = (int) s.getDelta_counter();
 
                 // fill curr map for change detection (name-based)
-                double[] currVals = new double[7];
+                double[] currVals = new double[8];
                 currVals[COL_NAME]    = Double.NaN;    // לא מספרי
                 currVals[COL_OPEN]    = openPct;
                 currVals[COL_LAST]    = lastPct;
                 currVals[COL_CHANGE]  = diffPct;
                 currVals[COL_COUNTER] = counter;
+                currVals[COL_BA2]     = ba2;
                 currVals[COL_DELTA]   = delta;
                 currVals[COL_WEIGHT]  = weight;
                 currByName.put(name, currVals);
 
-                newRows.add(new Row(name, openPct, lastPct, diffPct, counter, delta, weight));
+                newRows.add(new Row(name, openPct, lastPct, diffPct, counter, ba2, delta, weight));
             }
 
             rows.clear();
@@ -336,6 +341,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 case COL_LAST:    return Double.isNaN(r.lastPct)   ? null : r.lastPct;
                 case COL_CHANGE:  return Double.isNaN(r.changePct) ? null : r.changePct;
                 case COL_COUNTER: return (double) r.counter; // נשמר Double למיון
+                case COL_BA2:     return (double) r.ba2; // נשמר Double למיון
                 case COL_DELTA:   return r.delta;
                 case COL_WEIGHT:  return r.weight;
                 default:          return null;
@@ -458,7 +464,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                     text = DF_PCT.format(v) + "%" + arrow;
                 } else if (column == Model.COL_WEIGHT) {
                     text = DF_WGT.format(v);
-                } else if (column == Model.COL_COUNTER || column == Model.COL_DELTA) {
+                } else if (column == Model.COL_COUNTER || column == Model.COL_BA2 || column == Model.COL_DELTA) {
                     text = String.valueOf((int) v);
                 } else {
                     text = DF_WGT.format(v);
@@ -474,7 +480,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 String tip;
                 if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE) {
                     tip = "Δ שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + DF_PCT.format(diff.doubleValue()) + "%";
-                } else if (column == Model.COL_COUNTER) {
+                } else if (column == Model.COL_COUNTER || column == Model.COL_BA2) {
                     tip = "שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + ((int) Math.round(diff.doubleValue()));
                 } else {
                     tip = "שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + DF_WGT.format(diff.doubleValue());
@@ -488,7 +494,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             if (!isSelected) {
                 if (value instanceof Number) {
                     double v = ((Number) value).doubleValue();
-                    if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_DELTA) {
+                    if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_BA2 || column == Model.COL_DELTA) {
                         setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
                     } else {
                         setForeground(Color.BLACK);
@@ -504,7 +510,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             } else {
                 boolean paintable =
                         column == Model.COL_OPEN || column == Model.COL_LAST ||
-                                column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_DELTA;
+                                column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_BA2 || column == Model.COL_DELTA;
 
                 int dir = paintable ? model.getChangeDirection(row, column, table) : 0;
                 if (dir > 0) {

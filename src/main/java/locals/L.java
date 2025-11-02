@@ -260,6 +260,17 @@ public class L {
 					.orElse(0.0);
 		}
 
+		public int size() {
+			return list.size();
+		}
+
+		public Double get(int index) {
+			if (index < 0 || index >= list.size()) {
+				return null;
+			}
+			return list.get(index);
+		}
+
 		@Override
 		public String toString() {
 			return list.toString();
