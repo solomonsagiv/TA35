@@ -9,6 +9,8 @@ import miniStocks.MiniStock;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.*;
@@ -144,7 +146,58 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             cm.getColumn(i).setPreferredWidth(widths[i]);
         }
 
+        // Context menu
+        setupContextMenu();
+
         add(new JScrollPane(table), BorderLayout.CENTER);
+    }
+
+    /**
+     * מגדיר תפריט קליק ימני לטבלה
+     */
+    private void setupContextMenu() {
+        JPopupMenu popup = new JPopupMenu();
+        
+        JMenuItem detailsItem = new JMenuItem("📊 View All Stocks Details");
+        detailsItem.addActionListener(e -> {
+            openAllStocksDetailsWindow();
+        });
+        popup.add(detailsItem);
+        
+        // Add mouse listener to table
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    showPopup(e);
+                }
+            }
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger()) {
+                    showPopup(e);
+                }
+            }
+            
+            private void showPopup(MouseEvent e) {
+                int row = table.rowAtPoint(e.getPoint());
+                if (row >= 0) {
+                    table.setRowSelectionInterval(row, row);
+                    popup.show(e.getComponent(), e.getX(), e.getY());
+                }
+            }
+        });
+    }
+
+    /**
+     * פותח חלון עם פרטי כל המניות
+     */
+    private void openAllStocksDetailsWindow() {
+        SwingUtilities.invokeLater(() -> {
+            AllStocksDetailsWindow detailsWindow = new AllStocksDetailsWindow();
+            detailsWindow.setVisible(true);
+        });
     }
 
     private static JPanel createColumn(String labelText, JTextField textField) {
@@ -202,16 +255,16 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     /* ======================== Table Model ======================== */
 
     private static class Model extends AbstractTableModel {
-        static final int COL_NAME    = 0;
-        static final int COL_OPEN    = 1;
-        static final int COL_LAST    = 2;
-        static final int COL_CHANGE  = 3;
-        static final int COL_COUNTER = 4;
-        static final int COL_BA2     = 5;
-        static final int COL_DELTA   = 6;
-        static final int COL_WEIGHT  = 7;
+        static final int COL_NAME      = 0;
+        static final int COL_OPEN      = 1;
+        static final int COL_LAST      = 2;
+        static final int COL_CHANGE    = 3;
+        static final int COL_COUNTER   = 4;
+        static final int COL_COUNTER_2 = 5;
+        static final int COL_DELTA     = 6;
+        static final int COL_WEIGHT    = 7;
 
-        private final String[] cols = {"Name", "Open", "Last", "Change", "Counter", "BA2", "Delta", "Weight"};
+        private final String[] cols = {"Name", "Open", "Last", "Change", "Counter", "Counter_2", "Delta", "Weight"};
 
         /** Row holder */
         private static class Row {
@@ -270,23 +323,23 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                     diffPct = lastPct - openPct;
                 }
                 int counter = s.getBid_ask_counter();
-                int ba2 = s.getCounter_2();
+                int counter_2 = s.getCounter_2(); // משתמש ב-getCombinedCounter2()
                 double weight = s.getWeight();
                 int delta = (int) s.getDelta_counter();
 
                 // fill curr map for change detection (name-based)
                 double[] currVals = new double[8];
-                currVals[COL_NAME]    = Double.NaN;    // לא מספרי
-                currVals[COL_OPEN]    = openPct;
-                currVals[COL_LAST]    = lastPct;
-                currVals[COL_CHANGE]  = diffPct;
-                currVals[COL_COUNTER] = counter;
-                currVals[COL_BA2]     = ba2;
-                currVals[COL_DELTA]   = delta;
-                currVals[COL_WEIGHT]  = weight;
+                currVals[COL_NAME]      = Double.NaN;    // לא מספרי
+                currVals[COL_OPEN]      = openPct;
+                currVals[COL_LAST]      = lastPct;
+                currVals[COL_CHANGE]    = diffPct;
+                currVals[COL_COUNTER]   = counter;
+                currVals[COL_COUNTER_2] = counter_2;
+                currVals[COL_DELTA]     = delta;
+                currVals[COL_WEIGHT]    = weight;
                 currByName.put(name, currVals);
 
-                newRows.add(new Row(name, openPct, lastPct, diffPct, counter, ba2, delta, weight));
+                newRows.add(new Row(name, openPct, lastPct, diffPct, counter, counter_2, delta, weight));
             }
 
             rows.clear();
@@ -310,15 +363,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         public Object getValueAt(int rowIndex, int columnIndex) {
             Row r = rows.get(rowIndex);
             switch (columnIndex) {
-                case COL_NAME:    return r.name;
-                case COL_OPEN:    return Double.isNaN(r.openPct)   ? null : r.openPct;
-                case COL_LAST:    return Double.isNaN(r.lastPct)   ? null : r.lastPct;
-                case COL_CHANGE:  return Double.isNaN(r.changePct) ? null : r.changePct;
-                case COL_COUNTER: return (double) r.counter; // נשמר Double למיון
-                case COL_BA2:     return (double) r.ba2; // נשמר Double למיון
-                case COL_DELTA:   return r.delta;
-                case COL_WEIGHT:  return r.weight;
-                default:          return null;
+                case COL_NAME:      return r.name;
+                case COL_OPEN:      return Double.isNaN(r.openPct)   ? null : r.openPct;
+                case COL_LAST:      return Double.isNaN(r.lastPct)   ? null : r.lastPct;
+                case COL_CHANGE:    return Double.isNaN(r.changePct) ? null : r.changePct;
+                case COL_COUNTER:   return (double) r.counter; // נשמר Double למיון
+                case COL_COUNTER_2: return (double) r.ba2; // נשמר Double למיון
+                case COL_DELTA:     return r.delta;
+                case COL_WEIGHT:    return r.weight;
+                default:            return null;
             }
         }
 
@@ -438,7 +491,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                     text = DF_PCT.format(v) + "%" + arrow;
                 } else if (column == Model.COL_WEIGHT) {
                     text = DF_WGT.format(v);
-                } else if (column == Model.COL_COUNTER || column == Model.COL_BA2 || column == Model.COL_DELTA) {
+                } else if (column == Model.COL_COUNTER || column == Model.COL_COUNTER_2 || column == Model.COL_DELTA) {
                     text = String.valueOf((int) v);
                 } else {
                     text = DF_WGT.format(v);
@@ -454,7 +507,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 String tip;
                 if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE) {
                     tip = "Δ שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + DF_PCT.format(diff.doubleValue()) + "%";
-                } else if (column == Model.COL_COUNTER || column == Model.COL_BA2) {
+                } else if (column == Model.COL_COUNTER || column == Model.COL_COUNTER_2) {
                     tip = "שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + ((int) Math.round(diff.doubleValue()));
                 } else {
                     tip = "שינוי: " + (diff.doubleValue() >= 0 ? "+" : "") + DF_WGT.format(diff.doubleValue());
@@ -468,7 +521,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             if (!isSelected) {
                 if (value instanceof Number) {
                     double v = ((Number) value).doubleValue();
-                    if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_BA2 || column == Model.COL_DELTA) {
+                    if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_COUNTER_2 || column == Model.COL_DELTA) {
                         setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
                     } else {
                         setForeground(Color.BLACK);
@@ -484,7 +537,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             } else {
                 boolean paintable =
                         column == Model.COL_OPEN || column == Model.COL_LAST ||
-                                column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_BA2 || column == Model.COL_DELTA;
+                                column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_COUNTER_2 || column == Model.COL_DELTA;
 
                 int dir = paintable ? model.getChangeDirection(row, column, table) : 0;
                 if (dir > 0) {
@@ -496,6 +549,227 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 }
             }
 
+            return c;
+        }
+    }
+
+    /* ======================== All Stocks Details Window ======================== */
+    
+    /**
+     * חלון שמציג את כל המניות עם פרטים מלאים
+     */
+    private class AllStocksDetailsWindow extends JFrame {
+        private JTable detailsTable;
+        private DetailsTableModel detailsModel;
+        private Thread refreshThread;
+        private volatile boolean running = true;
+        
+        public AllStocksDetailsWindow() {
+            super("All Stocks - Detailed View");
+            
+            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            setSize(1400, 800);
+            setLocationRelativeTo(null);
+            
+            buildUI();
+            startRefreshThread();
+        }
+        
+        private void buildUI() {
+            setLayout(new BorderLayout());
+            
+            // Create table model and table
+            detailsModel = new DetailsTableModel();
+            detailsTable = new JTable(detailsModel);
+            detailsTable.setRowHeight(28);
+            detailsTable.setAutoCreateRowSorter(true);
+            detailsTable.setFont(CELL_FONT);
+            detailsTable.setShowHorizontalLines(true);
+            detailsTable.setShowVerticalLines(true);
+            detailsTable.setGridColor(GRID_COLOR);
+            detailsTable.setSelectionBackground(SELECTION_BG);
+            detailsTable.setSelectionForeground(SELECTION_FG);
+            
+            // Header styling
+            JTableHeader header = detailsTable.getTableHeader();
+            header.setFont(HEADER_FONT);
+            header.setBackground(HEADER_BG);
+            header.setForeground(HEADER_FG);
+            
+            // Set column widths
+            int[] widths = {120, 90, 80, 80, 80, 80, 80, 120, 120, 100, 100, 90, 80};
+            TableColumnModel cm = detailsTable.getColumnModel();
+            for (int i = 0; i < Math.min(widths.length, cm.getColumnCount()); i++) {
+                cm.getColumn(i).setPreferredWidth(widths[i]);
+            }
+            
+            // Custom renderer for number formatting and coloring
+            DetailsRenderer renderer = new DetailsRenderer();
+            for (int i = 0; i < detailsModel.getColumnCount(); i++) {
+                if (i != 0) { // Skip name column
+                    detailsTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
+                }
+            }
+            
+            JScrollPane scrollPane = new JScrollPane(detailsTable);
+            add(scrollPane, BorderLayout.CENTER);
+            
+            // Initial load
+            refreshData();
+        }
+        
+        private void startRefreshThread() {
+            refreshThread = new Thread(() -> {
+                while (running) {
+                    try {
+                        Thread.sleep(5000); // Refresh every 5 seconds
+                        SwingUtilities.invokeLater(() -> refreshData());
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }
+            }, "AllStocksDetails-Refresher");
+            refreshThread.setDaemon(true);
+            refreshThread.start();
+        }
+        
+        private void refreshData() {
+            List<MiniStock> stocks = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+            detailsModel.updateData(stocks);
+        }
+        
+        @Override
+        public void dispose() {
+            running = false;
+            if (refreshThread != null) {
+                refreshThread.interrupt();
+            }
+            super.dispose();
+        }
+    }
+    
+    /**
+     * Table model for detailed stocks view
+     */
+    private static class DetailsTableModel extends AbstractTableModel {
+        private final String[] columns = {
+            "Name", "Last Price", "Bid", "Ask", "Counter", "Counter_2", "Delta",
+            "Avg Bid Change", "Avg Ask Change", "Bid Changes", "Ask Changes", "Volume", "Weight"
+        };
+        
+        private List<Object[]> data = new ArrayList<>();
+        
+        public void updateData(List<MiniStock> stocks) {
+            data.clear();
+            
+            for (MiniStock s : stocks) {
+                Object[] row = new Object[13];
+                row[0] = s.getName();
+                row[1] = s.getLast();
+                row[2] = s.getBid();
+                row[3] = s.getAsk();
+                row[4] = s.getBid_ask_counter();
+                row[5] = s.getCounter_2();
+                row[6] = s.getDelta_counter();
+                row[7] = s.getAverageBidChange();
+                row[8] = s.getAverageAskChange();
+                row[9] = s.getBidChangeCount();
+                row[10] = s.getAskChangeCount();
+                row[11] = s.getVolume();
+                row[12] = s.getWeight();
+                
+                data.add(row);
+            }
+            
+            fireTableDataChanged();
+        }
+        
+        @Override
+        public int getRowCount() {
+            return data.size();
+        }
+        
+        @Override
+        public int getColumnCount() {
+            return columns.length;
+        }
+        
+        @Override
+        public String getColumnName(int column) {
+            return columns[column];
+        }
+        
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return data.get(rowIndex)[columnIndex];
+        }
+        
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            if (columnIndex == 0) return String.class;
+            if (columnIndex == 4 || columnIndex == 5 || columnIndex == 6 || 
+                columnIndex == 9 || columnIndex == 10) {
+                return Integer.class;
+            }
+            return Double.class;
+        }
+    }
+    
+    /**
+     * Renderer for details table
+     */
+    private static class DetailsRenderer extends DefaultTableCellRenderer {
+        private final DecimalFormat df2 = new DecimalFormat("0.00");
+        private final DecimalFormat df4 = new DecimalFormat("0.0000");
+        
+        public DetailsRenderer() {
+            setHorizontalAlignment(SwingConstants.CENTER);
+        }
+        
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            
+            c.setFont(CELL_FONT);
+            
+            // Format text
+            if (value instanceof Double) {
+                double v = (Double) value;
+                if (column == 7 || column == 8) { // Avg changes
+                    setText(df4.format(v));
+                } else {
+                    setText(df2.format(v));
+                }
+            } else if (value instanceof Integer) {
+                setText(String.valueOf(value));
+            } else if (value != null) {
+                setText(value.toString());
+            } else {
+                setText("-");
+            }
+            
+            // Coloring
+            if (!isSelected) {
+                // Color based on value
+                if (value instanceof Number) {
+                    double v = ((Number) value).doubleValue();
+                    if (column == 4 || column == 5 || column == 6) { // Counter, Counter_2, Delta
+                        setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
+                    } else {
+                        setForeground(Color.BLACK);
+                    }
+                } else {
+                    setForeground(Color.BLACK);
+                }
+                
+                // Zebra striping
+                c.setBackground((row % 2 == 0) ? BG_WHITE : BG_STRIPE);
+            } else {
+                c.setBackground(SELECTION_BG);
+                c.setForeground(SELECTION_FG);
+            }
+            
             return c;
         }
     }
