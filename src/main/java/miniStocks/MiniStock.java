@@ -26,7 +26,6 @@ public class MiniStock implements IJsonData {
     private int delta_counter = 0;
     private int bid_ask_counter = 0,
             bid_ask_counter_0 = 0;
-    private int counter_2 = 0; // BA2 counter
 
     MiniStockDDECells ddeCells;
 
@@ -34,13 +33,13 @@ public class MiniStock implements IJsonData {
     private int first_hour_counter = 0;
     private int first_hour_delta_counter = 0;
 
-    // BA2 אינדיקטור - משתנים לחישוב ממוצע ועוצמה
-    private int movement_sample_count_bid = 0;
-    private int movement_sample_count_ask = 0;
+    // Bid/Ask averages and counters
     private double average_bid_change = 0.0;
     private double average_ask_change = 0.0;
-    private int bid_strength_score = 0;
-    private int ask_strength_score = 0;
+    private int bid_change_count = 0; // כמות שינויים של bid מתחילת היום
+    private int ask_change_count = 0; // כמות שינויים של ask מתחילת היום
+    private int bid_counter_2 = 0; // אינדיקטור bid: +1 למעלה, -1 למטה
+    private int ask_counter_2 = 0; // אינדיקטור ask: +1 למעלה (ask יורד), -1 למטה (ask עולה)
 
     // Constructor
     public MiniStock(StocksHandler handler, int row) {
@@ -68,10 +67,17 @@ public class MiniStock implements IJsonData {
         if (bid > this.bid && this.bid != 0)
             bid_ask_counter++;
 
-        // BA2: חישוב שינוי bid והשוואה לממוצע
+        // Update bid average and counter_2
         if (this.bid != 0 && bid != this.bid) {
-            double bidChange = bid - this.bid;
-            updateBA2Bid(bidChange);
+            double change = bid - this.bid;
+            updateBidAverage(change);
+            
+            // Update bid_counter_2: למעלה = +1, למטה = -1
+            if (change > 0) {
+                bid_counter_2++; // bid עלה
+            } else {
+                bid_counter_2--; // bid ירד
+            }
         }
 
         // Set pre bid
@@ -91,10 +97,17 @@ public class MiniStock implements IJsonData {
         if (ask < this.ask && this.ask != 0)
             bid_ask_counter--;
 
-        // BA2: חישוב שינוי ask והשוואה לממוצע
+        // Update ask average and counter_2
         if (this.ask != 0 && ask != this.ask) {
-            double askChange = this.ask - ask; // שינוי הפוך (כשאסק יורד זה חיובי)
-            updateBA2Ask(askChange);
+            double change = this.ask - ask; // שינוי הפוך (ask יורד = חיובי)
+            updateAskAverage(change);
+            
+            // Update ask_counter_2: למעלה (ask יורד) = +1, למטה (ask עולה) = -1
+            if (change > 0) {
+                ask_counter_2++; // ask ירד (מחיר עלה)
+            } else {
+                ask_counter_2--; // ask עלה (מחיר ירד)
+            }
         }
 
         // Set pre ask
@@ -222,11 +235,12 @@ public class MiniStock implements IJsonData {
     }
 
     public int getCounter_2() {
-        return counter_2;
+        return getCombinedCounter2(); // משתמש ב-bid_counter_2 + ask_counter_2
     }
 
     public void setCounter_2(int counter_2) {
-        this.counter_2 = counter_2;
+        // לא נעשה set ישיר, כי זה מחושב מ-bid_counter_2 + ask_counter_2
+        // אם צריך לשמור, אפשר לשמור את bid_counter_2 ו-ask_counter_2 בנפרד
     }
 
     public double getOpen() {
@@ -292,83 +306,67 @@ public class MiniStock implements IJsonData {
     }
 
     /**
-     * מעדכן את BA2 counter לפי שינויי bid
+     * מעדכן את ממוצע השינוי של bid
      */
-    private void updateBA2Bid(double change) {
-        if (change == 0) return;
-
-        double changeSize = Math.abs(change);
-        boolean isUp = change > 0;
-        
-        updateBidMovement(changeSize, isUp);
-        
-        // עדכון counter_2 כחיבור של bid ו-ask scores
-        counter_2 = bid_strength_score + ask_strength_score;
-    }
-
-    /**
-     * מעדכן את BA2 counter לפי שינויי ask
-     */
-    private void updateBA2Ask(double change) {
-        if (change == 0) return;
-
-        double changeSize = Math.abs(change);
-        // ask: כשעולה זה bearish, כשיורד זה bullish
-        // change > 0 אומר ask ירד (זה bullish), change < 0 אומר ask עלה (זה bearish)
-        boolean isUp = change < 0; // ask עולה = true
-        
-        updateAskMovement(changeSize, isUp);
-        
-        // עדכון counter_2 כחיבור של bid ו-ask scores
-        counter_2 = bid_strength_score + ask_strength_score;
-    }
-
-    /**
-     * מעדכן ממוצע שינוי bid ואינדיקטור
-     * @param changeSize גודל השינוי (ערך מוחלט)
-     * @param isUp האם bid עלה
-     */
-    private void updateBidMovement(double changeSize, boolean isUp) {
-        // First time - initialize
-        if (movement_sample_count_bid == 0) {
-            average_bid_change = changeSize;
-            movement_sample_count_bid = 1;
-            return;
-        }
-        
-        // Update average
-        average_bid_change = (average_bid_change * movement_sample_count_bid + changeSize) / (movement_sample_count_bid + 1);
-        movement_sample_count_bid++;
-        
-        // Update indicator only if change is significant
-        // Bid עולה = bullish, Bid יורד = bearish
-        if (changeSize > average_bid_change) {
-            bid_strength_score += (isUp ? 1 : -1);
+    private void updateBidAverage(double change) {
+        bid_change_count++;
+        if (bid_change_count == 1) {
+            average_bid_change = Math.abs(change);
+        } else {
+            average_bid_change = (average_bid_change * (bid_change_count - 1) + Math.abs(change)) / bid_change_count;
         }
     }
 
     /**
-     * מעדכן ממוצע שינוי ask ואינדיקטור
-     * @param changeSize גודל השינוי (ערך מוחלט)
-     * @param isUp האם ask עלה
+     * מעדכן את ממוצע השינוי של ask
      */
-    private void updateAskMovement(double changeSize, boolean isUp) {
-        // First time - initialize
-        if (movement_sample_count_ask == 0) {
-            average_ask_change = changeSize;
-            movement_sample_count_ask = 1;
-            return;
+    private void updateAskAverage(double change) {
+        ask_change_count++;
+        if (ask_change_count == 1) {
+            average_ask_change = Math.abs(change);
+        } else {
+            average_ask_change = (average_ask_change * (ask_change_count - 1) + Math.abs(change)) / ask_change_count;
         }
-        
-        // Update average
-        average_ask_change = (average_ask_change * movement_sample_count_ask + changeSize) / (movement_sample_count_ask + 1);
-        movement_sample_count_ask++;
-        
-        // Update indicator only if change is significant
-        // Ask עולה = bearish, Ask יורד = bullish
-        if (changeSize > average_ask_change) {
-            ask_strength_score += (isUp ? -1 : 1);
-        }
+    }
+
+    // Getters for averages and counters
+    public double getAverageBidChange() {
+        return average_bid_change;
+    }
+
+    public double getAverageAskChange() {
+        return average_ask_change;
+    }
+
+    public int getBidChangeCount() {
+        return bid_change_count;
+    }
+
+    public int getAskChangeCount() {
+        return ask_change_count;
+    }
+
+    public int getBid_counter_2() {
+        return bid_counter_2;
+    }
+
+    public void setBid_counter_2(int bid_counter_2) {
+        this.bid_counter_2 = bid_counter_2;
+    }
+
+    public int getAsk_counter_2() {
+        return ask_counter_2;
+    }
+
+    public void setAsk_counter_2(int ask_counter_2) {
+        this.ask_counter_2 = ask_counter_2;
+    }
+
+    /**
+     * מחזיר את הסכום של bid_counter_2 + ask_counter_2
+     */
+    public int getCombinedCounter2() {
+        return bid_counter_2 + ask_counter_2;
     }
 
 }
