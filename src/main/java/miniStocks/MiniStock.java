@@ -76,7 +76,7 @@ public class MiniStock implements IJsonData {
             // Update bid_counter_2: למעלה = +1, למטה = -1
             if (change > 0) {
                 bid_counter_2++; // bid עלה
-            } else {
+            } else if (change < 0) {
                 bid_counter_2--; // bid ירד
             }
         }
@@ -106,7 +106,7 @@ public class MiniStock implements IJsonData {
             // Update ask_counter_2: למעלה (ask יורד) = +1, למטה (ask עולה) = -1
             if (change > 0) {
                 ask_counter_2++; // ask ירד (מחיר עלה)
-            } else {
+            } else if (change < 0) {
                 ask_counter_2--; // ask עלה (מחיר ירד)
             }
         }
