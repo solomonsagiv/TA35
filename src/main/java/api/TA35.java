@@ -134,6 +134,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD, TimeSeriesFactory.get_serie(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD, this));
         timeSeriesHandler.put(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD, TimeSeriesFactory.get_serie(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD, this));
 
+        timeSeriesHandler.put(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD, TimeSeriesFactory.get_serie(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD, this));
 
         setTimeSeriesHandler(timeSeriesHandler);
 
@@ -156,6 +157,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD, 10118);
         timeSeriesHandler.put_id(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD,10126);
         timeSeriesHandler.put_id(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD, 10137);
+        timeSeriesHandler.put_id(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD, 10144);
 
         timeSeriesHandler.put_id(Factories.TimeSeries.INDEX_RACES_WI, 9789);
         timeSeriesHandler.put_id(Factories.TimeSeries.WEEK_RACES_WI, 9788);
@@ -187,7 +189,6 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     public Color get_index_race_serie_color() {
         return Themes.ORANGE;
     }
-
 
     // Get instance
     public static TA35 getInstance() {

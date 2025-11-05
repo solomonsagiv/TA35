@@ -69,6 +69,18 @@ public class Calculator {
         return delta_counter_hourly;
     }
 
+
+    public static double get_stocks_counter_2_hourly() {
+        List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+        double counter_2_hourly = 0.0;
+        for (MiniStock s : snapshot) {
+            if (s.getCounter2HourlyDelta() > 0) {
+                counter_2_hourly += s.getWeight();
+            }
+        }
+        return counter_2_hourly;
+    }
+
     public static double[] calculateWeightedCounters() {
 
         TA35 client = TA35.getInstance();
