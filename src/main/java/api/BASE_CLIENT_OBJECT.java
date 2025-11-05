@@ -44,7 +44,8 @@ public abstract class BASE_CLIENT_OBJECT {
     private double op_week_interest = 0;
 
     private int ba_total_positive_weight = 0,
-                delta_potisive_weight = 0;
+                delta_potisive_weight = 0, 
+                counter_2_tot_weight = 0;
 
 
 
@@ -385,5 +386,12 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setStocksReaderService(StocksReaderService stocksReaderService) {
         this.stocksReaderService = stocksReaderService;
+    }
+    public int getCounter_2_tot_weight() {
+        return counter_2_tot_weight;
+    }
+
+    public void setCounter_2_tot_weight(int counter_2_tot_weight) {
+        this.counter_2_tot_weight = counter_2_tot_weight;
     }
 }

@@ -32,6 +32,7 @@ public class MiniStock implements IJsonData {
     // ערכים ראשונים מהשעה האחרונה (לחישוב הפרש)
     private int first_hour_counter = 0;
     private int first_hour_delta_counter = 0;
+    private int first_hour_counter_2 = 0;
 
     // Bid/Ask averages and counters
     private double average_bid_change = 0.0;
@@ -160,6 +161,14 @@ public class MiniStock implements IJsonData {
         this.first_hour_delta_counter = first_hour_delta_counter;
     }
 
+    public int getFirst_hour_counter_2() {
+        return first_hour_counter_2;
+    }
+
+    public void setFirst_hour_counter_2(int first_hour_counter_2) {
+        this.first_hour_counter_2 = first_hour_counter_2;
+    }
+
     /**
      * מחשב את ההפרש של counter ביחס לשעה האחרונה
      * 
@@ -176,6 +185,15 @@ public class MiniStock implements IJsonData {
      */
     public int getDeltaCounterHourlyDelta() {
         return this.delta_counter - this.first_hour_delta_counter;
+    }
+
+    /**
+     * מחשב את ההפרש של counter_2 ביחס לשעה האחרונה
+     * 
+     * @return ההפרש (נוכחי - ראשון)
+     */
+    public int getCounter2HourlyDelta() {
+        return this.getCounter_2() - this.first_hour_counter_2;
     }
 
     public double get_open_close() {

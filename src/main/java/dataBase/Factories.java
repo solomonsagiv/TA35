@@ -54,6 +54,7 @@ public class Factories {
 
         public static final String STOCKS_TOT_BA_WEIGHT_PROD = "STOCKS_TOT_BA_WEIGHT_PROD";
         public static final String STOCKS_TOT_DELTA_WEIGHT_PROD = "STOCKS_TOT_DELTA_WEIGHT_PROD";
+        public static final String COUNTER_2_TOT_WEIGHT_PROD = "COUNTER_2_TOT_WEIGHT_PROD";
 
         public static final String MONTH_OBI_PROD = "MONTH_OBI_PROD";
         public static final String WEEK_OBI_PROD = "WEEK_OBI_PROD";

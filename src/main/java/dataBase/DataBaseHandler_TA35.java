@@ -34,6 +34,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> trading_status_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> ba_tot_pos_weight_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> delta_tot_pos_weight_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> counter_2_tot_weight_timestamp = new ArrayList<>();
+    
 
     ArrayList<MyTimeSeries> timeSeries;
     Race_Logic wi_race, wm_race;
@@ -53,7 +55,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             week_counter_0 = 0,
             trading_status_0 = 0,
             ba_tot_pos_weight_0 = 0,
-            delta_tot_pos_weight_0 = 0;        ;
+            delta_tot_pos_weight_0 = 0, 
+            counter_2_tot_weight_0 = 0;
+
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -167,7 +171,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
             // BA tot pos weight
             double ba_tot_pos_weight = client.getBa_total_positive_weight();
-
             if (ba_tot_pos_weight != ba_tot_pos_weight_0) {
                 ba_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), ba_tot_pos_weight));
                 ba_tot_pos_weight_0 = ba_tot_pos_weight;
@@ -175,10 +178,16 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
             // BA tot pos weight
             double delta_tot_pos_weight = client.getDelta_potisive_weight();
-
             if (delta_tot_pos_weight != delta_tot_pos_weight_0) {
                 delta_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), delta_tot_pos_weight));
                 delta_tot_pos_weight_0 = delta_tot_pos_weight;
+            }
+
+            // Counter 2 tot weight
+            double counter_2_tot_weight = client.getCounter_2_tot_weight();
+            if (counter_2_tot_weight != counter_2_tot_weight_0) {
+                counter_2_tot_weight_timestamp.add(new MyTimeStampObject(Instant.now(), counter_2_tot_weight));
+                counter_2_tot_weight_0 = counter_2_tot_weight;
             }
 
             // Baskets
@@ -456,5 +465,10 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
         insert_dev_prod(delta_tot_pos_weight_timestamp, dev_id, prod_id);
+
+        // Counter 2 tot weight
+        dev_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD);
+        insert_dev_prod(counter_2_tot_weight_timestamp, dev_id, prod_id);
     }
 }
