@@ -142,24 +142,6 @@ public class Main_Chart extends MyChartCreator {
         op_avg_chart.add_marker(plus0_3);
         op_avg_chart.add_marker(minus0_3);
 
-        // --------------- ROLL --------------- //
-
-        // ----------------------------------------- DF ----------------------------------------- //
-        MyTimeSeries df_4_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD);
-        df_4_old.setColor(Themes.ORANGE);
-        df_4_old.setStokeSize(1.2f);
-
-        // Op avg 60
-        MyTimeSeries df_8_old = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD);
-        df_8_old.setColor(Themes.PURPLE);
-        df_8_old.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[2];
-        series[0] = df_4_old;
-        series[1] = df_8_old;
-
-        MyChart df_chart = new MyChart(series, props);
-
         // ----------------------------------------- Races ----------------------------------------- //
         // Index races wi
         MyTimeSeries index_races_wi = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_RACES_WI);
@@ -277,7 +259,7 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Chart ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, df_chart, races_chart, bid_ask_counter_chart, stocks_weighted_counter_chart_hourly, weighted_stocks_counter_chart};
+        MyChart[] charts = {indexChart, op_avg_chart, races_chart, bid_ask_counter_chart, stocks_weighted_counter_chart_hourly, weighted_stocks_counter_chart};
 
         // ----------------------------------------- Container ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Main chart");
