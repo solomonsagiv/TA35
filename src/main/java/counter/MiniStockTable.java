@@ -5,9 +5,13 @@ import api.TA35;
 import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
+import locals.Themes;
 import miniStocks.MiniStock;
 import javax.swing.*;
 import javax.swing.table.*;
+
+import org.springframework.ui.context.Theme;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -106,7 +110,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
         counter_2_weight_field          = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
         mid_soft_plus_field             = new MyGuiComps.MyTextField(); mid_soft_plus_field.setFontSize(22);
-        mid_soft_minus_field            = new MyGuiComps.MyTextField(); mid_soft_minus_field.setFontSize(22);
+        mid_soft_minus_field            = new MyGuiComps.MyTextField(); mid_soft_minus_field.setFontSize(22); mid_soft_minus_field.setForeground(Themes.RED);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
         controlPanel.add(createColumn("C1 W:", weight_of_positive_stocks_field));
@@ -116,8 +120,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         controlPanel.add(createColumn("DELTA:", total_delta_field));
 
         JPanel midPanel = new JPanel(new GridLayout(1, 2, 15, 0));
-        midPanel.add(createColumn("Mid + W:", mid_soft_plus_field));
-        midPanel.add(createColumn("Mid - W:", mid_soft_minus_field));
+        midPanel.add(createColumn("Plus:", mid_soft_plus_field));
+        midPanel.add(createColumn("Minus:", mid_soft_minus_field));
 
         JPanel summaryPanel = new JPanel(new GridLayout(2, 1, 0, 10));
         summaryPanel.add(controlPanel);
