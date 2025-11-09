@@ -21,6 +21,9 @@ public class Calculator {
             TOTAL_DOWN_WITH_LONG_DELTA = 6,
             COUNTER_2_WEIGHT_POSITIVE = 7;
 
+    public static final int SOFT_PLUS = 0, 
+                            SOFT_MINUS = 1;
+
     public static double calc(Option option, int newLast, int newVolume, double newDelta) {
 
         // Volume check
@@ -69,7 +72,6 @@ public class Calculator {
         return delta_counter_hourly;
     }
 
-
     public static double get_stocks_counter_2_hourly() {
         List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
         double counter_2_hourly = 0.0;
@@ -80,6 +82,24 @@ public class Calculator {
         }
         return counter_2_hourly;
     }
+
+
+    
+    public static double[] get_midle_stocks_ba_counter() {
+        List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+        double soft_plus = 0.0,
+                soft_minus = 0.0;
+        for (MiniStock s : snapshot) {
+            if (s.getBid_ask_counter() < 0 && s.getBid_ask_counter() > -10) {
+                soft_minus += s.getWeight();
+            }
+            if (s.getBid_ask_counter() > 0 && s.getBid_ask_counter() < 10) {
+                soft_plus += s.getWeight();
+            }
+        }
+        return new double[]{soft_plus, soft_minus};
+    }
+
 
     public static double[] calculateWeightedCounters() {
 

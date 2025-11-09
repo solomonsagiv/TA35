@@ -64,26 +64,25 @@ public class MiniStock implements IJsonData {
     }
 
     public void setBid(double bid) {
-        // Counter
-        if (bid > this.bid && this.bid != 0)
-            bid_ask_counter++;
-
-        // Update bid average and counter_2
+        // Track bid movement for indicator
         if (this.bid != 0 && bid != this.bid) {
             double change = bid - this.bid;
             updateBidAverage(change);
-            
-            // Update bid_counter_2: למעלה = +1, למטה = -1
-            if (change > 0) {
-                bid_counter_2++; // bid עלה
-            } else if (change < 0) {
-                bid_counter_2--; // bid ירד
-            }
+        }
+
+        if (bid > this.bid) {
+            bid_ask_counter++;
+            bid_counter_2++;
+        }
+
+        if (bid < this.bid) {
+            bid_counter_2--;
         }
 
         // Set pre bid
-        if (bid != this.bid)
+        if (bid != this.bid) {
             this.pre_bid = this.bid;
+        }
 
         this.bid = bid;
     }
@@ -94,26 +93,26 @@ public class MiniStock implements IJsonData {
 
     public void setAsk(double ask) {
 
-        // Counter
-        if (ask < this.ask && this.ask != 0)
-            bid_ask_counter--;
-
-        // Update ask average and counter_2
-        if (this.ask != 0 && ask != this.ask) {
-            double change = this.ask - ask; // שינוי הפוך (ask יורד = חיובי)
+         // Track ask movement for indicator
+         if (this.ask != 0 && ask != this.ask) {
+            double change = Math.abs(ask - this.ask);
             updateAskAverage(change);
             
-            // Update ask_counter_2: למעלה (ask יורד) = +1, למטה (ask עולה) = -1
-            if (change > 0) {
-                ask_counter_2++; // ask ירד (מחיר עלה)
-            } else if (change < 0) {
-                ask_counter_2--; // ask עלה (מחיר ירד)
-            }
+        }
+        
+        if (ask > this.ask) {
+            ask_counter_2++;
         }
 
+        if (ask < this.ask) {
+            bid_ask_counter--;
+            ask_counter_2--;
+        }
+        
         // Set pre ask
-        if (ask != this.ask)
+        if (ask != this.ask){
             this.pre_ask = this.ask;
+        }
 
         this.ask = ask;
     }

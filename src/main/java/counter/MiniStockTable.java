@@ -60,7 +60,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             weighted_counter_field,
             delta_field,
             total_delta_field,
-            counter_2_weight_field;
+            counter_2_weight_field,
+            mid_soft_plus_field,
+            mid_soft_minus_field;
 
     /* ======== Data ======== */
     private List<MiniStock> stocksRef;
@@ -102,15 +104,25 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(22);
         delta_field                     = new MyGuiComps.MyTextField(); delta_field.setFontSize(22);
         total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
-        counter_2_weight_field         = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
+        counter_2_weight_field          = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
+        mid_soft_plus_field             = new MyGuiComps.MyTextField(); mid_soft_plus_field.setFontSize(22);
+        mid_soft_minus_field            = new MyGuiComps.MyTextField(); mid_soft_minus_field.setFontSize(22);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
-        controlPanel.add(createColumn("C1 W:",      weight_of_positive_stocks_field));
-        controlPanel.add(createColumn("C2 W:",      counter_2_weight_field));
-        controlPanel.add(createColumn("TOT D: ",        delta_field));
-        controlPanel.add(createColumn("W F:",  weighted_counter_field));
-        controlPanel.add(createColumn("DELTA: ", total_delta_field));
-        add(controlPanel, BorderLayout.NORTH);
+        controlPanel.add(createColumn("C1 W:", weight_of_positive_stocks_field));
+        controlPanel.add(createColumn("C2 W:", counter_2_weight_field));
+        controlPanel.add(createColumn("TOT D:", delta_field));
+        controlPanel.add(createColumn("W F:", weighted_counter_field));
+        controlPanel.add(createColumn("DELTA:", total_delta_field));
+
+        JPanel midPanel = new JPanel(new GridLayout(1, 2, 15, 0));
+        midPanel.add(createColumn("Mid + W:", mid_soft_plus_field));
+        midPanel.add(createColumn("Mid - W:", mid_soft_minus_field));
+
+        JPanel summaryPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+        summaryPanel.add(controlPanel);
+        summaryPanel.add(midPanel);
+        add(summaryPanel, BorderLayout.NORTH);
 
         // ---- Table ----
         model = new Model();
@@ -225,6 +237,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
                 delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKKS]);
                 total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
+
+                double[] midVals = Calculator.get_midle_stocks_ba_counter();
+                mid_soft_plus_field.colorForge(midVals[Calculator.SOFT_PLUS], DF_WGT);
+                mid_soft_minus_field.colorForge(midVals[Calculator.SOFT_MINUS], DF_WGT);
             }
         });
     }
