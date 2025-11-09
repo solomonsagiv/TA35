@@ -7,10 +7,9 @@ import arik.Arik;
 import gui.MyGuiComps;
 import locals.Themes;
 import miniStocks.MiniStock;
+
 import javax.swing.*;
 import javax.swing.table.*;
-
-import org.springframework.ui.context.Theme;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -110,7 +109,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
         counter_2_weight_field          = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
         mid_soft_plus_field             = new MyGuiComps.MyTextField(); mid_soft_plus_field.setFontSize(22);
-        mid_soft_minus_field            = new MyGuiComps.MyTextField(); mid_soft_minus_field.setFontSize(22); mid_soft_minus_field.setForeground(Themes.RED);
+        mid_soft_minus_field            = new MyGuiComps.MyTextField(); mid_soft_minus_field.setFontSize(22);
+        mid_soft_minus_field.setForeground(Themes.RED);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
         controlPanel.add(createColumn("C1 W:", weight_of_positive_stocks_field));
@@ -244,7 +244,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();
                 mid_soft_plus_field.colorForge(midVals[Calculator.SOFT_PLUS], DF_WGT);
-                mid_soft_minus_field.colorForge(midVals[Calculator.SOFT_MINUS], DF_WGT);
+                mid_soft_minus_field.setForeground(Themes.RED);
+                mid_soft_minus_field.setText(DF_WGT.format(midVals[Calculator.SOFT_MINUS]));
             }
         });
     }
