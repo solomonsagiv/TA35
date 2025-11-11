@@ -7,7 +7,6 @@ import arik.Arik;
 import gui.MyGuiComps;
 import locals.Themes;
 import miniStocks.MiniStock;
-
 import javax.swing.*;
 import javax.swing.table.*;
 
