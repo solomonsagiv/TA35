@@ -160,7 +160,7 @@ public class Calculator {
 
             // Delta weight
             if (stock.getDelta_counter() > 0) {
-                delta_weight_positive += stock.getWeight();
+                delta_weight_positive += stock.getWeight() * stock.getWeight() / 100;
             }
 
             // Up with short delta
@@ -190,7 +190,7 @@ public class Calculator {
         vals[BA_WEIGHT_POSITIVE_STOCKS]     = ba_weight_positive;
         vals[GREEN_STOCKS]                  = green_stocks;
         vals[DELTA_WEIGHT_POSITIVE_STOCKKS] = delta_weight_positive;
-        vals[TOTAL_DELTA]                   = total_delta;
+        vals[TOTAL_DELTA]                   = (int)total_delta;
         vals[TOTAL_UP_WITH_SHORT_DELTA]     = total_up_with_short_delta;
         vals[TOTAL_DOWN_WITH_LONG_DELTA]    = total_down_with_long_delta;
         vals[COUNTER_2_WEIGHT_POSITIVE]     = counter_2_weight_positive;
