@@ -36,14 +36,14 @@ public class CalcsService extends MyBaseService {
             calc_stocks_weighted_counter();
         }
     }
-
+    
     /**
      * מעדכן את הערכים הראשונים מהשעה האחרונה לכל המניות
      * מתבצע כל דקה
      */
     private void updateFirstHourCounters() {
         try {
-            MySql.update_first_hour_counters(MySql.JIBE_DEV_CONNECTION);
+            MySql.update_first_hour_counters(MySql.JIBE_PROD_CONNECTION);
         } catch (Exception e) {
             e.printStackTrace();
         }

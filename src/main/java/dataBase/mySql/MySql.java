@@ -25,7 +25,7 @@ public class MySql {
     public static final String BY_TIME = "BY_TIME";
     public static final String FROM_TODAY = "FROM_TODAY";
     public static final String JIBE_PROD_CONNECTION = "JIBE_PROD_CONNECTION";
-    public static final String JIBE_DEV_CONNECTION = "JIBE_DEV_CONNECTION";
+    // public static final String JIBE_DEV_CONNECTION = "JIBE_DEV_CONNECTION";
 
     private static JibeConnectionPool pool;
     private static Statement stmt;
@@ -39,9 +39,10 @@ public class MySql {
             // Prod
             if (connection_type.equals(MySql.JIBE_PROD_CONNECTION)) {
                 conn = Prod.getInstance().getConnection();
-            } else if (connection_type.equals(MySql.JIBE_DEV_CONNECTION)) {
-                conn = Dev.getInstance().getConnection();
-            }
+            } 
+            // else if (connection_type.equals(MySql.JIBE_DEV_CONNECTION)) {
+            //     conn = Dev.getInstance().getConnection();
+            // }
         } catch (Exception e) {
             e.printStackTrace();
             Arik.getInstance().sendMessage(e.getMessage() + "\n" + e.getCause() + " \n" + "Trunticate");
@@ -156,7 +157,7 @@ public class MySql {
         }
         return res;
     }
-
+    
 
     public static List<Map<String, Object>> get_timeseries(String stock_id, String connection_type) {
         String q = "select *\n" +

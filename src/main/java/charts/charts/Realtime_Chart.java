@@ -50,7 +50,7 @@ public class    Realtime_Chart extends MyChartCreator {
         };
         index.setColor(Color.BLACK);
         index.setStokeSize(2.25f);
-        index.setVisible(false);
+        index.setVisible(true);
 
         // Index
         MyTimeSeries index_bid_ask = new MyTimeSeries("Index bid ask avg", client) {

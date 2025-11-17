@@ -160,30 +160,58 @@ public class DataReaderService extends MyBaseService {
     }
 
     private void read_options(Options options, int start_row, int end_row) throws DDEException {
-        Option call, put;
-        double strike;
+        int count = Math.max(0, end_row - start_row);
+        if (count == 0) return;
 
-        for (int row = start_row; row < end_row; row++) {
-            strike = L.dbl(conversation.request(L.cell(row, STRIKE)));
+        double[] strikes      = readColumnDoubles(STRIKE,     start_row, end_row);
+        double[] callBids     = readColumnDoubles(CALL_BID,   start_row, end_row);
+        double[] callAsks     = readColumnDoubles(CALL_ASK,   start_row, end_row);
+        double[] callVolumes  = readColumnDoubles(CALL_VOLUME,start_row, end_row);
+        double[] callLasts    = readColumnDoubles(CALL_LAST,  start_row, end_row);
 
-            // Call
-            call = options.getOption(Option.Side.CALL, strike);
-            call.setBid((int) L.dbl(conversation.request(L.cell(row, CALL_BID))));
-            call.setAsk((int) L.dbl(conversation.request(L.cell(row, CALL_ASK))));
-            call.setVolume((int) L.dbl(conversation.request(L.cell(row, CALL_VOLUME))));
-            call.setLast((int) L.dbl(conversation.request(L.cell(row, CALL_LAST))));
+        double[] putBids      = readColumnDoubles(PUT_BID,    start_row, end_row);
+        double[] putAsks      = readColumnDoubles(PUT_ASK,    start_row, end_row);
+        double[] putVolumes   = readColumnDoubles(PUT_VOLUME, start_row, end_row);
+        double[] putLasts     = readColumnDoubles(PUT_LAST,   start_row, end_row);
 
-            // Put
-            put = options.getOption(Option.Side.PUT, strike);
-            put.setBid((int) L.dbl(conversation.request(L.cell(row, PUT_BID))));
-            put.setAsk((int) L.dbl(conversation.request(L.cell(row, PUT_ASK))));
-            put.setVolume((int) L.dbl(conversation.request(L.cell(row, PUT_VOLUME))));
-            put.setLast((int) L.dbl(conversation.request(L.cell(row, PUT_LAST))));
+        for (int i = 0; i < count; i++) {
+            double strike = getValue(strikes, i);
+            if (strike <= 0) {
+                continue;
+            }
+
+            Option call = options.getOption(Option.Side.CALL, strike);
+            if (call != null) {
+                call.setBid((int) Math.round(getValue(callBids, i)));
+                call.setAsk((int) Math.round(getValue(callAsks, i)));
+                call.setVolume((int) Math.round(getValue(callVolumes, i)));
+                call.setLast((int) Math.round(getValue(callLasts, i)));
+            }
+
+            Option put = options.getOption(Option.Side.PUT, strike);
+            if (put != null) {
+                put.setBid((int) Math.round(getValue(putBids, i)));
+                put.setAsk((int) Math.round(getValue(putAsks, i)));
+                put.setVolume((int) Math.round(getValue(putVolumes, i)));
+                put.setLast((int) Math.round(getValue(putLasts, i)));
+            }
         }
     }
 
     private double read_double_from_dde(String cell) throws DDEException {
         return L.dbl(conversation.request(cell));
+    }
+
+    private double[] readColumnDoubles(int column, int startRow, int endRow) throws DDEException {
+        String raw = conversation.request(range(column, startRow, endRow));
+        return parseDoubles(raw);
+    }
+
+    private double getValue(double[] values, int index) {
+        if (values == null || index < 0 || index >= values.length) {
+            return 0.0;
+        }
+        return values[index];
     }
 
     private void init_options(Options options, int start_row, int end_row) throws DDEException {

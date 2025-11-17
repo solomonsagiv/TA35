@@ -55,11 +55,11 @@ public abstract class IDataBaseHandler {
 
     public abstract void insert_data(int sleep);
 
-    protected void insert_dev_prod(ArrayList<MyTimeStampObject> list, int dev_id, int prod_id) {
+    protected void insert_dev_prod(ArrayList<MyTimeStampObject> list, int prod_id) {
         System.out.println("------------------------ Insert start ----------------------------");
-        if (dev_id != 0) {
-            insertListRetro(list, dev_id, MySql.JIBE_DEV_CONNECTION);
-        }
+        // if (dev_id != 0) {
+        //     insertListRetro(list, dev_id, MySql.JIBE_DEV_CONNECTION);
+        // }
         if (prod_id != 0) {
             insertListRetro(list, prod_id, MySql.JIBE_PROD_CONNECTION);
         }

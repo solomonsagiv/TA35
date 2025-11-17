@@ -86,13 +86,11 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         // Update lists retro
         if (sleep_count % 15000 == 0) {
+            load_stocks_data();
             updateListsRetro();
             update_data();
 
             sleep_count = 0;
-
-            // Try load stocks data
-            load_stocks_data();
         }
 
         // Insert stocks
@@ -112,7 +110,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
             List<MiniStock> stocks = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
 
-            Queries.insertStocksSnapshot(stocks, MySql.JIBE_DEV_CONNECTION);
+            Queries.insertStocksSnapshot(stocks, MySql.JIBE_PROD_CONNECTION);
         } catch (Exception e) {
             e.printStackTrace();
             Arik.getInstance().sendMessage("TA35 Index Insert stocks Failed ");
@@ -314,7 +312,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             load_stocks_data_count++;
             List<MiniStock> stocks = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
 
-            Queries.loadLastSnapshotStocksData(stocks, MySql.JIBE_DEV_CONNECTION);
+            Queries.loadLastSnapshotStocksData(stocks, MySql.JIBE_PROD_CONNECTION);
             load_stocks_data_count = 10;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -393,82 +391,66 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         System.out.println("Insert !!!!! -------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + sleep_count);
 
         // Interest
-        int dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_WEEK_INTEREST_DEV);
         int prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_WEEK_INTEREST_PROD);
-        insert_dev_prod(op_week_interest_timeStamp, dev_id, prod_id);
+        insert_dev_prod(op_week_interest_timeStamp, prod_id);
 
-        dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_DEV);
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_PROD);
-        insert_dev_prod(op_month_interest_timeStamp, dev_id, prod_id);
+        insert_dev_prod(op_month_interest_timeStamp, prod_id);
 
-        dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_DEV);
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_PROD);
-        insert_dev_prod(roll_interest_timeStamp, dev_id, prod_id);
+        insert_dev_prod(roll_interest_timeStamp, prod_id);
 
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BASKETS);
-        insert_dev_prod(baskets_timestamp, dev_id, prod_id);
+        insert_dev_prod(baskets_timestamp, prod_id);
 
         // Last
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.LAST_PRICE);
-        insert_dev_prod(last_timestamp, dev_id, prod_id);
+        insert_dev_prod(last_timestamp, prod_id);
 
         // Mid
-        dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID_DEV);
         prod_id = 0;
-        insert_dev_prod(mid_timestamp, dev_id, prod_id);
+        insert_dev_prod(mid_timestamp, prod_id);
 
         // Bid
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BID);
-        insert_dev_prod(bid_timestamp, dev_id, prod_id);
+        insert_dev_prod(bid_timestamp, prod_id);
 
         // Ask
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ASK);
-        insert_dev_prod(ask_timestamp, dev_id, prod_id);
+        insert_dev_prod(ask_timestamp, prod_id);
 
         // Index race
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX_RACES_WI);
-        insert_dev_prod(mid_races_timeStamp, dev_id, prod_id);
+        insert_dev_prod(mid_races_timeStamp, prod_id);
 
         // Month race
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_RACES_WM);
-        insert_dev_prod(month_races_timeStamp, dev_id, prod_id);
+        insert_dev_prod(month_races_timeStamp, prod_id);
 
         // Month counter
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
-        insert_dev_prod(month_counter_timestamp, dev_id, prod_id);
+        insert_dev_prod(month_counter_timestamp, prod_id);
 
         // Week counter
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
-        insert_dev_prod(week_counter_timestamp, dev_id, prod_id);
+        insert_dev_prod(week_counter_timestamp, prod_id);
 
         // Trading status
-        dev_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.TRADING_STATUS_DEV);
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.TRADING_STATUS);
-        insert_dev_prod(trading_status_timestamp, dev_id, prod_id);
+        insert_dev_prod(trading_status_timestamp, prod_id);
 
         // Total weight BA
 //        dev_id = 0;
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
-        insert_dev_prod(ba_tot_pos_weight_timestamp, dev_id, prod_id);
+        insert_dev_prod(ba_tot_pos_weight_timestamp, prod_id);
 
         // Total weight Delta
 //        dev_id = 0;
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
-        insert_dev_prod(delta_tot_pos_weight_timestamp, dev_id, prod_id);
+        insert_dev_prod(delta_tot_pos_weight_timestamp, prod_id);
 
         // Counter 2 tot weight
-        dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD);
-        insert_dev_prod(counter_2_tot_weight_timestamp, dev_id, prod_id);
+        insert_dev_prod(counter_2_tot_weight_timestamp, prod_id);
     }
 }

@@ -40,7 +40,8 @@ public class Main_Chart extends MyChartCreator {
         props.setProp(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE, 1);
         props.setProp(ChartPropsEnum.MARKER, 0);
 
-        // ----------------------------------------- Index ----------------------------------------- //
+        // ----------------------------------------- Index
+        // ----------------------------------------- //
 
         // Index
         MyTimeSeries index_with_bid_ask_Serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.MID_DEV, client);
@@ -57,7 +58,7 @@ public class Main_Chart extends MyChartCreator {
         index_avg_900_serie.setColor(Themes.RED);
         index_avg_900_serie.setStokeSize(0.75f);
 
-        MyTimeSeries future_week_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK, client) {
+        MyTimeSeries future_week_serie = new MyTimeSeries(Factories.TimeSeries.FUTURE_WEEK, client) {
 
             @Override
             public double getValue() {
@@ -67,7 +68,8 @@ public class Main_Chart extends MyChartCreator {
             @Override
             public void load() {
                 int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_WEEK);
-                List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, Queries.RAW, MySql.JIBE_PROD_CONNECTION);
+                List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, Queries.RAW,
+                        MySql.JIBE_PROD_CONNECTION);
                 IDataBaseHandler.loadSerieData(rs, this);
             }
 
@@ -78,7 +80,7 @@ public class Main_Chart extends MyChartCreator {
         future_week_serie.setColor(Themes.GREEN);
         future_week_serie.setStokeSize(1.2f);
 
-        MyTimeSeries future_month_serie =  new MyTimeSeries(Factories.TimeSeries.FUTURE_MONTH, client) {
+        MyTimeSeries future_month_serie = new MyTimeSeries(Factories.TimeSeries.FUTURE_MONTH, client) {
 
             @Override
             public double getValue() {
@@ -88,7 +90,8 @@ public class Main_Chart extends MyChartCreator {
             @Override
             public void load() {
                 int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_MONTH);
-                List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, Queries.RAW, MySql.JIBE_PROD_CONNECTION);
+                List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, Queries.RAW,
+                        MySql.JIBE_PROD_CONNECTION);
                 IDataBaseHandler.loadSerieData(rs, this);
             }
 
@@ -109,7 +112,8 @@ public class Main_Chart extends MyChartCreator {
         // Chart
         MyChart indexChart = new MyChart(series, props);
 
-        // ----------------------------------------- OP AVG 2 ----------------------------------------- //
+        // ----------------------------------------- OP AVG 2
+        // ----------------------------------------- //
         // --------------- WEEK --------------- //
 
         // Op avg 5
@@ -123,7 +127,8 @@ public class Main_Chart extends MyChartCreator {
         opavg_60_week.setStokeSize(1.2f);
 
         // Op avg 240 yesterday
-        MyTimeSeries continue_opavg_240_week = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_240_CONTINUE);
+        MyTimeSeries continue_opavg_240_week = TA35.getInstance().getTimeSeriesHandler()
+                .get(Factories.TimeSeries.OP_AVG_240_CONTINUE);
         continue_opavg_240_week.setColor(Themes.ORANGE);
         continue_opavg_240_week.setStokeSize(1.2f);
 
@@ -142,14 +147,17 @@ public class Main_Chart extends MyChartCreator {
         op_avg_chart.add_marker(plus0_3);
         op_avg_chart.add_marker(minus0_3);
 
-        // ----------------------------------------- Races ----------------------------------------- //
+        // ----------------------------------------- Races
+        // ----------------------------------------- //
         // Index races wi
-        MyTimeSeries index_races_wi = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_RACES_WI);
+        MyTimeSeries index_races_wi = TA35.getInstance().getTimeSeriesHandler()
+                .get(Factories.TimeSeries.INDEX_RACES_WI);
         index_races_wi.setColor(Themes.ORANGE);
         index_races_wi.setStokeSize(1.2f);
 
         // Index races wi
-        MyTimeSeries month_races_wm = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_RACES_WM);
+        MyTimeSeries month_races_wm = TA35.getInstance().getTimeSeriesHandler()
+                .get(Factories.TimeSeries.MONTH_RACES_WM);
         month_races_wm.setColor(Themes.RED);
         month_races_wm.setStokeSize(1.2f);
 
@@ -159,14 +167,17 @@ public class Main_Chart extends MyChartCreator {
 
         MyChart races_chart = new MyChart(series, props);
 
-        // ----------------------------------------- Bid ask counter ----------------------------------------- //
+        // ----------------------------------------- Bid ask counter
+        // ----------------------------------------- //
         // Week counter
-        MyTimeSeries week_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
+        MyTimeSeries week_counter = TA35.getInstance().getTimeSeriesHandler()
+                .get(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
         week_counter.setColor(Themes.GREEN_7);
         week_counter.setStokeSize(1.2f);
 
         // Month counter
-        MyTimeSeries month_counter = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
+        MyTimeSeries month_counter = TA35.getInstance().getTimeSeriesHandler()
+                .get(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
         month_counter.setColor(Themes.GREEN);
         month_counter.setStokeSize(1.2f);
 
@@ -176,30 +187,38 @@ public class Main_Chart extends MyChartCreator {
 
         MyChart bid_ask_counter_chart = new MyChart(series, props);
 
-        // ----------------------------------------- Stocks counter ----------------------------------------- //
+        // ----------------------------------------- Stocks counter
+        // ----------------------------------------- //
 
         // BA tot weight
-        MyTimeSeries ba_total_weight = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
+        MyTimeSeries ba_total_weight = TA35.getInstance().getTimeSeriesHandler()
+                .get(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
         ba_total_weight.setColor(Themes.BLUE3);
         ba_total_weight.setStokeSize(1.2f);
+        ba_total_weight.setVisible(false);
 
-        // Index races wi
-        MyTimeSeries delta_tot_weight = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
+        // BA tot weight
+        MyTimeSeries counter_2_weight = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD);
+        counter_2_weight.setColor(Themes.GREEN);
+        counter_2_weight.setStokeSize(1.2f);
+
+        // Delta tot weight
+        MyTimeSeries delta_tot_weight = TA35.getInstance().getTimeSeriesHandler()
+                .get(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
         delta_tot_weight.setColor(Themes.OPEN_RACE);
         delta_tot_weight.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[2];
+        series = new MyTimeSeries[3];
         series[0] = ba_total_weight;
         series[1] = delta_tot_weight;
+        series[2] = counter_2_weight;
 
         ValueMarker fifty = new ValueMarker(50);
         fifty.setStroke(new BasicStroke(1.5f));
         fifty.setPaint(Themes.BLACK);
 
-
         MyChart weighted_stocks_counter_chart = new MyChart(series, props);
         weighted_stocks_counter_chart.add_marker(fifty);
-
 
         // ------------------ Stocks weighted counter hourly ------------------- //
 
@@ -225,6 +244,30 @@ public class Main_Chart extends MyChartCreator {
         ba_tot_pos_weight_hourly.setColor(Themes.BLUE3);
         ba_tot_pos_weight_hourly.setStokeSize(1.2f);
 
+
+        // Total BA counter by weight
+        MyTimeSeries counter_2_weight_hourly = new MyTimeSeries("Counter 2 Total Pos Weight Hourly", client) {
+
+            @Override
+            public double getValue() {
+                return Calculator.get_stocks_counter_2_hourly();
+            }
+
+            @Override
+            public void updateData() {
+
+            }
+
+            @Override
+            public void load() {
+
+            }
+        };
+
+        counter_2_weight_hourly.setColor(Themes.GREEN);
+        counter_2_weight_hourly.setStokeSize(1.2f);
+
+
         // Total delta by weight
         MyTimeSeries delta_tot_pos_weight_hourly = new MyTimeSeries("Delta Total Pos Weight Hourly", client) {
 
@@ -247,21 +290,24 @@ public class Main_Chart extends MyChartCreator {
         delta_tot_pos_weight_hourly.setColor(Themes.OPEN_RACE);
         delta_tot_pos_weight_hourly.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[2];
+        series = new MyTimeSeries[3];
         series[0] = delta_tot_pos_weight_hourly;
         series[1] = ba_tot_pos_weight_hourly;
+        series[2] = counter_2_weight_hourly;
 
         // Chart
         MyChart stocks_weighted_counter_chart_hourly = new MyChart(series, props);
         stocks_weighted_counter_chart_hourly.add_marker(fifty);
 
-
-        // ----------------------------------------- Chart ----------------------------------------- //
+        // ----------------------------------------- Chart
+        // ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = {indexChart, op_avg_chart, races_chart, bid_ask_counter_chart, stocks_weighted_counter_chart_hourly, weighted_stocks_counter_chart};
+        MyChart[] charts = { indexChart, op_avg_chart, races_chart, bid_ask_counter_chart,
+                stocks_weighted_counter_chart_hourly, weighted_stocks_counter_chart };
 
-        // ----------------------------------------- Container ----------------------------------------- //
+        // ----------------------------------------- Container
+        // ----------------------------------------- //
         MyChartContainer chartContainer = new MyChartContainer(charts, "Main chart");
         chartContainer.create();
 
