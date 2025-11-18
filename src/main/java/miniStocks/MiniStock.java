@@ -256,8 +256,8 @@ public class MiniStock implements IJsonData {
     }
 
     public void setCounter_2(int counter_2) {
-        // לא נעשה set ישיר, כי זה מחושב מ-bid_counter_2 + ask_counter_2
-        // אם צריך לשמור, אפשר לשמור את bid_counter_2 ו-ask_counter_2 בנפרד
+        setBid_counter_2((int)counter_2 / 2);
+        setAsk_counter_2((int)counter_2 / 2);
     }
 
     public double getOpen() {
