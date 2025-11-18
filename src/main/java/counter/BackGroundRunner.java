@@ -5,10 +5,10 @@ import api.TA35;
 import arik.Arik;
 import org.json.JSONArray;
 import races.Stocks_Race_Service;
-import service.DataReaderService;
 import service.NewDataReaderService;
 import service.StocksReaderService;
 import threads.MyThread;
+
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
@@ -29,7 +29,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
     public static String excelPath = "C:/Users/yosef/OneDrive/Desktop/[ta calc.xlsx]DDE";
 
     public static boolean preTradingBool = false;
-    public static boolean streamMarketBool = false;
+    public static boolean streamMarketBool = true;
     public static boolean randomallyBool = false;
     public static boolean endMarketBool = false;
     public static boolean open_charts = false;
