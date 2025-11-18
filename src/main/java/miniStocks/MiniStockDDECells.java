@@ -6,7 +6,7 @@ public class MiniStockDDECells {
     // Variables
     private String lastPriceCell = "R%sC3";
     private String volumeCell = "R%sC6";
-    private String nameCell = "R%sC2";
+    private String nameCell = "R%sC3";
     private String bidCell = "R%sC4";
     private String askCell = "R%sC5";
     private String weightCell = "R%sC6";
