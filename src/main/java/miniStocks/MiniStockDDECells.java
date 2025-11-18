@@ -4,14 +4,14 @@ package miniStocks;
 public class MiniStockDDECells {
 
     // Variables
-    private String lastPriceCell = "R%sC12";
-    private String volumeCell = "R%sC13";
-    private String nameCell = "R%sC21";
-    private String bidCell = "R%sC14";
-    private String askCell = "R%sC15";
-    private String weightCell = "R%sC16";
-    private String baseCell = "R%sC19";
-    private String openCell = "R%sC18";
+    private String lastPriceCell = "R%sC3";
+    private String volumeCell = "R%sC6";
+    private String nameCell = "R%sC2";
+    private String bidCell = "R%sC4";
+    private String askCell = "R%sC5";
+    private String weightCell = "R%sC6";
+    private String baseCell = "R%sC9";
+    private String openCell = "R%sC8";
     private int row;
 
     // Constructor

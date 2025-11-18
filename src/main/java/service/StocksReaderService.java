@@ -53,7 +53,7 @@ public class StocksReaderService extends MyBaseService {
     // ==== הגדרות Batch למניות ====
     private final int STOCKS_START_ROW = 2;   // כולל
     private final int STOCKS_END_ROW_EXC = 37;  // בלעדי (2..36)
-    private final int NAME_COL_DEFAULT = 21;  // אם שם המניה בעמודה אחרת – עדכן כאן
+    private final int NAME_COL_DEFAULT = 2;  // אם שם המניה בעמודה אחרת – עדכן כאן
 
     // Thread ייעודי למניות
     private final ExecutorService stocksExecutor = Executors.newSingleThreadExecutor(r -> {

@@ -6,6 +6,7 @@ import arik.Arik;
 import org.json.JSONArray;
 import races.Stocks_Race_Service;
 import service.DataReaderService;
+import service.NewDataReaderService;
 import service.StocksReaderService;
 import threads.MyThread;
 import javax.swing.*;
@@ -24,7 +25,8 @@ public class BackGroundRunner extends MyThread implements Runnable {
     public static String randomally = "rando";
     public static String endMarket = "end";
 
-    public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
+    // public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
+    public static String excelPath = "C:/Users/yosef/OneDrive/Desktop/[ta calc.xlsx]DDE";
 
     public static boolean preTradingBool = false;
     public static boolean streamMarketBool = false;
@@ -70,7 +72,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
             }
 
             // Data reader
-            new DataReaderService(client, BackGroundRunner.excelPath);
+            new NewDataReaderService(client, BackGroundRunner.excelPath);
             new StocksReaderService(client, BackGroundRunner.excelPath);
             client.getServiceHandler().getHandler().start();
 
