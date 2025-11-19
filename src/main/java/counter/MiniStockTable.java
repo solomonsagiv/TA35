@@ -238,7 +238,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 weight_of_positive_stocks_field.colorForge(vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
                 counter_2_weight_field.colorForge(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
                 weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
-                delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKKS]);
+                delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
                 total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();

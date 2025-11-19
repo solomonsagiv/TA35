@@ -15,7 +15,7 @@ public class Calculator {
     public static final int BA_NUMBER_POSITIVE_STOCKS = 0,
             BA_WEIGHT_POSITIVE_STOCKS = 1,
             GREEN_STOCKS = 2,
-            DELTA_WEIGHT_POSITIVE_STOCKKS = 3,
+            DELTA_WEIGHT_POSITIVE_STOCKS = 3,
             TOTAL_DELTA = 4,
             TOTAL_UP_WITH_SHORT_DELTA = 5,
             TOTAL_DOWN_WITH_LONG_DELTA = 6,
@@ -189,7 +189,7 @@ public class Calculator {
         vals[BA_NUMBER_POSITIVE_STOCKS]     = ba_number_of_positive;
         vals[BA_WEIGHT_POSITIVE_STOCKS]     = ba_weight_positive;
         vals[GREEN_STOCKS]                  = green_stocks;
-        vals[DELTA_WEIGHT_POSITIVE_STOCKKS] = delta_weight_positive;
+        vals[DELTA_WEIGHT_POSITIVE_STOCKS] = delta_weight_positive;
         vals[TOTAL_DELTA]                   = (int)total_delta;
         vals[TOTAL_UP_WITH_SHORT_DELTA]     = total_up_with_short_delta;
         vals[TOTAL_DOWN_WITH_LONG_DELTA]    = total_down_with_long_delta;
