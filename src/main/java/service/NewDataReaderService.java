@@ -24,7 +24,7 @@ public class NewDataReaderService extends MyBaseService {
     String futureWeekAskCell = "R3C15";
     String futureWeekCell = "R3C14";
 
-    String indexCell = "R2C14";
+    String indexCell = "R2C16";
     String indexBidCell = "R2C13";
     String indexAskCell = "R2C15";
 
