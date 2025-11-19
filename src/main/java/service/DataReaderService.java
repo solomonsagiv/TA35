@@ -84,8 +84,7 @@ public class DataReaderService extends MyBaseService {
 
     public void update() {
         try {
-            int status = Integer.parseInt(conversation.request(statusCell));
-            ta35.setStatus(status);
+
 
             if (ta35.getStatus() == 0) {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
 
