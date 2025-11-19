@@ -658,7 +658,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return TA35.getInstance().getDelta_potisive_weight();
+                        return TA35.getInstance().getCounter_2_tot_weight();
                     }
 
                     @Override
