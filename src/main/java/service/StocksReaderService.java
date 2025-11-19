@@ -19,9 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class StocksReaderService extends MyBaseService {
 
-    // Cells
-    String statusCell = "R7C1";
-
     public static boolean initStocksCells = false;
 
     DDEClientConversation stocksConversation;  // חדש: שיחה נפרדת למניות (Thread-safe בפועל)
@@ -71,9 +68,6 @@ public class StocksReaderService extends MyBaseService {
 
     public void update() {
         try {
-            int status = Integer.parseInt(stocksConversation.request(statusCell));
-            ta35.setStatus(status);
-
             if (ta35.getStatus() == 0) {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
                 sleepCount += getSleep();
 
