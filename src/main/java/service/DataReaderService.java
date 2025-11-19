@@ -28,10 +28,10 @@ public class DataReaderService extends MyBaseService {
     String futureWeekBidCell = "R9C2";
     String futureWeekAskCell = "R9C3";
     String futureWeekCell = "R9C4";
-    String statusCell = "R7C1";
+    String statusCell = "R2C21";
     String futureBidCell = "R7C2";
     String futureAskCell = "R7C3";
-    String trading_status_cell = "RC3";
+    String trading_status_cell = "R2C21";
     String roll_interest_cell = "R5C5";
     String op_interest_month_cell = "R5C6";
     String op_week_interest_cell = "R5C7";
@@ -84,10 +84,10 @@ public class DataReaderService extends MyBaseService {
 
     public void update() {
         try {
-            String status = conversation.request(statusCell).replaceAll("\\s+", "");
+            int status = Integer.parseInt(conversation.request(statusCell));
             ta35.setStatus(status);
 
-            if (ta35.getStatus() != "preopen") {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
+            if (ta35.getStatus() == 0) {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
 
                 sleepCount += getSleep();
 

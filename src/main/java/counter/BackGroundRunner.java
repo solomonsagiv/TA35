@@ -28,10 +28,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
     // public static String excelPath = "C://Users/yosef/Desktop/[TA35.xlsm]DDE";
     public static String excelPath = "C:/Users/yosef/OneDrive/Desktop/[ta calc.xlsx]DDE";
 
-    public static boolean preTradingBool = false;
-    public static boolean streamMarketBool = true;
-    public static boolean randomallyBool = false;
-    public static boolean endMarketBool = false;
     public static boolean open_charts = false;
     boolean exported = false;
 
@@ -95,45 +91,20 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         System.out.println(client.getStocksHandler().toString());
                         System.out.println(" " + client.getStocksHandler().getStocks().size());
 
-                        // Pre trading
-                        if (client.getStatus().contains(preOpen) && !preTradingBool) {
-                            preTradingBool = true;
-                        }
-
-                        // Auto start
-                        if (client.getStatus().contains(streamMarket) && !streamMarketBool && current_time.isAfter(LocalTime.of(9, 59, 0)) && !client.isStarted() && ask > bid && ask - bid < 10) {
-                            client.start();
-
-                            // Start stocks
-                            start_stocks();
-
-                            streamMarketBool = true;
-                            System.out.println(" Started ");
-                        }
-
                         // Open charts
-                        if (Manifest.OPEN_CHART && StocksReaderService.initStocksCells && streamMarketBool && !open_charts) {
+                        if (Manifest.OPEN_CHART && StocksReaderService.initStocksCells && client.getStatus() == 0 && !open_charts) {
+                            client.start();
+                            start_stocks();
                             WindowTA35.openCharts();
                             open_charts = true;
                         }
 
-                        // Rando
-                        if (client.getStatus().contains(randomally) && !randomallyBool) {
-                            streamMarketBool = false;
-                            randomallyBool = true;
-                        }
-
-                        // End of rando
-                        if (client.getStatus().contains(endMarket) && randomallyBool) {
-                            randomallyBool = false;
-                        }
-
-                        // End of Day
-                        if (client.getStatus().contains(endMarket) && current_time.isAfter(end_day) && !endMarketBool && !exported) {
+                        // End of day
+                        if (client.getStatus() != 0 && LocalTime.now().isAfter(end_day)) {
                             client.close();
-                            endMarketBool = true;
                             exported = true;
                         }
+
                     } else {
                         try {
                             System.out.println("Loading...");

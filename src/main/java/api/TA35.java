@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     private static TA35 TA35;
-    private String status;
+    private int status = 999;
     private OptionsWeek optionsWeek;
     private OptionsMonth optionsMonth;
 
@@ -228,16 +228,11 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         getServiceHandler().getHandler().close();
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
-        if (status.equals(BackGroundRunner.streamMarket)) {
-            setTrading_status(1);
-        } else {
-            setTrading_status(-1);
-        }
     }
 
     public MyServiceHandler getServiceHandler() {

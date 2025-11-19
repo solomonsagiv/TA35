@@ -71,18 +71,15 @@ public class StocksReaderService extends MyBaseService {
 
     public void update() {
         try {
-            String status = stocksConversation.request(statusCell).replaceAll("\\s+", "");
+            int status = Integer.parseInt(stocksConversation.request(statusCell));
             ta35.setStatus(status);
 
-            if (ta35.getStatus() != "preopen") {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
-
+            if (ta35.getStatus() == 0) {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
                 sleepCount += getSleep();
 
                 read_stocks();
-
                 // Read options – נשמר כתגובה (מושבת)
                 // handle_read_options();
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -206,7 +203,7 @@ public class StocksReaderService extends MyBaseService {
         int colOpen = colOf(c0.getOpenCell());
         int colBase = colOf(c0.getBaseCell());
         int colWeight = colOf(c0.getWeightCell());
-
+        
         // בקשות Range לעמודות דרך ערוץ המניות
         String[] names = lines(stocksConversation.request(range(colName, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
         double[] last = parseDoubles(stocksConversation.request(range(colLast, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));

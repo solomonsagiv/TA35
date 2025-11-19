@@ -85,10 +85,10 @@ public class NewDataReaderService extends MyBaseService {
 
     public void update() {
         try {
-            String status = conversation.request(statusCell).replaceAll("\\s+", "");
+            int status = Integer.parseInt(conversation.request(statusCell));
             ta35.setStatus(status);
 
-            if (ta35.getStatus() != "preopen") {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
+            if (ta35.getStatus() == 0) {  // לא משנים את התנאי כדי לא לשבור לוגיקה קיימת
 
                 sleepCount += getSleep();
 
