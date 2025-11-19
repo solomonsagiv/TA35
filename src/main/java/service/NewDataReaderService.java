@@ -35,8 +35,8 @@ public class NewDataReaderService extends MyBaseService {
     String lowCell = "R2C19";
     String baseCell = "R2C20";
     
-    String statusCell = "R7C1";
-    String index_mid_cell = "R5C8";
+    String statusCell = "R2C21";
+    String index_mid_cell = "R2C14";
 
     DDEClientConversation conversation;        // נשאר ל-HEAD/אופציות (כמו שהיה)
 
