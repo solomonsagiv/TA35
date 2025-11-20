@@ -35,9 +35,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
     Color lightRed = new Color(229, 19, 0);
 
     // Rando
-    LocalTime start_rando = LocalTime.of(17, 20, 0);
-    LocalTime end_rando = LocalTime.of(17, 27, 0);
-    LocalTime end_day = LocalTime.of(17, 45, 0);
+    LocalTime end_day = LocalTime.of(17, 25, 0);
 
     JSONArray j;
 
@@ -63,8 +61,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
         try {
             if (LocalDate.now().getDayOfWeek().equals("SUNDAY")) {
                 end_day = LocalTime.of(16, 0, 0);
-                start_rando = LocalTime.of(15, 40, 0);
-                end_rando = LocalTime.of(15, 50, 0);
             }
 
             // Data reader
