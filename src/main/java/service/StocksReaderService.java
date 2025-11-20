@@ -142,13 +142,23 @@ public class StocksReaderService extends MyBaseService {
             initStockCells(stocksConversation); // אתחול בבאטצ' דרך הערוץ של המניות
             initStocksCells = true;
         }
-        new Thread(() -> {
+        
+        // הגנה מפני concurrent reads - לא לקרוא אם יש קריאה בתהליך
+        if (stocksInFlight.get()) {
+            return; // יש קריאה בתהליך, דלג
+        }
+        
+        // השתמש ב-ExecutorService הקיים במקום ליצור Thread חדש
+        stocksInFlight.set(true);
+        stocksExecutor.submit(() -> {
             try {
                 batchReadStocks();
             } catch (DDEException e) {
                 e.printStackTrace();
+            } finally {
+                stocksInFlight.set(false); // שחרר את הדגל בסיום
             }
-        }).start();
+        });
     }
 
     private void initStockCells(DDEClientConversation conv) {
