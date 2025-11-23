@@ -493,7 +493,7 @@ public class MySql {
                         stock.setFirst_hour_counter(counter != null ? counter.intValue() : 0);
                         stock.setFirst_hour_delta_counter(delta_counter != null ? delta_counter.intValue() : 0);
                         if (counter_2 != null) {
-                            stock.setCounter_2(counter_2.intValue());
+                            stock.setFirst_hour_counter_2(counter_2.intValue());
                         }
                         break;
                     }

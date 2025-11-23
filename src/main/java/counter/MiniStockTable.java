@@ -58,13 +58,13 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private Model model;
 
     private MyGuiComps.MyTextField
-            weight_of_positive_stocks_field,
+            counter_weight_field,
             weighted_counter_field,
             delta_field,
             total_delta_field,
             counter_2_weight_field,
-            mid_soft_plus_field,
-            mid_soft_minus_field;
+            min_weight_field,
+            max_weight_field;
 
     /* ======== Data ======== */
     private List<MiniStock> stocksRef;
@@ -102,25 +102,26 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         setLayout(new BorderLayout());
 
         // ---- Controls (KPIs) ----
-        weight_of_positive_stocks_field = new MyGuiComps.MyTextField(); weight_of_positive_stocks_field.setFontSize(22);
+        counter_weight_field = new MyGuiComps.MyTextField(); counter_weight_field.setFontSize(22);
         weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(22);
         delta_field                     = new MyGuiComps.MyTextField(); delta_field.setFontSize(22);
         total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
         counter_2_weight_field          = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
-        mid_soft_plus_field             = new MyGuiComps.MyTextField(); mid_soft_plus_field.setFontSize(22);
-        mid_soft_minus_field            = new MyGuiComps.MyTextField(); mid_soft_minus_field.setFontSize(22);
-        mid_soft_minus_field.setForeground(Themes.RED);
+        min_weight_field             = new MyGuiComps.MyTextField(); min_weight_field.setFontSize(22);
+        min_weight_field.setForeground(Themes.RED);
+        max_weight_field            = new MyGuiComps.MyTextField(); max_weight_field.setFontSize(22);
+        max_weight_field.setForeground(Themes.GREEN);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
-        controlPanel.add(createColumn("C1 W:", weight_of_positive_stocks_field));
+        controlPanel.add(createColumn("C1 W:", counter_weight_field));
         controlPanel.add(createColumn("C2 W:", counter_2_weight_field));
         controlPanel.add(createColumn("TOT D:", delta_field));
         controlPanel.add(createColumn("W F:", weighted_counter_field));
         controlPanel.add(createColumn("DELTA:", total_delta_field));
 
         JPanel midPanel = new JPanel(new GridLayout(1, 2, 15, 0));
-        midPanel.add(createColumn("Plus:", mid_soft_plus_field));
-        midPanel.add(createColumn("Minus:", mid_soft_minus_field));
+        midPanel.add(createColumn("Min:", min_weight_field));
+        midPanel.add(createColumn("Max:", max_weight_field));
 
         JPanel summaryPanel = new JPanel(new GridLayout(2, 1, 0, 10));
         summaryPanel.add(controlPanel);
@@ -235,16 +236,34 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 int[] vals = Calculator.get_stocks_counters();
 
                 // עדכון ה-KPIs העליונים
-                weight_of_positive_stocks_field.colorForge(vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
+                counter_weight_field.colorForge(vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
                 counter_2_weight_field.colorForge(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
                 weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
                 delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
                 total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
 
+
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();
-                mid_soft_plus_field.colorForge((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] - midVals[Calculator.SOFT_PLUS]), DF_WGT);
-                mid_soft_minus_field.setForeground(Themes.RED);
-                mid_soft_minus_field.setText(DF_WGT.format((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] + midVals[Calculator.SOFT_MINUS])));
+                min_weight_field.colorForge((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] - midVals[Calculator.SOFT_PLUS]), DF_WGT);
+                max_weight_field.setForeground(Themes.RED);
+                max_weight_field.setText(DF_WGT.format((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] + midVals[Calculator.SOFT_MINUS])));
+
+
+                int counter = Integer.parseInt(counter_weight_field.getText());
+                if (counter > 55) {
+                    min_weight_field.setForeground(Themes.GREEN);
+                } else if (counter < 45) {
+                    min_weight_field.setForeground(Themes.RED);
+                }
+
+                int counter_2_weight = Integer.parseInt(counter_2_weight_field.getText());
+
+                if (counter_2_weight > 55) {
+                    min_weight_field.setForeground(Themes.GREEN);
+                } else if (counter_2_weight < 45) {
+                    min_weight_field.setForeground(Themes.RED);
+                }
+
             }
         });
     }
