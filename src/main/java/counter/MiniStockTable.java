@@ -224,6 +224,30 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         panel.add(textField, BorderLayout.CENTER);
         return panel;
     }
+
+    /**
+     * מעדכן את צבע הטקסט של השדה לפי הערך
+     * @param field השדה לעדכון
+     * @param greenThreshold ערך מינימלי לצבע ירוק (אם הערך > greenThreshold -> ירוק)
+     * @param redThreshold ערך מקסימלי לצבע אדום (אם הערך < redThreshold -> אדום)
+     */
+    private void updateFieldColor(JTextField field, int greenThreshold, int redThreshold) {
+        try {
+            String text = field.getText();
+            if (text == null || text.trim().isEmpty()) {
+                return;
+            }
+            int value = Integer.parseInt(text.trim());
+            if (value > greenThreshold) {
+                field.setForeground(Themes.GREEN);
+            } else if (value < redThreshold) {
+                field.setForeground(Themes.RED);
+            }
+        } catch (NumberFormatException e) {
+            // אם לא ניתן לפרסר את הערך, לא מעדכן צבע
+        }
+    }
+
     /* ======================== Refresh & Runner ======================== */
 
     private void refreshNow() {
@@ -248,25 +272,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 max_weight_field.setForeground(Themes.RED);
                 max_weight_field.setText(DF_WGT.format((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] + midVals[Calculator.SOFT_MINUS])));
 
-
-                int counter = Integer.parseInt(counter_weight_field.getText());
-                if (counter > 55) {
-                    min_weight_field.setForeground(Themes.GREEN);
-                } else if (counter < 45) {
-                    min_weight_field.setForeground(Themes.RED);
-                }
-
-                int counter_2_weight = Integer.parseInt(counter_2_weight_field.getText());
-
-                if (counter_2_weight > 55) {
-                    min_weight_field.setForeground(Themes.GREEN);
-                } else if (counter_2_weight < 45) {
-                    min_weight_field.setForeground(Themes.RED);
-                }
-
+                // Update colors 
+                updateFieldColor(counter_weight_field, 55, 45);
+                updateFieldColor(counter_2_weight_field, 55, 45);
             }
         });
     }
+
+
+    
 
     private void startRunner() {
         runner = new Thread(new Runnable() {
