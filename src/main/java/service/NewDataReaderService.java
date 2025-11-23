@@ -64,19 +64,6 @@ public class NewDataReaderService extends MyBaseService {
 
     boolean set_options = false;
 
-    // ==== הגדרות Batch למניות ====
-    private final int STOCKS_START_ROW   = 2;   // כולל
-    private final int STOCKS_END_ROW_EXC = 37;  // בלעדי (2..36)
-    private final int NAME_COL_DEFAULT   = 2;  // אם שם המניה בעמודה אחרת – עדכן כאן
-
-    // Thread ייעודי למניות
-    private final ExecutorService stocksExecutor = Executors.newSingleThreadExecutor(r -> {
-        Thread t = new Thread(r, "stocks-batch-worker");
-        t.setDaemon(true);
-        return t;
-    });
-    private final AtomicBoolean stocksInFlight = new AtomicBoolean(false);
-
     public NewDataReaderService(TA35 ta35, String excel_path) {
         super(ta35);
         this.ta35 = ta35;

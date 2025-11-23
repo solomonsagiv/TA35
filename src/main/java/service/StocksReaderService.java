@@ -10,7 +10,6 @@ import miniStocks.MiniStockDDECells;
 import options.Option;
 import options.Options;
 import options.Strike;
-
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -49,7 +48,7 @@ public class StocksReaderService extends MyBaseService {
 
     // ==== הגדרות Batch למניות ====
     private final int STOCKS_START_ROW = 2;   // כולל
-    private final int STOCKS_END_ROW_EXC = 37;  // בלעדי (2..36)
+    private final int STOCKS_END_ROW_EXC = 36;  // בלעדי (2..36)
     private final int NAME_COL_DEFAULT = 2;  // אם שם המניה בעמודה אחרת – עדכן כאן
 
     // Thread ייעודי למניות
@@ -190,8 +189,13 @@ public class StocksReaderService extends MyBaseService {
 
     // ==== קריאת מניות בבאטצ' (Thread נפרד) ====
     private void batchReadStocks() throws DDEException {
+        System.out.println(" read stocks");
+
         Set<MiniStock> stocks = ta35.getStocksHandler().getStocks();
+        System.out.println(stocks + " A1 -------------");
         if (stocks == null || stocks.isEmpty()) return;
+        System.out.println(stocks + "A2 -----------------");
+
 
         // ניקח דוגמה כדי לגזור מספרי עמודות מתוך ה-cells (R{row}C{col})
         Iterator<MiniStock> it = stocks.iterator();
@@ -218,6 +222,10 @@ public class StocksReaderService extends MyBaseService {
         double[] base = parseDoubles(stocksConversation.request(range(colBase, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
         double[] weight = parseDoubles(stocksConversation.request(range(colWeight, STOCKS_START_ROW, STOCKS_END_ROW_EXC)));
 
+        System.out.println(names + " Names");
+        System.out.println(last + "Lasts");
+
+
         int rows = maxLen(names.length, last.length, bid.length, ask.length,
                 vol.length, open.length, base.length, weight.length);
 
@@ -236,6 +244,8 @@ public class StocksReaderService extends MyBaseService {
             if (idx < open.length) s.setOpen(open[idx]);
             if (idx < base.length) s.setBase(base[idx]);
             if (idx < weight.length) s.setWeight(weight[idx]);
+
+            System.out.println(last[idx]);
         }
     }
 
