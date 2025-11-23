@@ -242,9 +242,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();
-                mid_soft_plus_field.colorForge(midVals[Calculator.SOFT_PLUS], DF_WGT);
+                mid_soft_plus_field.colorForge((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] - midVals[Calculator.SOFT_PLUS]), DF_WGT);
                 mid_soft_minus_field.setForeground(Themes.RED);
-                mid_soft_minus_field.setText(DF_WGT.format(midVals[Calculator.SOFT_MINUS]));
+                mid_soft_minus_field.setText(DF_WGT.format((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] + midVals[Calculator.SOFT_MINUS])));
             }
         });
     }

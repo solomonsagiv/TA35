@@ -41,6 +41,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
     api.TA35 client;
 
+    double index = 0;
 
     public BackGroundRunner(TA35 client) {
         super();
@@ -53,7 +54,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
         runner();
     }
 
-    int i = 0;
 
     // Runner
     @SuppressWarnings("static-access")
@@ -70,9 +70,6 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
             while (true) {
                 try {
-
-                    System.out.println(client.getServiceHandler().toStringServices());
-                    
                     // Sleep
                     Thread.sleep(1000);
 
@@ -83,16 +80,15 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     // Wait for load
                     if (client.isDb_loaded()) {
 
-                        System.out.println();
-                        System.out.println(client.getStocksHandler().toString());
-                        System.out.println(" " + client.getStocksHandler().getStocks().size());
-
                         // Open charts
-                        if (Manifest.OPEN_CHART && StocksReaderService.initStocksCells && client.getStatus() == 0 && !open_charts) {
+                        if (StocksReaderService.initStocksCells && client.getStatus() == 0 && !open_charts && index != client.getIndex() && ask > bid && !client.isStarted()) {
                             client.start();
                             start_stocks();
-                            WindowTA35.openCharts();
-                            open_charts = true;
+                       
+                            if (Manifest.OPEN_CHART) {
+                                WindowTA35.openCharts();
+                                open_charts = true;
+                            }
                         }
 
                         // End of day
@@ -112,6 +108,9 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         }
                         client.setDb_loaded(true);
                     }
+
+                    // Update index
+                    index = client.getIndex();
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
