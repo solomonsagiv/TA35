@@ -66,26 +66,22 @@ public class MiniStock implements IJsonData {
     public void setBid(double bid) {
         // Track bid movement for indicator
         if (this.bid != 0 && bid != this.bid) {
-            double change = bid - this.bid;
+            double change = Math.abs(bid - this.bid);
             updateBidAverage(change);
+        }
+        
+        if (bid > this.bid) {
+            bid_ask_counter++;
+            bid_counter_2++;
+        } else if (bid < this.bid) {
+            bid_counter_2--;
+        }
 
-            if (bid > this.bid) {
-                bid_ask_counter++;
-                bid_counter_2++;
-            }
-
-            if (bid < this.bid) {
-                bid_counter_2--;
-            }
-
-            // Set pre bid
+        // Set pre bid
+        if (bid != this.bid)
             this.pre_bid = this.bid;
-            
-        }
 
-        if (this.bid == 0 && bid != 0) {
-            this.bid = bid;
-        }
+        this.bid = bid;
     }
 
     public double getAsk() {
@@ -93,25 +89,28 @@ public class MiniStock implements IJsonData {
     }
 
     public void setAsk(double ask) {
-
         // Track ask movement for indicator
         if (this.ask != 0 && ask != this.ask) {
             double change = Math.abs(ask - this.ask);
             updateAskAverage(change);
+        }
+        
+        if (ask > this.ask) {
+            ask_counter_2++;
+        }
 
-            if (ask > this.ask) {
-                ask_counter_2++;
-            }
-    
-            if (ask < this.ask) {
-                bid_ask_counter--;
-                ask_counter_2--;
-            }
-    
-            // Set pre ask
+        if (ask < this.ask) {
+            bid_ask_counter--;
+            ask_counter_2--;
+        }
+        
+        // Set pre ask
+        if (ask != this.ask){
             this.pre_ask = this.ask;
-            this.ask = ask;
-        } 
+        }
+
+        this.ask = ask;
+
     }
 
     public double getLast() {
