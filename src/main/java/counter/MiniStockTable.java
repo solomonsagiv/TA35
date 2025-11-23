@@ -52,6 +52,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     private static final DecimalFormat DF_PCT = new DecimalFormat("0.00");
     private static final DecimalFormat DF_WGT = new DecimalFormat("0.00");
+    private static final DecimalFormat DF_INT = new DecimalFormat("0");
 
     /* ======== UI ======== */
     private JTable table;
@@ -268,9 +269,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();
-                min_weight_field.colorForge((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] - midVals[Calculator.SOFT_PLUS]), DF_WGT);
+                min_weight_field.setText((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] - midVals[Calculator.SOFT_PLUS]), DF_INT);
                 max_weight_field.setForeground(Themes.RED);
-                max_weight_field.setText(DF_WGT.format((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] + midVals[Calculator.SOFT_MINUS])));
+                max_weight_field.setText((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] + midVals[Calculator.SOFT_MINUS]), DF_INT);
 
                 // Update colors 
                 updateFieldColor(counter_weight_field, 55, 45);
