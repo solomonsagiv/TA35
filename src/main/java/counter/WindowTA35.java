@@ -7,7 +7,6 @@ import charts.charts.Realtime_Chart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
-import locals.Themes;
 import options.Options;
 import options.OptionsTableWindow;
 import javax.swing.*;
@@ -23,7 +22,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
     public static JButton start;
     private MyGuiComps.MyPanel bottomPanel;
-    public MyGuiComps.MyTextField monthStartExpField;
     public static JTextArea log;
 
     public MyGuiComps.MyTextField v5_field;
@@ -40,32 +38,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     MyGuiComps.MyTextField basket_up_field;
     public MyGuiComps.MyTextField basketsSumField;
     DDEConnection ddeConnection;
-    public MyGuiComps.MyTextField weekStartExpField;
     private MyGuiComps.MyButton btnDetails;
-
-    public MyGuiComps.MyTextField exp_v5_month_field;
-    public MyGuiComps.MyTextField exp_v6_month_field;
-    public MyGuiComps.MyTextField exp_v8_month_field;
-
-    public MyGuiComps.MyTextField exp_v4_old_week_field;
-    public MyGuiComps.MyTextField exp_v8_old_week_field;
-    public MyGuiComps.MyTextField exp_v8_week_field;
-
-    public MyGuiComps.MyTextField expBasketsWeekField;
-    public MyGuiComps.MyTextField expBasketsMonthField;
-
-    public MyGuiComps.MyTextField optimi_count_week_field;
-    public MyGuiComps.MyTextField pesimi_count_week_field;
-
-    public MyGuiComps.MyTextField roll_optimi_count_week_field;
-    public MyGuiComps.MyTextField roll_pesimi_count_week_field;
-
-    public MyGuiComps.MyTextField optimi_count_month_field;
-    public MyGuiComps.MyTextField pesimi_count_month_field;
-
-    public MyGuiComps.MyTextField roll_optimi_count_month_field;
-    public MyGuiComps.MyTextField roll_pesimi_count_month_field;
-
 
     public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field,
             week_races_wm_field, month_race_wm_field, stocks_counter_present_field;
@@ -186,50 +159,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         week_races_lbl.setBounds(index_races_lbl.getX() + index_races_lbl.getWidth(), index_races_lbl.getY(), 55, 25);
         races_panel_header.add(week_races_lbl);
 
-        // Exp
-        MyGuiComps.MyPanel exp_header_panel = new MyGuiComps.MyPanel();
-        exp_header_panel.setLayout(null);
-        exp_header_panel.setBounds(races_panel_header.getX() + races_panel_header.getWidth() + 1, 0, 450, 25);
-        getContentPane().add(exp_header_panel);
-
-        MyGuiComps.MyLabel exp_move_lbl = new MyGuiComps.MyLabel("Move");
-        exp_move_lbl.setBounds(66, 0, 50, 25);
-        exp_header_panel.add(exp_move_lbl);
-
-        MyGuiComps.MyLabel exp_v5 = new MyGuiComps.MyLabel("V5");
-        exp_v5.setBounds(exp_move_lbl.getX() + exp_move_lbl.getWidth() + 1, exp_move_lbl.getY(), 50, 25);
-        exp_header_panel.add(exp_v5);
-
-        MyGuiComps.MyLabel exp_v6 = new MyGuiComps.MyLabel("V6");
-        exp_v6.setBounds(exp_v5.getX() + exp_v5.getWidth() + 1, exp_v5.getY(), 50, 25);
-        exp_header_panel.add(exp_v6);
-
-        MyGuiComps.MyLabel exp_v8 = new MyGuiComps.MyLabel("V8");
-        exp_v8.setBounds(exp_v6.getX() + exp_v6.getWidth() + 1, exp_v6.getY(), 50, 25);
-        exp_header_panel.add(exp_v8);
-
-        // Baskets
-        MyGuiComps.MyLabel exp_baskets = new MyGuiComps.MyLabel("Baskets");
-        exp_baskets.setBounds(exp_v8.getX() + exp_v8.getWidth() + 1, exp_v8.getY(), 50, 25);
-        exp_header_panel.add(exp_baskets);
-
-        // Op
-        MyGuiComps.MyLabel op_count_lbl = new MyGuiComps.MyLabel("O / P");
-        op_count_lbl.setBounds(exp_baskets.getX() + exp_baskets.getWidth() + 5, exp_baskets.getY(), 50, 25);
-        op_count_lbl.setAlignmentX(MyGuiComps.MyLabel.CENTER);
-        exp_header_panel.add(op_count_lbl);
-
-
-        // Roll
-        MyGuiComps.MyLabel roll_count_lbl = new MyGuiComps.MyLabel("Roll");
-        roll_count_lbl.setBounds(op_count_lbl.getX() + op_count_lbl.getWidth() + 5, op_count_lbl.getY(), 50, 25);
-        roll_count_lbl.setAlignmentX(MyGuiComps.MyLabel.CENTER);
-        exp_header_panel.add(roll_count_lbl);
-
-        MyGuiComps.MyLabel exp_lbl = new MyGuiComps.MyLabel("Exp");
-        exp_lbl.setBounds(0, 0, 68, 25);
-        exp_header_panel.add(exp_lbl);
-
         // ---------------------------  Baskets --------------------------- //
         MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();
         basketsPanel.setBounds(basket_header_panel.getX(), basket_header_panel.getY() + basket_header_panel.getHeight() + 1, basket_header_panel.getWidth(), panels_height);
@@ -271,7 +200,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         // ---------------------------  Races --------------------------- //
         MyGuiComps.MyPanel races_panel = new MyGuiComps.MyPanel();
-        races_panel.setBounds(races_panel_header.getX(), races_panel.getY() + races_panel_header.getHeight() + 1, 112, panels_height);
+        races_panel.setBounds(races_panel_header.getX(), races_panel_header.getY() + races_panel_header.getHeight() + 1, 112, panels_height);
         getContentPane().add(races_panel);
 
         index_races_iw_field = new MyGuiComps.MyTextField();
@@ -293,9 +222,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         stocks_counter_present_field.setFont(stocks_counter_present_field.getFont().deriveFont(Font.BOLD));
         races_panel.add(stocks_counter_present_field);
 
+        // Log Panel - מיקום מותאם אחרי הסרת exp
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
-        logPanel.setBounds(897, 0, 147, panels_height);
+        logPanel.setBounds(races_panel_header.getX() + races_panel_header.getWidth() + 1, 0, 147, panels_height + 25);
         getContentPane().add(logPanel);
         logPanel.setLayout(null);
 
@@ -303,123 +233,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         log.setBounds(10, 11, 127, 80);
         logPanel.add(log);
 
-        // -------------------------- EXP -------------------------- //
-        MyGuiComps.MyPanel exp_panel = new MyGuiComps.MyPanel();
-        exp_panel.setBounds(exp_header_panel.getX(), exp_header_panel.getY() + exp_header_panel.getHeight() + 1, 450, panels_height);
-        getContentPane().add(exp_panel);
-        exp_panel.setLayout(null);
-
-        // ------ Week ------ //
-        MyGuiComps.MyLabel week_lbl = new MyGuiComps.MyLabel("Week");
-        week_lbl.setBounds(0, 11, 70, 25);
-        exp_panel.add(week_lbl);
-
-        weekStartExpField = new MyGuiComps.MyTextField();
-        weekStartExpField.setBounds(week_lbl.getX() + week_lbl.getWidth() + 1, week_lbl.getY(), 50, 25);
-        weekStartExpField.setForeground(Color.WHITE);
-        weekStartExpField.setFont(weekStartExpField.getFont().deriveFont(Font.BOLD));
-        exp_panel.add(weekStartExpField);
-
-        // V2 V7 V8 (WEEK)
-        exp_v4_old_week_field = new MyGuiComps.MyTextField();
-        exp_v4_old_week_field.setBounds(weekStartExpField.getX() + weekStartExpField.getWidth() + 1, weekStartExpField.getY(), 50, 25);
-        exp_panel.add(exp_v4_old_week_field);
-
-        exp_v8_old_week_field = new MyGuiComps.MyTextField();
-        exp_v8_old_week_field.setBounds(exp_v4_old_week_field.getX() + exp_v4_old_week_field.getWidth() + 1, exp_v4_old_week_field.getY(), 50, 25);
-        exp_panel.add(exp_v8_old_week_field);
-
-        exp_v8_week_field = new MyGuiComps.MyTextField();
-        exp_v8_week_field.setBounds(exp_v8_old_week_field.getX() + exp_v8_old_week_field.getWidth() + 1, exp_v8_old_week_field.getY(), 50, 25);
-        exp_panel.add(exp_v8_week_field);
-
-        // Baskets
-        expBasketsWeekField = new MyGuiComps.MyTextField();
-        expBasketsWeekField.setBounds(exp_v8_week_field.getX() + exp_v8_week_field.getWidth() + 1, exp_v8_week_field.getY(), 50, 25);
-        exp_panel.add(expBasketsWeekField);
-
-        // ----------- Count ---------- //
-        // ----------- Week
-        // Optimi
-        optimi_count_week_field = new MyGuiComps.MyTextField();
-        optimi_count_week_field.setForeground(Themes.GREEN);
-        optimi_count_week_field.setBounds(expBasketsWeekField.getX() + expBasketsWeekField.getWidth() + 5, expBasketsWeekField.getY(), 25, 25);
-        exp_panel.add(optimi_count_week_field);
-
-        // Pesimi
-        pesimi_count_week_field = new MyGuiComps.MyTextField();
-        pesimi_count_week_field.setForeground(Themes.RED);
-        pesimi_count_week_field.setBounds(optimi_count_week_field.getX() + optimi_count_week_field.getWidth() + 1, optimi_count_week_field.getY(), 25, 25);
-        exp_panel.add(pesimi_count_week_field);
-
-        // Roll optimi week count
-        roll_optimi_count_week_field = new MyGuiComps.MyTextField();
-        roll_optimi_count_week_field.setForeground(Themes.GREEN);
-        roll_optimi_count_week_field.setBounds(pesimi_count_week_field.getX() + pesimi_count_week_field.getWidth() + 5, pesimi_count_week_field.getY(), 25, 25);
-        exp_panel.add(roll_optimi_count_week_field);
-
-        // Roll pesimi week count
-        roll_pesimi_count_week_field = new MyGuiComps.MyTextField();
-        roll_pesimi_count_week_field.setForeground(Themes.RED);
-        roll_pesimi_count_week_field.setBounds(roll_optimi_count_week_field.getX() + roll_optimi_count_week_field.getWidth() + 1, roll_optimi_count_week_field.getY(), 25, 25);
-        exp_panel.add(roll_pesimi_count_week_field);
-
-        // ------ Month ------ //
-        MyGuiComps.MyLabel month_lbl = new MyGuiComps.MyLabel("Month");
-        month_lbl.setBounds(week_lbl.getX(), week_lbl.getY() + week_lbl.getHeight() + 3, 70, 25);
-        exp_panel.add(month_lbl);
-
-        monthStartExpField = new MyGuiComps.MyTextField();
-        monthStartExpField.setForeground(Color.WHITE);
-        monthStartExpField.setFont(monthStartExpField.getFont().deriveFont(Font.BOLD));
-        monthStartExpField.setBounds(month_lbl.getX() + month_lbl.getWidth() + 1, month_lbl.getY(), 50, 25);
-        exp_panel.add(monthStartExpField);
-
-        // V2 V7 V8 (MONTH)
-        exp_v5_month_field = new MyGuiComps.MyTextField();
-        exp_v5_month_field.setBounds(monthStartExpField.getX() + monthStartExpField.getWidth() + 1, monthStartExpField.getY(), 50, 25);
-        exp_panel.add(exp_v5_month_field);
-
-        exp_v6_month_field = new MyGuiComps.MyTextField();
-        exp_v6_month_field.setBounds(exp_v5_month_field.getX() + exp_v5_month_field.getWidth() + 1, exp_v5_month_field.getY(), 50, 25);
-        exp_panel.add(exp_v6_month_field);
-
-        exp_v8_month_field = new MyGuiComps.MyTextField();
-        exp_v8_month_field.setBounds(exp_v6_month_field.getX() + exp_v6_month_field.getWidth() + 1, exp_v6_month_field.getY(), 50, 25);
-        exp_panel.add(exp_v8_month_field);
-
-
-        expBasketsMonthField = new MyGuiComps.MyTextField();
-        expBasketsMonthField.setBounds(exp_v8_month_field.getX() + exp_v8_month_field.getWidth() + 1, exp_v8_month_field.getY(), 50, 25);
-        exp_panel.add(expBasketsMonthField);
-
-        // Avg count roll and OP
-        optimi_count_month_field = new MyGuiComps.MyTextField();
-        optimi_count_month_field.setBounds(expBasketsMonthField.getX() + expBasketsMonthField.getWidth() + 5, expBasketsMonthField.getY(), 25, 25);
-        optimi_count_month_field.setForeground(Themes.GREEN);
-        exp_panel.add(optimi_count_month_field);
-
-        // Pesimi
-        pesimi_count_month_field = new MyGuiComps.MyTextField();
-        pesimi_count_month_field.setBounds(optimi_count_month_field.getX() + optimi_count_month_field.getWidth() + 1, optimi_count_month_field.getY(), 25, 25);
-        pesimi_count_month_field.setForeground(Themes.RED);
-        exp_panel.add(pesimi_count_month_field);
-
-        // Roll optimi week count
-        roll_optimi_count_month_field = new MyGuiComps.MyTextField();
-        roll_optimi_count_month_field.setForeground(Themes.GREEN);
-        roll_optimi_count_month_field.setBounds(pesimi_count_month_field.getX() + pesimi_count_month_field.getWidth() + 5, pesimi_count_month_field.getY(), 25, 25);
-        exp_panel.add(roll_optimi_count_month_field);
-
-        // Roll pesimi week count
-        roll_pesimi_count_month_field = new MyGuiComps.MyTextField();
-        roll_pesimi_count_month_field.setForeground(Themes.RED);
-        roll_pesimi_count_month_field.setBounds(roll_optimi_count_month_field.getX() + roll_optimi_count_month_field.getWidth() + 1, roll_optimi_count_month_field.getY(), 25, 25);
-        exp_panel.add(roll_pesimi_count_month_field);
-
         // ----------------- Bottom panel ---------------- //
         bottomPanel = new MyGuiComps.MyPanel();
-        bottomPanel.setBounds(basketsPanel.getX(), basketsPanel.getY() + basketsPanel.getHeight() + 1, 801, 38);
+        bottomPanel.setBounds(basketsPanel.getX(), basketsPanel.getY() + basketsPanel.getHeight() + 1, 
+                races_panel_header.getX() + races_panel_header.getWidth() + logPanel.getWidth() - basketsPanel.getX(), 38);
         getContentPane().add(bottomPanel);
         bottomPanel.setLayout(null);
 

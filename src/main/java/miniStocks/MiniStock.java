@@ -68,23 +68,20 @@ public class MiniStock implements IJsonData {
         if (this.bid != 0 && bid != this.bid) {
             double change = bid - this.bid;
             updateBidAverage(change);
-        }
 
-        if (bid > this.bid) {
-            bid_ask_counter++;
-            bid_counter_2++;
-        }
+            if (bid > this.bid) {
+                bid_ask_counter++;
+                bid_counter_2++;
+            }
 
-        if (bid < this.bid) {
-            bid_counter_2--;
-        }
+            if (bid < this.bid) {
+                bid_counter_2--;
+            }
 
-        // Set pre bid
-        if (bid != this.bid) {
+            // Set pre bid
             this.pre_bid = this.bid;
+            this.bid = bid;
         }
-
-        this.bid = bid;
     }
 
     public double getAsk() {
@@ -93,28 +90,24 @@ public class MiniStock implements IJsonData {
 
     public void setAsk(double ask) {
 
-         // Track ask movement for indicator
-         if (this.ask != 0 && ask != this.ask) {
+        // Track ask movement for indicator
+        if (this.ask != 0 && ask != this.ask) {
             double change = Math.abs(ask - this.ask);
             updateAskAverage(change);
-            
-        }
-        
-        if (ask > this.ask) {
-            ask_counter_2++;
-        }
 
-        if (ask < this.ask) {
-            bid_ask_counter--;
-            ask_counter_2--;
-        }
-        
-        // Set pre ask
-        if (ask != this.ask){
+            if (ask > this.ask) {
+                ask_counter_2++;
+            }
+    
+            if (ask < this.ask) {
+                bid_ask_counter--;
+                ask_counter_2--;
+            }
+    
+            // Set pre ask
             this.pre_ask = this.ask;
-        }
-
-        this.ask = ask;
+            this.ask = ask;
+        } 
     }
 
     public double getLast() {
@@ -257,8 +250,8 @@ public class MiniStock implements IJsonData {
     }
 
     public void setCounter_2(int counter_2) {
-        setBid_counter_2((int)counter_2 / 2);
-        setAsk_counter_2((int)counter_2 / 2);
+        setBid_counter_2((int) counter_2 / 2);
+        setAsk_counter_2((int) counter_2 / 2);
     }
 
     public double getOpen() {

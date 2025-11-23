@@ -99,7 +99,7 @@ public class StocksReaderService extends MyBaseService {
             }
         }
     }
-
+    
     private void read_options(Options options, int start_row, int end_row) throws DDEException {
         Option call, put;
         double strike;
@@ -160,7 +160,7 @@ public class StocksReaderService extends MyBaseService {
             }
         });
     }
-
+    // ==== קריאת שמות המניות בבאטצ' (Thread נפרד) ====
     private void initStockCells(DDEClientConversation conv) {
         int nameCol = NAME_COL_DEFAULT;
         int start_row = STOCKS_START_ROW;
