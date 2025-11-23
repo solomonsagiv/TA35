@@ -80,6 +80,10 @@ public class MiniStock implements IJsonData {
 
             // Set pre bid
             this.pre_bid = this.bid;
+            
+        }
+
+        if (this.bid == 0 && bid != 0) {
             this.bid = bid;
         }
     }
