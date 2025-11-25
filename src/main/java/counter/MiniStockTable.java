@@ -270,9 +270,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();
                 min_weight_field.setText((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] - midVals[Calculator.SOFT_PLUS]), DF_INT);
-                max_weight_field.setForeground(Themes.RED);
+                min_weight_field.setForeground(Themes.RED);
                 max_weight_field.setText((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] + midVals[Calculator.SOFT_MINUS]), DF_INT);
-
+                max_weight_field.setForeground(Themes.GREEN);
                 // Update colors 
                 updateFieldColor(counter_weight_field, 55, 45);
                 updateFieldColor(counter_2_weight_field, 55, 45);
@@ -280,8 +280,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         });
     }
 
-
-    
 
     private void startRunner() {
         runner = new Thread(new Runnable() {

@@ -94,29 +94,6 @@ public class Updater extends MyThread implements Runnable {
                 window.v2_field.colorForgeRound(df_4.getValue());
                 window.v7_field.colorForgeRound(df_8.getValue());
 
-                // Exp
-                // Week
-                colorForgeRound(window.exp_v4_old_week_field, (int) (expWeek.getExpData().getV4() + df_4.getValue()), true);
-                colorForgeRound(window.exp_v8_old_week_field, (int) (expWeek.getExpData().getV8() + df_8.getValue()), true);
-                colorForgeRound(window.expBasketsWeekField, expWeek.getExpData().getTotalBaskets(), false);
-                text = floor(((client.getIndex() - expWeek.getExpData().getStart()) / expWeek.getExpData().getStart()) * 100, 100);
-                setColorPresent(window.weekStartExpField, text);
-                window.optimi_count_week_field.setText(str(expWeek.getOptimi_count()));
-                window.pesimi_count_week_field.setText(str(expWeek.getPesimi_count()));
-                window.roll_optimi_count_week_field.setText(str(expWeek.getRoll_optimi_count()));
-                window.roll_pesimi_count_week_field.setText(str(expWeek.getRoll_pesimi_count()));
-
-                // Month
-                colorForgeRound(window.exp_v5_month_field, (int) (expMonth.getExpData().getV5() + df_5.getValue()), true);
-                colorForgeRound(window.exp_v6_month_field, (int) (expMonth.getExpData().getV6() + df_6.getValue()), true);
-                colorForgeRound(window.expBasketsMonthField, expMonth.getExpData().getTotalBaskets(), false);
-                text = floor(((client.getIndex() - expMonth.getExpData().getStart()) / expMonth.getExpData().getStart()) * 100, 100);
-                setColorPresent(window.monthStartExpField, text);
-                window.optimi_count_month_field.setText(str(expMonth.getOptimi_count()));
-                window.pesimi_count_month_field.setText(str(expMonth.getPesimi_count()));
-                window.roll_optimi_count_month_field.setText(str(expMonth.getRoll_optimi_count()));
-                window.roll_pesimi_count_month_field.setText(str(expMonth.getRoll_pesimi_count()));
-
                 // Races
                 colorForgeRound(window.index_races_iw_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points(), false);
                 colorForgeRound(window.week_races_iw_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points(), false);

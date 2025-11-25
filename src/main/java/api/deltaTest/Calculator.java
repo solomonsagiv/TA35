@@ -97,6 +97,50 @@ public class Calculator {
         return new double[]{soft_plus, soft_minus};
     }
 
+    /**
+     * מחזיר את המניות עם המשקל הגבוה ביותר עד שמגיעים ל-60% מהמשקל הכולל
+     * @return רשימה של המניות הגדולות ביותר (עד 60% מהמשקל)
+     */
+    public static List<MiniStock> getTop60PercentStocks() {
+        List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+        
+        if (snapshot.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        // חישוב המשקל הכולל
+        double totalWeight = 0.0;
+        for (MiniStock s : snapshot) {
+            totalWeight += s.getWeight();
+        }
+        
+        if (totalWeight == 0) {
+            return new ArrayList<>();
+        }
+        
+        // מיון המניות לפי weight (יורד - הכי גדולות קודם)
+        List<MiniStock> sorted = new ArrayList<>(snapshot);
+        sorted.sort((a, b) -> Double.compare(b.getWeight(), a.getWeight()));
+        
+        // חישוב 60% מהמשקל הכולל
+        double targetWeight = totalWeight * 0.6;
+        double accumulatedWeight = 0.0;
+        List<MiniStock> topStocks = new ArrayList<>();
+        
+        // עוברים על המניות לפי הסדר עד שמגיעים ל-60%
+        for (MiniStock s : sorted) {
+            if (accumulatedWeight >= targetWeight) {
+                break; // הגענו ל-60%
+            }
+            
+            double stockWeight = s.getWeight();
+            accumulatedWeight += stockWeight;
+            topStocks.add(s);
+        }
+        
+        return topStocks;
+    }
+
     public static double[] calculateWeightedCounters() {
 
         TA35 client = TA35.getInstance();
@@ -176,6 +220,19 @@ public class Calculator {
             if (stock.getCounter_2() > 0) {
                 counter_2_weight_positive += stock.getWeight();
             }
+            
+
+            int top60PercentCounter2Positive = 0;
+            int weight_sum = 0;
+            for (MiniStock s : getTop60PercentStocks()) {
+                if (s.getCounter_2() > 0) {
+                    top60PercentCounter2Positive += s.getWeight();
+                }
+                weight_sum += s.getWeight();
+            }
+
+            int top_weight_counter_2 = 100 / weight_sum * top60PercentCounter2Positive;
+            TA35.getInstance().setTop_weight_counter_2(top_weight_counter_2);
         }
 
         TA35.getInstance().setBa_total_positive_weight(ba_weight_positive);
@@ -193,7 +250,6 @@ public class Calculator {
         vals[COUNTER_2_WEIGHT_POSITIVE]     = counter_2_weight_positive;
         return vals;
     }
-
 
     public static void calc_stocks_counters() {
         StocksHandler stocksHandler = TA35.getInstance().getStocksHandler();

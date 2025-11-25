@@ -45,7 +45,8 @@ public abstract class BASE_CLIENT_OBJECT {
 
     private int ba_total_positive_weight = 0,
                 delta_potisive_weight = 0, 
-                counter_2_tot_weight = 0;
+                counter_2_tot_weight = 0, 
+                top_weight_counter_2 = 0;
 
 
 
@@ -393,5 +394,13 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setCounter_2_tot_weight(int counter_2_tot_weight) {
         this.counter_2_tot_weight = counter_2_tot_weight;
+    }
+
+    public int getTop_weight_counter_2() {
+        return top_weight_counter_2;
+    }
+
+    public void setTop_weight_counter_2(int top_weight_counter_2) {
+        this.top_weight_counter_2 = top_weight_counter_2;
     }
 }
