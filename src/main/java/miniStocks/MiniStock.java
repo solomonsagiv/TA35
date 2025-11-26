@@ -34,6 +34,11 @@ public class MiniStock implements IJsonData {
     private int first_hour_delta_counter = 0;
     private int first_hour_counter_2 = 0;
 
+    // ערכים ראשונים מ-15 הדקות האחרונות (לחישוב הפרש)
+    private int first_15min_counter = 0;
+    private int first_15min_delta_counter = 0;
+    private int first_15min_counter_2 = 0;
+
     // Bid/Ask averages and counters
     private double average_bid_change = 0.0;
     private double average_ask_change = 0.0;
@@ -190,6 +195,59 @@ public class MiniStock implements IJsonData {
      */
     public int getCounter2HourlyDelta() {
         return this.getCounter_2() - this.first_hour_counter_2;
+    }
+
+    // ===== First 15 Minutes Values (for 15min delta calculation) =====
+
+    public int getFirst_15min_counter() {
+        return first_15min_counter;
+    }
+
+    public void setFirst_15min_counter(int first_15min_counter) {
+        this.first_15min_counter = first_15min_counter;
+    }
+
+    public int getFirst_15min_delta_counter() {
+        return first_15min_delta_counter;
+    }
+
+    public void setFirst_15min_delta_counter(int first_15min_delta_counter) {
+        this.first_15min_delta_counter = first_15min_delta_counter;
+    }
+
+    public int getFirst_15min_counter_2() {
+        return first_15min_counter_2;
+    }
+
+    public void setFirst_15min_counter_2(int first_15min_counter_2) {
+        this.first_15min_counter_2 = first_15min_counter_2;
+    }
+
+    /**
+     * מחשב את ההפרש של counter ביחס ל-15 הדקות האחרונות
+     * 
+     * @return ההפרש (נוכחי - ראשון)
+     */
+    public int getCounter15MinDelta() {
+        return this.bid_ask_counter - this.first_15min_counter;
+    }
+
+    /**
+     * מחשב את ההפרש של delta_counter ביחס ל-15 הדקות האחרונות
+     * 
+     * @return ההפרש (נוכחי - ראשון)
+     */
+    public int getDeltaCounter15MinDelta() {
+        return this.delta_counter - this.first_15min_delta_counter;
+    }
+
+    /**
+     * מחשב את ההפרש של counter_2 ביחס ל-15 הדקות האחרונות
+     * 
+     * @return ההפרש (נוכחי - ראשון)
+     */
+    public int getCounter215MinDelta() {
+        return this.getCounter_2() - this.first_15min_counter_2;
     }
 
     public double get_open_close() {

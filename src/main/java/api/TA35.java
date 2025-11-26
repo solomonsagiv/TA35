@@ -313,4 +313,5 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         return L.abs(index - bid);
     }
 
+
 }
