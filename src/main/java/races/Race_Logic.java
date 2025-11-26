@@ -143,7 +143,7 @@ public class Race_Logic {
         switch (race_runners) {
             case WEEK_INDEX:
                 r_one_price = client.getMid();
-                r_two_price = client.getExps().getMonth().getOptions().getContract();
+                r_two_price = client.getExps().getWeek().getOptions().getContract();
                 return;
             case WEEK_MONTH:
                 r_one_price = client.getExps().getMonth().getOptions().getContract();

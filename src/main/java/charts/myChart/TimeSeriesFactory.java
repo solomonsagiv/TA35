@@ -675,6 +675,31 @@ public class TimeSeriesFactory {
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
+
+                
+            case Factories.TimeSeries.TOTAL_DELTA:
+                return new MyTimeSeries(Factories.TimeSeries.TOTAL_DELTA, client) {
+
+                    @Override
+                    public double getValue() {
+                        return client.getTotal_delta();
+                    }
+
+
+                    @Override
+                    public void updateData() {
+//                        int serie_id = client.getMySqlService().getDataBaseHandler().getSerie_ids().get(TimeSeriesHandler.INDEX_RACES_PROD);
+//                        setValue(MySql.Queries.handle_rs(Objects.requireNonNull(MySql.Queries.get_last_record_mega(serie_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION))));
+                    }
+
+                    @Override
+                    public void load() {
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.TOTAL_DELTA);
+
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.CDF, MySql.JIBE_PROD_CONNECTION);
+                        IDataBaseHandler.loadSerieData(rs, this);
+                    }
+                };
                 
 
             default:

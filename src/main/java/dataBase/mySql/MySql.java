@@ -505,5 +505,53 @@ public class MySql {
         }
     }
 
+    /**
+     * מעדכן את הערכים הראשונים מ-15 הדקות האחרונות לכל המניות
+     * משתמש ב-query שמביא את ה-snapshot הראשון מ-15 הדקות האחרונות
+     */
+    public static void update_first_15min_counters(String connectionType) {
+
+        StocksHandler stocksHandler = TA35.getInstance().getStocksHandler();
+        List<MiniStock> stocks = new ArrayList<>(stocksHandler.getStocks());
+        
+        String sql = String.format(
+                "SELECT DISTINCT ON (name) " +
+                "    name, " +
+                "    counter, " +
+                "    delta_counter, " +
+                "    counter_2 " +
+                "FROM sagiv.stocks_data " +
+                "WHERE index_name = '%s' " +
+                "  AND snapshot_time >= NOW() - INTERVAL '15 minutes' " +
+                "ORDER BY name, snapshot_time ASC",
+                TA35.getInstance().getName().toUpperCase()
+        );
+
+        List<Map<String, Object>> rs = MySql.select(sql, connectionType);
+
+        for (Map<String, Object> row : rs) {
+            try {
+                String name = (String) row.get("name");
+                Number counter = (Number) row.get("counter");
+                Number delta_counter = (Number) row.get("delta_counter");
+                Number counter_2 = (Number) row.get("counter_2");
+
+                for (MiniStock stock : stocks) {
+                    if (L.equalsIgnoreCaseAndSpaces(stock.getName(), name)) {
+                        stock.setFirst_15min_counter(counter != null ? counter.intValue() : 0);
+                        stock.setFirst_15min_delta_counter(delta_counter != null ? delta_counter.intValue() : 0);
+                        if (counter_2 != null) {
+                            stock.setFirst_15min_counter_2(counter_2.intValue());
+                        }
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Error updating first 15min counters: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 }

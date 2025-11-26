@@ -35,6 +35,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> ba_tot_pos_weight_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> delta_tot_pos_weight_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> counter_2_tot_weight_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> total_delta_timestamp = new ArrayList<>();
     
 
     ArrayList<MyTimeSeries> timeSeries;
@@ -56,7 +57,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             trading_status_0 = 0,
             ba_tot_pos_weight_0 = 0,
             delta_tot_pos_weight_0 = 0, 
-            counter_2_tot_weight_0 = 0;
+            counter_2_tot_weight_0 = 0,
+            total_delta_0 = 0;
 
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
@@ -186,6 +188,14 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             if (counter_2_tot_weight != counter_2_tot_weight_0) {
                 counter_2_tot_weight_timestamp.add(new MyTimeStampObject(Instant.now(), counter_2_tot_weight));
                 counter_2_tot_weight_0 = counter_2_tot_weight;
+            }
+
+            // Total delta
+            double total_delta = client.getTotal_delta();
+            if (total_delta != total_delta_0) {
+                double last_count = total_delta - total_delta_0;
+                total_delta_timestamp.add(new MyTimeStampObject(Instant.now(), last_count));
+                total_delta_0 = total_delta;
             }
 
             // Baskets
@@ -372,17 +382,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     public void init_timeseries_to_updater() {
 
         timeSeries = new ArrayList<>();
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_15));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_240_CONTINUE));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_900));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_3600));
 
     }
 
@@ -452,5 +454,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Counter 2 tot weight
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD);
         insert_dev_prod(counter_2_tot_weight_timestamp, prod_id);
+
+        // Total delta
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.TOTAL_DELTA);
+        insert_dev_prod(total_delta_timestamp, prod_id);
     }
 }

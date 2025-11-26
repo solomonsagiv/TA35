@@ -60,5 +60,6 @@ public class Factories {
         public static final String WEEK_OBI_PROD = "WEEK_OBI_PROD";
         public static final String MONTH__MPO_PROD = "MONTH__MPO_PROD";
         public static final String WEEK__MPO_PROD = "WEEK__MPO_PROD";
+        public static final String TOTAL_DELTA = "TOTAL_DELTA";
     }
 }

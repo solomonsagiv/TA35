@@ -60,10 +60,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     private MyGuiComps.MyTextField
             counter_weight_field,
-            weighted_counter_field,
             delta_field,
             total_delta_field,
             counter_2_weight_field,
+            top_weight_counter_2_field,
             min_weight_field,
             max_weight_field;
 
@@ -104,20 +104,18 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
         // ---- Controls (KPIs) ----
         counter_weight_field = new MyGuiComps.MyTextField(); counter_weight_field.setFontSize(22);
-        weighted_counter_field          = new MyGuiComps.MyTextField(); weighted_counter_field.setFontSize(22);
         delta_field                     = new MyGuiComps.MyTextField(); delta_field.setFontSize(22);
         total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
         counter_2_weight_field          = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
+        top_weight_counter_2_field      = new MyGuiComps.MyTextField(); top_weight_counter_2_field.setFontSize(22);
         min_weight_field             = new MyGuiComps.MyTextField(); min_weight_field.setFontSize(22);
-        min_weight_field.setForeground(Themes.RED);
         max_weight_field            = new MyGuiComps.MyTextField(); max_weight_field.setFontSize(22);
-        max_weight_field.setForeground(Themes.GREEN);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
         controlPanel.add(createColumn("C1 W:", counter_weight_field));
         controlPanel.add(createColumn("C2 W:", counter_2_weight_field));
+        controlPanel.add(createColumn("T60%:", top_weight_counter_2_field));
         controlPanel.add(createColumn("TOT D:", delta_field));
-        controlPanel.add(createColumn("W F:", weighted_counter_field));
         controlPanel.add(createColumn("DELTA:", total_delta_field));
 
         JPanel midPanel = new JPanel(new GridLayout(1, 2, 15, 0));
@@ -263,17 +261,17 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 // עדכון ה-KPIs העליונים
                 counter_weight_field.colorForge(vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
                 counter_2_weight_field.colorForge(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
-                weighted_counter_field.colorForge((int) Calculator.calculateWeightedCounters()[0]);
+                top_weight_counter_2_field.colorForge((int) TA35.getInstance().getTop_weight_counter_2());
                 delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
                 total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
 
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();
                 min_weight_field.setText((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] - midVals[Calculator.SOFT_PLUS]), DF_INT);
-                min_weight_field.setForeground(Themes.RED);
                 max_weight_field.setText((int)(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE] + midVals[Calculator.SOFT_MINUS]), DF_INT);
-                max_weight_field.setForeground(Themes.GREEN);
                 // Update colors 
+                updateFieldColor(min_weight_field, 55, 45);
+                updateFieldColor(max_weight_field, 55, 45);
                 updateFieldColor(counter_weight_field, 55, 45);
                 updateFieldColor(counter_2_weight_field, 55, 45);
             }

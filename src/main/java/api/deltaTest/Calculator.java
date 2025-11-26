@@ -81,6 +81,39 @@ public class Calculator {
         }
         return counter_2_hourly;
     }
+
+    public static double get_stocks_ba_counter_15min() {
+        List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+        double counter_15min = 0.0;
+        for (MiniStock s : snapshot) {
+            if (s.getCounter15MinDelta() > 0) {
+                counter_15min += s.getWeight();
+            }
+        }
+        return counter_15min;
+    }
+
+    public static double get_stocks_delta_counter_15min() {
+        List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+        double delta_counter_15min = 0.0;
+        for (MiniStock s : snapshot) {
+            if (s.getDeltaCounter15MinDelta() > 0) {
+                delta_counter_15min += s.getWeight();
+            }
+        }
+        return delta_counter_15min;
+    }
+
+    public static double get_stocks_counter_2_15min() {
+        List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
+        double counter_2_15min = 0.0;
+        for (MiniStock s : snapshot) {
+            if (s.getCounter215MinDelta() > 0) {
+                counter_2_15min += s.getWeight();
+            }
+        }
+        return counter_2_15min;
+    }
     
     public static double[] get_midle_stocks_ba_counter() {
         List<MiniStock> snapshot = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
@@ -220,21 +253,18 @@ public class Calculator {
             if (stock.getCounter_2() > 0) {
                 counter_2_weight_positive += stock.getWeight();
             }
-            
-
-            int top60PercentCounter2Positive = 0;
-            int weight_sum = 0;
-            for (MiniStock s : getTop60PercentStocks()) {
-                if (s.getCounter_2() > 0) {
-                    top60PercentCounter2Positive += s.getWeight();
-                }
-                weight_sum += s.getWeight();
-            }
-
-            int top_weight_counter_2 = 100 / weight_sum * top60PercentCounter2Positive;
-            TA35.getInstance().setTop_weight_counter_2(top_weight_counter_2);
+        
+           
         }
 
+        int top_weight_counter_2 = 0;
+        for (MiniStock s : getTop60PercentStocks()) {
+            if (s.getCounter_2() > 0) {
+                top_weight_counter_2 += s.getWeight();
+            }
+        }
+
+        TA35.getInstance().setTop_weight_counter_2(top_weight_counter_2);
         TA35.getInstance().setBa_total_positive_weight(ba_weight_positive);
         TA35.getInstance().setDelta_potisive_weight(delta_weight_positive);
         TA35.getInstance().setCounter_2_tot_weight(counter_2_weight_positive);

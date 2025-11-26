@@ -190,35 +190,15 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Stocks counter
         // ----------------------------------------- //
 
-        // BA tot weight
-        MyTimeSeries ba_total_weight = TA35.getInstance().getTimeSeriesHandler()
-                .get(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
-        ba_total_weight.setColor(Themes.BLUE3);
-        ba_total_weight.setStokeSize(1.2f);
-        ba_total_weight.setVisible(false);
+        MyTimeSeries total_delta = TA35.getInstance().getTimeSeriesHandler()
+                .get(Factories.TimeSeries.TOTAL_DELTA);
+        total_delta.setColor(Themes.OPEN_RACE);
+        total_delta.setStokeSize(1.2f);
 
-        // BA tot weight
-        MyTimeSeries counter_2_weight = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD);
-        counter_2_weight.setColor(Themes.GREEN);
-        counter_2_weight.setStokeSize(1.2f);
+        series = new MyTimeSeries[1];
+        series[0] = total_delta;
 
-        // Delta tot weight
-        MyTimeSeries delta_tot_weight = TA35.getInstance().getTimeSeriesHandler()
-                .get(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
-        delta_tot_weight.setColor(Themes.OPEN_RACE);
-        delta_tot_weight.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[3];
-        series[0] = ba_total_weight;
-        series[1] = delta_tot_weight;
-        series[2] = counter_2_weight;
-
-        ValueMarker fifty = new ValueMarker(50);
-        fifty.setStroke(new BasicStroke(1.5f));
-        fifty.setPaint(Themes.BLACK);
-
-        MyChart weighted_stocks_counter_chart = new MyChart(series, props);
-        weighted_stocks_counter_chart.add_marker(fifty);
+        MyChart total_delta_chart = new MyChart(series, props);
 
         // ------------------ Stocks weighted counter hourly ------------------- //
 
@@ -290,21 +270,47 @@ public class Main_Chart extends MyChartCreator {
         delta_tot_pos_weight_hourly.setColor(Themes.OPEN_RACE);
         delta_tot_pos_weight_hourly.setStokeSize(1.2f);
 
-        series = new MyTimeSeries[3];
+
+        // Top weight counter 2
+        MyTimeSeries top_weight_counter_2 = new MyTimeSeries("Top Weight Counter 2", client) {
+            @Override
+            public double getValue() {
+                return TA35.getInstance().getTop_weight_counter_2();
+            }
+            @Override
+            public void updateData() {
+
+            }
+
+            @Override
+            public void load() {
+
+            }
+                   
+        };
+        top_weight_counter_2.setColor(Themes.BINANCE_ORANGE);
+        top_weight_counter_2.setStokeSize(1.2f);
+
+        series = new MyTimeSeries[4];
         series[0] = delta_tot_pos_weight_hourly;
         series[1] = ba_tot_pos_weight_hourly;
         series[2] = counter_2_weight_hourly;
-
+        series[3] = top_weight_counter_2;
+        
         // Chart
         MyChart stocks_weighted_counter_chart_hourly = new MyChart(series, props);
+        ValueMarker fifty = new ValueMarker(50);
+        fifty.setStroke(new BasicStroke(1.5f));
+        fifty.setPaint(Themes.BLACK);
+        fifty.setValue(50);
         stocks_weighted_counter_chart_hourly.add_marker(fifty);
 
         // ----------------------------------------- Chart
         // ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = { indexChart, op_avg_chart, races_chart, bid_ask_counter_chart,
-                stocks_weighted_counter_chart_hourly, weighted_stocks_counter_chart };
+        MyChart[] charts = { indexChart, op_avg_chart, races_chart, bid_ask_counter_chart, total_delta_chart,
+                stocks_weighted_counter_chart_hourly };
 
         // ----------------------------------------- Container
         // ----------------------------------------- //
