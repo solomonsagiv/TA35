@@ -264,6 +264,7 @@ public class Calculator {
             }
         }
 
+        TA35.getInstance().setTotal_delta(total_delta);
         TA35.getInstance().setTop_weight_counter_2(top_weight_counter_2);
         TA35.getInstance().setBa_total_positive_weight(ba_weight_positive);
         TA35.getInstance().setDelta_potisive_weight(delta_weight_positive);

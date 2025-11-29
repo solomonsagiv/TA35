@@ -11,7 +11,6 @@ import locals.L;
 import miniStocks.MiniStock;
 import options.Options;
 import races.Race_Logic;
-
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -175,7 +174,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                 ba_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), ba_tot_pos_weight));
                 ba_tot_pos_weight_0 = ba_tot_pos_weight;
             }
-
+            
             // BA tot pos weight
             double delta_tot_pos_weight = client.getDelta_potisive_weight();
             if (delta_tot_pos_weight != delta_tot_pos_weight_0) {
