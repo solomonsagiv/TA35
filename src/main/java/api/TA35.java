@@ -139,6 +139,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
 
 
+        timeSeriesHandler.put(Factories.TimeSeries.TOTAL_DELTA, TimeSeriesFactory.get_serie(Factories.TimeSeries.TOTAL_DELTA, this));
+
         setTimeSeriesHandler(timeSeriesHandler);
 
         timeSeriesHandler.put_id(Factories.TimeSeries.INDEX, 5);
