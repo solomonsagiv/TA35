@@ -151,7 +151,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         // Races
         MyGuiComps.MyPanel races_panel_header = new MyGuiComps.MyPanel();
-        races_panel_header.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, decision_header_panel.getY(), 112, 25);
+        races_panel_header.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, decision_header_panel.getY(), 300, 25);
         getContentPane().add(races_panel_header);
 
         MyGuiComps.MyLabel index_races_lbl = new MyGuiComps.MyLabel("Ind");
@@ -203,7 +203,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         // ---------------------------  Races --------------------------- //
         MyGuiComps.MyPanel races_panel = new MyGuiComps.MyPanel();
-        races_panel.setBounds(races_panel_header.getX(), races_panel_header.getY() + races_panel_header.getHeight() + 1, 112, panels_height);
+        races_panel.setBounds(races_panel_header.getX(), races_panel_header.getY() + races_panel_header.getHeight() + 1, 300, panels_height);
         getContentPane().add(races_panel);
 
         index_races_iw_field = new MyGuiComps.MyTextField();
