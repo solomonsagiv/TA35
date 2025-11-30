@@ -34,6 +34,42 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     private OptionsMonth optionsMonth;
 
     private Stocks_Race_Service stocks_race_service;
+    
+    // Tracking op_avg_60 zero crossing and TOTAL_DELTA accumulation
+    private boolean op_avg_60_crossed_zero = false;
+    private double previous_op_avg_60 = 0.0;
+    private int total_delta_since_cross = 0;
+    private int total_delta_at_cross = 0; // TOTAL_DELTA value at the moment of zero crossing
+    
+    // Tracking zero crossing for index_races_iw
+    private boolean index_races_iw_crossed_zero = false;
+    private double previous_index_races_iw = 0.0;
+    private int total_delta_since_index_races_iw_cross = 0;
+    private int total_delta_at_index_races_iw_cross = 0;
+    
+    // Tracking zero crossing for week_races_wi
+    private boolean week_races_wi_crossed_zero = false;
+    private double previous_week_races_wi = 0.0;
+    private int total_delta_since_week_races_wi_cross = 0;
+    private int total_delta_at_week_races_wi_cross = 0;
+    
+    // Tracking zero crossing for month_races_wm
+    private boolean month_races_wm_crossed_zero = false;
+    private double previous_month_races_wm = 0.0;
+    private int total_delta_since_month_races_wm_cross = 0;
+    private int total_delta_at_month_races_wm_cross = 0;
+    
+    // Tracking zero crossing for week_bid_ask_counter
+    private boolean week_bid_ask_counter_crossed_zero = false;
+    private int previous_week_bid_ask_counter = 0;
+    private int total_delta_since_week_bid_ask_counter_cross = 0;
+    private int total_delta_at_week_bid_ask_counter_cross = 0;
+    
+    // Tracking zero crossing for month_bid_ask_counter
+    private boolean month_bid_ask_counter_crossed_zero = false;
+    private int previous_month_bid_ask_counter = 0;
+    private int total_delta_since_month_bid_ask_counter_cross = 0;
+    private int total_delta_at_month_bid_ask_counter_cross = 0;
 
     // Private constructor
     private TA35() {
@@ -196,6 +232,82 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         return Themes.ORANGE;
     }
 
+    public double get_index_races_iw() {
+        double value = get_main_race().get_r_one_points();
+        // Check if crossed zero (from negative to positive or positive to negative)
+        if (previous_index_races_iw != 0.0 && 
+            ((previous_index_races_iw < 0 && value >= 0) || 
+             (previous_index_races_iw > 0 && value <= 0))) {
+            // Zero crossing detected - start tracking from current TOTAL_DELTA
+            index_races_iw_crossed_zero = true;
+            total_delta_at_index_races_iw_cross = getTotal_delta();
+            total_delta_since_index_races_iw_cross = 0;
+        }
+        previous_index_races_iw = value;
+        return value;
+    }
+
+    public double get_week_races_wi() {
+        double value = get_main_race().get_r_two_points();
+        // Check if crossed zero (from negative to positive or positive to negative)
+        if (previous_week_races_wi != 0.0 && 
+            ((previous_week_races_wi < 0 && value >= 0) || 
+             (previous_week_races_wi > 0 && value <= 0))) {
+            // Zero crossing detected - start tracking from current TOTAL_DELTA
+            week_races_wi_crossed_zero = true;
+            total_delta_at_week_races_wi_cross = getTotal_delta();
+            total_delta_since_week_races_wi_cross = 0;
+        }
+        previous_week_races_wi = value;
+        return value;
+    }
+
+    public double get_month_races_wm() {
+        double value = racesService.get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
+        // Check if crossed zero (from negative to positive or positive to negative)
+        if (previous_month_races_wm != 0.0 && 
+            ((previous_month_races_wm < 0 && value >= 0) || 
+             (previous_month_races_wm > 0 && value <= 0))) {
+            // Zero crossing detected - start tracking from current TOTAL_DELTA
+            month_races_wm_crossed_zero = true;
+            total_delta_at_month_races_wm_cross = getTotal_delta();
+            total_delta_since_month_races_wm_cross = 0;
+        }
+        previous_month_races_wm = value;
+        return value;
+    }
+
+    public int get_week_bid_ask_counter() {
+        int value = getExps().getWeek().getOptions().getBidAskCounter();
+        // Check if crossed zero (from negative to positive or positive to negative)
+        if (previous_week_bid_ask_counter != 0 && 
+            ((previous_week_bid_ask_counter < 0 && value >= 0) || 
+             (previous_week_bid_ask_counter > 0 && value <= 0))) {
+            // Zero crossing detected - start tracking from current TOTAL_DELTA
+            week_bid_ask_counter_crossed_zero = true;
+            total_delta_at_week_bid_ask_counter_cross = getTotal_delta();
+            total_delta_since_week_bid_ask_counter_cross = 0;
+        }
+        previous_week_bid_ask_counter = value;
+        return value;
+    }
+
+    public int get_month_bid_ask_counter() {
+        int value = getExps().getMonth().getOptions().getBidAskCounter();
+        // Check if crossed zero (from negative to positive or positive to negative)
+        if (previous_month_bid_ask_counter != 0 && 
+            ((previous_month_bid_ask_counter < 0 && value >= 0) || 
+             (previous_month_bid_ask_counter > 0 && value <= 0))) {
+            // Zero crossing detected - start tracking from current TOTAL_DELTA
+            month_bid_ask_counter_crossed_zero = true;
+            total_delta_at_month_bid_ask_counter_cross = getTotal_delta();
+            total_delta_since_month_bid_ask_counter_cross = 0;
+        }
+        previous_month_bid_ask_counter = value;
+        return value;
+    }
+
+
     // Get instance
     public static TA35 getInstance() {
         if (TA35 == null) {
@@ -317,6 +429,109 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     }
     public double get_bid_last_margin() {
         return L.abs(index - bid);
+    }
+
+    /**
+     * Checks if op_avg_60 crossed zero and updates tracking
+     * Should be called whenever op_avg_60 is updated
+     */
+    public void checkOpAvg60Cross(double current_op_avg_60) {
+        // Check if crossed zero (from negative to positive or positive to negative)
+        if (previous_op_avg_60 != 0.0 && 
+            ((previous_op_avg_60 < 0 && current_op_avg_60 >= 0) || 
+             (previous_op_avg_60 > 0 && current_op_avg_60 <= 0))) {
+            // Zero crossing detected - start tracking from current TOTAL_DELTA
+            op_avg_60_crossed_zero = true;
+            total_delta_at_cross = getTotal_delta();
+            total_delta_since_cross = 0;
+        }
+        previous_op_avg_60 = current_op_avg_60;
+    }
+
+    /**
+     * Updates total_delta_since_cross if we're tracking after a zero cross
+     * Calculates the difference from TOTAL_DELTA at the moment of crossing
+     */
+    public void updateTotalDeltaSinceCross(int current_total_delta) {
+        if (op_avg_60_crossed_zero) {
+            total_delta_since_cross = current_total_delta - total_delta_at_cross;
+        }
+        if (index_races_iw_crossed_zero) {
+            total_delta_since_index_races_iw_cross = current_total_delta - total_delta_at_index_races_iw_cross;
+        }
+        if (week_races_wi_crossed_zero) {
+            total_delta_since_week_races_wi_cross = current_total_delta - total_delta_at_week_races_wi_cross;
+        }
+        if (month_races_wm_crossed_zero) {
+            total_delta_since_month_races_wm_cross = current_total_delta - total_delta_at_month_races_wm_cross;
+        }
+        if (week_bid_ask_counter_crossed_zero) {
+            total_delta_since_week_bid_ask_counter_cross = current_total_delta - total_delta_at_week_bid_ask_counter_cross;
+        }
+        if (month_bid_ask_counter_crossed_zero) {
+            total_delta_since_month_bid_ask_counter_cross = current_total_delta - total_delta_at_month_bid_ask_counter_cross;
+        }
+    }
+
+    public boolean isOp_avg_60_crossed_zero() {
+        return op_avg_60_crossed_zero;
+    }
+
+    public void setOp_avg_60_crossed_zero(boolean op_avg_60_crossed_zero) {
+        this.op_avg_60_crossed_zero = op_avg_60_crossed_zero;
+    }
+
+    public int getTotal_delta_since_cross() {
+        return total_delta_since_cross;
+    }
+
+    public void setTotal_delta_since_cross(int total_delta_since_cross) {
+        this.total_delta_since_cross = total_delta_since_cross;
+    }
+
+    // Getters for index_races_iw tracking
+    public int getTotal_delta_since_index_races_iw_cross() {
+        return total_delta_since_index_races_iw_cross;
+    }
+
+    public boolean isIndex_races_iw_crossed_zero() {
+        return index_races_iw_crossed_zero;
+    }
+
+    // Getters for week_races_wi tracking
+    public int getTotal_delta_since_week_races_wi_cross() {
+        return total_delta_since_week_races_wi_cross;
+    }
+
+    public boolean isWeek_races_wi_crossed_zero() {
+        return week_races_wi_crossed_zero;
+    }
+
+    // Getters for month_races_wm tracking
+    public int getTotal_delta_since_month_races_wm_cross() {
+        return total_delta_since_month_races_wm_cross;
+    }
+
+    public boolean isMonth_races_wm_crossed_zero() {
+        return month_races_wm_crossed_zero;
+    }
+
+    // Getters for week_bid_ask_counter tracking
+    public int getTotal_delta_since_week_bid_ask_counter_cross() {
+        return total_delta_since_week_bid_ask_counter_cross;
+    }
+
+    public boolean isWeek_bid_ask_counter_crossed_zero() {
+        return week_bid_ask_counter_crossed_zero;
+    }
+
+    // Getters for month_bid_ask_counter tracking
+    public int getTotal_delta_since_month_bid_ask_counter_cross() {
+        return total_delta_since_month_bid_ask_counter_cross;
+    }
+
+    public boolean isMonth_bid_ask_counter_crossed_zero() {
+        return month_bid_ask_counter_crossed_zero;
     }
 
 

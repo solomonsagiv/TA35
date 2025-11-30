@@ -103,6 +103,13 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.weight_counter1_field, client.getCounter1_weight(), false);
                 colorForgeRound(window.weight_counter2_field, client.getCounter2_weight(), false);
                 colorForgeRound(window.weight_delta_field, client.getDelta_weight(), false);
+                
+                // Reset fields - TOTAL_DELTA since zero crossing
+                colorForgeRound(window.ind_race_reset_field, client.getTotal_delta_since_index_races_iw_cross(), false);
+                colorForgeRound(window.week_race_reset_field, client.getTotal_delta_since_week_races_wi_cross(), false);
+                colorForgeRound(window.month_race_reset_field, client.getTotal_delta_since_month_races_wm_cross(), false);
+                colorForgeRound(window.future_week_counter_reset_field, client.getTotal_delta_since_week_bid_ask_counter_cross(), false);
+                colorForgeRound(window.future_month_counter_reset_field, client.getTotal_delta_since_month_bid_ask_counter_cross(), false);
                 // Stocks count present
             }
         } catch (Exception e) {

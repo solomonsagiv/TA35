@@ -408,6 +408,10 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setTotal_delta(int total_delta) {
         this.total_delta = total_delta;
+        // Update total_delta_since_cross if this is TA35
+        if (this instanceof TA35) {
+            ((TA35) this).updateTotalDeltaSinceCross(total_delta);
+        }
     }
 
     public double getTop_weight_counter_2() {
