@@ -41,7 +41,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     private MyGuiComps.MyButton btnDetails;
 
     public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field,
-            week_races_wm_field, month_race_wm_field, stocks_counter_present_field;
+            week_races_wm_field, month_race_wm_field, future_week_counter_field, future_month_counter_field, weight_counter1_field, weight_counter2_field, weight_delta_field,
+            ind_race_reset_field, week_race_reset_field, month_race_reset_field,
+            weight_counter1_reset_field, weight_counter2_reset_field, weight_delta_reset_field;
+    ;
 
     // Constructor
     public WindowTA35() {
@@ -212,15 +215,32 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         races_panel.add(week_races_iw_field);
 
         month_race_wm_field = new MyGuiComps.MyTextField();
-        month_race_wm_field.setBounds(index_races_iw_field.getX(), index_races_iw_field.getY() + index_races_iw_field.getHeight() + 3, 50, 25);
+        month_race_wm_field.setBounds(week_races_iw_field.getX() + week_races_iw_field.getWidth() + 1, week_races_iw_field.getY(), 50, 25);
         races_panel.add(month_race_wm_field);
 
-        stocks_counter_present_field = new MyGuiComps.MyTextField();
-        stocks_counter_present_field.setBounds(month_race_wm_field.getX() + month_race_wm_field.getWidth() + 1, month_race_wm_field.getY(), 50, 25);
-        stocks_counter_present_field.setForeground(Color.WHITE);
-        stocks_counter_present_field.setHorizontalAlignment(JTextField.CENTER);
-        stocks_counter_present_field.setFont(stocks_counter_present_field.getFont().deriveFont(Font.BOLD));
-        races_panel.add(stocks_counter_present_field);
+        future_week_counter_field = new MyGuiComps.MyTextField();
+        future_week_counter_field.setBounds(month_race_wm_field.getX() + month_race_wm_field.getWidth() + 1, month_race_wm_field.getY(), 50, 25);
+        races_panel.add(future_week_counter_field);
+
+        future_month_counter_field = new MyGuiComps.MyTextField();
+        future_month_counter_field.setBounds(future_week_counter_field.getX() + future_week_counter_field.getWidth() + 1, future_week_counter_field.getY(), 50, 25);
+        races_panel.add(future_month_counter_field);
+        
+        weight_counter1_field = new MyGuiComps.MyTextField();
+        weight_counter1_field.setBounds(future_month_counter_field.getX() + future_month_counter_field.getWidth() + 1, future_month_counter_field.getY(), 50, 25);
+        races_panel.add(weight_counter1_field);
+
+        weight_counter2_field = new MyGuiComps.MyTextField();
+        weight_counter2_field.setBounds(weight_counter1_field.getX() + weight_counter1_field.getWidth() + 1, weight_counter1_field.getY(), 50, 25);
+        races_panel.add(weight_counter2_field);
+        
+        weight_delta_field = new MyGuiComps.MyTextField();
+        weight_delta_field.setBounds(weight_counter2_field.getX() + weight_counter2_field.getWidth() + 1, weight_counter2_field.getY(), 50, 25);
+        races_panel.add(weight_delta_field);
+
+        weight_counter1_reset_field = new MyGuiComps.MyTextField();
+        
+
 
         // Log Panel - מיקום מותאם אחרי הסרת exp
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();

@@ -43,9 +43,9 @@ public abstract class BASE_CLIENT_OBJECT {
     private double op_month_interest_avg = 0;
     private double op_week_interest = 0;
 
-    private int ba_total_positive_weight = 0,
-                delta_potisive_weight = 0, 
-                counter_2_tot_weight = 0, 
+    private int counter1_weight = 0,
+                delta_weight = 0, 
+                counter2_weight = 0, 
                 top_weight_counter_2 = 0,
                 total_delta = 0;
 
@@ -366,20 +366,20 @@ public abstract class BASE_CLIENT_OBJECT {
         this.stocks_weighted_counter = stocks_weighted_counter;
     }
 
-    public int getBa_total_positive_weight() {
-        return ba_total_positive_weight;
+    public int getCounter1_weight() {
+        return counter1_weight;
     }
 
-    public void setBa_total_positive_weight(int ba_total_positive_weight) {
-        this.ba_total_positive_weight = ba_total_positive_weight;
+    public void setCounter1_weight(int ba_total_positive_weight) {
+        this.counter1_weight = ba_total_positive_weight;
     }
 
-    public int getDelta_potisive_weight() {
-        return delta_potisive_weight;
+    public int getDelta_weight() {
+        return delta_weight;
     }
 
-    public void setDelta_potisive_weight(int delta_potisive_weight) {
-        this.delta_potisive_weight = delta_potisive_weight;
+    public void setDelta_weight(int delta_potisive_weight) {
+        this.delta_weight = delta_potisive_weight;
     }
 
     public StocksReaderService getStocksReaderService() {
@@ -389,12 +389,12 @@ public abstract class BASE_CLIENT_OBJECT {
     public void setStocksReaderService(StocksReaderService stocksReaderService) {
         this.stocksReaderService = stocksReaderService;
     }
-    public int getCounter_2_tot_weight() {
-        return counter_2_tot_weight;
+    public int getCounter2_weight() {
+        return counter2_weight;
     }
 
-    public void setCounter_2_tot_weight(int counter_2_tot_weight) {
-        this.counter_2_tot_weight = counter_2_tot_weight;
+    public void setCounter2_weight(int counter_2_tot_weight) {
+        this.counter2_weight = counter_2_tot_weight;
     }
 
 

@@ -266,9 +266,9 @@ public class Calculator {
 
         TA35.getInstance().setTotal_delta(total_delta);
         TA35.getInstance().setTop_weight_counter_2(top_weight_counter_2);
-        TA35.getInstance().setBa_total_positive_weight(ba_weight_positive);
-        TA35.getInstance().setDelta_potisive_weight(delta_weight_positive);
-        TA35.getInstance().setCounter_2_tot_weight(counter_2_weight_positive);
+        TA35.getInstance().setCounter1_weight(ba_weight_positive);
+        TA35.getInstance().setDelta_weight(delta_weight_positive);
+        TA35.getInstance().setCounter2_weight(counter_2_weight_positive);
         
         int[] vals = new int[8];
         vals[BA_NUMBER_POSITIVE_STOCKS]     = ba_number_of_positive;

@@ -169,21 +169,21 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // BA tot pos weight
-            double ba_tot_pos_weight = client.getBa_total_positive_weight();
+            double ba_tot_pos_weight = client.getCounter1_weight();
             if (ba_tot_pos_weight != ba_tot_pos_weight_0) {
                 ba_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), ba_tot_pos_weight));
                 ba_tot_pos_weight_0 = ba_tot_pos_weight;
             }
             
             // BA tot pos weight
-            double delta_tot_pos_weight = client.getDelta_potisive_weight();
+            double delta_tot_pos_weight = client.getDelta_weight();
             if (delta_tot_pos_weight != delta_tot_pos_weight_0) {
                 delta_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), delta_tot_pos_weight));
                 delta_tot_pos_weight_0 = delta_tot_pos_weight;
             }
 
             // Counter 2 tot weight
-            double counter_2_tot_weight = client.getCounter_2_tot_weight();
+            double counter_2_tot_weight = client.getCounter2_weight();
             if (counter_2_tot_weight != counter_2_tot_weight_0) {
                 counter_2_tot_weight_timestamp.add(new MyTimeStampObject(Instant.now(), counter_2_tot_weight));
                 counter_2_tot_weight_0 = counter_2_tot_weight;
@@ -384,7 +384,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_240_CONTINUE));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD));
-
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_15));
     }
 
     private void updateListsRetro() {

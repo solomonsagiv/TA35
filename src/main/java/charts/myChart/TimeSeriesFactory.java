@@ -610,7 +610,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return TA35.getInstance().getBa_total_positive_weight();
+                        return TA35.getInstance().getCounter1_weight();
                     }
 
                     @Override
@@ -634,7 +634,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return TA35.getInstance().getDelta_potisive_weight();
+                        return TA35.getInstance().getDelta_weight();
                     }
 
                     @Override
@@ -658,7 +658,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return TA35.getInstance().getCounter_2_tot_weight();
+                        return TA35.getInstance().getCounter2_weight();
                     }
 
                     @Override
