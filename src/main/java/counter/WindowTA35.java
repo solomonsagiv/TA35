@@ -14,6 +14,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 public class WindowTA35 extends MyGuiComps.MyFrame {
 
@@ -103,191 +106,165 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     }
 
     /**
+     * Configuration class for a column
+     */
+    private static class ColumnConfig {
+        final String label;
+        final List<Consumer<MyGuiComps.MyTextField>> fieldInitializers;
+        
+        ColumnConfig(String label, List<Consumer<MyGuiComps.MyTextField>> fieldInitializers) {
+            this.label = label;
+            this.fieldInitializers = fieldInitializers;
+        }
+    }
+
+    /**
+     * Creates a column with header label and fields
+     * @return the x position after this column
+     */
+    private int createColumn(int x, int y, int columnWidth, int headerHeight, int fieldHeight, 
+                             int fieldSpacing, int maxPanelHeight, Color headerBg, ColumnConfig config) {
+        // Calculate actual panel height based on number of fields
+        int numFields = config.fieldInitializers.size();
+        int fieldsHeight = 5 + (fieldHeight + fieldSpacing) * numFields - fieldSpacing; // 5 is top padding
+        
+        // Header panel
+        MyGuiComps.MyPanel headerPanel = new MyGuiComps.MyPanel();
+        headerPanel.setBounds(x, y, columnWidth, headerHeight);
+        if (headerBg != null) {
+            headerPanel.setBackground(headerBg);
+        }
+        getContentPane().add(headerPanel);
+
+        MyGuiComps.MyLabel label = new MyGuiComps.MyLabel(config.label);
+        label.setBounds(0, 0, columnWidth, headerHeight);
+        headerPanel.add(label);
+
+        // Fields panel
+        MyGuiComps.MyPanel fieldsPanel = new MyGuiComps.MyPanel();
+        fieldsPanel.setBounds(x, y + headerHeight, columnWidth, fieldsHeight);
+        getContentPane().add(fieldsPanel);
+        fieldsPanel.setLayout(null);
+
+        // Create fields
+        int fieldY = 5;
+        for (Consumer<MyGuiComps.MyTextField> initializer : config.fieldInitializers) {
+            MyGuiComps.MyTextField field = new MyGuiComps.MyTextField();
+            field.setBounds(5, fieldY, columnWidth - 10, fieldHeight);
+            fieldsPanel.add(field);
+            initializer.accept(field);
+            fieldY += fieldHeight + fieldSpacing;
+        }
+
+        return x + columnWidth + 1;
+    }
+
+    /**
      * @wbp.parser.entryPoint
      */
     @Override
     public void initialize() {
 
-        int panels_height = 90;
+        int columnWidth = 55;
+        int headerHeight = 25;
+        int fieldHeight = 25;
+        int fieldSpacing = 3;
+        int maxPanelsHeight = headerHeight + (fieldHeight + fieldSpacing) * 3; // Support up to 3 fields
+        int startX = 0;
+        int startY = 0;
+        int currentX = startX;
 
-
-//        week_races_wm_field = new MyGuiComps.MyTextField();
-//        week_races_wm_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
-//        races_panel.add(week_races_wm_field);
-//
-//        month_race_wm_field = new MyGuiComps.MyTextField();
-//        month_race_wm_field.setBounds(week_races_wm_field.getX(), week_races_wm_field.getY() + week_races_wm_field.getHeight() + 3, 50, 25);
-//        races_panel.add(month_race_wm_field);
-
-
-        // --------------------------- headers ---------------------------- //
-        // ------- Header ------- //
-        MyGuiComps.MyPanel basket_header_panel = new MyGuiComps.MyPanel();
-        basket_header_panel.setBounds(0, 0, 55, 25);
-        getContentPane().add(basket_header_panel);
-
-        MyGuiComps.MyLabel baskets_lbl = new MyGuiComps.MyLabel("Baskets");
-        baskets_lbl.setBounds(0, 0, 55, 26);
-        basket_header_panel.add(baskets_lbl);
-
-        MyGuiComps.MyPanel decision_header_panel = new MyGuiComps.MyPanel();
-        decision_header_panel.setBounds(basket_header_panel.getX() + basket_header_panel.getWidth() + 1, basket_header_panel.getY(), 112, 25);
-        decision_header_panel.setBackground(basket_header_panel.getBackground());
-        getContentPane().add(decision_header_panel);
-
-        MyGuiComps.MyLabel main_decision_lbl = new MyGuiComps.MyLabel("Main");
-        main_decision_lbl.setBounds(3, 0, 50, 25);
-        decision_header_panel.add(main_decision_lbl);
-
-        MyGuiComps.MyLabel secondary_decision_lbl = new MyGuiComps.MyLabel("Sec");
-        secondary_decision_lbl.setBounds(main_decision_lbl.getX() + main_decision_lbl.getWidth(), main_decision_lbl.getY(), main_decision_lbl.getWidth(), main_decision_lbl.getHeight());
-        decision_header_panel.add(secondary_decision_lbl);
-
-        // Vs Panel
-        MyGuiComps.MyPanel decisions_panel = new MyGuiComps.MyPanel();
-        decisions_panel.setXY(decision_header_panel.getX(), decision_header_panel.getY() + decision_header_panel.getHeight() + 1);
-        decisions_panel.setWidth(decision_header_panel.getWidth());
-        decisions_panel.setHeight(panels_height);
-        getContentPane().add(decisions_panel);
-
-        // Races
-        MyGuiComps.MyPanel races_panel_header = new MyGuiComps.MyPanel();
-        races_panel_header.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, decision_header_panel.getY(), 112, 25);
-        getContentPane().add(races_panel_header);
-
-        MyGuiComps.MyLabel index_races_lbl = new MyGuiComps.MyLabel("Ind");
-        index_races_lbl.setBounds(0, 0, 55, 25);
-        races_panel_header.add(index_races_lbl);
-
-        MyGuiComps.MyLabel week_races_lbl = new MyGuiComps.MyLabel("Week");
-        week_races_lbl.setBounds(index_races_lbl.getX() + index_races_lbl.getWidth(), index_races_lbl.getY(), 55, 25);
-        races_panel_header.add(week_races_lbl);
-
-        // ---------------------------  Baskets --------------------------- //
-        MyGuiComps.MyPanel basketsPanel = new MyGuiComps.MyPanel();
-        basketsPanel.setBounds(basket_header_panel.getX(), basket_header_panel.getY() + basket_header_panel.getHeight() + 1, basket_header_panel.getWidth(), panels_height);
-        getContentPane().add(basketsPanel);
-
-        basket_up_field = new MyGuiComps.MyTextField();
-        basket_up_field.setBounds(5, 5, 45, 25);
-        basketsPanel.add(basket_up_field);
-
-        basket_down_field = new MyGuiComps.MyTextField();
-        basket_down_field.setBounds(basket_up_field.getX(), basket_up_field.getY() + basket_up_field.getHeight() + 3, 45, 25);
-        basketsPanel.add(basket_down_field);
-
-        basketsSumField = new MyGuiComps.MyTextField();
-        basketsSumField.setBounds(basket_down_field.getX(), basket_down_field.getY() + basket_down_field.getHeight() + 3, 45, 25);
-        basketsPanel.add(basketsSumField);
-
-        // ---------------- Decision ---------------- //
-
-        // V4
-        v2_field = new MyGuiComps.MyTextField();
-        v2_field.setBounds(5, 5, 50, 25);
-        decisions_panel.add(v2_field);
-
-        // V8
-        v7_field = new MyGuiComps.MyTextField();
-        v7_field.setBounds(v2_field.getX() + v2_field.getWidth() + 1, v2_field.getY(), 50, 25);
-        decisions_panel.add(v7_field);
-
-        // V5
-        v5_field = new MyGuiComps.MyTextField();
-        v5_field.setBounds(v2_field.getX(), v2_field.getY() + v2_field.getHeight() + 3, 50, 25);
-        decisions_panel.add(v5_field);
-
-        // V6
-        v6_field = new MyGuiComps.MyTextField();
-        v6_field.setBounds(v5_field.getX() + v5_field.getWidth() + 1, v5_field.getY(), 50, 25);
-        decisions_panel.add(v6_field);
-
-        // ---------------------------  Races --------------------------- //
-        MyGuiComps.MyPanel races_panel = new MyGuiComps.MyPanel();
-        races_panel.setBounds(races_panel_header.getX(), races_panel_header.getY() + races_panel_header.getHeight() + 1, 112, panels_height);
-        getContentPane().add(races_panel);
-
-        index_races_iw_field = new MyGuiComps.MyTextField();
-        index_races_iw_field.setBounds(5, 5, 50, 25);
-        races_panel.add(index_races_iw_field);
-
-        week_races_iw_field = new MyGuiComps.MyTextField();
-        week_races_iw_field.setBounds(index_races_iw_field.getX() + index_races_iw_field.getWidth() + 1, index_races_iw_field.getY(), 50, 25);
-        races_panel.add(week_races_iw_field);
-
-        month_race_wm_field = new MyGuiComps.MyTextField();
-        month_race_wm_field.setBounds(week_races_iw_field.getX() + week_races_iw_field.getWidth() + 1, week_races_iw_field.getY(), 50, 25);
-        races_panel.add(month_race_wm_field);
-
-        future_week_counter_field = new MyGuiComps.MyTextField();
-        future_week_counter_field.setBounds(month_race_wm_field.getX() + month_race_wm_field.getWidth() + 1, month_race_wm_field.getY(), 50, 25);
-        races_panel.add(future_week_counter_field);
-
-        future_month_counter_field = new MyGuiComps.MyTextField();
-        future_month_counter_field.setBounds(future_week_counter_field.getX() + future_week_counter_field.getWidth() + 1, future_week_counter_field.getY(), 50, 25);
-        races_panel.add(future_month_counter_field);
+        // ============================================================
+        // Define all columns - easy to add/remove columns here!
+        // To add a column: add a new ColumnConfig to the list
+        // To remove a column: remove the corresponding ColumnConfig
+        // Each column can have any number of fields (typically 2)
+        // ============================================================
+        List<ColumnConfig> columns = new ArrayList<>();
         
-        weight_counter1_field = new MyGuiComps.MyTextField();
-        weight_counter1_field.setBounds(future_month_counter_field.getX() + future_month_counter_field.getWidth() + 1, future_month_counter_field.getY(), 50, 25);
-        races_panel.add(weight_counter1_field);
-
-        weight_counter2_field = new MyGuiComps.MyTextField();
-        weight_counter2_field.setBounds(weight_counter1_field.getX() + weight_counter1_field.getWidth() + 1, weight_counter1_field.getY(), 50, 25);
-        races_panel.add(weight_counter2_field);
+        // Baskets column (3 fields)
+        columns.add(new ColumnConfig("Baskets", List.of(
+            field -> basket_up_field = field,
+            field -> basket_down_field = field,
+            field -> basketsSumField = field
+        )));
         
-        weight_delta_field = new MyGuiComps.MyTextField();
-        weight_delta_field.setBounds(weight_counter2_field.getX() + weight_counter2_field.getWidth() + 1, weight_counter2_field.getY(), 50, 25);
-        races_panel.add(weight_delta_field);
+        // Main Decision column
+        columns.add(new ColumnConfig("Main", List.of(
+            field -> v2_field = field,
+            field -> v5_field = field
+        )));
+        
+        // Sec Decision column
+        columns.add(new ColumnConfig("Sec", List.of(
+            field -> v7_field = field,
+            field -> v6_field = field
+        )));
+        
+        // Races columns
+        columns.add(new ColumnConfig("Ind", List.of(
+            field -> index_races_iw_field = field,
+            field -> ind_race_reset_field = field
+        )));
+        
+        columns.add(new ColumnConfig("Week", List.of(
+            field -> week_races_iw_field = field,
+            field -> week_race_reset_field = field
+        )));
+        
+        columns.add(new ColumnConfig("Month", List.of(
+            field -> month_race_wm_field = field,
+            field -> month_race_reset_field = field
+        )));
+        
+        columns.add(new ColumnConfig("FWeek", List.of(
+            field -> future_week_counter_field = field,
+            field -> future_week_counter_reset_field = field
+        )));
+        
+        columns.add(new ColumnConfig("FMonth", List.of(
+            field -> future_month_counter_field = field,
+            field -> future_month_counter_reset_field = field
+        )));
+        
+        columns.add(new ColumnConfig("WC1", List.of(
+            field -> weight_counter1_field = field,
+            field -> weight_counter1_reset_field = field
+        )));
+        
+        columns.add(new ColumnConfig("WC2", List.of(
+            field -> weight_counter2_field = field,
+            field -> weight_counter2_reset_field = field
+        )));
+        
+        columns.add(new ColumnConfig("WDelta", List.of(
+            field -> weight_delta_field = field,
+            field -> weight_delta_reset_field = field
+        )));
 
-        ind_race_reset_field = new MyGuiComps.MyTextField();
-        ind_race_reset_field.setBounds(index_races_iw_field.getX(), index_races_iw_field.getY() + index_races_iw_field.getHeight() + 3, 50, 25);
-        races_panel.add(ind_race_reset_field);
+        // Create all columns
+        MyGuiComps.MyPanel tempPanel = new MyGuiComps.MyPanel();
+        Color headerBg = tempPanel.getBackground();
+        for (ColumnConfig column : columns) {
+            currentX = createColumn(currentX, startY, columnWidth, headerHeight, fieldHeight, 
+                                    fieldSpacing, maxPanelsHeight, headerBg, column);
+        }
 
-        week_race_reset_field = new MyGuiComps.MyTextField();
-        week_race_reset_field.setBounds(week_races_iw_field.getX(), week_races_iw_field.getY() + week_races_iw_field.getHeight() + 3, 50, 25);
-        races_panel.add(week_race_reset_field);
-
-        month_race_reset_field = new MyGuiComps.MyTextField();
-        month_race_reset_field.setBounds(month_race_wm_field.getX(), month_race_wm_field.getY() + month_race_wm_field.getHeight() + 3, 50, 25);
-        races_panel.add(month_race_reset_field);
-
-        future_week_counter_reset_field = new MyGuiComps.MyTextField();
-        future_week_counter_reset_field.setBounds(future_week_counter_field.getX(), future_week_counter_field.getY() + future_week_counter_field.getHeight() + 3, 50, 25);
-        races_panel.add(future_week_counter_reset_field);
-
-        future_month_counter_reset_field = new MyGuiComps.MyTextField();
-        future_month_counter_reset_field.setBounds(future_month_counter_field.getX(), future_month_counter_field.getY() + future_month_counter_field.getHeight() + 3, 50, 25);
-        races_panel.add(future_month_counter_reset_field);
-
-        weight_counter1_reset_field = new MyGuiComps.MyTextField();
-        weight_counter1_reset_field.setBounds(weight_counter1_field.getX(), weight_counter1_field.getY() + weight_counter1_field.getHeight() + 3, 50, 25);
-        races_panel.add(weight_counter1_reset_field);
-
-        weight_counter2_reset_field = new MyGuiComps.MyTextField();
-        weight_counter2_reset_field.setBounds(weight_counter2_field.getX(), weight_counter2_field.getY() + weight_counter2_field.getHeight() + 3, 50, 25);
-        races_panel.add(weight_counter2_reset_field);
-
-        weight_delta_reset_field = new MyGuiComps.MyTextField();    
-        weight_delta_reset_field.setBounds(weight_delta_field.getX(), weight_delta_field.getY() + weight_delta_field.getHeight() + 3, 50, 25);
-        races_panel.add(weight_delta_reset_field);
-
-
-
-        // Log Panel - מיקום מותאם אחרי הסרת exp
+        // Log Panel
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
-        logPanel.setBounds(races_panel_header.getX() + races_panel_header.getWidth() + 1, 0, 147, panels_height + 25);
+        logPanel.setBounds(currentX, startY, 147, maxPanelsHeight);
         getContentPane().add(logPanel);
         logPanel.setLayout(null);
 
         log = new JTextArea();
-        log.setBounds(10, 11, 127, 80);
+        log.setBounds(10, 11, 127, maxPanelsHeight - 22);
         logPanel.add(log);
 
         // ----------------- Bottom panel ---------------- //
         bottomPanel = new MyGuiComps.MyPanel();
-        bottomPanel.setBounds(basketsPanel.getX(), basketsPanel.getY() + basketsPanel.getHeight() + 1, 
-                races_panel_header.getX() + races_panel_header.getWidth() + logPanel.getWidth() - basketsPanel.getX(), 38);
+        bottomPanel.setBounds(startX, startY + maxPanelsHeight, 
+                currentX + logPanel.getWidth() - startX, 38);
         getContentPane().add(bottomPanel);
         bottomPanel.setLayout(null);
 
@@ -316,8 +293,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         btnDetails.setBounds(88, 7, 72, 23);
         bottomPanel.add(btnDetails);
 
-        @SuppressWarnings("unchecked")
-        JComboBox chartsCombo = new JComboBox(new String[]{"Real time", "Main", "Races", "Stocks", "Options"});
+        JComboBox<String> chartsCombo = new JComboBox<>(new String[]{"Real time", "Main", "Races", "Stocks", "Options"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
         bottomPanel.add(chartsCombo);
         chartsCombo.setBorder(null);
