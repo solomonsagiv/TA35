@@ -43,6 +43,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field,
             week_races_wm_field, month_race_wm_field, future_week_counter_field, future_month_counter_field, weight_counter1_field, weight_counter2_field, weight_delta_field,
             ind_race_reset_field, week_race_reset_field, month_race_reset_field,
+            future_week_counter_reset_field, future_month_counter_reset_field,
             weight_counter1_reset_field, weight_counter2_reset_field, weight_delta_reset_field;
     ;
 
@@ -151,7 +152,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         // Races
         MyGuiComps.MyPanel races_panel_header = new MyGuiComps.MyPanel();
-        races_panel_header.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, decision_header_panel.getY(), 300, 25);
+        races_panel_header.setBounds(decision_header_panel.getX() + decision_header_panel.getWidth() + 1, decision_header_panel.getY(), 112, 25);
         getContentPane().add(races_panel_header);
 
         MyGuiComps.MyLabel index_races_lbl = new MyGuiComps.MyLabel("Ind");
@@ -203,7 +204,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         // ---------------------------  Races --------------------------- //
         MyGuiComps.MyPanel races_panel = new MyGuiComps.MyPanel();
-        races_panel.setBounds(races_panel_header.getX(), races_panel_header.getY() + races_panel_header.getHeight() + 1, 300, panels_height);
+        races_panel.setBounds(races_panel_header.getX(), races_panel_header.getY() + races_panel_header.getHeight() + 1, 112, panels_height);
         getContentPane().add(races_panel);
 
         index_races_iw_field = new MyGuiComps.MyTextField();
@@ -238,8 +239,37 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         weight_delta_field.setBounds(weight_counter2_field.getX() + weight_counter2_field.getWidth() + 1, weight_counter2_field.getY(), 50, 25);
         races_panel.add(weight_delta_field);
 
+        ind_race_reset_field = new MyGuiComps.MyTextField();
+        ind_race_reset_field.setBounds(index_races_iw_field.getX(), index_races_iw_field.getY() + index_races_iw_field.getHeight() + 3, 50, 25);
+        races_panel.add(ind_race_reset_field);
+
+        week_race_reset_field = new MyGuiComps.MyTextField();
+        week_race_reset_field.setBounds(week_races_iw_field.getX(), week_races_iw_field.getY() + week_races_iw_field.getHeight() + 3, 50, 25);
+        races_panel.add(week_race_reset_field);
+
+        month_race_reset_field = new MyGuiComps.MyTextField();
+        month_race_reset_field.setBounds(month_race_wm_field.getX(), month_race_wm_field.getY() + month_race_wm_field.getHeight() + 3, 50, 25);
+        races_panel.add(month_race_reset_field);
+
+        future_week_counter_reset_field = new MyGuiComps.MyTextField();
+        future_week_counter_reset_field.setBounds(future_week_counter_field.getX(), future_week_counter_field.getY() + future_week_counter_field.getHeight() + 3, 50, 25);
+        races_panel.add(future_week_counter_reset_field);
+
+        future_month_counter_reset_field = new MyGuiComps.MyTextField();
+        future_month_counter_reset_field.setBounds(future_month_counter_field.getX(), future_month_counter_field.getY() + future_month_counter_field.getHeight() + 3, 50, 25);
+        races_panel.add(future_month_counter_reset_field);
+
         weight_counter1_reset_field = new MyGuiComps.MyTextField();
-        
+        weight_counter1_reset_field.setBounds(weight_counter1_field.getX(), weight_counter1_field.getY() + weight_counter1_field.getHeight() + 3, 50, 25);
+        races_panel.add(weight_counter1_reset_field);
+
+        weight_counter2_reset_field = new MyGuiComps.MyTextField();
+        weight_counter2_reset_field.setBounds(weight_counter2_field.getX(), weight_counter2_field.getY() + weight_counter2_field.getHeight() + 3, 50, 25);
+        races_panel.add(weight_counter2_reset_field);
+
+        weight_delta_reset_field = new MyGuiComps.MyTextField();    
+        weight_delta_reset_field.setBounds(weight_delta_field.getX(), weight_delta_field.getY() + weight_delta_field.getHeight() + 3, 50, 25);
+        races_panel.add(weight_delta_reset_field);
 
 
         // Log Panel - מיקום מותאם אחרי הסרת exp
