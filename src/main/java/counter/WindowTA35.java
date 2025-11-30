@@ -272,6 +272,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         races_panel.add(weight_delta_reset_field);
 
 
+
         // Log Panel - מיקום מותאם אחרי הסרת exp
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
         logPanel.setBackground(new Color(176, 196, 222));
