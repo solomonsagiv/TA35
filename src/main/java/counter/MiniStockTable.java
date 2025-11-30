@@ -274,6 +274,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 updateFieldColor(max_weight_field, 55, 45);
                 updateFieldColor(counter_weight_field, 55, 45);
                 updateFieldColor(counter_2_weight_field, 55, 45);
+                updateFieldColor(top_weight_counter_2_field, 30, 29);
             }
         });
     }
