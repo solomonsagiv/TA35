@@ -100,7 +100,7 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.month_race_wm_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points(), false);
                 colorForgeRound(window.future_week_counter_field, expWeek.getOptions().getBidAskCounter(), false);
                 colorForgeRound(window.future_month_counter_field, expMonth.getOptions().getBidAskCounter(), false);
-                colorForgeRound(window.weight_counter1_field, client.getStocks_weighted_counter(), false);
+                colorForgeRound(window.weight_counter1_field, client.getCounter1_weight(), false);
                 colorForgeRound(window.weight_counter2_field, client.getCounter2_weight(), false);
                 colorForgeRound(window.weight_delta_field, client.getDelta_weight(), false);
                 // Stocks count present
