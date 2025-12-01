@@ -40,6 +40,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     private double previous_op_avg_60 = 0.0;
     private int total_delta_since_cross = 0;
     private int total_delta_at_cross = 0; // TOTAL_DELTA value at the moment of zero crossing
+    private java.time.LocalDateTime op_avg_60_reset_timestamp = null; // Timestamp of last zero crossing
     
     // Tracking zero crossing for index_races_iw
     private boolean index_races_iw_crossed_zero = false;
@@ -444,6 +445,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
             op_avg_60_crossed_zero = true;
             total_delta_at_cross = getTotal_delta();
             total_delta_since_cross = 0;
+            op_avg_60_reset_timestamp = java.time.LocalDateTime.now(); // Update reset timestamp
         }
         previous_op_avg_60 = current_op_avg_60;
     }
@@ -483,6 +485,10 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
     public int getTotal_delta_since_cross() {
         return total_delta_since_cross;
+    }
+
+    public java.time.LocalDateTime getOp_avg_60_reset_timestamp() {
+        return op_avg_60_reset_timestamp;
     }
 
     public void setTotal_delta_since_cross(int total_delta_since_cross) {

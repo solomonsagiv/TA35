@@ -145,8 +145,20 @@ public class DetailsWindow {
 			
 			StringBuilder text = new StringBuilder();
 			text.append(client.getAsJson().toString(4));
-			text.append("/n Connection pool /n");
+			text.append("\n\nConnection pool\n");
 			text.append(JibeConnectionPool.getAsJson().toString(4));
+			
+			// Add op_avg_60 reset timestamp
+			java.time.LocalDateTime resetTime = client.getOp_avg_60_reset_timestamp();
+			if (resetTime != null) {
+				text.append("\n\n=== Op Avg 60 Reset Info ===\n");
+				text.append("Last Reset Time: ").append(resetTime.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).append("\n");
+				text.append("Current op_avg_60: ").append(client.getExps().getWeek().getOp_avg_60()).append("\n");
+				text.append("Total Delta Since Cross: ").append(client.getTotal_delta_since_cross()).append("\n");
+			} else {
+				text.append("\n\n=== Op Avg 60 Reset Info ===\n");
+				text.append("No reset detected yet\n");
+			}
 			
 			textArea.setText(text.toString());
 			optionsWeekArea.setText(client.getExps().getWeek().getOptions().getOptionsWithDataAsJson().toString(4));

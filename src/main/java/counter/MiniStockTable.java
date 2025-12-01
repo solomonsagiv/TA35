@@ -64,6 +64,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             total_delta_field,
             counter_2_weight_field,
             top_weight_counter_2_field,
+            top60_avg_counter_2_field,
             min_weight_field,
             max_weight_field;
 
@@ -108,13 +109,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
         counter_2_weight_field          = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
         top_weight_counter_2_field      = new MyGuiComps.MyTextField(); top_weight_counter_2_field.setFontSize(22);
+        top60_avg_counter_2_field       = new MyGuiComps.MyTextField(); top60_avg_counter_2_field.setFontSize(22);
         min_weight_field             = new MyGuiComps.MyTextField(); min_weight_field.setFontSize(22);
         max_weight_field            = new MyGuiComps.MyTextField(); max_weight_field.setFontSize(22);
 
-        JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
+        JPanel controlPanel = new JPanel(new GridLayout(1, 6, 15, 0));
         controlPanel.add(createColumn("C1 W:", counter_weight_field));
         controlPanel.add(createColumn("C2 W:", counter_2_weight_field));
         controlPanel.add(createColumn("T60%:", top_weight_counter_2_field));
+        controlPanel.add(createColumn("AVG:", top60_avg_counter_2_field));
         controlPanel.add(createColumn("TOT D:", delta_field));
         controlPanel.add(createColumn("DELTA:", total_delta_field));
 
@@ -264,6 +267,18 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 top_weight_counter_2_field.colorForge((int) TA35.getInstance().getTop_weight_counter_2());
                 delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
                 total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
+                
+                // חישוב ממוצע counter_2 של top 60%
+                List<MiniStock> top60Stocks = Calculator.getTop60PercentStocks();
+                double avgCounter2 = 0.0;
+                if (!top60Stocks.isEmpty()) {
+                    int sumCounter2 = 0;
+                    for (MiniStock s : top60Stocks) {
+                        sumCounter2 += s.getCounter_2();
+                    }
+                    avgCounter2 = (double) sumCounter2 / top60Stocks.size();
+                }
+                top60_avg_counter_2_field.colorForge((int) Math.round(avgCounter2));
 
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();
@@ -275,6 +290,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 updateFieldColor(counter_weight_field, 55, 45);
                 updateFieldColor(counter_2_weight_field, 55, 45);
                 updateFieldColor(top_weight_counter_2_field, 30, 29);
+                updateFieldColor(top60_avg_counter_2_field, 0, -1);
             }
         });
     }
