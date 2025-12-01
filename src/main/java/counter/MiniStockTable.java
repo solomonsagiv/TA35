@@ -5,6 +5,7 @@ import api.TA35;
 import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
+import locals.L;
 import locals.Themes;
 import miniStocks.MiniStock;
 import javax.swing.*;
@@ -259,14 +260,14 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 // עדכון מודל הטבלה
                 model.refreshFrom(stocksRef);
 
-                int[] vals = Calculator.get_stocks_counters();
+                double[] vals = Calculator.get_stocks_counters();
 
                 // עדכון ה-KPIs העליונים
-                counter_weight_field.colorForge(vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
-                counter_2_weight_field.colorForge(vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
-                top_weight_counter_2_field.colorForge((int) TA35.getInstance().getTop_weight_counter_2());
-                delta_field.colorForge(vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
-                total_delta_field.colorForge(vals[Calculator.TOTAL_DELTA]);
+                counter_weight_field.colorForge((int)vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
+                counter_2_weight_field.colorForge((int)vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
+                top_weight_counter_2_field.colorForge((int)TA35.getInstance().getTop_weight_counter_2());
+                delta_field.colorForge((int)vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
+                total_delta_field.colorForge((int)vals[Calculator.TOTAL_DELTA]);
                 
                 // חישוב ממוצע counter_2 של top 60%
                 List<MiniStock> top60Stocks = Calculator.getTop60PercentStocks();

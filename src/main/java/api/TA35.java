@@ -412,9 +412,9 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
      * Updates total_delta_since_cross if we're tracking after a zero cross
      * Calculates the difference from TOTAL_DELTA at the moment of crossing
      */
-    public void updateTotalDeltaSinceCross(int current_total_delta) {
+    public void updateTotalDeltaSinceCross(double total_delta) {
         if (op_avg_60_crossed_zero) {
-            total_delta_since_cross = current_total_delta - total_delta_at_cross;
+            total_delta_since_cross = (int) (total_delta - total_delta_at_cross);
         }
     }
 
