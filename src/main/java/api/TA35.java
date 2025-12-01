@@ -390,7 +390,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
             ((previous_op_avg_60 < 0 && current_op_avg_60 >= 0) || 
              (previous_op_avg_60 > 0 && current_op_avg_60 <= 0))) {
             // Zero crossing detected - start tracking from current TOTAL_DELTA
-            int current_total_delta = getTotal_delta();
+            int current_total_delta = (int) getTotal_delta();
             
             // Save current values of all tracked metrics at the moment of op_avg_60 cross
             index_races_iw_at_op_avg_60_cross = get_main_race().get_r_one_points();

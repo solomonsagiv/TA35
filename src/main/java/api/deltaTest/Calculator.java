@@ -207,9 +207,9 @@ public class Calculator {
     }
 
 
-    public static int[] get_stocks_counters() {
+    public static double[] get_stocks_counters() {
         ArrayList<MiniStock> stocks = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
-        int ba_number_of_positive = 0,
+        double ba_number_of_positive = 0,
                 ba_weight_positive = 0,
                 green_stocks = 0,
                 delta_weight_positive = 0,
@@ -270,7 +270,7 @@ public class Calculator {
         TA35.getInstance().setDelta_weight(delta_weight_positive);
         TA35.getInstance().setCounter2_weight(counter_2_weight_positive);
         
-        int[] vals = new int[8];
+        double[] vals = new double[8];
         vals[BA_NUMBER_POSITIVE_STOCKS]     = ba_number_of_positive;
         vals[BA_WEIGHT_POSITIVE_STOCKS]     = ba_weight_positive;
         vals[GREEN_STOCKS]                  = green_stocks;

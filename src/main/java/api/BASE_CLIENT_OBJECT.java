@@ -43,7 +43,7 @@ public abstract class BASE_CLIENT_OBJECT {
     private double op_month_interest_avg = 0;
     private double op_week_interest = 0;
 
-    private int counter1_weight = 0,
+    private double counter1_weight = 0,
                 delta_weight = 0, 
                 counter2_weight = 0, 
                 top_weight_counter_2 = 0,
@@ -366,19 +366,19 @@ public abstract class BASE_CLIENT_OBJECT {
         this.stocks_weighted_counter = stocks_weighted_counter;
     }
 
-    public int getCounter1_weight() {
+    public double getCounter1_weight() {
         return counter1_weight;
     }
 
-    public void setCounter1_weight(int ba_total_positive_weight) {
+    public void setCounter1_weight(double ba_total_positive_weight) {
         this.counter1_weight = ba_total_positive_weight;
     }
 
-    public int getDelta_weight() {
+    public double getDelta_weight() {
         return delta_weight;
     }
 
-    public void setDelta_weight(int delta_potisive_weight) {
+    public void setDelta_weight(double delta_potisive_weight) {
         this.delta_weight = delta_potisive_weight;
     }
 
@@ -389,24 +389,24 @@ public abstract class BASE_CLIENT_OBJECT {
     public void setStocksReaderService(StocksReaderService stocksReaderService) {
         this.stocksReaderService = stocksReaderService;
     }
-    public int getCounter2_weight() {
+    public double getCounter2_weight() {
         return counter2_weight;
     }
 
-    public void setCounter2_weight(int counter_2_tot_weight) {
+    public void setCounter2_weight(double counter_2_tot_weight) {
         this.counter2_weight = counter_2_tot_weight;
     }
 
 
-    public void setTop_weight_counter_2(int top_weight_counter_2) {
+    public void setTop_weight_counter_2(double top_weight_counter_2) {
         this.top_weight_counter_2 = top_weight_counter_2;
     }
 
-    public int getTotal_delta() {
+    public double getTotal_delta() {
         return total_delta;
     }
 
-    public void setTotal_delta(int total_delta) {
+    public void setTotal_delta(double total_delta) {
         this.total_delta = total_delta;
         // Update total_delta_since_cross if this is TA35
         if (this instanceof TA35) {
