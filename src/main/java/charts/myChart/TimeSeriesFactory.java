@@ -357,7 +357,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points();
+                        return TA35.getInstance().get_index_races_iw();
                     }
 
 
@@ -381,7 +381,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points();
+                        return TA35.getInstance().get_week_races_wi();
                     }
 
                     @Override
@@ -429,7 +429,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public double getValue() {
-                        return TA35.getInstance().getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
+                        return TA35.getInstance().get_month_races_wm();
                     }
 
 

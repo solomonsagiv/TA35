@@ -1,13 +1,11 @@
 package counter;
 
 import api.TA35;
-import api.deltaTest.Calculator;
 import charts.myChart.MyTimeSeries;
 import dataBase.Factories;
 import exp.Exp;
 import locals.L;
 import locals.Themes;
-import races.Race_Logic;
 import threads.MyThread;
 
 import javax.swing.*;
@@ -68,7 +66,6 @@ public class Updater extends MyThread implements Runnable {
     private void write() throws InterruptedException {
 
         Exp expMonth = client.getExps().getMonth();
-        Exp expWeek = client.getExps().getWeek();
 
         try {
             count++;
@@ -95,11 +92,11 @@ public class Updater extends MyThread implements Runnable {
                 window.v7_field.colorForgeRound(df_8.getValue());
 
                 // Races
-                colorForgeRound(window.index_races_iw_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_one_points(), false);
-                colorForgeRound(window.week_races_iw_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_INDEX).get_r_two_points(), false);
-                colorForgeRound(window.month_race_wm_field, (int) client.getRacesService().get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points(), false);
-                colorForgeRound(window.future_week_counter_field, expWeek.getOptions().getBidAskCounter(), false);
-                colorForgeRound(window.future_month_counter_field, expMonth.getOptions().getBidAskCounter(), false);
+                colorForgeRound(window.index_races_iw_field, (int) client.get_index_races_iw(), false);
+                colorForgeRound(window.week_races_iw_field, (int) client.get_week_races_wi(), false);
+                colorForgeRound(window.month_race_wm_field, (int) client.get_month_races_wm(), false);
+                colorForgeRound(window.future_week_counter_field, client.get_week_bid_ask_counter(), false);
+                colorForgeRound(window.future_month_counter_field, client.get_month_bid_ask_counter(), false);
                 colorForgeRound(window.weight_counter1_field, client.getCounter1_weight(), false);
                 colorForgeRound(window.weight_counter2_field, client.getCounter2_weight(), false);
                 colorForgeRound(window.weight_delta_field, client.getDelta_weight(), false);

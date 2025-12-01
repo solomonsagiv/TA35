@@ -209,7 +209,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Index races
-            double index_races = wi_race.get_r_one_points();
+            double index_races = ((TA35) client).get_index_races_iw();
 
             if (index_races != mid_races_0) {
                 double last_count = index_races - mid_races_0;
@@ -220,7 +220,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Month
-            double month_races = wm_race.get_r_one_points();
+            double month_races = ((TA35) client).get_month_races_wm();
 
             if (month_races != month_races_0) {
                 double last_count = month_races - month_races_0;
@@ -258,7 +258,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Month bid ask counter
-            double week_counter = week_options.getBidAskCounter();
+            double week_counter = ((TA35) client).get_week_bid_ask_counter();
 
             if (week_counter != week_counter_0) {
                 double last_count = week_counter - week_counter_0;
@@ -269,7 +269,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             }
 
             // Month bid ask counter
-            double month_counter = month_options.getBidAskCounter();
+            double month_counter = ((TA35) client).get_month_bid_ask_counter();
 
             if (month_counter != month_counter_0) {
                 double last_count = month_counter - month_counter_0;

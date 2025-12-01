@@ -143,8 +143,13 @@ public class SingleStockSummeryPanel extends MyGuiComps.MyPanel {
 
         private void set_text() {
             // Data
-            index_race = (int) client.get_main_race().get_r_one_points();
-            roll_race = (int) client.get_main_race().get_r_two_points();
+            if (client instanceof api.TA35) {
+                index_race = (int) ((api.TA35) client).get_index_races_iw();
+                roll_race = (int) ((api.TA35) client).get_week_races_wi();
+            } else {
+                index_race = (int) client.get_main_race().get_r_one_points();
+                roll_race = (int) client.get_main_race().get_r_two_points();
+            }
 
             // Ticker
             open.colorBack(client.getOpenPresent(), L.format100(), "%");
