@@ -97,9 +97,9 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.month_race_wm_field, (int) client.get_month_races_wm(), false);
                 colorForgeRound(window.future_week_counter_field, client.get_week_bid_ask_counter(), false);
                 colorForgeRound(window.future_month_counter_field, client.get_month_bid_ask_counter(), false);
-                colorForgeRound(window.weight_counter1_field, client.getCounter1_weight(), false);
-                colorForgeRound(window.weight_counter2_field, client.getCounter2_weight(), false);
-                colorForgeRound(window.weight_delta_field, client.getDelta_weight(), false);
+                colorForgeRound(window.weight_counter1_field, (int) client.getCounter1_weight(), false);
+                colorForgeRound(window.weight_counter2_field, (int) client.getCounter2_weight(), false);
+                colorForgeRound(window.weight_delta_field, (int) client.getDelta_weight(), false);
                 
                 // Reset fields - Value changes since op_avg_60 crossed zero
                 colorForgeRound(window.ind_race_reset_field, (int) client.getIndex_races_iw_change_since_op_avg_60_cross(), false);
