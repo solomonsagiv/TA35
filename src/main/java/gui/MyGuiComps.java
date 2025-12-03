@@ -286,11 +286,18 @@ public class MyGuiComps {
         private void init() {
             setBounds(new Rectangle(65, 25));
             setFont(Themes.VERDANA_PLAIN_12);
-            setForeground(Color.BLACK);
             setHorizontalAlignment(JTextField.CENTER);
-            setBackground(Themes.GREY_VERY_LIGHT);
             setBorder(null);
 //            setEnabled(false);
+            
+            // Apply dark mode colors if dark mode is active
+            if (Themes.isDarkMode()) {
+                setBackground(Themes.DARK_TEXT_FIELD_BG);
+                setForeground(Themes.BRIGHT_WHITE_TEXT);
+            } else {
+                setBackground(Themes.GREY_VERY_LIGHT);
+                setForeground(Color.BLACK);
+            }
         }
 
         public void setFontSize(int size) {
