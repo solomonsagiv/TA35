@@ -66,9 +66,12 @@ public class Themes {
 
     // Position Tracker Colors
     public static Color DARK_BLUE_BG = new Color(45, 55, 72);        // רקע כהה
+    public static Color DARKER_BLUE_BG = new Color(30, 38, 50);      // רקע כהה יותר
     public static Color LIGHT_BLUE_BG = new Color(66, 82, 110);      // רקע פאנלים
+    public static Color DARK_TEXT_FIELD_BG = new Color(40, 50, 65);  // רקע כהה ל-TextFields
     public static Color ACCENT_BLUE = new Color(79, 172, 254);       // כחול אקסנט
     public static Color WHITE_TEXT = new Color(255, 255, 255);       // טקסט לבן
+    public static Color BRIGHT_WHITE_TEXT = new Color(255, 255, 255); // טקסט לבן בהיר מאוד
     public static Color LIGHT_GRAY_TEXT = new Color(200, 200, 200);  // טקסט אפור בהיר
     
     // P&L Colors

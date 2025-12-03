@@ -109,11 +109,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     @Override
     protected void applyDarkMode() {
         super.applyDarkMode();
-        // Update log panel background
+        // Update log panel background - darker in dark mode
         if (log != null) {
             if (Themes.isDarkMode()) {
-                log.setBackground(Themes.LIGHT_BLUE_BG);
-                log.setForeground(Themes.WHITE_TEXT);
+                log.setBackground(Themes.DARK_BLUE_BG);
+                log.setForeground(Themes.BRIGHT_WHITE_TEXT);
             } else {
                 log.setBackground(new Color(176, 196, 222));
                 log.setForeground(Color.BLACK);
