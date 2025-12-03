@@ -172,13 +172,13 @@ public class Main_Chart extends MyChartCreator {
         // Week counter
         MyTimeSeries week_counter = TA35.getInstance().getTimeSeriesHandler()
                 .get(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
-        week_counter.setColor(Themes.GREEN_7);
+        week_counter.setColor(Themes.GREEN);
         week_counter.setStokeSize(1.2f);
 
         // Month counter
         MyTimeSeries month_counter = TA35.getInstance().getTimeSeriesHandler()
                 .get(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
-        month_counter.setColor(Themes.GREEN);
+        month_counter.setColor(Themes.GREEN_7);
         month_counter.setStokeSize(1.2f);
 
         series = new MyTimeSeries[2];

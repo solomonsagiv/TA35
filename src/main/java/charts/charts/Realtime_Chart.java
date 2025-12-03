@@ -132,7 +132,7 @@ public class    Realtime_Chart extends MyChartCreator {
 
             }
         };
-        future.setColor(Themes.GREEN);
+        future.setColor(Themes.GREEN_7);
         future.setStokeSize(2.25f);
 
         // Future
@@ -152,7 +152,7 @@ public class    Realtime_Chart extends MyChartCreator {
 
             }
         };
-        futureWeek.setColor(Themes.GREEN_7);
+        futureWeek.setColor(Themes.GREEN);
         futureWeek.setStokeSize(2.25f);
 
         MyTimeSeries[] series = {index, index_bid_ask, bid, ask, future, futureWeek};
