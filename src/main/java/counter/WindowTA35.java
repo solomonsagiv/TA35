@@ -7,6 +7,7 @@ import charts.charts.Realtime_Chart;
 import dataBase.mySql.JibeConnectionPool;
 import gui.MyGuiComps;
 import gui.details.DetailsWindow;
+import locals.Themes;
 import options.Options;
 import options.OptionsTableWindow;
 import javax.swing.*;
@@ -103,6 +104,24 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     @Override
     public void initListeners() {
 
+    }
+    
+    @Override
+    protected void applyDarkMode() {
+        super.applyDarkMode();
+        // Update log panel background
+        if (log != null) {
+            if (Themes.isDarkMode()) {
+                log.setBackground(Themes.LIGHT_BLUE_BG);
+                log.setForeground(Themes.WHITE_TEXT);
+            } else {
+                log.setBackground(new Color(176, 196, 222));
+                log.setForeground(Color.BLACK);
+            }
+        }
+        // Note: Charts will be updated when they are created/refreshed
+        // For existing charts, they would need to be accessed and updated
+        // This could be done by storing chart references if needed
     }
 
     /**

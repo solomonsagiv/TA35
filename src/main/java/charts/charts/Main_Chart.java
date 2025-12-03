@@ -200,117 +200,25 @@ public class Main_Chart extends MyChartCreator {
 
         MyChart total_delta_chart = new MyChart(series, props);
 
-        // ------------------ Stocks weighted counter hourly ------------------- //
+        // ----------------------------------------- Counter 2 table avg
+        // ----------------------------------------- //
 
-        // Total BA counter by weight
-        MyTimeSeries ba_tot_pos_weight_hourly = new MyTimeSeries("BA Total Pos Weight Hourly", client) {
+        MyTimeSeries counter_2_table_avg = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD);
+        counter_2_table_avg.setColor(Themes.GREEN);
+        counter_2_table_avg.setStokeSize(1.2f);
 
-            @Override
-            public double getValue() {
-                return Calculator.get_stocks_ba_counter_hourly();
-            }
-
-            @Override
-            public void updateData() {
-
-            }
-
-            @Override
-            public void load() {
-
-            }
-        };
-
-        ba_tot_pos_weight_hourly.setColor(Themes.BLUE3);
-        ba_tot_pos_weight_hourly.setStokeSize(1.2f);
-
-
-        // Total BA counter by weight
-        MyTimeSeries counter_2_weight_hourly = new MyTimeSeries("Counter 2 Total Pos Weight Hourly", client) {
-
-            @Override
-            public double getValue() {
-                return Calculator.get_stocks_counter_2_hourly();
-            }
-
-            @Override
-            public void updateData() {
-
-            }
-
-            @Override
-            public void load() {
-
-            }
-        };
-
-        counter_2_weight_hourly.setColor(Themes.GREEN);
-        counter_2_weight_hourly.setStokeSize(1.2f);
-
-
-        // Total delta by weight
-        MyTimeSeries delta_tot_pos_weight_hourly = new MyTimeSeries("Delta Total Pos Weight Hourly", client) {
-
-            @Override
-            public double getValue() {
-                return Calculator.get_stocks_delta_counter_hourly();
-            }
-
-            @Override
-            public void updateData() {
-
-            }
-
-            @Override
-            public void load() {
-
-            }
-        };
-
-        delta_tot_pos_weight_hourly.setColor(Themes.OPEN_RACE);
-        delta_tot_pos_weight_hourly.setStokeSize(1.2f);
-
-
-        // Top weight counter 2
-        MyTimeSeries top_weight_counter_2 = new MyTimeSeries("Top Weight Counter 2", client) {
-            @Override
-            public double getValue() {
-                return TA35.getInstance().getTop_weight_counter_2();
-            }
-            @Override
-            public void updateData() {
-
-            }
-
-            @Override
-            public void load() {
-
-            }
-                   
-        };
-        top_weight_counter_2.setColor(Themes.BINANCE_ORANGE);
-        top_weight_counter_2.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[4];
-        series[0] = delta_tot_pos_weight_hourly;
-        series[1] = ba_tot_pos_weight_hourly;
-        series[2] = counter_2_weight_hourly;
-        series[3] = top_weight_counter_2;
+        series = new MyTimeSeries[1];
+        series[0] = counter_2_table_avg;
         
         // Chart
-        MyChart stocks_weighted_counter_chart_hourly = new MyChart(series, props);
-        ValueMarker fifty = new ValueMarker(50);
-        fifty.setStroke(new BasicStroke(1.5f));
-        fifty.setPaint(Themes.BLACK);
-        fifty.setValue(50);
-        stocks_weighted_counter_chart_hourly.add_marker(fifty);
+        MyChart counter_2_table_avg_chart = new MyChart(series, props);
 
         // ----------------------------------------- Chart
         // ----------------------------------------- //
 
         // ----- Charts ----- //
         MyChart[] charts = { indexChart, op_avg_chart, races_chart, bid_ask_counter_chart, total_delta_chart,
-                stocks_weighted_counter_chart_hourly };
+                counter_2_table_avg_chart };
 
         // ----------------------------------------- Container
         // ----------------------------------------- //

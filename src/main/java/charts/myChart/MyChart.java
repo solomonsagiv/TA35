@@ -83,6 +83,11 @@ public class MyChart {
 
         // Update visibility
         updateSeriesVisibility();
+        
+        // Apply dark mode if enabled
+        if (Themes.isDarkMode()) {
+            applyDarkMode();
+        }
     }
 
     public void add_marker(ValueMarker marker) {
@@ -91,19 +96,74 @@ public class MyChart {
 
     private void plot_style() {
         plot = chart.getXYPlot();
-        plot.setBackgroundPaint(Color.WHITE);
-        plot.setRangeGridlinesVisible(props.getBool(ChartPropsEnum.IS_RANGE_GRID_VISIBLE));
-        plot.setDomainGridlinesVisible(props.getBool(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE));
-        plot.setRangeGridlinePaint(Color.BLACK);
-        plot.setDomainGridlinePaint(Themes.LIGHT_BLUE);
+        updatePlotStyle();
         plot.setRangeAxisLocation(AxisLocation.BOTTOM_OR_RIGHT);
         plot.getDomainAxis().setVisible(props.getBool(ChartPropsEnum.INCLUDE_DOMAIN_AXIS));
         plot.setAxisOffset(new RectangleInsets(0.0, 0.0, 0.0, 0.0));
         plot.setDomainPannable(false);
         plot.setRangePannable(false);
         plot.getRangeAxis().setAutoRange(true);
-        plot.getRangeAxis().setTickLabelPaint(Themes.BINANCE_GREY);
+    }
+    
+    private void updatePlotStyle() {
+        if (plot == null) return;
+        
+        if (Themes.isDarkMode()) {
+            plot.setBackgroundPaint(Themes.DARK_BLUE_BG);
+            plot.setRangeGridlinesVisible(props.getBool(ChartPropsEnum.IS_RANGE_GRID_VISIBLE));
+            plot.setDomainGridlinesVisible(props.getBool(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE));
+            plot.setRangeGridlinePaint(Themes.LIGHT_GRAY_TEXT);
+            plot.setDomainGridlinePaint(Themes.LIGHT_GRAY_TEXT);
+            plot.getRangeAxis().setTickLabelPaint(Themes.WHITE_TEXT);
+            plot.getDomainAxis().setTickLabelPaint(Themes.WHITE_TEXT);
+        } else {
+            plot.setBackgroundPaint(Color.WHITE);
+            plot.setRangeGridlinesVisible(props.getBool(ChartPropsEnum.IS_RANGE_GRID_VISIBLE));
+            plot.setDomainGridlinesVisible(props.getBool(ChartPropsEnum.IS_DOMAIN_GRID_VISIBLE));
+            plot.setRangeGridlinePaint(Color.BLACK);
+            plot.setDomainGridlinePaint(Themes.LIGHT_BLUE);
+            plot.getRangeAxis().setTickLabelPaint(Themes.BINANCE_GREY);
+            plot.getDomainAxis().setTickLabelPaint(Themes.BINANCE_GREY);
+        }
         plot.getRangeAxis().setTickLabelFont(Themes.ARIEL_BOLD_15);
+    }
+    
+    public void setChartPanel(MyChartPanel panel) {
+        this.chartPanel = panel;
+        // Apply dark mode when panel is set
+        if (Themes.isDarkMode()) {
+            applyDarkMode();
+        }
+    }
+    
+    public void applyDarkMode() {
+        updatePlotStyle();
+        updateSeriesColors(); // Update series colors for dark mode
+        if (chartPanel != null) {
+            if (Themes.isDarkMode()) {
+                chartPanel.setBackground(Themes.DARK_BLUE_BG);
+                if (chartPanel.getHighLbl() != null) {
+                    chartPanel.getHighLbl().setForeground(Themes.WHITE_TEXT);
+                }
+                if (chartPanel.getLowLbl() != null) {
+                    chartPanel.getLowLbl().setForeground(Themes.WHITE_TEXT);
+                }
+                if (chartPanel.getLastLbl() != null) {
+                    chartPanel.getLastLbl().setForeground(Themes.WHITE_TEXT);
+                }
+            } else {
+                chartPanel.setBackground(Color.WHITE);
+                if (chartPanel.getHighLbl() != null) {
+                    chartPanel.getHighLbl().setForeground(Themes.BLUE);
+                }
+                if (chartPanel.getLowLbl() != null) {
+                    chartPanel.getLowLbl().setForeground(Themes.BLUE);
+                }
+                if (chartPanel.getLastLbl() != null) {
+                    chartPanel.getLastLbl().setForeground(Themes.BLUE);
+                }
+            }
+        }
     }
 
     private void number_axis() {
@@ -131,11 +191,25 @@ public class MyChart {
             data.addSeries(serie);
             serie.setId(i);
 
-            // Style serie
+            // Style serie - use display color which adjusts for dark mode
             renderer.setSeriesShapesVisible(i, false);
-            renderer.setSeriesPaint(i, serie.getColor());
+            renderer.setSeriesPaint(i, serie.getDisplayColor());
             renderer.setSeriesStroke(i, new BasicStroke(serie.getStokeSize()));
             i++;
+        }
+    }
+    
+    /**
+     * Updates series colors for dark mode
+     */
+    private void updateSeriesColors() {
+        if (renderer == null || series == null) return;
+        
+        for (MyTimeSeries serie : series) {
+            if (serie.getId() >= 0) {
+                // Update the color in the renderer
+                renderer.setSeriesPaint(serie.getId(), serie.getDisplayColor());
+            }
         }
     }
 

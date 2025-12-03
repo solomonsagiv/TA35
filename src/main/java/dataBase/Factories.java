@@ -61,5 +61,6 @@ public class Factories {
         public static final String MONTH__MPO_PROD = "MONTH__MPO_PROD";
         public static final String WEEK__MPO_PROD = "WEEK__MPO_PROD";
         public static final String TOTAL_DELTA = "TOTAL_DELTA";
+        public static final String COUNTER_2_TABLE_AVG = "COUNTER_2_TABLE_AVG";
     }
 }

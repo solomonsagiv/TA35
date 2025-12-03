@@ -10,6 +10,8 @@ import locals.Themes;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.text.DecimalFormat;
@@ -62,6 +64,96 @@ public class MyGuiComps {
             setBackground(Themes.LIGHT_BLUE);
             getContentPane().setLayout(null);
             setLayout(null);
+            
+            // Add right-click context menu for dark mode
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON3) { // Right click
+                        showDarkModeMenu(e);
+                    }
+                }
+            });
+        }
+        
+        private void showDarkModeMenu(MouseEvent e) {
+            JPopupMenu popup = new JPopupMenu();
+            String menuText = Themes.isDarkMode() ? "מצב בהיר" : "מצב כהה";
+            JMenuItem menuItem = new JMenuItem(menuText);
+            menuItem.addActionListener(ev -> {
+                Themes.toggleDarkMode();
+                applyDarkMode();
+            });
+            popup.add(menuItem);
+            popup.show(e.getComponent(), e.getX(), e.getY());
+        }
+        
+        protected void applyDarkMode() {
+            // This will be overridden in subclasses to apply dark mode
+            updateDarkMode();
+        }
+        
+        protected void updateDarkMode() {
+            // Update frame background
+            if (Themes.isDarkMode()) {
+                setBackground(Themes.DARK_BLUE_BG);
+                getContentPane().setBackground(Themes.DARK_BLUE_BG);
+            } else {
+                setBackground(Themes.LIGHT_BLUE);
+                getContentPane().setBackground(Themes.LIGHT_BLUE);
+            }
+            
+            // Update all components recursively
+            updateComponentDarkMode(getContentPane());
+        }
+        
+        private void updateComponentDarkMode(Container container) {
+            for (Component comp : container.getComponents()) {
+                if (comp instanceof JPanel) {
+                    JPanel panel = (JPanel) comp;
+                    if (Themes.isDarkMode()) {
+                        panel.setBackground(Themes.LIGHT_BLUE_BG);
+                    } else {
+                        panel.setBackground(Themes.GREY_LIGHT);
+                    }
+                } else if (comp instanceof MyTextField) {
+                    MyTextField field = (MyTextField) comp;
+                    if (Themes.isDarkMode()) {
+                        field.setBackground(Themes.LIGHT_BLUE_BG);
+                        field.setForeground(Themes.WHITE_TEXT);
+                    } else {
+                        field.setBackground(Themes.GREY_VERY_LIGHT);
+                        field.setForeground(Color.BLACK);
+                    }
+                } else if (comp instanceof MyLabel) {
+                    MyLabel label = (MyLabel) comp;
+                    if (Themes.isDarkMode()) {
+                        label.setForeground(Themes.WHITE_TEXT);
+                    } else {
+                        label.setForeground(Themes.BLUE);
+                    }
+                } else if (comp instanceof MyButton) {
+                    MyButton button = (MyButton) comp;
+                    if (Themes.isDarkMode()) {
+                        button.setBackground(Themes.LIGHT_BLUE_BG);
+                        button.setForeground(Themes.WHITE_TEXT);
+                    } else {
+                        button.setBackground(Themes.GREY_LIGHT);
+                        button.setForeground(Themes.BLUE);
+                    }
+                } else if (comp instanceof JTextArea) {
+                    JTextArea textArea = (JTextArea) comp;
+                    if (Themes.isDarkMode()) {
+                        textArea.setBackground(Themes.LIGHT_BLUE_BG);
+                        textArea.setForeground(Themes.WHITE_TEXT);
+                    } else {
+                        textArea.setBackground(new Color(176, 196, 222));
+                        textArea.setForeground(Color.BLACK);
+                    }
+                } else if (comp instanceof Container) {
+                    updateComponentDarkMode((Container) comp);
+                }
+            }
         }
 
         public void setXY(int x, int y) {

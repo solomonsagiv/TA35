@@ -47,7 +47,8 @@ public abstract class BASE_CLIENT_OBJECT {
                 delta_weight = 0, 
                 counter2_weight = 0, 
                 top_weight_counter_2 = 0,
-                total_delta = 0;
+                total_delta = 0, 
+                counter2_table_avg = 0;
 
 
 
@@ -418,4 +419,11 @@ public abstract class BASE_CLIENT_OBJECT {
         return top_weight_counter_2;
     }
 
+    public double getCounter2_table_avg() {
+        return counter2_table_avg;
+    }
+
+    public void setCounter2_table_avg(double counter2_table_avg) {
+        this.counter2_table_avg = counter2_table_avg;
+    }
 }

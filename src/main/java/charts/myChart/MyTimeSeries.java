@@ -1,6 +1,7 @@
 package charts.myChart;
 
 import api.BASE_CLIENT_OBJECT;
+import locals.Themes;
 import lists.MyDoubleList;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -133,6 +134,16 @@ public abstract class MyTimeSeries extends TimeSeries implements ITimeSeries {
 
     public Color getColor() {
         return color;
+    }
+    
+    /**
+     * Gets the color to use for rendering, adjusted for dark mode if needed
+     */
+    public Color getDisplayColor() {
+        if (color == null) {
+            return null;
+        }
+        return Themes.getBrightColorForDarkMode(color);
     }
 
     public void setColor(Color color) {

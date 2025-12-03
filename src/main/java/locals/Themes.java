@@ -62,6 +62,81 @@ public class Themes {
     public static Color PINK_LIGHT = new Color(255, 124, 176);
     public static Color PINK_LIGHT_2 = new Color(191, 115, 154);
 
+
+
+    // Position Tracker Colors
+    public static Color DARK_BLUE_BG = new Color(45, 55, 72);        // רקע כהה
+    public static Color LIGHT_BLUE_BG = new Color(66, 82, 110);      // רקע פאנלים
+    public static Color ACCENT_BLUE = new Color(79, 172, 254);       // כחול אקסנט
+    public static Color WHITE_TEXT = new Color(255, 255, 255);       // טקסט לבן
+    public static Color LIGHT_GRAY_TEXT = new Color(200, 200, 200);  // טקסט אפור בהיר
+    
+    // P&L Colors
+    public static Color PROFIT_GREEN = new Color(76, 175, 80);       // ירוק לרווח
+    public static Color LOSS_RED = new Color(244, 67, 54);           // אדום להפסד
+    public static Color NEUTRAL_GRAY = new Color(158, 158, 158);     // אפור לאפס
+    
+    // Dark Mode
+    private static boolean isDarkMode = false;
+    
+    // Bright/Glowing colors for dark mode charts
+    public static Color DARK_MODE_BRIGHT_WHITE = new Color(255, 255, 255);        // לבן זוהר
+    public static Color DARK_MODE_BRIGHT_CYAN = new Color(0, 255, 255);            // ציאן זוהר
+    public static Color DARK_MODE_BRIGHT_GREEN = new Color(0, 255, 128);          // ירוק זוהר
+    public static Color DARK_MODE_BRIGHT_YELLOW = new Color(255, 255, 0);         // צהוב זוהר
+    public static Color DARK_MODE_BRIGHT_ORANGE = new Color(255, 165, 0);         // כתום זוהר
+    public static Color DARK_MODE_BRIGHT_RED = new Color(255, 64, 64);            // אדום זוהר
+    public static Color DARK_MODE_BRIGHT_PURPLE = new Color(200, 100, 255);       // סגול זוהר
+    public static Color DARK_MODE_BRIGHT_BLUE = new Color(100, 150, 255);         // כחול זוהר
+    public static Color DARK_MODE_BRIGHT_PINK = new Color(255, 100, 200);         // ורוד זוהר
+    
+    public static boolean isDarkMode() {
+        return isDarkMode;
+    }
+    
+    public static void toggleDarkMode() {
+        isDarkMode = !isDarkMode;
+    }
+    
+    public static void setDarkMode(boolean dark) {
+        isDarkMode = dark;
+    }
+    
+    /**
+     * Converts a color to a bright/glowing version for dark mode
+     * If dark mode is off, returns the original color
+     */
+    public static Color getBrightColorForDarkMode(Color originalColor) {
+        if (!isDarkMode) {
+            return originalColor;
+        }
+        
+        // Map common colors to bright versions
+        if (originalColor.equals(Color.BLACK)) {
+            return DARK_MODE_BRIGHT_WHITE;
+        } else if (originalColor.equals(Themes.RED) || originalColor.equals(Color.RED)) {
+            return DARK_MODE_BRIGHT_RED;
+        } else if (originalColor.equals(Themes.GREEN) || originalColor.equals(Color.GREEN)) {
+            return DARK_MODE_BRIGHT_GREEN;
+        } else if (originalColor.equals(Themes.BLUE) || originalColor.equals(Color.BLUE)) {
+            return DARK_MODE_BRIGHT_BLUE;
+        } else if (originalColor.equals(Themes.ORANGE)) {
+            return DARK_MODE_BRIGHT_ORANGE;
+        } else if (originalColor.equals(Themes.PURPLE)) {
+            return DARK_MODE_BRIGHT_PURPLE;
+        } else {
+            // For other colors, brighten them
+            int r = Math.min(255, originalColor.getRed() + 100);
+            int g = Math.min(255, originalColor.getGreen() + 100);
+            int b = Math.min(255, originalColor.getBlue() + 100);
+            return new Color(r, g, b);
+        }
+    }
+
+
+
+
+
 //	public static Color GREEN = new Color( 0 , 128 , 0 );
 
     public static Font ARIEL_BOLD_14 = new Font("Ariel", Font.BOLD, 14);
