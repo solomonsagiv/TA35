@@ -3,6 +3,7 @@ package charts.myChart;
 import api.TA35;
 import charts.MyChartPanel;
 import dataBase.mySql.MySql;
+import locals.Themes;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.axis.DateAxis;
 import org.jfree.chart.axis.NumberAxis;
@@ -52,6 +53,16 @@ public class MyChartContainer extends JFrame {
             }
         });
 
+        // Add right-click context menu for dark mode
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) { // Right click
+                    showDarkModeMenu(e);
+                }
+            }
+        });
+
         // Layout
         setLayout(new GridLayout(charts.length, 0));
 
@@ -60,7 +71,35 @@ public class MyChartContainer extends JFrame {
 
         // Append charts
         appendCharts();
+        
+        // Apply dark mode if enabled
+        applyDarkMode();
 
+    }
+    
+    private void showDarkModeMenu(MouseEvent e) {
+        JPopupMenu popup = new JPopupMenu();
+        String menuText = Themes.isDarkMode() ? "מצב בהיר" : "מצב כהה";
+        JMenuItem menuItem = new JMenuItem(menuText);
+        menuItem.addActionListener(ev -> {
+            Themes.toggleDarkMode();
+            applyDarkMode();
+        });
+        popup.add(menuItem);
+        popup.show(e.getComponent(), e.getX(), e.getY());
+    }
+    
+    private void applyDarkMode() {
+        // Update frame background using Themes helper methods
+        setBackground(Themes.getBackgroundColor());
+        getContentPane().setBackground(Themes.getBackgroundColor());
+        
+        // Update all charts
+        if (charts != null) {
+            for (MyChart chart : charts) {
+                chart.applyDarkMode();
+            }
+        }
     }
 
     private void load_data() {

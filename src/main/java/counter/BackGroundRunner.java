@@ -3,6 +3,8 @@ package counter;
 import api.Manifest;
 import api.TA35;
 import arik.Arik;
+import locals.Themes;
+
 import org.json.JSONArray;
 import races.Stocks_Race_Service;
 import service.NewDataReaderService;
@@ -31,8 +33,7 @@ public class BackGroundRunner extends MyThread implements Runnable {
     public static boolean open_charts = false;
     boolean exported = false;
 
-    Color lightGreen = new Color(12, 135, 0);
-    Color lightRed = new Color(229, 19, 0);
+    // Use Themes colors instead of hardcoded colors
 
     // Rando
     LocalTime end_day = LocalTime.of(17, 25, 0);
@@ -142,10 +143,10 @@ public class BackGroundRunner extends MyThread implements Runnable {
     // color setting function();
     public void setColorPresent(JTextField textField, double text) {
         if (text >= 0.0) {
-            textField.setBackground(lightGreen);
+            textField.setBackground(Themes.getGreenStatusColor());
             textField.setText(String.valueOf(text) + "% ");
         } else {
-            textField.setBackground(lightRed);
+            textField.setBackground(Themes.getRedStatusColor());
             textField.setText(String.valueOf(text) + "% ");
         }
     }

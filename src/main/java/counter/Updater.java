@@ -25,8 +25,7 @@ public class Updater extends MyThread implements Runnable {
     double text;
     boolean run = true;
 
-    Color lightGreen = new Color(12, 135, 0);
-    Color lightRed = new Color(229, 19, 0);
+    // Use Themes colors instead of hardcoded colors
 
     WindowTA35 window;
     int sleep = 500;
@@ -107,6 +106,16 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.month_race_reset_field, (int) client.getMonth_races_wm_change_since_op_avg_60_cross(), false);
                 colorForgeRound(window.future_week_counter_reset_field, client.getWeek_bid_ask_counter_change_since_op_avg_60_cross(), false);
                 colorForgeRound(window.future_month_counter_reset_field, client.getMonth_bid_ask_counter_change_since_op_avg_60_cross(), false);
+                
+                // Reset fields - Value changes since op_avg_15 crossed zero
+                colorForgeRound(window.ind_race_reset_15_field, (int) client.getIndex_races_iw_change_since_op_avg_15_cross(), false);
+                colorForgeRound(window.week_race_reset_15_field, (int) client.getWeek_races_wi_change_since_op_avg_15_cross(), false);
+                colorForgeRound(window.month_race_reset_15_field, (int) client.getMonth_races_wm_change_since_op_avg_15_cross(), false);
+                colorForgeRound(window.future_week_counter_reset_15_field, client.getWeek_bid_ask_counter_change_since_op_avg_15_cross(), false);
+                colorForgeRound(window.future_month_counter_reset_15_field, client.getMonth_bid_ask_counter_change_since_op_avg_15_cross(), false);
+                colorForgeRound(window.weight_counter1_reset_15_field, client.getWeight_counter1_change_since_op_avg_15_cross(), false);
+                colorForgeRound(window.weight_counter2_reset_15_field, client.getWeight_counter2_change_since_op_avg_15_cross(), false);
+                colorForgeRound(window.weight_delta_reset_15_field, client.getWeight_delta_change_since_op_avg_15_cross(), false);
                 // Stocks count present
             }
         } catch (Exception e) {
@@ -133,10 +142,10 @@ public class Updater extends MyThread implements Runnable {
     // color setting function();
     public void setColorInt(JTextField textField, int text) {
         if (text >= 0.0) {
-            textField.setForeground(lightGreen);
+            textField.setForeground(Themes.getGreenStatusColor());
             textField.setText(String.valueOf(text));
         } else {
-            textField.setForeground(lightRed);
+            textField.setForeground(Themes.getRedStatusColor());
             textField.setText(String.valueOf(text));
         }
     }
@@ -145,10 +154,10 @@ public class Updater extends MyThread implements Runnable {
     public void setColorPresent(JTextField textField, double text) {
 
         if (text >= 0.0) {
-            textField.setBackground(lightGreen);
+            textField.setBackground(Themes.getGreenStatusColor());
             textField.setText(String.valueOf(text) + "% ");
         } else {
-            textField.setBackground(lightRed);
+            textField.setBackground(Themes.getRedStatusColor());
             textField.setText(String.valueOf(text) + "% ");
         }
     }

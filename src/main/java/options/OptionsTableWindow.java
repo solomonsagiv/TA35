@@ -3,6 +3,7 @@ package options;
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
 import gui.MyGuiComps;
+import locals.Themes;
 
 import javax.swing.*;
 import javax.swing.table.*;
@@ -54,24 +55,19 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     private static final Font FONT_KPI = deriveUI(Font.PLAIN, 18);
 
     /* ===================== Colors / Styles ===================== */
-    private static final Color BG_WHITE = Color.WHITE;
-    private static final Color BG_STRIPE = new Color(0xFAFAFA);
-    private static final Color GRID_COLOR = new Color(0xEEEEEE);
-    private static final Color HEADER_BG = new Color(0xF5F7FA);
-    private static final Color HEADER_FG = new Color(0x263238);
-    private static final Color SELECTION_BG = new Color(0xE3F2FD);
-    private static final Color SELECTION_FG = new Color(0x000000);
-
-    // Stronger change highlights (a bit more saturated)
-    private static final Color HL_GREEN = new Color(0xC8E6C9); // stronger green
-    private static final Color HL_RED = new Color(0xFFCDD2); // stronger red
-
-    // Value foreground colors for sign
-    private static final Color VAL_GREEN_FG = new Color(0x1B5E20);
-    private static final Color VAL_RED_FG = new Color(0xB71C1C);
-
-    // Strike column base background (distinct, subtle)
-    private static final Color STRIKE_BG = new Color(0xEEF3FF);
+    // Use Themes helper methods instead of hardcoded colors
+    private static Color getBG_WHITE() { return Themes.getBackgroundColor(); }
+    private static Color getBG_STRIPE() { return Themes.getStripeBackgroundColor(); }
+    private static Color getGRID_COLOR() { return Themes.getGridColor(); }
+    private static Color getHEADER_BG() { return Themes.getHeaderBackgroundColor(); }
+    private static Color getHEADER_FG() { return Themes.getHeaderTextColor(); }
+    private static Color getSELECTION_BG() { return Themes.getSelectionBackgroundColor(); }
+    private static Color getSELECTION_FG() { return Themes.getSelectionTextColor(); }
+    private static Color getHL_GREEN() { return Themes.getGreenHighlightColor(); }
+    private static Color getHL_RED() { return Themes.getRedHighlightColor(); }
+    private static Color getVAL_GREEN_FG() { return Themes.getGreenTextColor(); }
+    private static Color getVAL_RED_FG() { return Themes.getRedTextColor(); }
+    private static Color getSTRIKE_BG() { return Themes.getStrikeBackgroundColor(); }
 
     /* ===================== UI / Data ===================== */
     private Options optionsRef;
@@ -168,11 +164,11 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
             setShowHorizontalLines(true);
             setShowVerticalLines(false);
-            setGridColor(GRID_COLOR);
+            setGridColor(getGRID_COLOR());
             setIntercellSpacing(new Dimension(0, 1));
 
-            setSelectionBackground(SELECTION_BG);
-            setSelectionForeground(SELECTION_FG);
+            setSelectionBackground(getSELECTION_BG());
+            setSelectionForeground(getSELECTION_FG());
 
             JTableHeaderStyled.apply(getTableHeader());
 
@@ -371,8 +367,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             header.setDefaultRenderer((tbl, value, isSelected, hasFocus, row, column) -> {
                 Component comp = base.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
                 if (comp instanceof JComponent) ((JComponent) comp).setOpaque(true);
-                comp.setBackground(HEADER_BG);
-                comp.setForeground(HEADER_FG);
+                comp.setBackground(getHEADER_BG());
+                comp.setForeground(getHEADER_FG());
                 comp.setFont(FONT_TEXT_B);
                 if (comp instanceof JLabel) ((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
                 return comp;
@@ -454,9 +450,9 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             if (!isSelected && value instanceof Number) {
                 double d = ((Number) value).doubleValue();
                 if (isDeltaCounterCol(column) || isBidAskCol(column)) {
-                    if (d > 0) c.setForeground(VAL_GREEN_FG);
-                    else if (d < 0) c.setForeground(VAL_RED_FG);
-                    else c.setForeground(Color.BLACK);
+                    if (d > 0) c.setForeground(getVAL_GREEN_FG());
+                    else if (d < 0) c.setForeground(getVAL_RED_FG());
+                    else c.setForeground(Themes.getTextColor());
                 } else {
                     c.setForeground(Color.BLACK);
                 }
@@ -464,8 +460,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
             // ----- Background: selection > change highlight > column base > zebra -----
             if (isSelected) {
-                c.setBackground(SELECTION_BG);
-                c.setForeground(SELECTION_FG);
+                c.setBackground(getSELECTION_BG());
+                c.setForeground(getSELECTION_FG());
             } else {
                 boolean paintable =
                         isDeltaCounterCol(column) ||
@@ -475,13 +471,13 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
                 int dir = paintable ? model.getChangeDirection(row, column) : 0;
                 if (dir > 0) {
-                    c.setBackground(HL_GREEN);
+                    c.setBackground(getHL_GREEN());
                 } else if (dir < 0) {
-                    c.setBackground(HL_RED);
+                    c.setBackground(getHL_RED());
                 } else if (column == OptionsTableModel.COL_STRIKE) {
-                    c.setBackground(STRIKE_BG); // distinct background for Strike
+                    c.setBackground(getSTRIKE_BG()); // distinct background for Strike
                 } else {
-                    c.setBackground((row % 2 == 0) ? BG_WHITE : BG_STRIPE);
+                    c.setBackground((row % 2 == 0) ? getBG_WHITE() : getBG_STRIPE());
                 }
             }
 

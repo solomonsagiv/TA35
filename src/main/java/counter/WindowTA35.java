@@ -21,8 +21,7 @@ import java.util.function.Consumer;
 
 public class WindowTA35 extends MyGuiComps.MyFrame {
 
-    Color lightGreen = new Color(12, 135, 0);
-    Color lightRed = new Color(229, 19, 0);
+    // Use Themes colors instead of hardcoded colors
 
     public static JButton start;
     private MyGuiComps.MyPanel bottomPanel;
@@ -48,7 +47,10 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             week_races_wm_field, month_race_wm_field, future_week_counter_field, future_month_counter_field, weight_counter1_field, weight_counter2_field, weight_delta_field,
             ind_race_reset_field, week_race_reset_field, month_race_reset_field,
             future_week_counter_reset_field, future_month_counter_reset_field,
-            weight_counter1_reset_field, weight_counter2_reset_field, weight_delta_reset_field;
+            weight_counter1_reset_field, weight_counter2_reset_field, weight_delta_reset_field,
+            ind_race_reset_15_field, week_race_reset_15_field, month_race_reset_15_field,
+            future_week_counter_reset_15_field, future_month_counter_reset_15_field,
+            weight_counter1_reset_15_field, weight_counter2_reset_15_field, weight_delta_reset_15_field;
     ;
 
     // Constructor
@@ -109,15 +111,38 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     @Override
     protected void applyDarkMode() {
         super.applyDarkMode();
+        
+        // Update all TextFields explicitly
+        MyGuiComps.MyTextField[] allFields = {
+            v2_field, v5_field, v6_field, v7_field,
+            basket_up_field, basket_down_field, basketsSumField,
+            index_races_iw_field, week_races_iw_field, week_races_wm_field, month_race_wm_field,
+            future_week_counter_field, future_month_counter_field,
+            weight_counter1_field, weight_counter2_field, weight_delta_field,
+            ind_race_reset_field, week_race_reset_field, month_race_reset_field,
+            future_week_counter_reset_field, future_month_counter_reset_field,
+            weight_counter1_reset_field, weight_counter2_reset_field, weight_delta_reset_field,
+            ind_race_reset_15_field, week_race_reset_15_field, month_race_reset_15_field,
+            future_week_counter_reset_15_field, future_month_counter_reset_15_field,
+            weight_counter1_reset_15_field, weight_counter2_reset_15_field, weight_delta_reset_15_field
+        };
+        
+        for (MyGuiComps.MyTextField field : allFields) {
+            if (field != null) {
+                if (Themes.isDarkMode()) {
+                    field.setBackground(Themes.DARK_TEXT_FIELD_BG);
+                    field.setForeground(Themes.BRIGHT_WHITE_TEXT);
+                } else {
+                    field.setBackground(Themes.getTextFieldBackgroundColor());
+                    field.setForeground(Themes.getTextFieldForegroundColor());
+                }
+            }
+        }
+        
         // Update log panel background - darker in dark mode
         if (log != null) {
-            if (Themes.isDarkMode()) {
-                log.setBackground(Themes.DARK_BLUE_BG);
-                log.setForeground(Themes.BRIGHT_WHITE_TEXT);
-            } else {
-                log.setBackground(new Color(176, 196, 222));
-                log.setForeground(Color.BLACK);
-            }
+            log.setBackground(Themes.getLogBackgroundColor());
+            log.setForeground(Themes.getTextFieldForegroundColor());
         }
         // Note: Charts will be updated when they are created/refreshed
         // For existing charts, they would need to be accessed and updated
@@ -188,7 +213,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         int headerHeight = 25;
         int fieldHeight = 25;
         int fieldSpacing = 3;
-        int maxPanelsHeight = headerHeight + (fieldHeight + fieldSpacing) * 3; // Support up to 3 fields
+        int maxPanelsHeight = headerHeight + (fieldHeight + fieldSpacing) * 3; // Support up to 3 fields per column
         int startX = 0;
         int startY = 0;
         int currentX = startX;
@@ -223,42 +248,50 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         // Races columns
         columns.add(new ColumnConfig("Ind", List.of(
             field -> index_races_iw_field = field,
-            field -> ind_race_reset_field = field
+            field -> ind_race_reset_field = field,
+            field -> ind_race_reset_15_field = field
         )));
         
         columns.add(new ColumnConfig("Week", List.of(
             field -> week_races_iw_field = field,
-            field -> week_race_reset_field = field
+            field -> week_race_reset_field = field,
+            field -> week_race_reset_15_field = field
         )));
         
         columns.add(new ColumnConfig("Month", List.of(
             field -> month_race_wm_field = field,
-            field -> month_race_reset_field = field
+            field -> month_race_reset_field = field,
+            field -> month_race_reset_15_field = field
         )));
         
         columns.add(new ColumnConfig("FWeek", List.of(
             field -> future_week_counter_field = field,
-            field -> future_week_counter_reset_field = field
+            field -> future_week_counter_reset_field = field,
+            field -> future_week_counter_reset_15_field = field
         )));
         
         columns.add(new ColumnConfig("FMonth", List.of(
             field -> future_month_counter_field = field,
-            field -> future_month_counter_reset_field = field
+            field -> future_month_counter_reset_field = field,
+            field -> future_month_counter_reset_15_field = field
         )));
         
         columns.add(new ColumnConfig("WC1", List.of(
             field -> weight_counter1_field = field,
-            field -> weight_counter1_reset_field = field
+            field -> weight_counter1_reset_field = field,
+            field -> weight_counter1_reset_15_field = field
         )));
         
         columns.add(new ColumnConfig("WC2", List.of(
             field -> weight_counter2_field = field,
-            field -> weight_counter2_reset_field = field
+            field -> weight_counter2_reset_field = field,
+            field -> weight_counter2_reset_15_field = field
         )));
         
         columns.add(new ColumnConfig("WDelta", List.of(
             field -> weight_delta_field = field,
-            field -> weight_delta_reset_field = field
+            field -> weight_delta_reset_field = field,
+            field -> weight_delta_reset_15_field = field
         )));
 
         // Create all columns
@@ -271,7 +304,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
 
         // Log Panel
         MyGuiComps.MyPanel logPanel = new MyGuiComps.MyPanel();
-        logPanel.setBackground(new Color(176, 196, 222));
+        logPanel.setBackground(Themes.getLogBackgroundColor());
         logPanel.setBounds(currentX, startY, 147, maxPanelsHeight);
         getContentPane().add(logPanel);
         logPanel.setLayout(null);
@@ -291,8 +324,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         start.setBorder(null);
         start.setBounds(248, 7, 72, 23);
         bottomPanel.add(start);
-        start.setForeground(new Color(0, 0, 51));
-        start.setBackground(new Color(211, 211, 211));
+        start.setForeground(Themes.getButtonForegroundColor());
+        start.setBackground(Themes.getButtonBackgroundColor());
         start.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 TA35.getInstance().start();
@@ -307,8 +340,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             }
         });
         btnDetails.setBorder(null);
-        btnDetails.setForeground(new Color(0, 0, 51));
-        btnDetails.setBackground(new Color(211, 211, 211));
+        btnDetails.setForeground(Themes.getButtonForegroundColor());
+        btnDetails.setBackground(Themes.getButtonBackgroundColor());
         btnDetails.setBounds(88, 7, 72, 23);
         bottomPanel.add(btnDetails);
 
@@ -340,7 +373,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
                 }
             }
         });
-        chartsCombo.setForeground(new Color(0, 0, 51));
+        chartsCombo.setForeground(Themes.getTextColor());
         chartsCombo.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
         ((JLabel) chartsCombo.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
     }

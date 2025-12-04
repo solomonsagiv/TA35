@@ -82,6 +82,68 @@ public class Themes {
     // Dark Mode
     private static boolean isDarkMode = false;
     
+    // Standard colors - Light mode
+    public static final Color WHITE = Color.WHITE;
+    public static final Color STANDARD_BLACK = Color.BLACK;
+    
+    // Light mode backgrounds
+    public static Color LIGHT_BG_WHITE = Color.WHITE;
+    public static Color LIGHT_BG_STRIPE = new Color(0xFAFAFA);
+    public static Color LIGHT_BG_GRID = new Color(0xEEEEEE);
+    public static Color LIGHT_BG_HEADER = new Color(0xF5F7FA);
+    public static Color LIGHT_BG_SELECTION = new Color(0xE3F2FD);
+    public static Color LIGHT_BG_STRIKE = new Color(0xEEF3FF);
+    
+    // Light mode text colors
+    public static Color LIGHT_TEXT_HEADER = new Color(0x263238);
+    public static Color LIGHT_TEXT_SELECTION = new Color(0x000000);
+    public static Color LIGHT_TEXT_GREEN = new Color(0x1B5E20);
+    public static Color LIGHT_TEXT_RED = new Color(0xB71C1C);
+    
+    // Light mode highlight colors
+    public static Color LIGHT_HL_GREEN = new Color(0xC8E6C9);
+    public static Color LIGHT_HL_RED = new Color(0xFFCDD2);
+    
+    // Light mode button colors
+    public static Color LIGHT_BUTTON_BG = new Color(211, 211, 211);
+    public static Color LIGHT_BUTTON_FG = new Color(0, 0, 51);
+    public static Color LIGHT_LOG_BG = new Color(176, 196, 222);
+    
+    // Light mode status colors
+    public static Color LIGHT_GREEN_STATUS = new Color(12, 135, 0);
+    public static Color LIGHT_RED_STATUS = new Color(229, 19, 0);
+    
+    // Dark mode backgrounds
+    public static Color DARK_BG_MAIN = new Color(30, 38, 50);           // רקע ראשי כהה
+    public static Color DARK_BG_PANEL = new Color(45, 55, 72);          // רקע פאנלים
+    public static Color DARK_BG_DARKER = new Color(20, 26, 35);         // רקע כהה יותר
+    public static Color DARK_BG_STRIPE = new Color(40, 48, 60);         // רקע פסים
+    public static Color DARK_BG_GRID = new Color(35, 43, 55);           // רקע רשת
+    public static Color DARK_BG_HEADER = new Color(50, 60, 75);         // רקע כותרת
+    public static Color DARK_BG_SELECTION = new Color(60, 80, 110);      // רקע בחירה
+    public static Color DARK_BG_STRIKE = new Color(40, 55, 80);         // רקע Strike
+    
+    // Dark mode text colors
+    public static Color DARK_TEXT_MAIN = new Color(255, 255, 255);       // טקסט ראשי
+    public static Color DARK_TEXT_SECONDARY = new Color(200, 200, 200);  // טקסט משני
+    public static Color DARK_TEXT_HEADER = new Color(220, 220, 220);    // טקסט כותרת
+    public static Color DARK_TEXT_SELECTION = new Color(255, 255, 255); // טקסט בחירה
+    public static Color DARK_TEXT_GREEN = new Color(100, 255, 150);     // טקסט ירוק
+    public static Color DARK_TEXT_RED = new Color(255, 100, 100);       // טקסט אדום
+    
+    // Dark mode highlight colors
+    public static Color DARK_HL_GREEN = new Color(50, 150, 80);         // הדגשה ירוקה
+    public static Color DARK_HL_RED = new Color(200, 60, 70);           // הדגשה אדומה
+    
+    // Dark mode button colors
+    public static Color DARK_BUTTON_BG = new Color(60, 70, 85);
+    public static Color DARK_BUTTON_FG = new Color(255, 255, 255);
+    public static Color DARK_LOG_BG = new Color(40, 50, 65);
+    
+    // Dark mode status colors (bright for visibility)
+    public static Color DARK_GREEN_STATUS = new Color(76, 255, 76);     // ירוק בהיר
+    public static Color DARK_RED_STATUS = new Color(255, 76, 76);       // אדום בהיר
+    
     // Bright/Glowing colors for dark mode charts
     public static Color DARK_MODE_BRIGHT_WHITE = new Color(255, 255, 255);        // לבן זוהר
     public static Color DARK_MODE_BRIGHT_CYAN = new Color(0, 255, 255);            // ציאן זוהר
@@ -92,6 +154,91 @@ public class Themes {
     public static Color DARK_MODE_BRIGHT_PURPLE = new Color(200, 100, 255);       // סגול זוהר
     public static Color DARK_MODE_BRIGHT_BLUE = new Color(100, 150, 255);         // כחול זוהר
     public static Color DARK_MODE_BRIGHT_PINK = new Color(255, 100, 200);         // ורוד זוהר
+    
+    // Helper methods to get colors based on dark mode
+    public static Color getBackgroundColor() {
+        return isDarkMode() ? DARK_BG_MAIN : LIGHT_BG_WHITE;
+    }
+    
+    public static Color getPanelBackgroundColor() {
+        return isDarkMode() ? DARK_BG_PANEL : GREY_LIGHT;
+    }
+    
+    public static Color getTextFieldBackgroundColor() {
+        return isDarkMode() ? DARK_TEXT_FIELD_BG : GREY_VERY_LIGHT;
+    }
+    
+    public static Color getTextFieldForegroundColor() {
+        return isDarkMode() ? BRIGHT_WHITE_TEXT : STANDARD_BLACK;
+    }
+    
+    public static Color getTextColor() {
+        return isDarkMode() ? DARK_TEXT_MAIN : STANDARD_BLACK;
+    }
+    
+    public static Color getHeaderBackgroundColor() {
+        return isDarkMode() ? DARK_BG_HEADER : LIGHT_BG_HEADER;
+    }
+    
+    public static Color getHeaderTextColor() {
+        return isDarkMode() ? DARK_TEXT_HEADER : LIGHT_TEXT_HEADER;
+    }
+    
+    public static Color getSelectionBackgroundColor() {
+        return isDarkMode() ? DARK_BG_SELECTION : LIGHT_BG_SELECTION;
+    }
+    
+    public static Color getSelectionTextColor() {
+        return isDarkMode() ? DARK_TEXT_SELECTION : LIGHT_TEXT_SELECTION;
+    }
+    
+    public static Color getStripeBackgroundColor() {
+        return isDarkMode() ? DARK_BG_STRIPE : LIGHT_BG_STRIPE;
+    }
+    
+    public static Color getGridColor() {
+        return isDarkMode() ? DARK_BG_GRID : LIGHT_BG_GRID;
+    }
+    
+    public static Color getStrikeBackgroundColor() {
+        return isDarkMode() ? DARK_BG_STRIKE : LIGHT_BG_STRIKE;
+    }
+    
+    public static Color getGreenTextColor() {
+        return isDarkMode() ? DARK_TEXT_GREEN : LIGHT_TEXT_GREEN;
+    }
+    
+    public static Color getRedTextColor() {
+        return isDarkMode() ? DARK_TEXT_RED : LIGHT_TEXT_RED;
+    }
+    
+    public static Color getGreenHighlightColor() {
+        return isDarkMode() ? DARK_HL_GREEN : LIGHT_HL_GREEN;
+    }
+    
+    public static Color getRedHighlightColor() {
+        return isDarkMode() ? DARK_HL_RED : LIGHT_HL_RED;
+    }
+    
+    public static Color getButtonBackgroundColor() {
+        return isDarkMode() ? DARK_BUTTON_BG : LIGHT_BUTTON_BG;
+    }
+    
+    public static Color getButtonForegroundColor() {
+        return isDarkMode() ? DARK_BUTTON_FG : LIGHT_BUTTON_FG;
+    }
+    
+    public static Color getLogBackgroundColor() {
+        return isDarkMode() ? DARK_LOG_BG : LIGHT_LOG_BG;
+    }
+    
+    public static Color getGreenStatusColor() {
+        return isDarkMode() ? DARK_GREEN_STATUS : LIGHT_GREEN_STATUS;
+    }
+    
+    public static Color getRedStatusColor() {
+        return isDarkMode() ? DARK_RED_STATUS : LIGHT_RED_STATUS;
+    }
     
     public static boolean isDarkMode() {
         return isDarkMode;

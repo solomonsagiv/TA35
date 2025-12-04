@@ -142,6 +142,10 @@ public abstract class Exp implements IJsonData {
 	}
 
 	public void setOp_avg_15(double op_avg_15) {
+		// Check for zero crossing if client is TA35
+		if (client instanceof api.TA35) {
+			((api.TA35) client).checkOpAvg15Cross(op_avg_15);
+		}
 		this.op_avg_15 = op_avg_15;
 	}
 

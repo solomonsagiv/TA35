@@ -94,14 +94,9 @@ public class MyGuiComps {
         }
         
         protected void updateDarkMode() {
-            // Update frame background - darker in dark mode
-            if (Themes.isDarkMode()) {
-                setBackground(Themes.DARKER_BLUE_BG);
-                getContentPane().setBackground(Themes.DARKER_BLUE_BG);
-            } else {
-                setBackground(Themes.LIGHT_BLUE);
-                getContentPane().setBackground(Themes.LIGHT_BLUE);
-            }
+            // Update frame background using Themes helper methods
+            setBackground(Themes.getBackgroundColor());
+            getContentPane().setBackground(Themes.getBackgroundColor());
             
             // Update all components recursively
             updateComponentDarkMode(getContentPane());
@@ -111,37 +106,22 @@ public class MyGuiComps {
             for (Component comp : container.getComponents()) {
                 if (comp instanceof JPanel) {
                     JPanel panel = (JPanel) comp;
-                    if (Themes.isDarkMode()) {
-                        panel.setBackground(Themes.DARK_BLUE_BG);
-                    } else {
-                        panel.setBackground(Themes.GREY_LIGHT);
-                    }
+                    panel.setBackground(Themes.getPanelBackgroundColor());
+                    // Recursively update components inside the panel
+                    updateComponentDarkMode(panel);
                 } else if (comp instanceof MyTextField) {
                     MyTextField field = (MyTextField) comp;
-                    if (Themes.isDarkMode()) {
-                        field.setBackground(Themes.DARK_TEXT_FIELD_BG);
-                        field.setForeground(Themes.BRIGHT_WHITE_TEXT);
-                    } else {
-                        field.setBackground(Themes.GREY_VERY_LIGHT);
-                        field.setForeground(Color.BLACK);
-                    }
+                    field.setBackground(Themes.getTextFieldBackgroundColor());
+                    field.setForeground(Themes.getTextFieldForegroundColor());
                 } else if (comp instanceof JTextField && !(comp instanceof MyTextField)) {
                     // Handle regular JTextFields too
                     JTextField field = (JTextField) comp;
-                    if (Themes.isDarkMode()) {
-                        field.setBackground(Themes.DARK_TEXT_FIELD_BG);
-                        field.setForeground(Themes.BRIGHT_WHITE_TEXT);
-                    } else {
-                        // Restore default when exiting dark mode
-                        if (field.getBackground().equals(Themes.DARK_TEXT_FIELD_BG)) {
-                            field.setBackground(Themes.GREY_VERY_LIGHT);
-                            field.setForeground(Color.BLACK);
-                        }
-                    }
+                    field.setBackground(Themes.getTextFieldBackgroundColor());
+                    field.setForeground(Themes.getTextFieldForegroundColor());
                 } else if (comp instanceof MyLabel) {
                     MyLabel label = (MyLabel) comp;
                     if (Themes.isDarkMode()) {
-                        label.setForeground(Themes.BRIGHT_WHITE_TEXT);
+                        label.setForeground(Themes.getTextColor());
                     } else {
                         label.setForeground(Themes.BLUE);
                     }
@@ -151,10 +131,10 @@ public class MyGuiComps {
                     if (Themes.isDarkMode()) {
                         // Only change to white if it's a default/dark color
                         Color currentFg = label.getForeground();
-                        if (currentFg.equals(Color.BLACK) || 
+                        if (currentFg.equals(Themes.STANDARD_BLACK) || 
                             currentFg.equals(Themes.BLUE) ||
-                            currentFg.equals(new Color(0x263238))) { // HEADER_FG
-                            label.setForeground(Themes.BRIGHT_WHITE_TEXT);
+                            currentFg.equals(Themes.LIGHT_TEXT_HEADER)) {
+                            label.setForeground(Themes.getTextColor());
                         }
                         // Keep green/red colors as they are (for indicators)
                     } else {
@@ -162,27 +142,17 @@ public class MyGuiComps {
                         Color currentFg = label.getForeground();
                         if (currentFg.equals(Themes.BRIGHT_WHITE_TEXT) || 
                             currentFg.equals(Themes.WHITE_TEXT)) {
-                            label.setForeground(Color.BLACK);
+                            label.setForeground(Themes.STANDARD_BLACK);
                         }
                     }
                 } else if (comp instanceof MyButton) {
                     MyButton button = (MyButton) comp;
-                    if (Themes.isDarkMode()) {
-                        button.setBackground(Themes.DARK_BLUE_BG);
-                        button.setForeground(Themes.BRIGHT_WHITE_TEXT);
-                    } else {
-                        button.setBackground(Themes.GREY_LIGHT);
-                        button.setForeground(Themes.BLUE);
-                    }
+                    button.setBackground(Themes.getButtonBackgroundColor());
+                    button.setForeground(Themes.getButtonForegroundColor());
                 } else if (comp instanceof JTextArea) {
                     JTextArea textArea = (JTextArea) comp;
-                    if (Themes.isDarkMode()) {
-                        textArea.setBackground(Themes.DARK_BLUE_BG);
-                        textArea.setForeground(Themes.BRIGHT_WHITE_TEXT);
-                    } else {
-                        textArea.setBackground(new Color(176, 196, 222));
-                        textArea.setForeground(Color.BLACK);
-                    }
+                    textArea.setBackground(Themes.getLogBackgroundColor());
+                    textArea.setForeground(Themes.getTextFieldForegroundColor());
                 } else if (comp instanceof Container) {
                     updateComponentDarkMode((Container) comp);
                 }
@@ -243,7 +213,7 @@ public class MyGuiComps {
 
         protected void init() {
             setFont(Themes.ARIEL_17);
-            setBackground(Themes.GREY_LIGHT);
+            setBackground(Themes.getPanelBackgroundColor());
             setBorder(null);
             setLayout(null);
         }
@@ -291,13 +261,8 @@ public class MyGuiComps {
 //            setEnabled(false);
             
             // Apply dark mode colors if dark mode is active
-            if (Themes.isDarkMode()) {
-                setBackground(Themes.DARK_TEXT_FIELD_BG);
-                setForeground(Themes.BRIGHT_WHITE_TEXT);
-            } else {
-                setBackground(Themes.GREY_VERY_LIGHT);
-                setForeground(Color.BLACK);
-            }
+            setBackground(Themes.getTextFieldBackgroundColor());
+            setForeground(Themes.getTextFieldForegroundColor());
         }
 
         public void setFontSize(int size) {

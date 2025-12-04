@@ -388,17 +388,16 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     @Override
     public void init_timeseries_to_updater() {
-
         timeSeries = new ArrayList<>();
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_4_CDF_OLD));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_5_CDF_OLD));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_6_CDF_OLD));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.DF_8_CDF_OLD));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_240_CONTINUE));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.ROLL_INTEREST_AVG_PROD));
-        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_MONTH_INTEREST_AVG_PROD));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_60));
         timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.OP_AVG_WEEK_15));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_3600));
+        timeSeries.add(client.getTimeSeriesHandler().get(Factories.TimeSeries.INDEX_AVG_900));
     }
 
     private void updateListsRetro() {
