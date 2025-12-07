@@ -26,8 +26,6 @@ public class CalcsService extends MyBaseService {
     @Override
     public void go() {
 
-
-        
         // Increment counter
         counter += getSleep();
 
