@@ -2,6 +2,9 @@ package locals;
 
 import api.BASE_CLIENT_OBJECT;
 import javax.swing.*;
+
+import org.apache.cassandra.cli.CliParser.statement_return;
+
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -26,8 +29,8 @@ public class L {
 
 
 	public static void main(String[] args) {
-		double d = -105090;
-		System.out.println(L.format_int_2(d));
+		System.out.println(L.round(105090.45, 2));
+		
 	}
 
 	public static double modulu(double value) {
@@ -131,6 +134,9 @@ public class L {
 		return NumberFormat.getNumberInstance(Locale.US).format(i);
 	}
 
+	public static double round(double d, int places) {
+		return Math.round(d * Math.pow(10, places)) / Math.pow(10, places);
+	}
 
 	public static DecimalFormat format10() {
 		if (df10 == null) {

@@ -7,7 +7,7 @@ public class Strike {
 	private Option call;
 	private Option put;
 	private double strike;
-
+	private double volatility;
 	// Constructors
 	public Strike() {}
 
@@ -31,10 +31,14 @@ public class Strike {
 	public double getStrike() { return strike; }
 	public void setStrike(double strike) { this.strike = strike; }
 
+	public double getVolatility() { return volatility; }
+	public void setVolatility(double volatility) { this.volatility = volatility; }
+
 	// --- Helpers ---
 	public boolean hasCall() { return call != null; }
 	public boolean hasPut()  { return put  != null; }
 	public boolean isComplete() { return hasCall() && hasPut(); }
+	
 
 	@Override
 	public String toString() {

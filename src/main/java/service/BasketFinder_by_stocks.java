@@ -77,6 +77,9 @@ public class BasketFinder_by_stocks extends MyBaseService {
         // Reset params
         int changesCount = 0;
 
+        
+
+        
         stocks_snapshot = new ArrayList<>(stocksHandler.getStocks());
 
 

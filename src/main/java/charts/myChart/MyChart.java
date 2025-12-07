@@ -139,6 +139,7 @@ public class MyChart {
     public void applyDarkMode() {
         updatePlotStyle();
         updateSeriesColors(); // Update series colors for dark mode
+        updateMarkerColors(); // Update marker colors for dark mode
         if (chartPanel != null) {
             if (Themes.isDarkMode()) {
                 chartPanel.setBackground(Themes.DARK_BLUE_BG);
@@ -161,6 +162,25 @@ public class MyChart {
                 }
                 if (chartPanel.getLastLbl() != null) {
                     chartPanel.getLastLbl().setForeground(Themes.BLUE);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Updates marker colors for dark mode
+     */
+    private void updateMarkerColors() {
+        if (plot == null) return;
+        
+        // Update range markers
+        java.util.Collection<?> rangeMarkers = plot.getRangeMarkers(Layer.BACKGROUND);
+        if (rangeMarkers != null) {
+            for (Object markerObj : rangeMarkers) {
+                if (markerObj instanceof ValueMarker) {
+                    ValueMarker marker = (ValueMarker) markerObj;
+                    // Set light gray in dark mode, grey in light mode
+                    marker.setPaint(Themes.isDarkMode() ? Themes.LIGHT_GRAY_TEXT : Themes.GREY_2);
                 }
             }
         }
@@ -222,7 +242,8 @@ public class MyChart {
         if (props.getProp(ChartPropsEnum.MARKER) != MyProps.p_null) {
             ValueMarker marker = new ValueMarker(props.getProp(ChartPropsEnum.MARKER));
             marker.setStroke(new BasicStroke(1.2f));
-            marker.setPaint(Themes.GREY_2);
+            // Use light gray in dark mode for better visibility
+            marker.setPaint(Themes.isDarkMode() ? Themes.LIGHT_GRAY_TEXT : Themes.GREY_2);
             marker.setValue(props.getProp(ChartPropsEnum.MARKER));
             plot.addRangeMarker(marker, Layer.BACKGROUND);
         }

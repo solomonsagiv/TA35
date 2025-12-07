@@ -7,7 +7,6 @@ import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import locals.Themes;
 import api.TA35;
-import api.deltaTest.Calculator;
 import org.jfree.chart.plot.ValueMarker;
 import java.awt.*;
 import java.util.List;
@@ -139,9 +138,13 @@ public class Main_Chart extends MyChartCreator {
 
         ValueMarker plus0_3 = new ValueMarker(0.3);
         plus0_3.setStroke(new BasicStroke(1.5f));
+        // Use light gray in dark mode for better visibility
+        plus0_3.setPaint(Themes.isDarkMode() ? Themes.LIGHT_GRAY_TEXT : Themes.GREY_2);
 
         ValueMarker minus0_3 = new ValueMarker(-0.3);
         minus0_3.setStroke(new BasicStroke(1.5f));
+        // Use light gray in dark mode for better visibility
+        minus0_3.setPaint(Themes.isDarkMode() ? Themes.LIGHT_GRAY_TEXT : Themes.GREY_2);
 
         MyChart op_avg_chart = new MyChart(series, props);
         op_avg_chart.add_marker(plus0_3);

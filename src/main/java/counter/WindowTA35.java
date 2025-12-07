@@ -51,7 +51,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             ind_race_reset_15_field, week_race_reset_15_field, month_race_reset_15_field,
             future_week_counter_reset_15_field, future_month_counter_reset_15_field,
             weight_counter1_reset_15_field, weight_counter2_reset_15_field, weight_delta_reset_15_field;
-    ;
 
     // Constructor
     public WindowTA35() {

@@ -10,6 +10,7 @@ import dataBase.mySql.Queries;
 import locals.L;
 import miniStocks.MiniStock;
 import options.Options;
+import options.Strike;
 import races.Race_Logic;
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -36,7 +37,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> counter_2_tot_weight_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> total_delta_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> counter2_table_avg_timestamp = new ArrayList<>();
-    
 
     ArrayList<MyTimeSeries> timeSeries;
     Race_Logic wi_race, wm_race;
@@ -56,7 +56,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             week_counter_0 = 0,
             trading_status_0 = 0,
             ba_tot_pos_weight_0 = 0,
-            delta_tot_pos_weight_0 = 0, 
+            delta_tot_pos_weight_0 = 0,
             counter_2_tot_weight_0 = 0,
             total_delta_0 = 0,
             counter2_table_avg_0 = 0;
@@ -131,7 +131,72 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                     e.printStackTrace();
                 }
             }
+
+            update_options();
         }).start();
+    }
+
+    private void update_options() {
+        get_options_week_from_db();
+        get_options_month_from_db();
+    }
+
+    /**
+     * טוען volatility של אופציות Week מבסיס הנתונים
+     */
+    private void get_options_week_from_db() {
+        try {
+            String query = "SELECT strike, volatility, index_id " +
+                           "FROM ts.options_data " +
+                           "WHERE index_id = 'ta35w' " +
+                           "AND time = (SELECT MAX(time) FROM ts.options_data)";
+
+            List<Map<String, Object>> rs = MySql.select(query, MySql.JIBE_PROD_CONNECTION);
+            for (Map<String, Object> row : rs) {
+                double strike = ((Number) row.get("strike")).doubleValue();
+                double volatility = ((Number) row.get("volatility")).doubleValue();
+                
+                Strike s = client.getExps().getWeek().getOptions().getStrike(strike);
+                if (s == null) {
+                    s = new Strike(strike);
+                    client.getExps().getWeek().getOptions().addStrike(s);
+                }
+                s.setVolatility(volatility);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Arik.getInstance().sendMessage("TA35 Load week options volatility failed");
+            Arik.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    /**
+     * טוען volatility של אופציות Month מבסיס הנתונים
+     */
+    private void get_options_month_from_db() {
+        try {
+            String query = "SELECT strike, volatility, index_id " +
+                           "FROM ts.options_data " +
+                           "WHERE index_id = 'ta35m' " +
+                           "AND time = (SELECT MAX(time) FROM ts.options_data)";
+
+            List<Map<String, Object>> rs = MySql.select(query, MySql.JIBE_PROD_CONNECTION);
+            for (Map<String, Object> row : rs) {
+                double strike = ((Number) row.get("strike")).doubleValue();
+                double volatility = ((Number) row.get("volatility")).doubleValue();
+                
+                Strike s = client.getExps().getMonth().getOptions().getStrike(strike);
+                if (s == null) {
+                    s = new Strike(strike);
+                    client.getExps().getMonth().getOptions().addStrike(s);
+                }
+                s.setVolatility(volatility);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Arik.getInstance().sendMessage("TA35 Load month options volatility failed");
+            Arik.getInstance().sendErrorMessage(e);
+        }
     }
 
     private void on_change_data() {
@@ -175,7 +240,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                 ba_tot_pos_weight_timestamp.add(new MyTimeStampObject(Instant.now(), ba_tot_pos_weight));
                 ba_tot_pos_weight_0 = ba_tot_pos_weight;
             }
-            
+
             // BA tot pos weight
             double delta_tot_pos_weight = client.getDelta_weight();
             if (delta_tot_pos_weight != delta_tot_pos_weight_0) {
@@ -300,7 +365,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         }
 
         // Exp
-//        load_exp_data();
+        // load_exp_data();
 
         // Baskets
         load_baskets();
@@ -314,17 +379,17 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Load positive tracker
         load_positive_tracker();
 
-
         // Set load
         client.setDb_loaded(true);
     }
 
-
     private void load_stocks_data() {
 
-        if (load_stocks_data_count > 3 ) return;
+        if (load_stocks_data_count > 3)
+            return;
 
-        if (TA35.getInstance().getStocksHandler().getStocks().size() == 0) return;
+        if (TA35.getInstance().getStocksHandler().getStocks().size() == 0)
+            return;
 
         try {
             load_stocks_data_count++;
@@ -343,7 +408,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     private void load_positive_tracker() {
 
         int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
-        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW_NO_MODULU, MySql.JIBE_PROD_CONNECTION);
+        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW_NO_MODULU,
+                MySql.JIBE_PROD_CONNECTION);
 
         for (Map<String, Object> row : rs) {
             try {
@@ -374,10 +440,12 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void load_bid_ask_counter() {
         int week_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.WEEK_BID_ASK_COUNTER_PROD);
-        int week_counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(week_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
+        int week_counter = (int) Queries.handle_rs(
+                Objects.requireNonNull(Queries.get_last_record_mega(week_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
 
         int month_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MONTH_BID_ASK_COUNTER_PROD);
-        int month_counter = (int) Queries.handle_rs(Objects.requireNonNull(Queries.get_last_record_mega(month_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
+        int month_counter = (int) Queries.handle_rs(
+                Objects.requireNonNull(Queries.get_last_record_mega(month_id, MySql.CDF, MySql.JIBE_PROD_CONNECTION)));
 
         client.getExps().getWeek().getOptions().setBidAskCounter(week_counter);
         client.getExps().getMonth().getOptions().setBidAskCounter(month_counter);
@@ -402,7 +470,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
     private void updateListsRetro() {
 
-        System.out.println("Insert !!!!! -------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + sleep_count);
+        System.out.println(
+                "Insert !!!!! -------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + sleep_count);
 
         // Interest
         int prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_WEEK_INTEREST_PROD);
@@ -454,12 +523,12 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         insert_dev_prod(trading_status_timestamp, prod_id);
 
         // Total weight BA
-//        dev_id = 0;
+        // dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_BA_WEIGHT_PROD);
         insert_dev_prod(ba_tot_pos_weight_timestamp, prod_id);
 
         // Total weight Delta
-//        dev_id = 0;
+        // dev_id = 0;
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD);
         insert_dev_prod(delta_tot_pos_weight_timestamp, prod_id);
 

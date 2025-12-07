@@ -187,6 +187,115 @@ public class BlackScholesFormula {
         return resp;
     }
 
+    /**
+     * מחשב Implied Volatility (IV) של אופציה לפי strike, ימים לפירעון, ריבית, מחיר spot ומחיר אופציה
+     * 
+     * @param callOption true אם זה Call, false אם זה Put
+     * @param spotPrice מחיר הנכס הבסיסי (spot price)
+     * @param strike מחיר המימוש (strike price)
+     * @param interestRate ריבית שנתית (risk-free interest rate)
+     * @param daysToExpiration ימים עד לפירעון
+     * @param optionPrice מחיר האופציה (באותן יחידות כמו spot - בדרך כלל מחולק ב-100)
+     * @return Implied Volatility (IV) או -1 אם לא נמצא פתרון
+     */
+    public static double calculateImpliedVolatility(boolean callOption, double spotPrice, double strike,
+                                                     double interestRate, int daysToExpiration, double optionPrice) {
+        
+        // המרת ימים לשנים
+        double timeToExpire = daysToExpiration / 365.0;
+        
+        // בדיקת תקינות קלט
+        if (timeToExpire <= 0 || spotPrice <= 0 || strike <= 0 || optionPrice <= 0) {
+            return -1.0; // ערך שגיאה
+        }
+        
+        // טווח IV סביר (0.01% עד 500%)
+        double minVol = 0.0001;
+        double maxVol = 5.0;
+        double tolerance = 0.0001; // דיוק של 0.01%
+        int maxIterations = 100;
+        
+        // בדיקה האם המחיר בטווח הסביר
+        double minPrice = calculate(callOption, spotPrice, strike, interestRate, timeToExpire, minVol);
+        double maxPrice = calculate(callOption, spotPrice, strike, interestRate, timeToExpire, maxVol);
+        
+        // אם המחיר מחוץ לטווח, לא ניתן למצוא IV
+        if (optionPrice < Math.min(minPrice, maxPrice) || optionPrice > Math.max(minPrice, maxPrice)) {
+            return -1.0;
+        }
+        
+        // Bisection method - חיפוש בינארי
+        double low = minVol;
+        double high = maxVol;
+        
+        for (int i = 0; i < maxIterations; i++) {
+            double mid = (low + high) / 2.0;
+            double calculatedPrice = calculate(callOption, spotPrice, strike, interestRate, timeToExpire, mid);
+            
+            double diff = calculatedPrice - optionPrice;
+            
+            // אם מצאנו פתרון מספיק מדויק
+            if (Math.abs(diff) < tolerance) {
+                return mid;
+            }
+            
+            // עדכן את הטווח
+            if (diff > 0) {
+                high = mid; // המחיר גבוה מדי, נמוך IV
+            } else {
+                low = mid;  // המחיר נמוך מדי, נדרש IV גבוה יותר
+            }
+            
+            // אם הטווח קטן מדי, נעצור
+            if (high - low < tolerance) {
+                return (low + high) / 2.0;
+            }
+        }
+        
+        // אם הגענו לכאן, לא מצאנו פתרון מדויק
+        return (low + high) / 2.0;
+    }
+    
+    /**
+     * גרסה נוספת שמקבלת OptionDetails (ללא IV) ומחזירה OptionDetails עם IV מחושב
+     * 
+     * @param req OptionDetails עם כל הפרמטרים מלבד volatility ו-optionValue
+     * @param optionPrice מחיר האופציה (באותן יחידות כמו spot)
+     * @return OptionDetails עם IV מחושב, או null אם לא נמצא פתרון
+     */
+    public static OptionDetails calculateImpliedVolatility(OptionDetails req, double optionPrice) {
+        if (req == null) {
+            return null;
+        }
+        
+        double iv = calculateImpliedVolatility(
+            req.callOption,
+            req.spotPriceOfUnderlying,
+            req.strikePrice,
+            req.riskFreeInterestRate,
+            (int)(req.timeToExpire * 365.0), // המרה חזרה לימים
+            optionPrice
+        );
+        
+        if (iv < 0) {
+            return null; // לא נמצא פתרון
+        }
+        
+        // עדכן את ה-OptionDetails עם ה-IV שנמצא
+        OptionDetails result = new OptionDetails(
+            req.callOption,
+            req.spotPriceOfUnderlying,
+            req.strikePrice,
+            req.riskFreeInterestRate,
+            req.timeToExpire,
+            iv
+        );
+        result.optionValue = optionPrice;
+        
+        // חשב גם את ה-Greeks עם ה-IV שנמצא
+        return calculateWithGreeks(result);
+    }
+
 }
 
 

@@ -2,7 +2,9 @@ package api.deltaTest;
 
 import api.BASE_CLIENT_OBJECT;
 import api.Manifest;
+import api.TA35;
 import dataBase.mySql.MySql;
+import backTest.Writer;
 import service.MyBaseService;
 import service.ServiceEnum;
 
@@ -12,10 +14,14 @@ public class CalcsService extends MyBaseService {
     BASE_CLIENT_OBJECT client;
 
     int counter = 0;
+    double current_strike = 0;
+
+    Writer writer;
 
     public CalcsService(BASE_CLIENT_OBJECT client) {
         super(client);
         this.client = client;
+        this.writer = new Writer(TA35.getInstance());
     }
 
     @Override
@@ -26,7 +32,7 @@ public class CalcsService extends MyBaseService {
 
         if (Manifest.DB_UPLOAD) {
             // Calc
-            if (counter >= 60000) {
+            if (counter >= 60_000) {
                 counter = 0;
                 // Calc stocks counter
                 calc_stocks_raw_counter();
@@ -35,8 +41,18 @@ public class CalcsService extends MyBaseService {
             // Calc stocks weighted counter
             calc_stocks_weighted_counter();
         }
+
+        if (counter % 10_000 == 0) {
+            writer.write_iv();
+        }
     }
     
+    private void set_strikes() {
+        if (current_strike == 0) {
+            current_strike = client.getMid();
+        }
+    }
+
     /**
      * מעדכן את הערכים הראשונים מהשעה האחרונה לכל המניות
      * מתבצע כל דקה
@@ -67,7 +83,7 @@ public class CalcsService extends MyBaseService {
 
     @Override
     public int getSleep() {
-        return 1000;
+        return 1_000;
     }
 
     @Override

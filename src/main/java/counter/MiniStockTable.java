@@ -5,7 +5,6 @@ import api.TA35;
 import api.deltaTest.Calculator;
 import arik.Arik;
 import gui.MyGuiComps;
-import locals.L;
 import locals.Themes;
 import miniStocks.MiniStock;
 import javax.swing.*;
@@ -50,6 +49,64 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private static final Color HEADER_FG     = new Color(0x263238);
     private static final Color SELECTION_BG  = new Color(0xE3F2FD);
     private static final Color SELECTION_FG  = new Color(0x000000);
+    
+    /* ======== Dark Mode Colors ======== */
+    // Dark mode - רקע פחות כהה וטקסט בהיר יותר
+    private static final Color DARK_BG_MAIN      = new Color(55, 65, 85);   // רקע פחות כהה
+    private static final Color DARK_BG_STRIPE    = new Color(50, 60, 75);   // פסים
+    private static final Color DARK_BG_GREEN     = new Color(50, 120, 70);  // ירוק רך
+    private static final Color DARK_BG_RED       = new Color(120, 50, 60);  // אדום רך
+    private static final Color DARK_GRID_COLOR   = new Color(70, 80, 95);   // רשת
+    private static final Color DARK_HEADER_BG    = new Color(60, 70, 85);   // כותרת
+    private static final Color DARK_HEADER_FG    = new Color(240, 240, 240); // טקסט כותרת בהיר
+    private static final Color DARK_SELECTION_BG = new Color(70, 90, 120);  // בחירה
+    private static final Color DARK_SELECTION_FG = new Color(255, 255, 255); // טקסט בחירה
+    private static final Color DARK_TEXT         = new Color(230, 230, 230); // טקסט בהיר ומואר
+    private static final Color DARK_TEXT_NAME    = new Color(255, 255, 255); // טקסט שם בהיר מאוד
+    
+    /* ======== Helper methods for dynamic colors ======== */
+    private static Color getCellBackground(boolean isEvenRow) {
+        if (Themes.isDarkMode()) {
+            return isEvenRow ? DARK_BG_MAIN : DARK_BG_STRIPE;
+        }
+        return isEvenRow ? BG_WHITE : BG_STRIPE;
+    }
+    
+    private static Color getGridColor() {
+        return Themes.isDarkMode() ? DARK_GRID_COLOR : GRID_COLOR;
+    }
+    
+    private static Color getHeaderBackground() {
+        return Themes.isDarkMode() ? DARK_HEADER_BG : HEADER_BG;
+    }
+    
+    private static Color getHeaderForeground() {
+        return Themes.isDarkMode() ? DARK_HEADER_FG : HEADER_FG;
+    }
+    
+    private static Color getSelectionBackground() {
+        return Themes.isDarkMode() ? DARK_SELECTION_BG : SELECTION_BG;
+    }
+    
+    private static Color getSelectionForeground() {
+        return Themes.isDarkMode() ? DARK_SELECTION_FG : SELECTION_FG;
+    }
+    
+    private static Color getTextColor() {
+        return Themes.isDarkMode() ? DARK_TEXT : Color.BLACK;
+    }
+    
+    private static Color getNameTextColor() {
+        return Themes.isDarkMode() ? DARK_TEXT_NAME : Color.BLACK;
+    }
+    
+    private static Color getChangeBackground(int direction) {
+        if (direction == 0) return null;
+        if (Themes.isDarkMode()) {
+            return direction > 0 ? DARK_BG_GREEN : DARK_BG_RED;
+        }
+        return direction > 0 ? BG_GREEN_SOFT : BG_RED_SOFT;
+    }
 
     private static final DecimalFormat DF_PCT = new DecimalFormat("0.00");
     private static final DecimalFormat DF_WGT = new DecimalFormat("0.00");
@@ -139,13 +196,43 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         table.setAutoCreateRowSorter(true);
         table.setShowHorizontalLines(true);
         table.setShowVerticalLines(false);
-        table.setGridColor(GRID_COLOR);
+        table.setGridColor(getGridColor());
         table.setIntercellSpacing(new Dimension(0, 1));
-        table.setSelectionBackground(SELECTION_BG);
-        table.setSelectionForeground(SELECTION_FG);
+        table.setSelectionBackground(getSelectionBackground());
+        table.setSelectionForeground(getSelectionForeground());
 
         // Header style
         JTableHeader header = table.getTableHeader();
+        if (header != null) {
+            header.setReorderingAllowed(true);
+            header.setResizingAllowed(true);
+            header.setBackground(getHeaderBackground());
+            header.setForeground(getHeaderForeground());
+            header.setFont(new Font("Ariel", Font.BOLD, 15));
+            header.setOpaque(true);
+            
+            // Custom header renderer
+            final TableCellRenderer base = header.getDefaultRenderer();
+            header.setDefaultRenderer(new TableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable tbl, Object value, boolean isSelected,
+                                                               boolean hasFocus, int row, int column) {
+                    Component comp = base.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
+                    comp.setFont(HEADER_FONT);
+                    if (comp instanceof JComponent) {
+                        ((JComponent) comp).setOpaque(true);
+                    }
+                    comp.setBackground(getHeaderBackground());
+                    comp.setForeground(getHeaderForeground());
+                    if (comp instanceof JLabel) {
+                        ((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
+                    }
+                    return comp;
+                }
+            });
+        }
+        
+        updateTableColors(); // Apply initial colors based on dark mode
 
         // Renderers
         CellRenderer renderer = new CellRenderer(model);
@@ -219,13 +306,91 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         });
     }
 
-    private static JPanel createColumn(String labelText, JTextField textField) {
+    private JPanel createColumn(String labelText, JTextField textField) {
         JPanel panel = new JPanel(new BorderLayout());
         JLabel label = new JLabel(labelText, SwingConstants.CENTER);
         label.setFont(HEADER_FONT);
+        // Apply dark mode colors
+        updatePanelColors(panel, label);
         panel.add(label, BorderLayout.NORTH);
         panel.add(textField, BorderLayout.CENTER);
         return panel;
+    }
+    
+    /**
+     * מעדכן צבעים של panel ו-label לפי dark mode
+     */
+    private void updatePanelColors(JPanel panel, JLabel label) {
+        if (Themes.isDarkMode()) {
+            panel.setBackground(Themes.getPanelBackgroundColor());
+            label.setForeground(getHeaderForeground());
+        } else {
+            panel.setBackground(null);
+            label.setForeground(HEADER_FG);
+        }
+    }
+    
+    /**
+     * מעדכן את כל הצבעים בטבלה לפי dark mode
+     */
+    private void updateTableColors() {
+        if (table == null) return;
+        
+        SwingUtilities.invokeLater(() -> {
+            table.setGridColor(getGridColor());
+            table.setSelectionBackground(getSelectionBackground());
+            table.setSelectionForeground(getSelectionForeground());
+            
+            JTableHeader header = table.getTableHeader();
+            if (header != null) {
+                header.setBackground(getHeaderBackground());
+                header.setForeground(getHeaderForeground());
+            }
+            
+            // Force repaint of all cells
+            table.repaint();
+        });
+    }
+    
+    /**
+     * Override applyDarkMode כדי לעדכן את כל הצבעים בטבלה
+     */
+    @Override
+    protected void applyDarkMode() {
+        super.applyDarkMode();
+        updateTableColors();
+        // Update all panels in the summary panel
+        Component[] components = getContentPane().getComponents();
+        for (Component comp : components) {
+            if (comp instanceof JPanel) {
+                updatePanelColorsRecursive((JPanel) comp);
+            }
+        }
+    }
+    
+    /**
+     * מעדכן צבעים רקורסיבית לכל ה-panels
+     */
+    private void updatePanelColorsRecursive(JPanel panel) {
+        if (Themes.isDarkMode()) {
+            panel.setBackground(Themes.getPanelBackgroundColor());
+        } else {
+            panel.setBackground(null);
+        }
+        
+        for (Component comp : panel.getComponents()) {
+            if (comp instanceof JPanel) {
+                updatePanelColorsRecursive((JPanel) comp);
+            } else if (comp instanceof JLabel) {
+                JLabel label = (JLabel) comp;
+                // Update label colors for KPI headers
+                if (Themes.isDarkMode()) {
+                    label.setForeground(getHeaderForeground());
+                } else {
+                    label.setForeground(HEADER_FG);
+                }
+            }
+        }
     }
 
     /**
@@ -477,39 +642,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     /* ======================== Renderers ======================== */
 
-    private static class JTableHeaderStyled {
-        static void apply(JTableHeader header) {
-            header.setReorderingAllowed(true);
-            header.setResizingAllowed(true);
-            header.setBackground(HEADER_BG);
-            header.setForeground(HEADER_FG);
-            header.setFont(new Font("Ariel", Font.BOLD, 15));
-            header.setOpaque(true);
-
-            final TableCellRenderer base = header.getDefaultRenderer();
-            header.setDefaultRenderer(new TableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(JTable tbl, Object value, boolean isSelected,
-                                                               boolean hasFocus, int row, int column) {
-                    Component comp = base.getTableCellRendererComponent(tbl, value, isSelected, hasFocus, row, column);
-
-                    comp.setFont(HEADER_FONT);
-
-
-                    if (comp instanceof JComponent) {
-                        ((JComponent) comp).setOpaque(true);
-                    }
-                    comp.setBackground(HEADER_BG);
-                    comp.setForeground(HEADER_FG);
-                    if (comp instanceof JLabel) {
-                        ((JLabel) comp).setHorizontalAlignment(SwingConstants.CENTER);
-                    }
-                    return comp;
-                }
-            });
-        }
-    }
-
     private static class NameRenderer extends DefaultTableCellRenderer {
         NameRenderer() {
             setHorizontalAlignment(SwingConstants.CENTER);
@@ -524,9 +656,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
             // Zebra / selection
             if (isSelected) {
-                c.setBackground(SELECTION_BG); c.setForeground(SELECTION_FG);
+                c.setBackground(getSelectionBackground()); 
+                c.setForeground(getSelectionForeground());
             } else {
-                c.setBackground((row % 2 == 0) ? BG_WHITE : BG_STRIPE); c.setForeground(Color.BLACK);
+                c.setBackground(getCellBackground(row % 2 == 0)); 
+                c.setForeground(getNameTextColor());
             }
             return c;
         }
@@ -590,30 +724,34 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 if (value instanceof Number) {
                     double v = ((Number) value).doubleValue();
                     if (column == Model.COL_OPEN || column == Model.COL_LAST || column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_COUNTER_2 || column == Model.COL_DELTA) {
-                        setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
+                        if (Themes.isDarkMode()) {
+                            setForeground(v > 0 ? Themes.DARK_TEXT_GREEN : (v < 0 ? Themes.DARK_TEXT_RED : DARK_TEXT));
+                        } else {
+                            setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
+                        }
                     } else {
-                        setForeground(Color.BLACK);
+                        setForeground(getTextColor());
                     }
                 } else {
-                    setForeground(Color.BLACK);
+                    setForeground(getTextColor());
                 }
             }
 
             // ----- Background priority: selection > change highlight > zebra -----
             if (isSelected) {
-                c.setBackground(SELECTION_BG); c.setForeground(SELECTION_FG);
+                c.setBackground(getSelectionBackground()); 
+                c.setForeground(getSelectionForeground());
             } else {
                 boolean paintable =
                         column == Model.COL_OPEN || column == Model.COL_LAST ||
                                 column == Model.COL_CHANGE || column == Model.COL_COUNTER || column == Model.COL_COUNTER_2 || column == Model.COL_DELTA;
 
                 int dir = paintable ? model.getChangeDirection(row, column, table) : 0;
-                if (dir > 0) {
-                    c.setBackground(BG_GREEN_SOFT);
-                } else if (dir < 0) {
-                    c.setBackground(BG_RED_SOFT);
+                Color changeBg = getChangeBackground(dir);
+                if (changeBg != null) {
+                    c.setBackground(changeBg);
                 } else {
-                    c.setBackground((row % 2 == 0) ? BG_WHITE : BG_STRIPE);
+                    c.setBackground(getCellBackground(row % 2 == 0));
                 }
             }
 
@@ -654,15 +792,15 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
             detailsTable.setFont(CELL_FONT);
             detailsTable.setShowHorizontalLines(true);
             detailsTable.setShowVerticalLines(true);
-            detailsTable.setGridColor(GRID_COLOR);
-            detailsTable.setSelectionBackground(SELECTION_BG);
-            detailsTable.setSelectionForeground(SELECTION_FG);
+            detailsTable.setGridColor(getGridColor());
+            detailsTable.setSelectionBackground(getSelectionBackground());
+            detailsTable.setSelectionForeground(getSelectionForeground());
             
             // Header styling
             JTableHeader header = detailsTable.getTableHeader();
             header.setFont(HEADER_FONT);
-            header.setBackground(HEADER_BG);
-            header.setForeground(HEADER_FG);
+            header.setBackground(getHeaderBackground());
+            header.setForeground(getHeaderForeground());
             
             // Set column widths
             int[] widths = {120, 90, 80, 80, 80, 80, 80, 120, 120, 100, 100, 90, 80};
@@ -823,19 +961,23 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 if (value instanceof Number) {
                     double v = ((Number) value).doubleValue();
                     if (column == 4 || column == 5 || column == 6) { // Counter, Counter_2, Delta
-                        setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
+                        if (Themes.isDarkMode()) {
+                            setForeground(v > 0 ? Themes.DARK_TEXT_GREEN : (v < 0 ? Themes.DARK_TEXT_RED : DARK_TEXT));
+                        } else {
+                            setForeground(v > 0 ? new Color(0x1B5E20) : (v < 0 ? new Color(0xB71C1C) : Color.BLACK));
+                        }
                     } else {
-                        setForeground(Color.BLACK);
+                        setForeground(getTextColor());
                     }
                 } else {
-                    setForeground(Color.BLACK);
+                    setForeground(getTextColor());
                 }
                 
                 // Zebra striping
-                c.setBackground((row % 2 == 0) ? BG_WHITE : BG_STRIPE);
+                c.setBackground(getCellBackground(row % 2 == 0));
             } else {
-                c.setBackground(SELECTION_BG);
-                c.setForeground(SELECTION_FG);
+                c.setBackground(getSelectionBackground());
+                c.setForeground(getSelectionForeground());
             }
             
             return c;
