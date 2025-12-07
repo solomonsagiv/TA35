@@ -21,12 +21,13 @@ public class CalcsService extends MyBaseService {
     public CalcsService(BASE_CLIENT_OBJECT client) {
         super(client);
         this.client = client;
-        this.writer = new Writer(TA35.getInstance());
     }
 
     @Override
     public void go() {
 
+
+        
         // Increment counter
         counter += getSleep();
 
@@ -43,7 +44,12 @@ public class CalcsService extends MyBaseService {
         }
 
         if (counter % 10_000 == 0) {
-            writer.write_iv();
+            if(writer != null) {
+                writer.write_iv();
+            }   else {
+                writer = new Writer(TA35.getInstance());
+                writer.write_iv();
+            }
         }
     }
     
