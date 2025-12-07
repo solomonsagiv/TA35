@@ -172,6 +172,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         max_weight_field            = new MyGuiComps.MyTextField(); max_weight_field.setFontSize(22);
 
         JPanel controlPanel = new JPanel(new GridLayout(1, 6, 15, 0));
+        controlPanel.setOpaque(true);
         controlPanel.add(createColumn("C1 W:", counter_weight_field));
         controlPanel.add(createColumn("C2 W:", counter_2_weight_field));
         controlPanel.add(createColumn("T60%:", top_weight_counter_2_field));
@@ -180,13 +181,22 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         controlPanel.add(createColumn("DELTA:", total_delta_field));
 
         JPanel midPanel = new JPanel(new GridLayout(1, 2, 15, 0));
+        midPanel.setOpaque(true);
         midPanel.add(createColumn("Min:", min_weight_field));
         midPanel.add(createColumn("Max:", max_weight_field));
 
         JPanel summaryPanel = new JPanel(new GridLayout(2, 1, 0, 10));
+        summaryPanel.setOpaque(true);
         summaryPanel.add(controlPanel);
         summaryPanel.add(midPanel);
         add(summaryPanel, BorderLayout.NORTH);
+        
+        // Apply initial colors based on dark mode
+        if (Themes.isDarkMode()) {
+            controlPanel.setBackground(Themes.getPanelBackgroundColor());
+            midPanel.setBackground(Themes.getPanelBackgroundColor());
+            summaryPanel.setBackground(Themes.getPanelBackgroundColor());
+        }
 
         // ---- Table ----
         model = new Model();
@@ -308,6 +318,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
 
     private JPanel createColumn(String labelText, JTextField textField) {
         JPanel panel = new JPanel(new BorderLayout());
+        panel.setOpaque(true);
         JLabel label = new JLabel(labelText, SwingConstants.CENTER);
         label.setFont(HEADER_FONT);
         // Apply dark mode colors
@@ -323,9 +334,11 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private void updatePanelColors(JPanel panel, JLabel label) {
         if (Themes.isDarkMode()) {
             panel.setBackground(Themes.getPanelBackgroundColor());
+            panel.setOpaque(true);
             label.setForeground(getHeaderForeground());
         } else {
             panel.setBackground(null);
+            panel.setOpaque(false);
             label.setForeground(HEADER_FG);
         }
     }
@@ -374,8 +387,10 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private void updatePanelColorsRecursive(JPanel panel) {
         if (Themes.isDarkMode()) {
             panel.setBackground(Themes.getPanelBackgroundColor());
+            panel.setOpaque(true);
         } else {
             panel.setBackground(null);
+            panel.setOpaque(false);
         }
         
         for (Component comp : panel.getComponents()) {
