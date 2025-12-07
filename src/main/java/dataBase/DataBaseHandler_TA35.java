@@ -146,10 +146,12 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
      */
     private void get_options_week_from_db() {
         try {
-            String query = "SELECT strike, volatility, index_id " +
+            String query = "SELECT strike, volatility, index_id, contract_type " +
                            "FROM ts.options_data " +
                            "WHERE index_id = 'ta35w' " +
-                           "AND time = (SELECT MAX(time) FROM ts.options_data)";
+                           "AND contract_type = 'CALL' " +
+                           "AND time = (SELECT MAX(time) FROM ts.options_data) " +
+                           "order by strike";
 
             List<Map<String, Object>> rs = MySql.select(query, MySql.JIBE_PROD_CONNECTION);
             for (Map<String, Object> row : rs) {
@@ -175,10 +177,12 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
      */
     private void get_options_month_from_db() {
         try {
-            String query = "SELECT strike, volatility, index_id " +
+            String query = "SELECT strike, volatility, index_id, contract_type " +
                            "FROM ts.options_data " +
                            "WHERE index_id = 'ta35m' " +
-                           "AND time = (SELECT MAX(time) FROM ts.options_data)";
+                           "AND contract_type = 'CALL' " +
+                           "AND time = (SELECT MAX(time) FROM ts.options_data) " +
+                           "order by strike";
 
             List<Map<String, Object>> rs = MySql.select(query, MySql.JIBE_PROD_CONNECTION);
             for (Map<String, Object> row : rs) {
