@@ -91,7 +91,7 @@ public class NewDataReaderService extends MyBaseService {
                 optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
                    // Interest rate (נשמר)
                 optionsMonth.setInterest_rate(L.dbl(conversation.request(interest)));
-                optionsMonth.setDays_to_exp(Integer.parseInt(conversation.request(day_to_exp)));
+                optionsMonth.setDays_to_exp(Integer.parseInt(conversation.request(day_to_exp).trim()));
 
                 // Week (נשמר)
                 optionsWeek.setContract(L.dbl(conversation.request(futureWeekCell)));
