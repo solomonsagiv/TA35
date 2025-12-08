@@ -80,11 +80,33 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     public OptionsTableWindow(BASE_CLIENT_OBJECT client, String title, Options options) throws HeadlessException {
         super(client, title);
         this.optionsRef = options;
-        // initialize() is already called by super()
+        // initialize() is already called by super(), but table might not be created yet
+        // Ensure table is set up with options
         if (table != null) {
+            table.setOptions(optionsRef);
             table.refresh();
+        } else {
+            // If table wasn't created in initialize(), create it now
+            setupTable();
         }
         startRunner();
+    }
+    
+    private void setupTable() {
+        // Remove existing table if any
+        Component[] components = getContentPane().getComponents();
+        for (Component comp : components) {
+            if (comp instanceof JScrollPane) {
+                getContentPane().remove(comp);
+            }
+        }
+        
+        // Create and add table
+        table = new OptionsTable(client);
+        table.setOptions(optionsRef);
+        add(new JScrollPane(table), BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 
     @Override
@@ -114,10 +136,13 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         controlPanel.add(createColumn("Green stocks:", kpi4));
         add(controlPanel, BorderLayout.NORTH);
 
-        // Table - create only once
-        table = new OptionsTable(client);
-        table.setOptions(optionsRef);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        // Table - create only if optionsRef is already set (might be null here)
+        // If optionsRef is null, table will be created in constructor
+        if (optionsRef != null) {
+            table = new OptionsTable(client);
+            table.setOptions(optionsRef);
+            add(new JScrollPane(table), BorderLayout.CENTER);
+        }
         
         // Force layout update
         revalidate();
