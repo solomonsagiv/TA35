@@ -31,6 +31,7 @@ public class Option implements IJsonData {
 	private int bid = 0;
 	private int ask = 0;
 	private int last = 0;
+	private int mid = 0;
 	private int high = 0;
 	private int low = 0;
 	private int base = 0;
@@ -184,6 +185,9 @@ public class Option implements IJsonData {
 	/** אם אתה רוצה לצבור – השאר; אם לא, שנה ל-setDelta */
 	public void appendDelta(double delta) { this.delta += delta; }
 	public void setDelta(double delta) { this.delta = delta; }
+
+	public int getMid() { return mid; }
+	public void setMid(int mid) { this.mid = mid; }
 
 	public int getDeltaCounter() { return deltaCounter; }
 	public void setDeltaCounter(int deltaCounter) { this.deltaCounter = deltaCounter; }

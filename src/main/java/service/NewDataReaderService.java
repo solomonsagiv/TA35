@@ -9,10 +9,6 @@ import options.Option;
 import options.Options;
 import options.Strike;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class NewDataReaderService extends MyBaseService {
 
     // Cells
@@ -38,29 +34,31 @@ public class NewDataReaderService extends MyBaseService {
     String statusCell = "R2C21";
     String index_mid_cell = "R2C14";
 
+    String interest = "R2C23";
+    String day_to_exp = "R2C24";
+
     DDEClientConversation conversation;        // נשאר ל-HEAD/אופציות (כמו שהיה)
 
     TA35 ta35;
 
     // Columns (נשמרוקשתך)
-    final int CALL_BID = 2;
-    final int CALL_LAST = 3;
-    final int CALL_ASK = 4;
-    final int CALL_VOLUME = 5;
-    final int STRIKE = 6;
-    final int PUT_BID = 7;
-    final int PUT_LAST = 8;
-    final int PUT_ASK = 7;
-    final int PUT_VOLUME = 9;
+    // final int CALL_BID = 2;
+    // final int CALL_LAST = 3;
+    // final int CALL_ASK = 4;
+    // final int CALL_VOLUME = 5;
+    final int STRIKE = 1;
+    // final int PUT_BID = 7;
+    // final int PUT_LAST = 8;
+    // final int PUT_ASK = 7;
+    // final int PUT_VOLUME = 9;
+    final int CALL_MID = 2;
+    final int PUT_MID = 3;
 
     // Rows (נשמרוקשתך)
-    final int START_ROW_MONTH = 44;
-    final int END_ROW_MONTH = 57;
-    final int START_ROW_WEEK = 66;
-    final int END_ROW_WEEK = 86;
+    final int START_ROW_MONTH = 51;
+    final int END_ROW_MONTH = 79;
 
-    private Options optionsWeek;
-    private Options optionsMonth;
+    private Options optionsMonth, optionsWeek;
 
     boolean set_options = false;
 
@@ -91,6 +89,9 @@ public class NewDataReaderService extends MyBaseService {
                 optionsMonth.setContract(L.dbl(conversation.request(futureCell)));
                 optionsMonth.setContractBid(L.dbl(conversation.request(futureBidCell)));
                 optionsMonth.setContractAsk(L.dbl(conversation.request(futureAskCell)));
+                   // Interest rate (נשמר)
+                optionsMonth.setInterest_rate(L.dbl(conversation.request(interest)));
+                optionsMonth.setDays_to_exp(Integer.parseInt(conversation.request(day_to_exp)));
 
                 // Week (נשמר)
                 optionsWeek.setContract(L.dbl(conversation.request(futureWeekCell)));
@@ -108,6 +109,8 @@ public class NewDataReaderService extends MyBaseService {
                 ta35.setOpen(L.dbl(conversation.request(openCell)));
                 ta35.setLast_price(L.dbl(conversation.request(lastCell)));
 
+             
+
                 // Read stocks – עכשיו ב-Thread נפרד עם Batch
 //                if (sleepCount % 600 == 0) {
 //                    read_stocks();
@@ -119,7 +122,7 @@ public class NewDataReaderService extends MyBaseService {
                 }
 
                 // Read options – נשמר כתגובה (מושבת)
-                // handle_read_options();
+                handle_read_options();
 
             }
         } catch (Exception e) {
@@ -135,12 +138,10 @@ public class NewDataReaderService extends MyBaseService {
         }
 
         if (init_options) {
-//            read_options(optionsWeek, START_ROW_WEEK, END_ROW_WEEK);
             read_options(optionsMonth, START_ROW_MONTH, END_ROW_MONTH);
         } else {
             try {
                 init_options = true;
-//                init_options(optionsWeek, START_ROW_WEEK, END_ROW_WEEK);
                 init_options(optionsMonth, START_ROW_MONTH, END_ROW_MONTH);
             } catch (DDEException e) {
                 e.printStackTrace();
@@ -153,15 +154,17 @@ public class NewDataReaderService extends MyBaseService {
         if (count == 0) return;
 
         double[] strikes      = readColumnDoubles(STRIKE,     start_row, end_row);
-        double[] callBids     = readColumnDoubles(CALL_BID,   start_row, end_row);
-        double[] callAsks     = readColumnDoubles(CALL_ASK,   start_row, end_row);
-        double[] callVolumes  = readColumnDoubles(CALL_VOLUME,start_row, end_row);
-        double[] callLasts    = readColumnDoubles(CALL_LAST,  start_row, end_row);
+        // double[] callBids     = readColumnDoubles(CALL_BID,   start_row, end_row);
+        // double[] callAsks     = readColumnDoubles(CALL_ASK,   start_row, end_row);
+        // double[] callVolumes  = readColumnDoubles(CALL_VOLUME,start_row, end_row);
+        // double[] callLasts    = readColumnDoubles(CALL_LAST,  start_row, end_row);
+        double[] callMids     = readColumnDoubles(CALL_MID,   start_row, end_row);
 
-        double[] putBids      = readColumnDoubles(PUT_BID,    start_row, end_row);
-        double[] putAsks      = readColumnDoubles(PUT_ASK,    start_row, end_row);
-        double[] putVolumes   = readColumnDoubles(PUT_VOLUME, start_row, end_row);
-        double[] putLasts     = readColumnDoubles(PUT_LAST,   start_row, end_row);
+        // double[] putBids      = readColumnDoubles(PUT_BID,    start_row, end_row);
+        // double[] putAsks      = readColumnDoubles(PUT_ASK,    start_row, end_row);
+        // double[] putVolumes   = readColumnDoubles(PUT_VOLUME, start_row, end_row);
+        // double[] putLasts     = readColumnDoubles(PUT_LAST,   start_row, end_row);
+        double[] putMids     = readColumnDoubles(PUT_MID,   start_row, end_row);
 
         for (int i = 0; i < count; i++) {
             double strike = getValue(strikes, i);
@@ -171,18 +174,20 @@ public class NewDataReaderService extends MyBaseService {
 
             Option call = options.getOption(Option.Side.CALL, strike);
             if (call != null) {
-                call.setBid((int) Math.round(getValue(callBids, i)));
-                call.setAsk((int) Math.round(getValue(callAsks, i)));
-                call.setVolume((int) Math.round(getValue(callVolumes, i)));
-                call.setLast((int) Math.round(getValue(callLasts, i)));
+                // call.setBid((int) Math.round(getValue(callBids, i)));
+                // call.setAsk((int) Math.round(getValue(callAsks, i)));
+                // call.setVolume((int) Math.round(getValue(callVolumes, i)));
+                // call.setLast((int) Math.round(getValue(callLasts, i)));
+                call.setMid((int) Math.round(getValue(callMids, i)));
             }
 
             Option put = options.getOption(Option.Side.PUT, strike);
             if (put != null) {
-                put.setBid((int) Math.round(getValue(putBids, i)));
-                put.setAsk((int) Math.round(getValue(putAsks, i)));
-                put.setVolume((int) Math.round(getValue(putVolumes, i)));
-                put.setLast((int) Math.round(getValue(putLasts, i)));
+                // put.setBid((int) Math.round(getValue(putBids, i)));
+                // put.setAsk((int) Math.round(getValue(putAsks, i)));
+                // put.setVolume((int) Math.round(getValue(putVolumes, i)));
+                // put.setLast((int) Math.round(getValue(putLasts, i)));
+                put.setMid((int) Math.round(getValue(putMids, i)));
             }
         }
     }

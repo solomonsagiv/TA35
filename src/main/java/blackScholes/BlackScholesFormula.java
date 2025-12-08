@@ -11,6 +11,36 @@ public class BlackScholesFormula {
     private static final double B4 = -1.821255978;
     private static final double B5 = 1.330274429;
     
+
+    public static void main(String[] args) {
+
+        double opt_price = 640;  // מחיר באגורות (עם מכפיל 50)
+        double index_price = 3540.8;
+        double strike = 3440.0;
+        double OPTION_MULTIPLIER = 50.0;  // מכפיל האופציות
+        double interestRate = 0.0425;  // ריבית 4.25% (לשנות לפי הצורך)
+        int daysToExp = 18;
+        
+        // המרת מחיר האופציה מיחידות המסחר (אגורות) ליחידות spot (שקלים)
+        double optionPriceInSpotUnits = opt_price / OPTION_MULTIPLIER;
+        
+        System.out.println("=== Implied Volatility Calculation ===");
+        System.out.println("Option price in trading units (agorot): " + opt_price);
+        System.out.println("Option price in spot units (shekel, divided by " + OPTION_MULTIPLIER + "): " + optionPriceInSpotUnits);
+        System.out.println("Spot price: " + index_price);
+        System.out.println("Strike: " + strike);
+        System.out.println("Interest rate: " + (interestRate * 100) + "%");
+        System.out.println("Days to expiration: " + daysToExp);
+        System.out.println();
+        
+        double iv = calculateImpliedVolatility(false, index_price, strike, interestRate, daysToExp, optionPriceInSpotUnits);
+        System.out.println("IV in percentage: " + (iv * 100) + "%");
+        
+        // בדיקה - מחשבים את המחיר בחזרה עם ה-IV שנמצא
+        // double calculatedPrice = calculate(true, index_price, strike, interestRate, daysToExp / 365.0, iv);
+        // System.out.println("Verification - Price calculated with this IV: " + calculatedPrice + " (should be ~" + optionPriceInSpotUnits + ")");
+    }
+
     /**
      *
      * @param callOption
@@ -191,11 +221,11 @@ public class BlackScholesFormula {
      * מחשב Implied Volatility (IV) של אופציה לפי strike, ימים לפירעון, ריבית, מחיר spot ומחיר אופציה
      * 
      * @param callOption true אם זה Call, false אם זה Put
-     * @param spotPrice מחיר הנכס הבסיסי (spot price)
-     * @param strike מחיר המימוש (strike price)
-     * @param interestRate ריבית שנתית (risk-free interest rate)
+     * @param spotPrice מחיר הנכס הבסיסי (spot price) בשקלים
+     * @param strike מחיר המימוש (strike price) בשקלים
+     * @param interestRate ריבית שנתית (risk-free interest rate) - ערך עשרוני (לדוגמה 0.0425 עבור 4.25%)
      * @param daysToExpiration ימים עד לפירעון
-     * @param optionPrice מחיר האופציה (באותן יחידות כמו spot - בדרך כלל מחולק ב-100)
+     * @param optionPrice מחיר האופציה (באותן יחידות כמו spot - בשקלים)
      * @return Implied Volatility (IV) או -1 אם לא נמצא פתרון
      */
     public static double calculateImpliedVolatility(boolean callOption, double spotPrice, double strike,
@@ -260,7 +290,7 @@ public class BlackScholesFormula {
      * גרסה נוספת שמקבלת OptionDetails (ללא IV) ומחזירה OptionDetails עם IV מחושב
      * 
      * @param req OptionDetails עם כל הפרמטרים מלבד volatility ו-optionValue
-     * @param optionPrice מחיר האופציה (באותן יחידות כמו spot)
+     * @param optionPrice מחיר האופציה (באותן יחידות כמו spot - בשקלים)
      * @return OptionDetails עם IV מחושב, או null אם לא נמצא פתרון
      */
     public static OptionDetails calculateImpliedVolatility(OptionDetails req, double optionPrice) {
@@ -294,6 +324,26 @@ public class BlackScholesFormula {
         
         // חשב גם את ה-Greeks עם ה-IV שנמצא
         return calculateWithGreeks(result);
+    }
+    
+    /**
+     * גרסה עם מכפיל - מחשבת IV כשמחיר האופציה ניתן ביחידות מסחר (עם מכפיל)
+     * 
+     * @param callOption true אם זה Call, false אם זה Put
+     * @param spotPrice מחיר הנכס הבסיסי בשקלים
+     * @param strike מחיר המימוש בשקלים
+     * @param interestRate ריבית שנתית (עשרוני - לדוגמה 0.0425 עבור 4.25%)
+     * @param daysToExpiration ימים עד לפירעון
+     * @param optionPriceInTradingUnits מחיר האופציה ביחידות מסחר (אגורות)
+     * @param multiplier מכפיל האופציות (50 עבור TA35)
+     * @return Implied Volatility (IV) או -1 אם לא נמצא פתרון
+     */
+    public static double calculateImpliedVolatilityWithMultiplier(boolean callOption, double spotPrice, double strike,
+                                                                   double interestRate, int daysToExpiration, 
+                                                                   double optionPriceInTradingUnits, double multiplier) {
+        // המרת מחיר האופציה מיחידות מסחר (אגורות) ליחידות spot (שקלים)
+        double optionPriceInSpotUnits = optionPriceInTradingUnits / multiplier;
+        return calculateImpliedVolatility(callOption, spotPrice, strike, interestRate, daysToExpiration, optionPriceInSpotUnits);
     }
 
 }

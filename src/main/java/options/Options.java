@@ -18,6 +18,9 @@ public class Options implements IJsonData {
     private double contractBid = 0.0;
     private double contractAsk = 0.0;
 
+    private double interest_rate = 0;
+    private int days_to_exp = 0;
+
     // --- Collections ---
     private final List<Strike> strikes;                       // לשמירה על סדר/איטרציה
     private final Map<Double, Strike> strikesByPrice;         // גישה מהירה לפי סטרייק
@@ -264,6 +267,12 @@ public class Options implements IJsonData {
 
     public int getBidAskCounter() { return bidAskCounter; }
     public void setBidAskCounter(int bidAskCounter) { this.bidAskCounter = bidAskCounter; }
+
+    public double getInterest_rate() { return interest_rate; }
+    public void setInterest_rate(double interest_rate) { this.interest_rate = interest_rate; }
+
+    public int getDays_to_exp() { return days_to_exp; }
+    public void setDays_to_exp(int days_to_exp) { this.days_to_exp = days_to_exp; }
 
     /* ============================== Bulk Getters/Setters ============================== */
 

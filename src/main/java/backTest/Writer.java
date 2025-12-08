@@ -29,19 +29,19 @@ public class Writer {
 		int start_row = 2;
 		List<Strike> strikes;
 
-		// Week
-		strikes = ta35.getExps().getWeek().getOptions().getStrikes();
-		for (Strike strike : strikes) {
-			try {
-				conversation.poke(L.cell(start_row, strike_col), String.valueOf(strike.getStrike()));
-				conversation.poke(L.cell(start_row, iv_col), String.valueOf(strike.getVolatility()));
-				start_row++;
-			} catch (DDEException e) {
-				e.printStackTrace();
-			}
-		}
+		// // Week
+		// strikes = ta35.getExps().getWeek().getOptions().getStrikes();
+		// for (Strike strike : strikes) {
+		// 	try {
+		// 		conversation.poke(L.cell(start_row, strike_col), String.valueOf(strike.getStrike()));
+		// 		conversation.poke(L.cell(start_row, iv_col), String.valueOf(strike.getVolatility()));
+		// 		start_row++;
+		// 	} catch (DDEException e) {
+		// 		e.printStackTrace();
+		// 	}
+		// }
 
-		start_row++;
+		// start_row++;
 
 		// Month
 		strikes = ta35.getExps().getMonth().getOptions().getStrikes();

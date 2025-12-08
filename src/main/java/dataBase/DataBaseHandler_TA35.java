@@ -131,8 +131,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                     e.printStackTrace();
                 }
             }
-
-            update_options();
         }).start();
     }
 

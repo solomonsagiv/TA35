@@ -2,6 +2,7 @@ package options;
 
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
+import blackScholes.BlackScholesFormula;
 import gui.MyGuiComps;
 import locals.Themes;
 
@@ -15,7 +16,7 @@ import java.util.List;
 
 /**
  * Options Table Window (styled + background refresh + cross-platform fonts)
- * Columns: B/A | Delta | Delta q | Strike | Delta q | Delta | B/A
+ * Columns: B/A | Mid | IV | Delta | Delta q | Strike | Delta q | Delta | IV | Mid | B/A
  */
 public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
@@ -111,7 +112,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         add(controlPanel, BorderLayout.NORTH);
 
         // Table
-        table = new OptionsTable(optionsRef);
+        table = new OptionsTable(client);
+        table.setOptions(optionsRef);
         add(new JScrollPane(table), BorderLayout.CENTER);
     }
 
@@ -154,8 +156,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     static class OptionsTable extends JTable {
         private final OptionsTableModel model;
 
-        OptionsTable(Options options) {
-            this.model = new OptionsTableModel();
+        OptionsTable(BASE_CLIENT_OBJECT client) {
+            this.model = new OptionsTableModel(client);
             setModel(model);
 
             setFillsViewportHeight(true);
@@ -178,7 +180,6 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             }
 
             setNiceColumnWidths();
-            setOptions(options);
         }
 
         public void setOptions(Options options) {
@@ -192,7 +193,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
         private void setNiceColumnWidths() {
             TableColumnModel cm = getColumnModel();
-            int[] widths = {90, 90, 90, 120, 90, 90, 90}; // B/A | Delta | Delta q | Strike | Delta q | Delta | B/A
+            int[] widths = {70, 70, 75, 80, 80, 100, 80, 80, 75, 70, 70}; // B/A | Mid | IV | Delta | Delta q | Strike | Delta q | Delta | IV | Mid | B/A
             for (int i = 0; i < widths.length && i < cm.getColumnCount(); i++) {
                 cm.getColumn(i).setPreferredWidth(widths[i]);
             }
@@ -203,14 +204,21 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
     static class OptionsTableModel extends AbstractTableModel {
         static final int COL_BIDASK_CALL = 0;
-        static final int COL_DELTA_COUNTER_CALL = 1;
-        static final int COL_DELTA_QUAN_COUNTER_CALL = 2;
-        static final int COL_STRIKE = 3;
-        static final int COL_DELTA_QUAN_COUNTER_PUT = 4;
-        static final int COL_DELTA_COUNTER_PUT = 5;
-        static final int COL_BIDASK_PUT = 6;
+        static final int COL_MID_CALL = 1;
+        static final int COL_IV_CALL = 2;
+        static final int COL_DELTA_COUNTER_CALL = 3;
+        static final int COL_DELTA_QUAN_COUNTER_CALL = 4;
+        static final int COL_STRIKE = 5;
+        static final int COL_DELTA_QUAN_COUNTER_PUT = 6;
+        static final int COL_DELTA_COUNTER_PUT = 7;
+        static final int COL_IV_PUT = 8;
+        static final int COL_MID_PUT = 9;
+        static final int COL_BIDASK_PUT = 10;
 
-        private final String[] cols = {"B/A", "Delta", "Delta q", "Strike", "Delta q", "Delta", "B/A"};
+        private final String[] cols = {"B/A", "Mid", "IV", "Delta", "Delta q", "Strike", "Delta q", "Delta", "IV", "Mid", "B/A"};
+        
+        private static final double OPTION_MULTIPLIER = 50.0;
+        private final BASE_CLIENT_OBJECT client;
 
         private static class Row {
             final double strike;
@@ -228,6 +236,10 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         private final List<Row> rows = new ArrayList<>();
         private double[][] prevValues = new double[0][0];
         private double[][] currValues = new double[0][0];
+
+        OptionsTableModel(BASE_CLIENT_OBJECT client) {
+            this.client = client;
+        }
 
         void setOptions(Options options) {
             this.options = options;
@@ -271,15 +283,100 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         private double[][] buildMatrixFromRows(List<Row> rs) {
             int rc = rs.size(), cc = getColumnCount();
             double[][] m = new double[rc][cc];
+            
+            double spotPrice = client != null ? client.getLast_price() : Double.NaN;
+            double interestRate = options != null ? options.getInterest_rate() : Double.NaN;
+            int daysToExp = options != null ? options.getDays_to_exp() : 0;
+            
             for (int r = 0; r < rc; r++) {
                 Row row = rs.get(r);
-                m[r][COL_DELTA_COUNTER_CALL] = (row.call != null) ? row.call.getDeltaCounter() : Double.NaN;
-                m[r][COL_DELTA_QUAN_COUNTER_CALL] = (row.call != null) ? row.call.getDeltaQuanCounter() : Double.NaN;
-                m[r][COL_BIDASK_CALL] = (row.call != null) ? row.call.getBidAskCounter() : Double.NaN;
+                
+                // Call columns
+                if (row.call != null) {
+                    m[r][COL_BIDASK_CALL] = row.call.getBidAskCounter();
+                    
+                    // Calculate Mid = (bid + ask) / 2
+                    int bid = row.call.getBid();
+                    int ask = row.call.getAsk();
+                    if (bid > 0 && ask > 0) {
+                        m[r][COL_MID_CALL] = (bid + ask) / 2.0;
+                        
+                        // Calculate IV
+                        double midPrice = m[r][COL_MID_CALL];
+                        double optionPriceInSpotUnits = midPrice / OPTION_MULTIPLIER;
+                        if (spotPrice > 0 && interestRate > 0 && daysToExp > 0 && optionPriceInSpotUnits > 0) {
+                            double iv = BlackScholesFormula.calculateImpliedVolatilityWithMultiplier(
+                                true, // Call
+                                spotPrice,
+                                row.strike,
+                                interestRate,
+                                daysToExp,
+                                midPrice,
+                                OPTION_MULTIPLIER
+                            );
+                            m[r][COL_IV_CALL] = (iv > 0) ? iv * 100 : Double.NaN; // Convert to percentage
+                        } else {
+                            m[r][COL_IV_CALL] = Double.NaN;
+                        }
+                    } else {
+                        m[r][COL_MID_CALL] = Double.NaN;
+                        m[r][COL_IV_CALL] = Double.NaN;
+                    }
+                    
+                    m[r][COL_DELTA_COUNTER_CALL] = row.call.getDeltaCounter();
+                    m[r][COL_DELTA_QUAN_COUNTER_CALL] = row.call.getDeltaQuanCounter();
+                } else {
+                    m[r][COL_BIDASK_CALL] = Double.NaN;
+                    m[r][COL_MID_CALL] = Double.NaN;
+                    m[r][COL_IV_CALL] = Double.NaN;
+                    m[r][COL_DELTA_COUNTER_CALL] = Double.NaN;
+                    m[r][COL_DELTA_QUAN_COUNTER_CALL] = Double.NaN;
+                }
+                
+                // Strike
                 m[r][COL_STRIKE] = row.strike;
-                m[r][COL_BIDASK_PUT] = (row.put != null) ? row.put.getBidAskCounter() : Double.NaN;
-                m[r][COL_DELTA_COUNTER_PUT] = (row.put != null) ? row.put.getDeltaCounter() : Double.NaN;
-                m[r][COL_DELTA_QUAN_COUNTER_PUT] = (row.put != null) ? row.put.getDeltaQuanCounter() : Double.NaN;
+                
+                // Put columns
+                if (row.put != null) {
+                    m[r][COL_BIDASK_PUT] = row.put.getBidAskCounter();
+                    
+                    // Calculate Mid = (bid + ask) / 2
+                    int bid = row.put.getBid();
+                    int ask = row.put.getAsk();
+                    if (bid > 0 && ask > 0) {
+                        m[r][COL_MID_PUT] = (bid + ask) / 2.0;
+                        
+                        // Calculate IV
+                        double midPrice = m[r][COL_MID_PUT];
+                        double optionPriceInSpotUnits = midPrice / OPTION_MULTIPLIER;
+                        if (spotPrice > 0 && interestRate > 0 && daysToExp > 0 && optionPriceInSpotUnits > 0) {
+                            double iv = BlackScholesFormula.calculateImpliedVolatilityWithMultiplier(
+                                false, // Put
+                                spotPrice,
+                                row.strike,
+                                interestRate,
+                                daysToExp,
+                                midPrice,
+                                OPTION_MULTIPLIER
+                            );
+                            m[r][COL_IV_PUT] = (iv > 0) ? iv * 100 : Double.NaN; // Convert to percentage
+                        } else {
+                            m[r][COL_IV_PUT] = Double.NaN;
+                        }
+                    } else {
+                        m[r][COL_MID_PUT] = Double.NaN;
+                        m[r][COL_IV_PUT] = Double.NaN;
+                    }
+                    
+                    m[r][COL_DELTA_COUNTER_PUT] = row.put.getDeltaCounter();
+                    m[r][COL_DELTA_QUAN_COUNTER_PUT] = row.put.getDeltaQuanCounter();
+                } else {
+                    m[r][COL_BIDASK_PUT] = Double.NaN;
+                    m[r][COL_MID_PUT] = Double.NaN;
+                    m[r][COL_IV_PUT] = Double.NaN;
+                    m[r][COL_DELTA_COUNTER_PUT] = Double.NaN;
+                    m[r][COL_DELTA_QUAN_COUNTER_PUT] = Double.NaN;
+                }
             }
             return m;
         }
@@ -385,6 +482,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         private final DecimalFormat fmtIntNoDec = new DecimalFormat("0");
         private final DecimalFormat fmtStrike0 = new DecimalFormat("#,##0");
         private final DecimalFormat fmtInt = new DecimalFormat("0"); // Delta q shown as int (change if needed)
+        private final DecimalFormat fmtMid = new DecimalFormat("0.0"); // Mid price with 1 decimal
+        private final DecimalFormat fmtIV = new DecimalFormat("0.00"); // IV as percentage with 2 decimals
 
         private static boolean isDeltaCounterCol(int col) {
             return col == OptionsTableModel.COL_DELTA_COUNTER_CALL ||
@@ -394,6 +493,16 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         private static boolean isBidAskCol(int col) {
             return col == OptionsTableModel.COL_BIDASK_CALL ||
                     col == OptionsTableModel.COL_BIDASK_PUT;
+        }
+
+        private static boolean isMidCol(int col) {
+            return col == OptionsTableModel.COL_MID_CALL ||
+                    col == OptionsTableModel.COL_MID_PUT;
+        }
+
+        private static boolean isIVCol(int col) {
+            return col == OptionsTableModel.COL_IV_CALL ||
+                    col == OptionsTableModel.COL_IV_PUT;
         }
 
         ChangeHighlightRenderer(OptionsTableModel model) {
@@ -420,6 +529,10 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                     txt = fmtStrike0.format(d);            // Strike: no decimals
                 } else if (isBidAskCol(column)) {
                     txt = fmtIntNoDec.format(d);           // B/A: no decimals
+                } else if (isMidCol(column)) {
+                    txt = fmtMid.format(d);                // Mid: 1 decimal
+                } else if (isIVCol(column)) {
+                    txt = fmtIV.format(d);                 // IV: percentage with 2 decimals
                 } else {
                     txt = fmtInt.format(d);                // Delta q: integer (change to "0.00" if desired)
                 }
@@ -438,6 +551,10 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                     tip = "Strike";
                 } else if (isBidAskCol(column)) {
                     tip = "Change: " + (diff >= 0 ? "+" : "") + fmtIntNoDec.format(diff);
+                } else if (isMidCol(column)) {
+                    tip = "Mid price change: " + (diff >= 0 ? "+" : "") + fmtMid.format(diff);
+                } else if (isIVCol(column)) {
+                    tip = "IV change: " + (diff >= 0 ? "+" : "") + fmtIV.format(diff) + "%";
                 } else {
                     tip = "Change: " + (diff >= 0 ? "+" : "") + fmtInt.format(diff);
                 }
@@ -453,8 +570,14 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                     if (d > 0) c.setForeground(getVAL_GREEN_FG());
                     else if (d < 0) c.setForeground(getVAL_RED_FG());
                     else c.setForeground(Themes.getTextColor());
+                } else if (isIVCol(column)) {
+                    // IV always normal text color
+                    c.setForeground(Themes.getTextColor());
+                } else if (isMidCol(column)) {
+                    // Mid price always normal text color
+                    c.setForeground(Themes.getTextColor());
                 } else {
-                    c.setForeground(Color.BLACK);
+                    c.setForeground(Themes.getTextColor());
                 }
             }
 
@@ -467,7 +590,9 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                         isDeltaCounterCol(column) ||
                                 column == OptionsTableModel.COL_DELTA_QUAN_COUNTER_CALL ||
                                 isBidAskCol(column) ||
-                                column == OptionsTableModel.COL_DELTA_QUAN_COUNTER_PUT;
+                                column == OptionsTableModel.COL_DELTA_QUAN_COUNTER_PUT ||
+                                isMidCol(column) ||
+                                isIVCol(column);
 
                 int dir = paintable ? model.getChangeDirection(row, column) : 0;
                 if (dir > 0) {

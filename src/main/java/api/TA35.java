@@ -186,14 +186,14 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
         setTimeSeriesHandler(timeSeriesHandler);
 
-        timeSeriesHandler.put_id(Factories.TimeSeries.INDEX, 5);
-        timeSeriesHandler.put_id(Factories.TimeSeries.BID, 22);
-        timeSeriesHandler.put_id(Factories.TimeSeries.ASK, 21);
+        timeSeriesHandler.put_id(Factories.TimeSeries.INDEX, 10182);
+        timeSeriesHandler.put_id(Factories.TimeSeries.BID, 10180);
+        timeSeriesHandler.put_id(Factories.TimeSeries.ASK, 10181);
         timeSeriesHandler.put_id(Factories.TimeSeries.MID_DEV, 11997);
-        timeSeriesHandler.put_id(Factories.TimeSeries.LAST_PRICE, 5);
+        timeSeriesHandler.put_id(Factories.TimeSeries.LAST_PRICE, 10182);
         timeSeriesHandler.put_id(Factories.TimeSeries.BASKETS, 9513);
-        timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_WEEK, 23);
-        timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_MONTH, 6);
+        timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_WEEK, 10183);
+        timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_MONTH, 10184);
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_AVG_240_CONTINUE, 9486);
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_AVG_WEEK_60, 9484);
         timeSeriesHandler.put_id(Factories.TimeSeries.OP_AVG_WEEK_15, 9485);
