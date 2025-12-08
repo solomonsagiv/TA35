@@ -42,6 +42,9 @@ public class CalcsService extends MyBaseService {
         }
 
         if (counter % 10_000 == 0) {
+            
+            client.getExps().getMonth().getOptions().calcIv();
+
             if(writer != null) {
                 writer.write_iv();
             }   else {

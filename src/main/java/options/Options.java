@@ -1,6 +1,7 @@
 package options;
 
 import api.BASE_CLIENT_OBJECT;
+import blackScholes.BlackScholesFormula;
 import myJson.IJsonData;
 import myJson.JsonStrings;
 import myJson.MyJson;
@@ -303,5 +304,24 @@ public class Options implements IJsonData {
         return strikes.stream()
                 .min(Comparator.comparingDouble(s -> Math.abs(s.getStrike() - underlying)))
                 .orElse(null);
+    }
+
+
+    // Calcs IV
+    public void calcIv() {
+        for (Option option : optionsList) {
+            boolean isCall = false;
+            if (option.getSide().equals("CALL")) { 
+                isCall = true;
+            } else if (option.getSide().equals("PUT")) {
+                isCall = false;
+            }
+            // Use isCall for logic as before; adjust so logical checks make sense
+            if (option.getStrike() > client.getMid()) {
+                option.setIv(BlackScholesFormula.calculateImpliedVolatility(isCall, client.getMid(), option.getStrike(), getInterest_rate(), getDays_to_exp(), option.getMid()));
+            } else {
+                option.setIv(BlackScholesFormula.calculateImpliedVolatility(isCall, client.getMid(), option.getStrike(), getInterest_rate(), getDays_to_exp(), option.getMid()));
+            }
+        }
     }
 }
