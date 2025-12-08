@@ -80,8 +80,10 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     public OptionsTableWindow(BASE_CLIENT_OBJECT client, String title, Options options) throws HeadlessException {
         super(client, title);
         this.optionsRef = options;
-        initialize();
-        table.refresh();
+        // initialize() is already called by super()
+        if (table != null) {
+            table.refresh();
+        }
         startRunner();
     }
 
@@ -91,6 +93,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
     @Override
     public void initialize() {
+        // Remove any existing components to avoid duplicates
+        getContentPane().removeAll();
         setLayout(new BorderLayout());
 
         // KPIs
@@ -110,10 +114,14 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         controlPanel.add(createColumn("Green stocks:", kpi4));
         add(controlPanel, BorderLayout.NORTH);
 
-        // Table
+        // Table - create only once
         table = new OptionsTable(client);
         table.setOptions(optionsRef);
         add(new JScrollPane(table), BorderLayout.CENTER);
+        
+        // Force layout update
+        revalidate();
+        repaint();
     }
 
     private static JPanel createColumn(String labelText, JTextField textField) {
