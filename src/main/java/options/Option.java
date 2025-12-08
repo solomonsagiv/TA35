@@ -44,6 +44,7 @@ public class Option implements IJsonData {
 	private double delta = 0;
 	private int pre_bid = 0;
 	private int pre_ask = 0;
+	private double iv = 0;
 
 	// מחזיקים שני מצבים אחרונים בלבד
 	private final Deque<Integer> cycleState = new ArrayDeque<>(2);
@@ -188,6 +189,9 @@ public class Option implements IJsonData {
 
 	public int getMid() { return mid; }
 	public void setMid(int mid) { this.mid = mid; }
+
+	public double getIv() { return iv; }
+	public void setIv(double iv) { this.iv = iv; }
 
 	public int getDeltaCounter() { return deltaCounter; }
 	public void setDeltaCounter(int deltaCounter) { this.deltaCounter = deltaCounter; }

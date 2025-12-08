@@ -48,7 +48,7 @@ public class Writer {
 		for (Strike strike : strikes) {
 			try {
 				conversation.poke(L.cell(start_row, strike_col), String.valueOf(strike.getStrike()));
-				conversation.poke(L.cell(start_row, iv_col), String.valueOf(strike.getVolatility()));
+				conversation.poke(L.cell(start_row, iv_col), String.valueOf(strike.getIv()));
 				start_row++;
 			} catch (DDEException e) {
 				e.printStackTrace();

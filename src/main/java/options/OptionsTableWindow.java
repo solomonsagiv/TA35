@@ -2,7 +2,6 @@ package options;
 
 import api.BASE_CLIENT_OBJECT;
 import api.TA35;
-import blackScholes.BlackScholesFormula;
 import gui.MyGuiComps;
 import locals.Themes;
 
@@ -16,7 +15,7 @@ import java.util.List;
 
 /**
  * Options Table Window (styled + background refresh + cross-platform fonts)
- * Columns: B/A | Mid | IV | Delta | Delta q | Strike | Delta q | Delta | IV | Mid | B/A
+ * Columns: B/A | Delta | Delta q | Mid | IV | Strike | IV | Mid | Delta q | Delta | B/A
  */
 public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
@@ -193,7 +192,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
         private void setNiceColumnWidths() {
             TableColumnModel cm = getColumnModel();
-            int[] widths = {70, 70, 75, 80, 80, 100, 80, 80, 75, 70, 70}; // B/A | Mid | IV | Delta | Delta q | Strike | Delta q | Delta | IV | Mid | B/A
+            int[] widths = {70, 80, 80, 70, 75, 100, 75, 70, 80, 80, 70}; // B/A | Delta | Delta q | Mid | IV | Strike | IV | Mid | Delta q | Delta | B/A
             for (int i = 0; i < widths.length && i < cm.getColumnCount(); i++) {
                 cm.getColumn(i).setPreferredWidth(widths[i]);
             }
@@ -204,18 +203,18 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
     static class OptionsTableModel extends AbstractTableModel {
         static final int COL_BIDASK_CALL = 0;
-        static final int COL_MID_CALL = 1;
-        static final int COL_IV_CALL = 2;
-        static final int COL_DELTA_COUNTER_CALL = 3;
-        static final int COL_DELTA_QUAN_COUNTER_CALL = 4;
+        static final int COL_DELTA_COUNTER_CALL = 1;
+        static final int COL_DELTA_QUAN_COUNTER_CALL = 2;
+        static final int COL_MID_CALL = 3;
+        static final int COL_IV_CALL = 4;
         static final int COL_STRIKE = 5;
-        static final int COL_DELTA_QUAN_COUNTER_PUT = 6;
-        static final int COL_DELTA_COUNTER_PUT = 7;
-        static final int COL_IV_PUT = 8;
-        static final int COL_MID_PUT = 9;
+        static final int COL_IV_PUT = 6;
+        static final int COL_MID_PUT = 7;
+        static final int COL_DELTA_QUAN_COUNTER_PUT = 8;
+        static final int COL_DELTA_COUNTER_PUT = 9;
         static final int COL_BIDASK_PUT = 10;
 
-        private final String[] cols = {"B/A", "Mid", "IV", "Delta", "Delta q", "Strike", "Delta q", "Delta", "IV", "Mid", "B/A"};
+        private final String[] cols = {"B/A", "Delta", "Delta q", "Mid", "IV", "Strike", "IV", "Mid", "Delta q", "Delta", "B/A"};
         
         private static final double OPTION_MULTIPLIER = 50.0;
         private final BASE_CLIENT_OBJECT client;
@@ -284,98 +283,82 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             int rc = rs.size(), cc = getColumnCount();
             double[][] m = new double[rc][cc];
             
-            double spotPrice = client != null ? client.getLast_price() : Double.NaN;
-            double interestRate = options != null ? options.getInterest_rate() : Double.NaN;
-            int daysToExp = options != null ? options.getDays_to_exp() : 0;
-            
             for (int r = 0; r < rc; r++) {
                 Row row = rs.get(r);
                 
-                // Call columns
+                // Call columns: B/A | Delta | Delta q | Mid | IV
                 if (row.call != null) {
                     m[r][COL_BIDASK_CALL] = row.call.getBidAskCounter();
-                    
-                    // Calculate Mid = (bid + ask) / 2
-                    int bid = row.call.getBid();
-                    int ask = row.call.getAsk();
-                    if (bid > 0 && ask > 0) {
-                        m[r][COL_MID_CALL] = (bid + ask) / 2.0;
-                        
-                        // Calculate IV
-                        double midPrice = m[r][COL_MID_CALL];
-                        double optionPriceInSpotUnits = midPrice / OPTION_MULTIPLIER;
-                        if (spotPrice > 0 && interestRate > 0 && daysToExp > 0 && optionPriceInSpotUnits > 0) {
-                            double iv = BlackScholesFormula.calculateImpliedVolatilityWithMultiplier(
-                                true, // Call
-                                spotPrice,
-                                row.strike,
-                                interestRate,
-                                daysToExp,
-                                midPrice,
-                                OPTION_MULTIPLIER
-                            );
-                            m[r][COL_IV_CALL] = (iv > 0) ? iv * 100 : Double.NaN; // Convert to percentage
-                        } else {
-                            m[r][COL_IV_CALL] = Double.NaN;
-                        }
-                    } else {
-                        m[r][COL_MID_CALL] = Double.NaN;
-                        m[r][COL_IV_CALL] = Double.NaN;
-                    }
-                    
                     m[r][COL_DELTA_COUNTER_CALL] = row.call.getDeltaCounter();
                     m[r][COL_DELTA_QUAN_COUNTER_CALL] = row.call.getDeltaQuanCounter();
+                    
+                    // Update Mid from option
+                    int mid = row.call.getMid();
+                    if (mid > 0) {
+                        m[r][COL_MID_CALL] = mid;
+                    } else {
+                        // Fallback: calculate from bid/ask
+                        int bid = row.call.getBid();
+                        int ask = row.call.getAsk();
+                        if (bid > 0 && ask > 0) {
+                            m[r][COL_MID_CALL] = (bid + ask) / 2.0;
+                        } else {
+                            m[r][COL_MID_CALL] = Double.NaN;
+                        }
+                    }
+                    
+                    // Update IV from option
+                    double ivFromOption = row.call.getIv();
+                    if (ivFromOption > 0) {
+                        m[r][COL_IV_CALL] = ivFromOption * 100; // Convert to percentage
+                    } else {
+                        m[r][COL_IV_CALL] = Double.NaN;
+                    }
                 } else {
                     m[r][COL_BIDASK_CALL] = Double.NaN;
-                    m[r][COL_MID_CALL] = Double.NaN;
-                    m[r][COL_IV_CALL] = Double.NaN;
                     m[r][COL_DELTA_COUNTER_CALL] = Double.NaN;
                     m[r][COL_DELTA_QUAN_COUNTER_CALL] = Double.NaN;
+                    m[r][COL_MID_CALL] = Double.NaN;
+                    m[r][COL_IV_CALL] = Double.NaN;
                 }
                 
                 // Strike
                 m[r][COL_STRIKE] = row.strike;
                 
-                // Put columns
+                // Put columns: IV | Mid | Delta q | Delta | B/A
                 if (row.put != null) {
-                    m[r][COL_BIDASK_PUT] = row.put.getBidAskCounter();
-                    
-                    // Calculate Mid = (bid + ask) / 2
-                    int bid = row.put.getBid();
-                    int ask = row.put.getAsk();
-                    if (bid > 0 && ask > 0) {
-                        m[r][COL_MID_PUT] = (bid + ask) / 2.0;
-                        
-                        // Calculate IV
-                        double midPrice = m[r][COL_MID_PUT];
-                        double optionPriceInSpotUnits = midPrice / OPTION_MULTIPLIER;
-                        if (spotPrice > 0 && interestRate > 0 && daysToExp > 0 && optionPriceInSpotUnits > 0) {
-                            double iv = BlackScholesFormula.calculateImpliedVolatilityWithMultiplier(
-                                false, // Put
-                                spotPrice,
-                                row.strike,
-                                interestRate,
-                                daysToExp,
-                                midPrice,
-                                OPTION_MULTIPLIER
-                            );
-                            m[r][COL_IV_PUT] = (iv > 0) ? iv * 100 : Double.NaN; // Convert to percentage
-                        } else {
-                            m[r][COL_IV_PUT] = Double.NaN;
-                        }
+                    // Update Mid from option
+                    int mid = row.put.getMid();
+                    if (mid > 0) {
+                        m[r][COL_MID_PUT] = mid;
                     } else {
-                        m[r][COL_MID_PUT] = Double.NaN;
+                        // Fallback: calculate from bid/ask
+                        int bid = row.put.getBid();
+                        int ask = row.put.getAsk();
+                        if (bid > 0 && ask > 0) {
+                            m[r][COL_MID_PUT] = (bid + ask) / 2.0;
+                        } else {
+                            m[r][COL_MID_PUT] = Double.NaN;
+                        }
+                    }
+                    
+                    // Update IV from option
+                    double ivFromOption = row.put.getIv();
+                    if (ivFromOption > 0) {
+                        m[r][COL_IV_PUT] = ivFromOption * 100; // Convert to percentage
+                    } else {
                         m[r][COL_IV_PUT] = Double.NaN;
                     }
                     
-                    m[r][COL_DELTA_COUNTER_PUT] = row.put.getDeltaCounter();
                     m[r][COL_DELTA_QUAN_COUNTER_PUT] = row.put.getDeltaQuanCounter();
+                    m[r][COL_DELTA_COUNTER_PUT] = row.put.getDeltaCounter();
+                    m[r][COL_BIDASK_PUT] = row.put.getBidAskCounter();
                 } else {
-                    m[r][COL_BIDASK_PUT] = Double.NaN;
-                    m[r][COL_MID_PUT] = Double.NaN;
                     m[r][COL_IV_PUT] = Double.NaN;
-                    m[r][COL_DELTA_COUNTER_PUT] = Double.NaN;
+                    m[r][COL_MID_PUT] = Double.NaN;
                     m[r][COL_DELTA_QUAN_COUNTER_PUT] = Double.NaN;
+                    m[r][COL_DELTA_COUNTER_PUT] = Double.NaN;
+                    m[r][COL_BIDASK_PUT] = Double.NaN;
                 }
             }
             return m;

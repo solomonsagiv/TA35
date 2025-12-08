@@ -7,7 +7,7 @@ public class Strike {
 	private Option call;
 	private Option put;
 	private double strike;
-	private double volatility;
+	private double iv;
 	// Constructors
 	public Strike() {}
 
@@ -31,8 +31,12 @@ public class Strike {
 	public double getStrike() { return strike; }
 	public void setStrike(double strike) { this.strike = strike; }
 
-	public double getVolatility() { return volatility; }
-	public void setVolatility(double volatility) { this.volatility = volatility; }
+	public double getIv() { return iv; }
+	public void setIv(double volatility) { 
+		this.iv = volatility;
+		call.setIv(iv);
+		put.setIv(iv);
+	 }
 
 	// --- Helpers ---
 	public boolean hasCall() { return call != null; }

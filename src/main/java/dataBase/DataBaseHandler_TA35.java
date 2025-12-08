@@ -161,7 +161,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                     s = new Strike(strike);
                     client.getExps().getWeek().getOptions().addStrike(s);
                 }
-                s.setVolatility(volatility);
+                s.setIv(volatility);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,7 +192,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                     s = new Strike(strike);
                     client.getExps().getMonth().getOptions().addStrike(s);
                 }
-                s.setVolatility(volatility);
+                s.setIv(volatility);
             }
         } catch (Exception e) {
             e.printStackTrace();
