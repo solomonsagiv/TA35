@@ -309,18 +309,11 @@ public class Options implements IJsonData {
 
     // Calcs IV
     public void calcIv() {
-        for (Option option : optionsList) {
-            boolean isCall = false;
-            if (option.getSide().equals("CALL")) { 
-                isCall = true;
-            } else if (option.getSide().equals("PUT")) {
-                isCall = false;
-            }
-            // Use isCall for logic as before; adjust so logical checks make sense
-            if (option.getStrike() > client.getMid()) {
-                option.setIv(BlackScholesFormula.calculateImpliedVolatility(isCall, client.getMid(), option.getStrike(), getInterest_rate(), getDays_to_exp(), option.getMid()));
+        for (Strike strike : strikes) {
+            if (strike.getStrike() > client.getMid()) {
+                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(true, client.getMid(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getCall().getMid()));
             } else {
-                option.setIv(BlackScholesFormula.calculateImpliedVolatility(isCall, client.getMid(), option.getStrike(), getInterest_rate(), getDays_to_exp(), option.getMid()));
+                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(false, client.getMid(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getPut().getMid()));
             }
         }
     }

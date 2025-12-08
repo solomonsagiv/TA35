@@ -49,6 +49,7 @@ public abstract class BASE_CLIENT_OBJECT {
                 top_weight_counter_2 = 0,
                 total_delta = 0, 
                 counter2_table_avg = 0;
+    
 
 
 
