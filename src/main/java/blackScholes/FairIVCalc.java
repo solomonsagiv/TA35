@@ -366,6 +366,12 @@ public class FairIVCalc {
             Strike strike = optionsMonth.getStrike(result.strike);
             if (strike != null) {
                 strike.setFairIv(result.fairIV);
+                // Debug: אם fairIV הוא 0 או NaN, זה אומר שהחישוב לא הצליח
+                if (Double.isNaN(result.fairIV) || result.fairIV <= 0) {
+                    System.out.println("Warning: FairIV calculation returned invalid value for strike " + result.strike + ": " + result.fairIV);
+                }
+            } else {
+                System.out.println("Warning: Strike " + result.strike + " not found in options for FairIV update");
             }
         }
         

@@ -110,10 +110,14 @@ public class CalcsService extends MyBaseService {
             if (closes != null && closes.length >= 21) {
                 // חישוב ועדכון Fair IV
                 FairIVCalc.calculateAndUpdateFairIV(monthOptions, closes);
+                System.out.println("FairIV calculation completed for " + monthOptions.getStrikes().size() + " strikes");
+            } else {
+                System.out.println("Warning: Not enough historical closes data. closes=" + (closes != null ? closes.length : 0));
             }
             // אם אין מספיק נתונים, פשוט לא מחשבים Fair IV
         } catch (Exception e) {
             // Log error but don't break the service
+            System.err.println("Error in calcFairIv: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -121,18 +125,24 @@ public class CalcsService extends MyBaseService {
     /**
      * מעדכן את רשימת מחירי הסגירה של INDEX מה-INDEX time series
      * שומר את הרשימה ב-BASE_CLIENT_OBJECT
-     * רץ רק פעם אחת - לא בלולאה
+     * רץ רק פעם אחת או אם הרשימה ריקה/לא מספיקה
      */
     private void updateIndexClosesList() {
-        // בדיקה אם הרשימה כבר מאותחלת - אם כן, לא לעדכן שוב
-        if (indexClosesListInitialized) {
-            return;
-        }
-
-        // בדיקה נוספת - אם הרשימה כבר קיימת ויש בה מספיק נתונים, לא לטעון שוב
+        // בדיקה אם הרשימה כבר קיימת ויש בה מספיק נתונים (לפחות 20)
         ArrayList<Double> existingList = client.getIndex_closes_list();
         if (existingList != null && existingList.size() >= 20) {
             indexClosesListInitialized = true;
+            return;
+        }
+
+        // אם הרשימה כבר מאותחלת אבל אין מספיק נתונים, נטען שוב (רק פעם אחת)
+        if (indexClosesListInitialized && (existingList == null || existingList.size() < 20)) {
+            // Reset flag to allow one more attempt
+            indexClosesListInitialized = false;
+        }
+
+        // בדיקה אם כבר ניסינו לטעון - אם כן, לא לעדכן שוב (להימנע מלולאה)
+        if (indexClosesListInitialized) {
             return;
         }
 

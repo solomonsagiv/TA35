@@ -366,9 +366,11 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                 double fairIv = Double.NaN;
                 if (row.strikeObj != null) {
                     fairIv = row.strikeObj.getFairIv();
-                    if (fairIv > 0) {
+                    // Display Fair IV if it's a valid positive number (greater than 0.0001 to avoid rounding issues)
+                    if (!Double.isNaN(fairIv) && fairIv > 0.0001) {
                         m[r][COL_FAIR_IV] = fairIv * 100; // Convert to percentage
                     } else {
+                        // If fairIv is 0 or NaN, it means it hasn't been calculated yet
                         m[r][COL_FAIR_IV] = Double.NaN;
                         fairIv = Double.NaN;
                     }
@@ -379,7 +381,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                 // IV chg - difference between IV and Fair IV (mispricing)
                 // Formula: (IV / Fair IV - 1) * 100
                 double strikeIv = row.strikeObj != null ? row.strikeObj.getIv() : Double.NaN;
-                if (!Double.isNaN(strikeIv) && strikeIv > 0 && !Double.isNaN(fairIv) && fairIv > 0) {
+                if (!Double.isNaN(strikeIv) && strikeIv > 0.0001 && !Double.isNaN(fairIv) && fairIv > 0.0001) {
                     m[r][COL_IV_CHG] = (strikeIv / fairIv - 1.0) * 100.0; // Percentage difference
                 } else {
                     m[r][COL_IV_CHG] = Double.NaN;
