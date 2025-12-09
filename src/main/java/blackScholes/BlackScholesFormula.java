@@ -232,7 +232,7 @@ public class BlackScholesFormula {
                                                      double interestRate, int daysToExpiration, double optionPrice) {
         
         // המרת ימים לשנים
-        double timeToExpire = daysToExpiration / 365.0;
+        double timeToExpire = daysToExpiration / 360.0;
         
         // בדיקת תקינות קלט
         if (timeToExpire <= 0 || spotPrice <= 0 || strike <= 0 || optionPrice <= 0) {

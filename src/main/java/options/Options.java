@@ -21,6 +21,7 @@ public class Options implements IJsonData {
 
     private double interest_rate = 0;
     private int days_to_exp = 0;
+    double multiplier = 50.0;
 
     // --- Collections ---
     private final List<Strike> strikes;                       // לשמירה על סדר/איטרציה
@@ -311,9 +312,9 @@ public class Options implements IJsonData {
     public void calcIv() {
         for (Strike strike : strikes) {
             if (strike.getStrike() > client.getMid()) {
-                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(true, getContract(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getCall().getMid()));
+                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(true, getContract(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getCall().getMid() / multiplier));
             } else {
-                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(false, getContract(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getPut().getMid()));
+                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(false, getContract(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getPut().getMid() / multiplier));
             }
         }
     }
