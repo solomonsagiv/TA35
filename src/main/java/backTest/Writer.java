@@ -3,6 +3,7 @@ package backTest;
 import api.TA35;
 import api.dde.DDE.DDEConnection;
 import locals.L;
+import options.Options;
 import options.Strike;
 
 import java.util.List;
@@ -18,6 +19,10 @@ public class Writer {
 
 	int strike_col = 2;
 	int iv_col = 3;
+	int mid_col = 4;
+	int interest_col = 5;
+	int days_to_exp_col = 6;
+	int contract_col = 7;
 
 	// Write to JText field
 	public Writer(TA35 ta35) {
@@ -45,10 +50,16 @@ public class Writer {
 
 		// Month
 		strikes = ta35.getExps().getMonth().getOptions().getStrikes();
+
+		Options options = ta35.getExps().getMonth().getOptions();
 		for (Strike strike : strikes) {
 			try {
 				conversation.poke(L.cell(start_row, strike_col), String.valueOf(strike.getStrike()));
 				conversation.poke(L.cell(start_row, iv_col), String.valueOf(strike.getIv()));
+				conversation.poke(L.cell(start_row, mid_col), String.valueOf(ta35.getMid()));
+				conversation.poke(L.cell(start_row, interest_col), String.valueOf(options.getInterest_rate()));
+				conversation.poke(L.cell(start_row, days_to_exp_col), String.valueOf(options.getDays_to_exp()));
+				conversation.poke(L.cell(start_row, contract_col), String.valueOf(options.getContract()));
 				start_row++;
 			} catch (DDEException e) {
 				e.printStackTrace();

@@ -311,9 +311,9 @@ public class Options implements IJsonData {
     public void calcIv() {
         for (Strike strike : strikes) {
             if (strike.getStrike() > client.getMid()) {
-                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(true, client.getMid(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getCall().getMid()));
+                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(true, getContract(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getCall().getMid()));
             } else {
-                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(false, client.getMid(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getPut().getMid()));
+                strike.setIv(BlackScholesFormula.calculateImpliedVolatility(false, getContract(), strike.getStrike(), getInterest_rate(), getDays_to_exp(), strike.getPut().getMid()));
             }
         }
     }
