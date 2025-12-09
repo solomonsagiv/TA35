@@ -178,7 +178,7 @@ public class NewDataReaderService extends MyBaseService {
                 // call.setAsk((int) Math.round(getValue(callAsks, i)));
                 // call.setVolume((int) Math.round(getValue(callVolumes, i)));
                 // call.setLast((int) Math.round(getValue(callLasts, i)));
-                call.setMid((int) Math.round(getValue(callMids, i)));
+                call.setMid((int) getValue(callMids, i));
             }
 
             Option put = options.getOption(Option.Side.PUT, strike);
@@ -187,7 +187,7 @@ public class NewDataReaderService extends MyBaseService {
                 // put.setAsk((int) Math.round(getValue(putAsks, i)));
                 // put.setVolume((int) Math.round(getValue(putVolumes, i)));
                 // put.setLast((int) Math.round(getValue(putLasts, i)));
-                put.setMid((int) Math.round(getValue(putMids, i)));
+                put.setMid((int) getValue(putMids, i));
             }
         }
     }
