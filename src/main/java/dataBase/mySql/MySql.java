@@ -142,6 +142,36 @@ public class MySql {
         return MySql.select(query, connectionType);
     }
 
+    /**
+     * מקבל 20 ימי מסחר אחרונים של INDEX time series
+     * מחזיר את המחיר האחרון של כל יום (מסונן לפי weekday - רק ימי שבוע)
+     * 
+     * @param serie_id ID של time series (למשל 10182 עבור INDEX)
+     * @param connectionType סוג חיבור למסד הנתונים
+     * @return רשימה של maps עם 'day' ו-'value' - מהישן לחדש
+     */
+    public static List<Map<String, Object>> get_last_20_trading_days_closes(int serie_id, String connectionType) {
+        String q = "WITH daily_closes AS (\n" +
+                "  SELECT \n" +
+                "    date_trunc('day', time) as day,\n" +
+                "    (array_agg(value ORDER BY time DESC))[1] as last_price\n" +
+                "  FROM ts.timeseries_data\n" +
+                "  WHERE timeseries_id = %d\n" +
+                "    AND value IS NOT NULL\n" +
+                "    AND EXTRACT(DOW FROM time) BETWEEN 1 AND 5\n" +  // Only weekdays (1=Monday, 5=Friday)
+                "    AND time >= NOW() - INTERVAL '35 days'\n" +      // Get enough days to ensure 20 trading days
+                "  GROUP BY date_trunc('day', time)\n" +
+                "  ORDER BY day DESC\n" +
+                "  LIMIT 20\n" +
+                ")\n" +
+                "SELECT day, last_price as value\n" +
+                "FROM daily_closes\n" +
+                "ORDER BY day ASC;";  // Return oldest to newest
+        
+        String query = String.format(q, serie_id);
+        return MySql.select(query, connectionType);
+    }
+
 
     public static String load_stocks_excel_file_location(String connection_type) {
         String query = "select data\n" +

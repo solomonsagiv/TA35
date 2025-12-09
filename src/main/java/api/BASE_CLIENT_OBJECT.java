@@ -54,6 +54,7 @@ public abstract class BASE_CLIENT_OBJECT {
 
 
     private L.FixedSizeDoubleList roll_interest_list, spot_interest_list;
+    private java.util.ArrayList<Double> index_closes_list;  // List of last 20 trading days closing prices
 
     public BASE_CLIENT_OBJECT() {
         init_name();
@@ -66,6 +67,7 @@ public abstract class BASE_CLIENT_OBJECT {
         init_stocks_reader_service();
         roll_interest_list = new L.FixedSizeDoubleList(10);
         spot_interest_list = new L.FixedSizeDoubleList(10);
+        index_closes_list = new java.util.ArrayList<>();
     }
 
     protected abstract void init_race_service();
@@ -426,5 +428,13 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public void setCounter2_table_avg(double counter2_table_avg) {
         this.counter2_table_avg = counter2_table_avg;
+    }
+
+    public java.util.ArrayList<Double> getIndex_closes_list() {
+        return index_closes_list;
+    }
+
+    public void setIndex_closes_list(java.util.ArrayList<Double> index_closes_list) {
+        this.index_closes_list = index_closes_list;
     }
 }

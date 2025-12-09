@@ -45,6 +45,7 @@ public class Option implements IJsonData {
 	private int pre_bid = 0;
 	private int pre_ask = 0;
 	private double iv = 0;
+	private double fairIv = 0;  // Fair IV from FairIVCalc calculation
 
 	// מחזיקים שני מצבים אחרונים בלבד
 	private final Deque<Integer> cycleState = new ArrayDeque<>(2);
@@ -192,6 +193,9 @@ public class Option implements IJsonData {
 
 	public double getIv() { return iv; }
 	public void setIv(double iv) { this.iv = iv; }
+
+	public double getFairIv() { return fairIv; }
+	public void setFairIv(double fairIv) { this.fairIv = fairIv; }
 
 	public int getDeltaCounter() { return deltaCounter; }
 	public void setDeltaCounter(int deltaCounter) { this.deltaCounter = deltaCounter; }

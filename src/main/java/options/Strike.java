@@ -8,6 +8,7 @@ public class Strike {
 	private Option put;
 	private double strike;
 	private double iv;
+	private double fairIv = 0;  // Fair IV from FairIVCalc calculation
 	// Constructors
 	public Strike() {}
 
@@ -34,9 +35,16 @@ public class Strike {
 	public double getIv() { return iv; }
 	public void setIv(double volatility) { 
 		this.iv = volatility;
-		call.setIv(iv);
-		put.setIv(iv);
-	 }
+		if (call != null) call.setIv(iv);
+		if (put != null) put.setIv(iv);
+	}
+
+	public double getFairIv() { return fairIv; }
+	public void setFairIv(double fairIv) { 
+		this.fairIv = fairIv;
+		if (call != null) call.setFairIv(fairIv);
+		if (put != null) put.setFairIv(fairIv);
+	}
 
 	// --- Helpers ---
 	public boolean hasCall() { return call != null; }
