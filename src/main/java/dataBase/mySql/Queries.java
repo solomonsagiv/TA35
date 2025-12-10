@@ -396,6 +396,145 @@ public class Queries {
 
     }
 
+    // ==================== Options Snapshots ====================
+
+    /**
+     * Get the last snapshot of options for a specific index_id
+     * @param indexId The index identifier (e.g., 'ta35w', 'ta35m')
+     * @param connectionType Database connection type
+     * @return List of option snapshots from the last timestamp
+     */
+    public static List<Map<String, Object>> getLastOptionsSnapshot(String indexId, String connectionType) {
+        String query = String.format(
+            "SELECT *\n" +
+            "FROM sagiv.options_snapshots\n" +
+            "WHERE index_id = '%s'\n" +
+            "  AND time = (\n" +
+            "    SELECT MAX(time)\n" +
+            "    FROM sagiv.options_snapshots\n" +
+            "    WHERE index_id = '%s'\n" +
+            "  )\n" +
+            "ORDER BY strike;",
+            sqlEscape(indexId), sqlEscape(indexId)
+        );
+        return MySql.select(query, connectionType);
+    }
+
+    /**
+     * Get the last snapshot of options for all indices
+     * @param connectionType Database connection type
+     * @return List of option snapshots from the last timestamp across all indices
+     */
+    public static List<Map<String, Object>> getLastOptionsSnapshotAll(String connectionType) {
+        String query = "SELECT *\n" +
+            "FROM sagiv.options_snapshots\n" +
+            "WHERE time = (\n" +
+            "    SELECT MAX(time)\n" +
+            "    FROM sagiv.options_snapshots\n" +
+            "  )\n" +
+            "ORDER BY index_id, strike;";
+        return MySql.select(query, connectionType);
+    }
+
+    /**
+     * Insert options snapshot for all strikes in an Options object
+     * @param options The Options object containing strikes and their data
+     * @param indexId The index identifier (e.g., 'ta35w', 'ta35m')
+     * @param connectionType Database connection type
+     */
+    public static void insertOptionsSnapshot(options.Options options, String indexId, String connectionType) {
+        if (options == null || options.getStrikes() == null || options.getStrikes().isEmpty()) {
+            return;
+        }
+
+        // Fixed timestamp for all rows (UTC ISO-8601)
+        String ts = java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC).toString();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO sagiv.options_snapshots (time, index_id, strike, last, volume, iv, fair_iv, index_price, days_to_exp, delta, delta_counter, counter) VALUES ");
+
+        java.util.List<options.Strike> strikes = options.getStrikes();
+        int rowCount = 0;
+
+        for (options.Strike strike : strikes) {
+            if (strike == null) continue;
+
+            // Get strike-level data
+            int strikeInt = (int) Math.round(strike.getStrike());
+            double strikeIv = strike.getIv();
+            double strikeFairIv = strike.getFairIv();
+            
+            // Index price from contract
+            double indexPrice = options.getContract();
+            double daysToExp = options.getDays_to_exp();
+
+            // Get option data - prefer Call, otherwise use Put, otherwise strike-level only
+            options.Option call = strike.getCall();
+            options.Option put = strike.getPut();
+            options.Option option = (call != null) ? call : put;
+
+            if (rowCount > 0) sb.append(", ");
+
+            // Prepare values - use option data if available, otherwise strike-level
+            String lastVal, volumeVal, ivVal, fairIvVal, deltaVal;
+            int deltaCounterVal, counterVal;
+
+            if (option != null) {
+                // Use option-level data
+                double last = option.getLast() / 100.0; // Convert from int (cents) to numeric
+                double volume = option.getVolume();
+                double iv = option.getIv() > 0 ? option.getIv() : strikeIv;
+                double fairIv = option.getFairIv() > 0 ? option.getFairIv() : strikeFairIv;
+                double delta = option.getDelta();
+
+                lastVal = formatNum(last);
+                volumeVal = formatNum(volume);
+                ivVal = formatNum(iv);
+                fairIvVal = formatNum(fairIv);
+                deltaVal = formatNum(delta);
+                deltaCounterVal = option.getDeltaCounter();
+                counterVal = option.getBidAskCounter();
+            } else {
+                // Use strike-level data only
+                lastVal = "NULL";
+                volumeVal = "NULL";
+                ivVal = formatNum(strikeIv);
+                fairIvVal = formatNum(strikeFairIv);
+                deltaVal = "NULL";
+                deltaCounterVal = 0;
+                counterVal = 0;
+            }
+
+            sb.append("(")
+                .append("'").append(sqlEscape(ts)).append("'::timestamptz, ")
+                .append("'").append(sqlEscape(indexId)).append("', ")
+                .append(strikeInt).append(", ")
+                .append(lastVal).append(", ")
+                .append(volumeVal).append(", ")
+                .append(ivVal).append(", ")
+                .append(fairIvVal).append(", ")
+                .append(formatNum(indexPrice)).append(", ")
+                .append(formatNum(daysToExp)).append(", ")
+                .append(deltaVal).append(", ")
+                .append(deltaCounterVal).append(", ")
+                .append(counterVal)
+                .append(")");
+            rowCount++;
+        }
+
+        if (rowCount == 0) {
+            return; // No data to insert
+        }
+
+        sb.append(";");
+
+        String sql = sb.toString();
+
+        // Log + execute
+        System.out.println("Executing options snapshot insert: " + rowCount + " rows for index_id=" + indexId);
+        MySql.insert(sql, connectionType);
+    }
+
     /**
      * Helpers
      **/

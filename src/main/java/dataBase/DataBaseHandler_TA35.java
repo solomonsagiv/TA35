@@ -113,9 +113,31 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             List<MiniStock> stocks = new ArrayList<>(TA35.getInstance().getStocksHandler().getStocks());
 
             Queries.insertStocksSnapshot(stocks, MySql.JIBE_PROD_CONNECTION);
+            
+            // Insert options snapshots for week and month
+            insert_options_snapshots();
+            
         } catch (Exception e) {
             e.printStackTrace();
             Arik.getInstance().sendMessage("TA35 Index Insert stocks Failed ");
+            Arik.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    private void insert_options_snapshots() {
+        try {
+            // Insert week options snapshot
+            if (week_options != null && !week_options.getStrikes().isEmpty()) {
+                Queries.insertOptionsSnapshot(week_options, "ta35w", MySql.JIBE_PROD_CONNECTION);
+            }
+
+            // Insert month options snapshot
+            if (month_options != null && !month_options.getStrikes().isEmpty()) {
+                Queries.insertOptionsSnapshot(month_options, "ta35m", MySql.JIBE_PROD_CONNECTION);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Arik.getInstance().sendMessage("TA35 Index Insert options snapshots Failed ");
             Arik.getInstance().sendErrorMessage(e);
         }
     }
@@ -135,68 +157,179 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     }
 
     private void update_options() {
-        get_options_week_from_db();
-        get_options_month_from_db();
+        get_options_from_db("ta35w");
+        get_options_from_db("ta35m");
     }
 
     /**
-     * טוען volatility של אופציות Week מבסיס הנתונים
+     * טוען volatility של אופציות מבסיס הנתונים לפי index_id
+     * @param indexId 'ta35w' עבור Week או 'ta35m' עבור Month
      */
-    private void get_options_week_from_db() {
+    private void get_options_from_db(String indexId) {
+        // Determine which Options object to use based on index_id
+        Options options;
+        String errorMsgPrefix;
+        if ("ta35w".equals(indexId)) {
+            options = client.getExps().getWeek().getOptions();
+            errorMsgPrefix = "TA35 Load week";
+        } else if ("ta35m".equals(indexId)) {
+            options = client.getExps().getMonth().getOptions();
+            errorMsgPrefix = "TA35 Load month";
+        } else {
+            System.err.println("Unknown index_id: " + indexId);
+            return;
+        }
+        
         try {
+            // Load both CALL and PUT options
             String query = "SELECT strike, volatility, index_id, contract_type " +
                            "FROM ts.options_data " +
-                           "WHERE index_id = 'ta35w' " +
-                           "AND contract_type = 'CALL' " +
+                           "WHERE index_id = '" + indexId + "' " +
+                           "AND (contract_type = 'CALL' OR contract_type = 'PUT') " +
                            "AND time = (SELECT MAX(time) FROM ts.options_data) " +
-                           "order by strike";
+                           "order by strike, contract_type";
 
             List<Map<String, Object>> rs = MySql.select(query, MySql.JIBE_PROD_CONNECTION);
+            
             for (Map<String, Object> row : rs) {
                 double strike = ((Number) row.get("strike")).doubleValue();
                 double volatility = ((Number) row.get("volatility")).doubleValue();
+                String contractType = (String) row.get("contract_type");
                 
-                Strike s = client.getExps().getWeek().getOptions().getStrike(strike);
+                // Get or create strike
+                Strike s = options.getStrike(strike);
                 if (s == null) {
                     s = new Strike(strike);
-                    client.getExps().getWeek().getOptions().addStrike(s);
+                    options.addStrike(s);
                 }
+                
+                // Set IV on the appropriate option (CALL or PUT)
+                if ("CALL".equalsIgnoreCase(contractType)) {
+                    if (s.getCall() != null) {
+                        s.getCall().setIv(volatility);
+                    }
+                } else if ("PUT".equalsIgnoreCase(contractType)) {
+                    if (s.getPut() != null) {
+                        s.getPut().setIv(volatility);
+                    }
+                }
+                
+                // Also update strike-level IV (for backward compatibility)
                 s.setIv(volatility);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Arik.getInstance().sendMessage("TA35 Load week options volatility failed");
+            Arik.getInstance().sendMessage(errorMsgPrefix + " options volatility failed");
             Arik.getInstance().sendErrorMessage(e);
         }
     }
 
     /**
-     * טוען volatility של אופציות Month מבסיס הנתונים
+     * טוען delta_counter ו-counter של אופציות Week מטבלת options_snapshots
      */
-    private void get_options_month_from_db() {
+    private void load_options_week_counters_from_db() {
         try {
-            String query = "SELECT strike, volatility, index_id, contract_type " +
-                           "FROM ts.options_data " +
-                           "WHERE index_id = 'ta35m' " +
-                           "AND contract_type = 'CALL' " +
-                           "AND time = (SELECT MAX(time) FROM ts.options_data) " +
-                           "order by strike";
-
-            List<Map<String, Object>> rs = MySql.select(query, MySql.JIBE_PROD_CONNECTION);
-            for (Map<String, Object> row : rs) {
-                double strike = ((Number) row.get("strike")).doubleValue();
-                double volatility = ((Number) row.get("volatility")).doubleValue();
-                
-                Strike s = client.getExps().getMonth().getOptions().getStrike(strike);
-                if (s == null) {
-                    s = new Strike(strike);
-                    client.getExps().getMonth().getOptions().addStrike(s);
-                }
-                s.setIv(volatility);
+            List<Map<String, Object>> rs = Queries.getLastOptionsSnapshot("ta35w", MySql.JIBE_PROD_CONNECTION);
+            
+            if (rs == null || rs.isEmpty()) {
+                return;
             }
+
+            for (Map<String, Object> row : rs) {
+                try {
+                    Number strikeNum = (Number) row.get("strike");
+                    if (strikeNum == null) continue;
+                    
+                    double strike = strikeNum.doubleValue();
+                    Strike s = client.getExps().getWeek().getOptions().getStrike(strike);
+                    
+                    if (s == null) {
+                        continue; // Strike doesn't exist, skip
+                    }
+
+                    // Get delta_counter and counter from database
+                    Number deltaCounterNum = (Number) row.get("delta_counter");
+                    Number counterNum = (Number) row.get("counter");
+
+                    int deltaCounter = deltaCounterNum != null ? deltaCounterNum.intValue() : 0;
+                    int counter = counterNum != null ? counterNum.intValue() : 0;
+
+                    // Update Call option if exists
+                    if (s.getCall() != null) {
+                        s.getCall().setDeltaCounter(deltaCounter);
+                        s.getCall().setBidAskCounter(counter);
+                    }
+
+                    // Update Put option if exists
+                    if (s.getPut() != null) {
+                        s.getPut().setDeltaCounter(deltaCounter);
+                        s.getPut().setBidAskCounter(counter);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error processing row in load_options_week_counters_from_db: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            
+            System.out.println("Loaded week options counters from database: " + rs.size() + " strikes");
         } catch (Exception e) {
             e.printStackTrace();
-            Arik.getInstance().sendMessage("TA35 Load month options volatility failed");
+            Arik.getInstance().sendMessage("TA35 Load week options counters failed");
+            Arik.getInstance().sendErrorMessage(e);
+        }
+    }
+
+    /**
+     * טוען delta_counter ו-counter של אופציות Month מטבלת options_snapshots
+     */
+    private void load_options_month_counters_from_db() {
+        try {
+            List<Map<String, Object>> rs = Queries.getLastOptionsSnapshot("ta35m", MySql.JIBE_PROD_CONNECTION);
+            
+            if (rs == null || rs.isEmpty()) {
+                return;
+            }
+
+            for (Map<String, Object> row : rs) {
+                try {
+                    Number strikeNum = (Number) row.get("strike");
+                    if (strikeNum == null) continue;
+                    
+                    double strike = strikeNum.doubleValue();
+                    Strike s = client.getExps().getMonth().getOptions().getStrike(strike);
+                    
+                    if (s == null) {
+                        continue; // Strike doesn't exist, skip
+                    }
+
+                    // Get delta_counter and counter from database
+                    Number deltaCounterNum = (Number) row.get("delta_counter");
+                    Number counterNum = (Number) row.get("counter");
+
+                    int deltaCounter = deltaCounterNum != null ? deltaCounterNum.intValue() : 0;
+                    int counter = counterNum != null ? counterNum.intValue() : 0;
+
+                    // Update Call option if exists
+                    if (s.getCall() != null) {
+                        s.getCall().setDeltaCounter(deltaCounter);
+                        s.getCall().setBidAskCounter(counter);
+                    }
+
+                    // Update Put option if exists
+                    if (s.getPut() != null) {
+                        s.getPut().setDeltaCounter(deltaCounter);
+                        s.getPut().setBidAskCounter(counter);
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error processing row in load_options_month_counters_from_db: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+            
+            System.out.println("Loaded month options counters from database: " + rs.size() + " strikes");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Arik.getInstance().sendMessage("TA35 Load month options counters failed");
             Arik.getInstance().sendErrorMessage(e);
         }
     }
@@ -377,6 +510,10 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
         // Load counters
         load_bid_ask_counter();
+
+        // Load options counters (delta_counter, counter) from options_snapshots table
+        load_options_week_counters_from_db();
+        load_options_month_counters_from_db();
 
         // Load positive tracker
         load_positive_tracker();

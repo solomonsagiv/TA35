@@ -102,6 +102,8 @@ public class Option implements IJsonData {
 		// Counter
 		if (bid > this.bid) {
 			bidAskCounter++;
+		} else if (bid < this.bid) {
+			bidAskCounter--;
 		}
 		this.bid = bid;
 	}
@@ -115,6 +117,8 @@ public class Option implements IJsonData {
 		// Counter
 		if (ask < this.ask) {
 			bidAskCounter--;
+		} else if (ask > this.ask) {
+			bidAskCounter++;
 		}
 		this.ask = ask;
 	}
@@ -164,7 +168,9 @@ public class Option implements IJsonData {
 	public void setVolume(int volume) {
 		if (volume > this.volume) {
 			int change = volume - this.volume;
-			calc_delta(change);
+			if(this.volume != 0 && this.pre_ask != 0 && this.pre_bid != 0) {
+				calc_delta(change);
+			}	
 		}
 		this.volume = volume;
 	}
