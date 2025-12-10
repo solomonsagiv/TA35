@@ -46,8 +46,8 @@ public class FairIVCalc {
             double[] strikes,
             double[] marketIVs
     ) {
-        if (closes == null || closes.length < 21) {
-            throw new IllegalArgumentException("צריך לפחות ~21 מחירי סגירה לחישוב HV10/HV20");
+        if (closes == null || closes.length < 2) {
+            throw new IllegalArgumentException("צריך לפחות 2 מחירי סגירה לחישוב תשואות לוג");
         }
         if (strikes.length != marketIVs.length) {
             throw new IllegalArgumentException("אורך strikes חייב להיות זהה ל-marketIVs");
@@ -57,8 +57,23 @@ public class FairIVCalc {
         double[] logReturns = calcLogReturns(closes);
 
         // 2) HV10 / HV20 יומיים ושנתיים (252 ימי מסחר בשנה)
-        double hv10Daily = stdDevLastN(logReturns, 10);
-        double hv20Daily = stdDevLastN(logReturns, 20);
+        // אם אין מספיק נתונים, נשתמש במה שיש
+        double hv10Daily, hv20Daily;
+        int availableDays = logReturns.length;
+        
+        if (availableDays >= 20) {
+            // יש מספיק נתונים לחישוב HV10 ו-HV20
+            hv10Daily = stdDevLastN(logReturns, 10);
+            hv20Daily = stdDevLastN(logReturns, 20);
+        } else if (availableDays >= 10) {
+            // יש מספיק רק ל-HV10, נשתמש בו גם ל-HV20
+            hv10Daily = stdDevLastN(logReturns, 10);
+            hv20Daily = hv10Daily; // נשתמש באותו ערך
+        } else {
+            // יש פחות מ-10 ימים, נשתמש בכל מה שיש
+            hv10Daily = stdDevLastN(logReturns, availableDays);
+            hv20Daily = hv10Daily; // נשתמש באותו ערך
+        }
 
         double hv10Annual = hv10Daily * Math.sqrt(252.0);
         double hv20Annual = hv20Daily * Math.sqrt(252.0);
@@ -284,8 +299,12 @@ public class FairIVCalc {
         if (optionsMonth == null) {
             throw new IllegalArgumentException("Options object cannot be null");
         }
-        if (closes == null || closes.length < 21) {
-            throw new IllegalArgumentException("צריך לפחות ~21 מחירי סגירה לחישוב HV10/HV20");
+        if (closes == null || closes.length < 2) {
+            throw new IllegalArgumentException("צריך לפחות 2 מחירי סגירה לחישוב תשואות לוג");
+        }
+        // אזהרה אם אין מספיק נתונים לחישוב אופטימלי
+        if (closes.length < 21) {
+            System.out.println("Warning: Only " + closes.length + " days available. HV calculation may be less accurate. Recommended: at least 21 days.");
         }
 
         // קבלת נתונים מ-Options

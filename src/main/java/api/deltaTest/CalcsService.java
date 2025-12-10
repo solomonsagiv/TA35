@@ -4,7 +4,6 @@ import api.BASE_CLIENT_OBJECT;
 import api.Manifest;
 import api.TA35;
 import blackScholes.FairIVCalc;
-import dataBase.Factories;
 import dataBase.mySql.MySql;
 import backTest.Writer;
 import options.Options;
@@ -107,12 +106,13 @@ public class CalcsService extends MyBaseService {
             // קבלת מחירי סגירה היסטוריים מהרשימה
             double[] closes = getHistoricalCloses();
             
-            if (closes != null && closes.length >= 21) {
+            // חישוב Fair IV גם אם יש פחות מ-21 ימים (אבל לפחות 2)
+            if (closes != null && closes.length >= 2) {
                 // חישוב ועדכון Fair IV
                 FairIVCalc.calculateAndUpdateFairIV(monthOptions, closes);
-                System.out.println("FairIV calculation completed for " + monthOptions.getStrikes().size() + " strikes");
+                System.out.println("FairIV calculation completed for " + monthOptions.getStrikes().size() + " strikes with " + closes.length + " days of data");
             } else {
-                System.out.println("Warning: Not enough historical closes data. closes=" + (closes != null ? closes.length : 0));
+                System.out.println("Warning: Not enough historical closes data for FairIV calculation. closes=" + (closes != null ? closes.length : 0) + " (need at least 2)");
             }
             // אם אין מספיק נתונים, פשוט לא מחשבים Fair IV
         } catch (Exception e) {
@@ -128,17 +128,11 @@ public class CalcsService extends MyBaseService {
      * רץ רק פעם אחת או אם הרשימה ריקה/לא מספיקה
      */
     private void updateIndexClosesList() {
-        // בדיקה אם הרשימה כבר קיימת ויש בה מספיק נתונים (לפחות 20)
+        // בדיקה אם הרשימה כבר קיימת ויש בה לפחות 2 ערכים
         ArrayList<Double> existingList = client.getIndex_closes_list();
-        if (existingList != null && existingList.size() >= 20) {
+        if (existingList != null && existingList.size() >= 2) {
             indexClosesListInitialized = true;
             return;
-        }
-
-        // אם הרשימה כבר מאותחלת אבל אין מספיק נתונים, נטען שוב (רק פעם אחת)
-        if (indexClosesListInitialized && (existingList == null || existingList.size() < 20)) {
-            // Reset flag to allow one more attempt
-            indexClosesListInitialized = false;
         }
 
         // בדיקה אם כבר ניסינו לטעון - אם כן, לא לעדכן שוב (להימנע מלולאה)
@@ -147,11 +141,8 @@ public class CalcsService extends MyBaseService {
         }
 
         try {
-            // קבלת ID של INDEX time series
-            Integer indexId = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX);
-            if (indexId == null) {
-                return;
-            }
+            // שימוש ב-timeserie_id = 5 ישירות (כפי שהמשתמש ביקש)
+            Integer indexId = 5;
 
             // קבלת 20 ימי מסחר אחרונים
             List<Map<String, Object>> results = MySql.get_last_20_trading_days_closes(indexId, MySql.JIBE_PROD_CONNECTION);
@@ -169,10 +160,13 @@ public class CalcsService extends MyBaseService {
                 }
             }
 
-            // שמירת הרשימה ב-BASE_CLIENT_OBJECT רק אם יש לפחות כמה ערכים
-            if (closesList.size() >= 20) {
+            // שמירת הרשימה ב-BASE_CLIENT_OBJECT גם אם יש פחות מ-20 (אבל לפחות 2)
+            if (closesList.size() >= 2) {
                 client.setIndex_closes_list(closesList);
                 indexClosesListInitialized = true;  // סמן שהרשימה מאותחלת
+                System.out.println("Index closes list updated with " + closesList.size() + " days (recommended: at least 20)");
+            } else {
+                System.out.println("Warning: Not enough trading days loaded: " + closesList.size() + " (need at least 2)");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,7 +182,7 @@ public class CalcsService extends MyBaseService {
             // קבלת הרשימה מ-BASE_CLIENT_OBJECT
             ArrayList<Double> closesList = client.getIndex_closes_list();
             
-            if (closesList == null || closesList.size() < 21) {
+            if (closesList == null || closesList.isEmpty()) {
                 return null;
             }
 
@@ -205,8 +199,8 @@ public class CalcsService extends MyBaseService {
                 }
             }
 
-            // המרה ל-array
-            if (closesList.size() >= 21) {
+            // המרה ל-array - נקבל גם אם יש פחות מ-21 ימים (אבל לפחות 2)
+            if (closesList.size() >= 2) {
                 double[] closes = new double[closesList.size()];
                 for (int i = 0; i < closesList.size(); i++) {
                     closes[i] = closesList.get(i);
