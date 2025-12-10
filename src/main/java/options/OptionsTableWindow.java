@@ -654,25 +654,22 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                 c.setBackground(getSELECTION_BG());
                 c.setForeground(getSELECTION_FG());
             } else {
-                boolean paintable =
-                        isDeltaCounterCol(column) ||
-                                column == OptionsTableModel.COL_DELTA_QUAN_COUNTER_CALL ||
-                                isBidAskCol(column) ||
-                                column == OptionsTableModel.COL_DELTA_QUAN_COUNTER_PUT ||
-                                isMidCol(column) ||
-                                isIVCol(column) ||
-                                isFairIVCol(column) ||
-                                isIVChgCol(column);
-
-                int dir = paintable ? model.getChangeDirection(row, column) : 0;
-                if (dir > 0) {
-                    c.setBackground(getHL_GREEN());
-                } else if (dir < 0) {
-                    c.setBackground(getHL_RED());
-                } else if (column == OptionsTableModel.COL_STRIKE) {
-                    c.setBackground(getSTRIKE_BG()); // distinct background for Strike
+                // Strike column has special background, no change highlighting
+                if (column == OptionsTableModel.COL_STRIKE) {
+                    c.setBackground(getSTRIKE_BG());
                 } else {
-                    c.setBackground((row % 2 == 0) ? getBG_WHITE() : getBG_STRIPE());
+                    // For all other columns, check change direction and color accordingly
+                    int dir = model.getChangeDirection(row, column);
+                    if (dir > 0) {
+                        // Number increased - green
+                        c.setBackground(getHL_GREEN());
+                    } else if (dir < 0) {
+                        // Number decreased - red
+                        c.setBackground(getHL_RED());
+                    } else {
+                        // No change - zebra pattern
+                        c.setBackground((row % 2 == 0) ? getBG_WHITE() : getBG_STRIPE());
+                    }
                 }
             }
 

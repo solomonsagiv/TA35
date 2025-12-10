@@ -42,15 +42,15 @@ public class NewDataReaderService extends MyBaseService {
     TA35 ta35;
 
     // Columns (נשמרוקשתך)
-    // final int CALL_BID = 2;
-    // final int CALL_LAST = 3;
-    // final int CALL_ASK = 4;
-    // final int CALL_VOLUME = 5;
+    final int CALL_BID = 6;  
+    final int CALL_LAST = 4;
+    final int CALL_ASK = 7;
+    final int CALL_VOLUME = 5;
     final int STRIKE = 1;
-    // final int PUT_BID = 7;
-    // final int PUT_LAST = 8;
-    // final int PUT_ASK = 7;
-    // final int PUT_VOLUME = 9;
+    final int PUT_BID = 10;
+    final int PUT_LAST = 8;
+    final int PUT_ASK = 11;
+    final int PUT_VOLUME = 9;
     final int CALL_MID = 2;
     final int PUT_MID = 3;
 
@@ -154,16 +154,16 @@ public class NewDataReaderService extends MyBaseService {
         if (count == 0) return;
 
         double[] strikes      = readColumnDoubles(STRIKE,     start_row, end_row);
-        // double[] callBids     = readColumnDoubles(CALL_BID,   start_row, end_row);
-        // double[] callAsks     = readColumnDoubles(CALL_ASK,   start_row, end_row);
-        // double[] callVolumes  = readColumnDoubles(CALL_VOLUME,start_row, end_row);
-        // double[] callLasts    = readColumnDoubles(CALL_LAST,  start_row, end_row);
+        double[] callBids     = readColumnDoubles(CALL_BID,   start_row, end_row);
+        double[] callAsks     = readColumnDoubles(CALL_ASK,   start_row, end_row);
+        double[] callVolumes  = readColumnDoubles(CALL_VOLUME,start_row, end_row);
+        double[] callLasts    = readColumnDoubles(CALL_LAST,  start_row, end_row);
         double[] callMids     = readColumnDoubles(CALL_MID,   start_row, end_row);
 
-        // double[] putBids      = readColumnDoubles(PUT_BID,    start_row, end_row);
-        // double[] putAsks      = readColumnDoubles(PUT_ASK,    start_row, end_row);
-        // double[] putVolumes   = readColumnDoubles(PUT_VOLUME, start_row, end_row);
-        // double[] putLasts     = readColumnDoubles(PUT_LAST,   start_row, end_row);
+        double[] putBids      = readColumnDoubles(PUT_BID,    start_row, end_row);
+        double[] putAsks      = readColumnDoubles(PUT_ASK,    start_row, end_row);
+        double[] putVolumes   = readColumnDoubles(PUT_VOLUME, start_row, end_row);
+        double[] putLasts     = readColumnDoubles(PUT_LAST,   start_row, end_row);
         double[] putMids     = readColumnDoubles(PUT_MID,   start_row, end_row);
 
         for (int i = 0; i < count; i++) {
@@ -174,19 +174,19 @@ public class NewDataReaderService extends MyBaseService {
 
             Option call = options.getOption(Option.Side.CALL, strike);
             if (call != null) {
-                // call.setBid((int) Math.round(getValue(callBids, i)));
-                // call.setAsk((int) Math.round(getValue(callAsks, i)));
-                // call.setVolume((int) Math.round(getValue(callVolumes, i)));
-                // call.setLast((int) Math.round(getValue(callLasts, i)));
+                call.setBid((int) Math.round(getValue(callBids, i)));
+                call.setAsk((int) Math.round(getValue(callAsks, i)));
+                call.setVolume((int) Math.round(getValue(callVolumes, i)));
+                call.setLast((int) Math.round(getValue(callLasts, i)));
                 call.setMid((int) getValue(callMids, i));
             }
 
             Option put = options.getOption(Option.Side.PUT, strike);
             if (put != null) {
-                // put.setBid((int) Math.round(getValue(putBids, i)));
-                // put.setAsk((int) Math.round(getValue(putAsks, i)));
-                // put.setVolume((int) Math.round(getValue(putVolumes, i)));
-                // put.setLast((int) Math.round(getValue(putLasts, i)));
+                put.setBid((int) Math.round(getValue(putBids, i)));
+                put.setAsk((int) Math.round(getValue(putAsks, i)));
+                put.setVolume((int) Math.round(getValue(putVolumes, i)));
+                put.setLast((int) Math.round(getValue(putLasts, i)));
                 put.setMid((int) getValue(putMids, i));
             }
         }

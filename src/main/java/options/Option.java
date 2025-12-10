@@ -31,6 +31,7 @@ public class Option implements IJsonData {
 	private int bid = 0;
 	private int ask = 0;
 	private int last = 0;
+	private int pre_last = 0;
 	private int mid = 0;
 	private int high = 0;
 	private int low = 0;
@@ -124,7 +125,12 @@ public class Option implements IJsonData {
 	}
 
 	public int getLast() { return last; }
-	public void setLast(int last) { this.last = last; }
+	public void setLast(int last) {
+		 this.last = last;
+		 if (last != this.pre_last) {
+			this.pre_last = this.last;
+		 }
+	}
 
 	public int getHigh() { return high; }
 	public void setHigh(int high) { this.high = high; }
