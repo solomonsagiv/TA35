@@ -225,7 +225,7 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
         private void setNiceColumnWidths() {
             TableColumnModel cm = getColumnModel();
-            int[] widths = {70, 80, 80, 70, 75, 100, 75, 70, 75, 70, 80, 80, 70}; // B/A | Delta | Delta q | Mid | IV | Strike | Fair IV | IV chg | IV | Mid | Delta q | Delta | B/A
+            int[] widths = {70, 80, 100, 80, 70, 75, 70}; // B/A call | Delta call | Strike | Delta put | B/A put | Fair IV | IV chg
             for (int i = 0; i < widths.length && i < cm.getColumnCount(); i++) {
                 cm.getColumn(i).setPreferredWidth(widths[i]);
             }
@@ -237,19 +237,13 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     static class OptionsTableModel extends AbstractTableModel {
         static final int COL_BIDASK_CALL = 0;
         static final int COL_DELTA_COUNTER_CALL = 1;
-        static final int COL_DELTA_QUAN_COUNTER_CALL = 2;
-        static final int COL_MID_CALL = 3;
-        static final int COL_IV_CALL = 4;
-        static final int COL_STRIKE = 5;
-        static final int COL_FAIR_IV = 6;
-        static final int COL_IV_CHG = 7;
-        static final int COL_IV_PUT = 8;
-        static final int COL_MID_PUT = 9;
-        static final int COL_DELTA_QUAN_COUNTER_PUT = 10;
-        static final int COL_DELTA_COUNTER_PUT = 11;
-        static final int COL_BIDASK_PUT = 12;
+        static final int COL_STRIKE = 2;
+        static final int COL_DELTA_COUNTER_PUT = 3;
+        static final int COL_BIDASK_PUT = 4;
+        static final int COL_FAIR_IV = 5;
+        static final int COL_IV_CHG = 6;
 
-        private final String[] cols = {"B/A", "Delta", "Delta q", "Mid", "IV", "Strike", "Fair IV", "IV chg", "IV", "Mid", "Delta q", "Delta", "B/A"};
+        private final String[] cols = {"B/A", "Delta", "Strike", "Delta", "B/A", "Fair IV", "IV chg"};
         
         private static final double OPTION_MULTIPLIER = 50.0;
         private final BASE_CLIENT_OBJECT client;
@@ -307,12 +301,18 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             for (Strike s : strikes) newRows.add(new Row(s));
 
             double[][] newCurr = buildMatrixFromRows(newRows);
+            
+            // Map previous values to new rows before updating
             double[][] newPrev = remapPrevByStrike(rows, prevValues, newRows, getColumnCount());
 
+            // Update rows first
             rows.clear();
             rows.addAll(newRows);
+            
+            // Update values: store current as previous, then update current
             prevValues = newPrev;
             currValues = newCurr;
+            
             fireTableDataChanged();
         }
 
@@ -323,44 +323,26 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
             for (int r = 0; r < rc; r++) {
                 Row row = rs.get(r);
                 
-                // Call columns: B/A | Delta | Delta q | Mid | IV
+                // Call columns: B/A | Delta
                 if (row.call != null) {
                     m[r][COL_BIDASK_CALL] = row.call.getBidAskCounter();
                     m[r][COL_DELTA_COUNTER_CALL] = row.call.getDeltaCounter();
-                    m[r][COL_DELTA_QUAN_COUNTER_CALL] = row.call.getDeltaQuanCounter();
-                    
-                    // Update Mid from option
-                    int mid = row.call.getMid();
-                    if (mid > 0) {
-                        m[r][COL_MID_CALL] = mid;
-                    } else {
-                        // Fallback: calculate from bid/ask
-                        int bid = row.call.getBid();
-                        int ask = row.call.getAsk();
-                        if (bid > 0 && ask > 0) {
-                            m[r][COL_MID_CALL] = (bid + ask) / 2.0;
-                        } else {
-                            m[r][COL_MID_CALL] = Double.NaN;
-                        }
-                    }
-                    
-                    // Update IV from option
-                    double ivFromOption = row.call.getIv();
-                    if (ivFromOption > 0) {
-                        m[r][COL_IV_CALL] = ivFromOption * 100; // Convert to percentage
-                    } else {
-                        m[r][COL_IV_CALL] = Double.NaN;
-                    }
                 } else {
                     m[r][COL_BIDASK_CALL] = Double.NaN;
                     m[r][COL_DELTA_COUNTER_CALL] = Double.NaN;
-                    m[r][COL_DELTA_QUAN_COUNTER_CALL] = Double.NaN;
-                    m[r][COL_MID_CALL] = Double.NaN;
-                    m[r][COL_IV_CALL] = Double.NaN;
                 }
                 
                 // Strike
                 m[r][COL_STRIKE] = row.strike;
+                
+                // Put columns: Delta | B/A
+                if (row.put != null) {
+                    m[r][COL_DELTA_COUNTER_PUT] = row.put.getDeltaCounter();
+                    m[r][COL_BIDASK_PUT] = row.put.getBidAskCounter();
+                } else {
+                    m[r][COL_DELTA_COUNTER_PUT] = Double.NaN;
+                    m[r][COL_BIDASK_PUT] = Double.NaN;
+                }
                 
                 // Fair IV - get from strike object
                 double fairIv = Double.NaN;
@@ -385,42 +367,6 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                     m[r][COL_IV_CHG] = (strikeIv / fairIv - 1.0) * 100.0; // Percentage difference
                 } else {
                     m[r][COL_IV_CHG] = Double.NaN;
-                }
-                
-                // Put columns: IV | Mid | Delta q | Delta | B/A
-                if (row.put != null) {
-                    // Update Mid from option
-                    int mid = row.put.getMid();
-                    if (mid > 0) {
-                        m[r][COL_MID_PUT] = mid;
-                    } else {
-                        // Fallback: calculate from bid/ask
-                        int bid = row.put.getBid();
-                        int ask = row.put.getAsk();
-                        if (bid > 0 && ask > 0) {
-                            m[r][COL_MID_PUT] = (bid + ask) / 2.0;
-                        } else {
-                            m[r][COL_MID_PUT] = Double.NaN;
-                        }
-                    }
-                    
-                    // Update IV from option
-                    double ivFromOption = row.put.getIv();
-                    if (ivFromOption > 0) {
-                        m[r][COL_IV_PUT] = ivFromOption * 100; // Convert to percentage
-                    } else {
-                        m[r][COL_IV_PUT] = Double.NaN;
-                    }
-                    
-                    m[r][COL_DELTA_QUAN_COUNTER_PUT] = row.put.getDeltaQuanCounter();
-                    m[r][COL_DELTA_COUNTER_PUT] = row.put.getDeltaCounter();
-                    m[r][COL_BIDASK_PUT] = row.put.getBidAskCounter();
-                } else {
-                    m[r][COL_IV_PUT] = Double.NaN;
-                    m[r][COL_MID_PUT] = Double.NaN;
-                    m[r][COL_DELTA_QUAN_COUNTER_PUT] = Double.NaN;
-                    m[r][COL_DELTA_COUNTER_PUT] = Double.NaN;
-                    m[r][COL_BIDASK_PUT] = Double.NaN;
                 }
             }
             return m;
@@ -484,10 +430,14 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         }
 
         int getChangeDirection(int row, int col) {
-            if (row < 0 || row >= rows.size()) return 0;
+            if (row < 0 || row >= rows.size() || row >= prevValues.length || row >= currValues.length) return 0;
+            if (col < 0 || col >= prevValues[0].length || col >= currValues[0].length) return 0;
             double prev = prevValues[row][col], curr = currValues[row][col];
             if (Double.isNaN(prev) || Double.isNaN(curr)) return 0;
-            return (curr > prev) ? 1 : (curr < prev) ? -1 : 0;
+            // Use small tolerance for floating point comparison
+            double tolerance = 0.0001;
+            if (Math.abs(curr - prev) < tolerance) return 0;
+            return (curr > prev) ? 1 : -1;
         }
 
         Double getDeltaVsPrev(int row, int col) {
@@ -526,8 +476,6 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         // Formats: integers (no decimals) for Delta, Strike, B/A
         private final DecimalFormat fmtIntNoDec = new DecimalFormat("0");
         private final DecimalFormat fmtStrike0 = new DecimalFormat("#,##0");
-        private final DecimalFormat fmtInt = new DecimalFormat("0"); // Delta q shown as int (change if needed)
-        private final DecimalFormat fmtMid = new DecimalFormat("0.0"); // Mid price with 1 decimal
         private final DecimalFormat fmtIV = new DecimalFormat("0.00"); // IV as percentage with 2 decimals
 
         private static boolean isDeltaCounterCol(int col) {
@@ -538,16 +486,6 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         private static boolean isBidAskCol(int col) {
             return col == OptionsTableModel.COL_BIDASK_CALL ||
                     col == OptionsTableModel.COL_BIDASK_PUT;
-        }
-
-        private static boolean isMidCol(int col) {
-            return col == OptionsTableModel.COL_MID_CALL ||
-                    col == OptionsTableModel.COL_MID_PUT;
-        }
-
-        private static boolean isIVCol(int col) {
-            return col == OptionsTableModel.COL_IV_CALL ||
-                    col == OptionsTableModel.COL_IV_PUT;
         }
 
         private static boolean isFairIVCol(int col) {
@@ -582,14 +520,12 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                     txt = fmtStrike0.format(d);            // Strike: no decimals
                 } else if (isBidAskCol(column)) {
                     txt = fmtIntNoDec.format(d);           // B/A: no decimals
-                } else if (isMidCol(column)) {
-                    txt = fmtMid.format(d);                // Mid: 1 decimal
-                } else if (isIVCol(column) || isFairIVCol(column)) {
-                    txt = fmtIV.format(d);                 // IV / Fair IV: percentage with 2 decimals
+                } else if (isFairIVCol(column)) {
+                    txt = fmtIV.format(d);                 // Fair IV: percentage with 2 decimals
                 } else if (isIVChgCol(column)) {
                     txt = fmtIV.format(d) + "%";           // IV chg: percentage with 2 decimals + % sign
                 } else {
-                    txt = fmtInt.format(d);                // Delta q: integer (change to "0.00" if desired)
+                    txt = fmtIntNoDec.format(d);           // Default: integer format
                 }
                 setText(txt);
             } else {
@@ -606,16 +542,12 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                     tip = "Strike";
                 } else if (isBidAskCol(column)) {
                     tip = "Change: " + (diff >= 0 ? "+" : "") + fmtIntNoDec.format(diff);
-                } else if (isMidCol(column)) {
-                    tip = "Mid price change: " + (diff >= 0 ? "+" : "") + fmtMid.format(diff);
-                } else if (isIVCol(column)) {
-                    tip = "IV change: " + (diff >= 0 ? "+" : "") + fmtIV.format(diff) + "%";
                 } else if (isFairIVCol(column)) {
                     tip = "Fair IV change: " + (diff >= 0 ? "+" : "") + fmtIV.format(diff) + "%";
                 } else if (isIVChgCol(column)) {
                     tip = "IV chg change: " + (diff >= 0 ? "+" : "") + fmtIV.format(diff) + "%";
                 } else {
-                    tip = "Change: " + (diff >= 0 ? "+" : "") + fmtInt.format(diff);
+                    tip = "Change: " + (diff >= 0 ? "+" : "") + fmtIntNoDec.format(diff);
                 }
                 setToolTipText(tip);
             } else {
@@ -629,8 +561,8 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                     if (d > 0) c.setForeground(getVAL_GREEN_FG());
                     else if (d < 0) c.setForeground(getVAL_RED_FG());
                     else c.setForeground(Themes.getTextColor());
-                } else if (isIVCol(column) || isFairIVCol(column)) {
-                    // IV / Fair IV always normal text color
+                } else if (isFairIVCol(column)) {
+                    // Fair IV always normal text color
                     c.setForeground(Themes.getTextColor());
                 } else if (isIVChgCol(column)) {
                     // IV chg: green if positive (IV > Fair IV), red if negative (IV < Fair IV)
@@ -641,9 +573,6 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
                     } else {
                         c.setForeground(Themes.getTextColor());
                     }
-                } else if (isMidCol(column)) {
-                    // Mid price always normal text color
-                    c.setForeground(Themes.getTextColor());
                 } else {
                     c.setForeground(Themes.getTextColor());
                 }

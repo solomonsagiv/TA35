@@ -206,7 +206,7 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Counter 2 table avg
         // ----------------------------------------- //
 
-        MyTimeSeries counter_2_table_avg = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD);
+        MyTimeSeries counter_2_table_avg = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.COUNTER_2_TABLE_AVG);
         counter_2_table_avg.setColor(Themes.GREEN);
         counter_2_table_avg.setStokeSize(1.2f);
 

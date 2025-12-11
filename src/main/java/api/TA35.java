@@ -77,6 +77,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     private int weight_counter1_at_op_avg_15_cross = 0;
     private int weight_counter2_at_op_avg_15_cross = 0;
     private int weight_delta_at_op_avg_15_cross = 0;
+    private double counter2_table_avg_at_op_avg_60_cross = 0.0;
+    private double counter2_table_avg_at_op_avg_15_cross = 0.0;
 
     // Private constructor
     private TA35() {
@@ -414,6 +416,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
             month_races_wm_at_op_avg_60_cross = racesService.get_race_logic(Race_Logic.RACE_RUNNER_ENUM.WEEK_MONTH).get_r_one_points();
             week_bid_ask_counter_at_op_avg_60_cross = getExps().getWeek().getOptions().getBidAskCounter();
             month_bid_ask_counter_at_op_avg_60_cross = getExps().getMonth().getOptions().getBidAskCounter();
+            counter2_table_avg_at_op_avg_60_cross = getCounter2_table_avg();
             
             // Reset op_avg_60 tracking
             op_avg_60_crossed_zero = true;
@@ -510,6 +513,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
             weight_counter1_at_op_avg_15_cross = (int) getCounter1_weight();
             weight_counter2_at_op_avg_15_cross = (int) getCounter2_weight();
             weight_delta_at_op_avg_15_cross = (int) getDelta_weight();
+            counter2_table_avg_at_op_avg_15_cross = getCounter2_table_avg();
             
             // Reset op_avg_15 tracking
             op_avg_15_crossed_zero = true;
@@ -580,6 +584,20 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
             return 0;
         }
         return (int) getDelta_weight() - weight_delta_at_op_avg_15_cross;
+    }
+
+    public double getCounter2_table_avg_change_since_op_avg_60_cross() {
+        if (!op_avg_60_crossed_zero) {
+            return 0.0;
+        }
+        return getCounter2_table_avg() - counter2_table_avg_at_op_avg_60_cross;
+    }
+
+    public double getCounter2_table_avg_change_since_op_avg_15_cross() {
+        if (!op_avg_15_crossed_zero) {
+            return 0.0;
+        }
+        return getCounter2_table_avg() - counter2_table_avg_at_op_avg_15_cross;
     }
 
 
