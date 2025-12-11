@@ -117,9 +117,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
     private Model model;
 
     private MyGuiComps.MyTextField
-            counter_weight_field,
             delta_field,
-            total_delta_field,
+            delta_weight_field,
             counter_2_weight_field,
             top_weight_counter_2_field,
             top60_avg_counter_2_field,
@@ -162,22 +161,20 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         setLayout(new BorderLayout());
 
         // ---- Controls (KPIs) ----
-        counter_weight_field = new MyGuiComps.MyTextField(); counter_weight_field.setFontSize(22);
         delta_field                     = new MyGuiComps.MyTextField(); delta_field.setFontSize(22);
-        total_delta_field               = new MyGuiComps.MyTextField(); total_delta_field.setFontSize(22);
+        delta_weight_field              = new MyGuiComps.MyTextField(); delta_weight_field.setFontSize(22);
         counter_2_weight_field          = new MyGuiComps.MyTextField(); counter_2_weight_field.setFontSize(22);
         top_weight_counter_2_field      = new MyGuiComps.MyTextField(); top_weight_counter_2_field.setFontSize(22);
         top60_avg_counter_2_field       = new MyGuiComps.MyTextField(); top60_avg_counter_2_field.setFontSize(22);
         min_weight_field             = new MyGuiComps.MyTextField(); min_weight_field.setFontSize(22);
         max_weight_field            = new MyGuiComps.MyTextField(); max_weight_field.setFontSize(22);
 
-        JPanel controlPanel = new JPanel(new GridLayout(1, 6, 15, 0));
+        JPanel controlPanel = new JPanel(new GridLayout(1, 5, 15, 0));
         controlPanel.setOpaque(true);
-        controlPanel.add(createColumn("C1 W:", counter_weight_field));
-        controlPanel.add(createColumn("C2 W:", counter_2_weight_field));
+        controlPanel.add(createColumn("C W:", counter_2_weight_field));
         controlPanel.add(createColumn("T60%:", top_weight_counter_2_field));
         controlPanel.add(createColumn("AVG:", top60_avg_counter_2_field));
-        controlPanel.add(createColumn("DELTA:", total_delta_field));
+        controlPanel.add(createColumn("D W:", delta_weight_field));
 
         JPanel midPanel = new JPanel(new GridLayout(1, 2, 15, 0));
         midPanel.setOpaque(true);
@@ -442,11 +439,19 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 double[] vals = Calculator.get_stocks_counters();
 
                 // עדכון ה-KPIs העליונים
-                counter_weight_field.colorForge((int)vals[Calculator.BA_WEIGHT_POSITIVE_STOCKS]);
                 counter_2_weight_field.colorForge((int)vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
-                top_weight_counter_2_field.colorForge((int)TA35.getInstance().getTop_weight_counter_2());
+                
+                // Update top_weight_counter_2 as percentage with % sign and color coding (>50 green, <50 red)
+                double topWeightPercent = TA35.getInstance().getTop_weight_counter_2();
+                if (topWeightPercent > 50.0) {
+                    top_weight_counter_2_field.setForeground(Themes.GREEN);
+                } else {
+                    top_weight_counter_2_field.setForeground(Themes.RED);
+                }
+                top_weight_counter_2_field.setText(DF_PCT.format(topWeightPercent) + "%");
+                
                 delta_field.colorForge((int)vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
-                total_delta_field.colorForge((int)vals[Calculator.TOTAL_DELTA]);
+                delta_weight_field.colorForge((int)Math.round(TA35.getInstance().getDelta_weight()));
                 
                 // Get counter2_table_avg from BASE_CLIENT_OBJECT (calculated in Calculator.get_stocks_counters)
                 top60_avg_counter_2_field.colorForge((int) Math.round(TA35.getInstance().getCounter2_table_avg()));
@@ -458,9 +463,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 // Update colors 
                 updateFieldColor(min_weight_field, 55, 45);
                 updateFieldColor(max_weight_field, 55, 45);
-                updateFieldColor(counter_weight_field, 55, 45);
                 updateFieldColor(counter_2_weight_field, 55, 45);
-                updateFieldColor(top_weight_counter_2_field, 30, 29);
+                // top_weight_counter_2_field is now handled above with percentage and custom color logic
                 updateFieldColor(top60_avg_counter_2_field, 0, -1);
             }
         });

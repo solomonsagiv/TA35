@@ -98,7 +98,15 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.weight_counter2_field, (int) client.getCounter2_weight(), false);
                 colorForgeRound(window.basket_field, (int) client.getCounter2_table_avg(), false);
                 colorForgeRound(window.counter2_table_avg_field, (int) client.getCounter2_table_avg(), false);
-                colorForgeRound(window.top_weight_counter_2_field_new, (int) client.getTop_weight_counter_2(), false);
+                
+                // Update top_weight_counter_2 as percentage with % sign and color coding (>50 green, <50 red)
+                double topWeightPercent = client.getTop_weight_counter_2();
+                if (topWeightPercent > 50.0) {
+                    window.top_weight_counter_2_field_new.setForeground(Themes.GREEN);
+                } else {
+                    window.top_weight_counter_2_field_new.setForeground(Themes.RED);
+                }
+                window.top_weight_counter_2_field_new.setText(DF_2.format(topWeightPercent) + "%");
                 
                 // O/P fields - op_avg values from WeekExp (formatted to 2 decimals)
                 window.op_avg_field.colorForge(client.getExps().getWeek().getOp_avg(), DF_2);

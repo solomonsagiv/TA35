@@ -257,15 +257,24 @@ public class Calculator {
            
         }
 
-        int top_weight_counter_2 = 0;
-        for (MiniStock s : getTop60PercentStocks()) {
+        // Calculate top_weight_counter_2 as percentage of positive weights out of total top 60% weights
+        List<MiniStock> top60Stocks = getTop60PercentStocks();
+        double top_weight_counter_2_positive = 0.0;
+        double total_top60_weight = 0.0;
+        for (MiniStock s : top60Stocks) {
+            total_top60_weight += s.getWeight();
             if (s.getCounter_2() > 0) {
-                top_weight_counter_2 += s.getWeight();
+                top_weight_counter_2_positive += s.getWeight();
             }
+        }
+        
+        // Calculate percentage: (positive_weight / total_weight) * 100
+        double top_weight_counter_2 = 0.0;
+        if (total_top60_weight > 0) {
+            top_weight_counter_2 = (top_weight_counter_2_positive / total_top60_weight) * 100.0;
         }
 
         // חישוב ממוצע counter_2 של top 60%
-        List<MiniStock> top60Stocks = getTop60PercentStocks();
         double avgCounter2 = 0.0;
         if (!top60Stocks.isEmpty()) {
             int sumCounter2 = 0;

@@ -136,19 +136,19 @@ public class Main_Chart extends MyChartCreator {
         series[1] = opavg_60_week;
         series[2] = continue_opavg_240_week;
 
-        ValueMarker plus0_3 = new ValueMarker(0.3);
-        plus0_3.setStroke(new BasicStroke(1.5f));
+        // ValueMarker plus0_3 = new ValueMarker(0.3);
+        // plus0_3.setStroke(new BasicStroke(1.5f));
         // Use light gray in dark mode for better visibility
-        plus0_3.setPaint(Themes.isDarkMode() ? Themes.LIGHT_GRAY_TEXT : Themes.GREY_2);
+        // plus0_3.setPaint(Themes.isDarkMode() ? Themes.LIGHT_GRAY_TEXT : Themes.GREY_2);
 
-        ValueMarker minus0_3 = new ValueMarker(-0.3);
-        minus0_3.setStroke(new BasicStroke(1.5f));
-        // Use light gray in dark mode for better visibility
-        minus0_3.setPaint(Themes.isDarkMode() ? Themes.LIGHT_GRAY_TEXT : Themes.GREY_2);
+        // ValueMarker minus0_3 = new ValueMarker(-0.3);
+        // minus0_3.setStroke(new BasicStroke(1.5f));
+        // // Use light gray in dark mode for better visibility
+        // minus0_3.setPaint(Themes.isDarkMode() ? Themes.LIGHT_GRAY_TEXT : Themes.GREY_2);
 
         MyChart op_avg_chart = new MyChart(series, props);
-        op_avg_chart.add_marker(plus0_3);
-        op_avg_chart.add_marker(minus0_3);
+        // op_avg_chart.add_marker(plus0_3);
+        // op_avg_chart.add_marker(minus0_3);
 
         // ----------------------------------------- Races
         // ----------------------------------------- //
