@@ -193,19 +193,6 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- Stocks counter
         // ----------------------------------------- //
 
-        MyTimeSeries total_delta = TA35.getInstance().getTimeSeriesHandler()
-                .get(Factories.TimeSeries.TOTAL_DELTA);
-        total_delta.setColor(Themes.OPEN_RACE);
-        total_delta.setStokeSize(1.2f);
-
-        series = new MyTimeSeries[1];
-        series[0] = total_delta;
-
-        MyChart total_delta_chart = new MyChart(series, props);
-
-        // ----------------------------------------- Counter 2 table avg
-        // ----------------------------------------- //
-
         MyTimeSeries counter_2_table_avg = TA35.getInstance().getTimeSeriesHandler().get(Factories.TimeSeries.COUNTER_2_TABLE_AVG);
         counter_2_table_avg.setColor(Themes.GREEN);
         counter_2_table_avg.setStokeSize(1.2f);
@@ -220,7 +207,7 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- //
 
         // ----- Charts ----- //
-        MyChart[] charts = { indexChart, op_avg_chart, races_chart, bid_ask_counter_chart, total_delta_chart,
+        MyChart[] charts = { indexChart, op_avg_chart, races_chart, bid_ask_counter_chart,
                 counter_2_table_avg_chart };
 
         // ----------------------------------------- Container

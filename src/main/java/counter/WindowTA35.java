@@ -52,7 +52,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             future_week_counter_reset_15_field, future_month_counter_reset_15_field,
             weight_counter1_reset_15_field, weight_counter2_reset_15_field, weight_delta_reset_15_field,
             basket_field, basket_reset_field, basket_reset_15_field,
-            op_avg_field, op_avg_60_field, op_avg_15_field;
+            op_avg_field, op_avg_60_field, op_avg_15_field,
+            counter2_table_avg_field, counter2_table_avg_reset_field, counter2_table_avg_reset_15_field;
 
     // Constructor
     public WindowTA35() {
@@ -253,18 +254,6 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             field -> ind_race_reset_15_field = field
         )));
         
-        columns.add(new ColumnConfig("Week", List.of(
-            field -> week_races_iw_field = field,
-            field -> week_race_reset_field = field,
-            field -> week_race_reset_15_field = field
-        )));
-        
-        columns.add(new ColumnConfig("Month", List.of(
-            field -> month_race_wm_field = field,
-            field -> month_race_reset_field = field,
-            field -> month_race_reset_15_field = field
-        )));
-        
         columns.add(new ColumnConfig("FWeek", List.of(
             field -> future_week_counter_field = field,
             field -> future_week_counter_reset_field = field,
@@ -277,10 +266,16 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             field -> future_month_counter_reset_15_field = field
         )));
         
-        columns.add(new ColumnConfig("WC2", List.of(
+        columns.add(new ColumnConfig("cw", List.of(
             field -> weight_counter2_field = field,
             field -> weight_counter2_reset_field = field,
             field -> weight_counter2_reset_15_field = field
+        )));
+
+        columns.add(new ColumnConfig("C2Avg", List.of(
+            field -> counter2_table_avg_field = field,
+            field -> counter2_table_avg_reset_field = field,
+            field -> counter2_table_avg_reset_15_field = field
         )));
         
         columns.add(new ColumnConfig("Basket", List.of(
@@ -294,6 +289,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             field -> op_avg_60_field = field,
             field -> op_avg_15_field = field
         )));
+        
+       
 
         // Create all columns
         MyGuiComps.MyPanel tempPanel = new MyGuiComps.MyPanel();

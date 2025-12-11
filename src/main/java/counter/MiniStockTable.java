@@ -449,17 +449,8 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 delta_field.colorForge((int)vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
                 total_delta_field.colorForge((int)vals[Calculator.TOTAL_DELTA]);
                 
-                // חישוב ממוצע counter_2 של top 60%
-                List<MiniStock> top60Stocks = Calculator.getTop60PercentStocks();
-                double avgCounter2 = 0.0;
-                if (!top60Stocks.isEmpty()) {
-                    int sumCounter2 = 0;
-                    for (MiniStock s : top60Stocks) {
-                        sumCounter2 += s.getCounter_2();
-                    }
-                    avgCounter2 = (double) sumCounter2 / top60Stocks.size();
-                }
-                top60_avg_counter_2_field.colorForge((int) Math.round(avgCounter2));
+                // Get counter2_table_avg from BASE_CLIENT_OBJECT (calculated in Calculator.get_stocks_counters)
+                top60_avg_counter_2_field.colorForge((int) Math.round(TA35.getInstance().getCounter2_table_avg()));
 
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();

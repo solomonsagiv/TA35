@@ -264,11 +264,23 @@ public class Calculator {
             }
         }
 
+        // חישוב ממוצע counter_2 של top 60%
+        List<MiniStock> top60Stocks = getTop60PercentStocks();
+        double avgCounter2 = 0.0;
+        if (!top60Stocks.isEmpty()) {
+            int sumCounter2 = 0;
+            for (MiniStock s : top60Stocks) {
+                sumCounter2 += s.getCounter_2();
+            }
+            avgCounter2 = (double) sumCounter2 / top60Stocks.size();
+        }
+
         TA35.getInstance().setTotal_delta(total_delta);
         TA35.getInstance().setTop_weight_counter_2(top_weight_counter_2);
         TA35.getInstance().setCounter1_weight(ba_weight_positive);
         TA35.getInstance().setDelta_weight(delta_weight_positive);
         TA35.getInstance().setCounter2_weight(counter_2_weight_positive);
+        TA35.getInstance().setCounter2_table_avg(avgCounter2);
         
         double[] vals = new double[8];
         vals[BA_NUMBER_POSITIVE_STOCKS]     = ba_number_of_positive;
