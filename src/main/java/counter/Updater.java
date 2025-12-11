@@ -17,6 +17,7 @@ public class Updater extends MyThread implements Runnable {
 
     // local variables
     int count = 0;
+    private static final DecimalFormat DF_2 = new DecimalFormat("0.00");
 
     LocalTime current_time;
 
@@ -99,10 +100,10 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.weight_counter2_field, (int) client.getCounter2_weight(), false);
                 colorForgeRound(window.basket_field, (int) client.getCounter2_table_avg(), false);
                 
-                // O/P fields - op_avg values from WeekExp
-                window.op_avg_field.colorForgeRound(client.getExps().getWeek().getOp_avg());
-                window.op_avg_60_field.colorForgeRound(client.getExps().getWeek().getOp_avg_60());
-                window.op_avg_15_field.colorForgeRound(client.getExps().getWeek().getOp_avg_15());
+                // O/P fields - op_avg values from WeekExp (formatted to 2 decimals)
+                window.op_avg_field.colorForge(client.getExps().getWeek().getOp_avg(), DF_2);
+                window.op_avg_60_field.colorForge(client.getExps().getWeek().getOp_avg_60(), DF_2);
+                window.op_avg_15_field.colorForge(client.getExps().getWeek().getOp_avg_15(), DF_2);
                 
                 // Reset fields - Value changes since op_avg_60 crossed zero
                 colorForgeRound(window.ind_race_reset_field, (int) client.getIndex_races_iw_change_since_op_avg_60_cross(), false);

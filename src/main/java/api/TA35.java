@@ -180,10 +180,9 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD, TimeSeriesFactory.get_serie(Factories.TimeSeries.STOCKS_TOT_DELTA_WEIGHT_PROD, this));
 
         timeSeriesHandler.put(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD, TimeSeriesFactory.get_serie(Factories.TimeSeries.COUNTER_2_TOT_WEIGHT_PROD, this));
-        timeSeriesHandler.put(Factories.TimeSeries.TOTAL_DELTA, TimeSeriesFactory.get_serie(Factories.TimeSeries.TOTAL_DELTA, this));
+        timeSeriesHandler.put(Factories.TimeSeries.COUNTER_2_TABLE_AVG, TimeSeriesFactory.get_serie(Factories.TimeSeries.COUNTER_2_TABLE_AVG, this));
 
-
-
+        // TOTAL_DELTA
         timeSeriesHandler.put(Factories.TimeSeries.TOTAL_DELTA, TimeSeriesFactory.get_serie(Factories.TimeSeries.TOTAL_DELTA, this));
 
         setTimeSeriesHandler(timeSeriesHandler);
