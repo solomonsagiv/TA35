@@ -98,6 +98,7 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.weight_counter2_field, (int) client.getCounter2_weight(), false);
                 colorForgeRound(window.basket_field, (int) client.getCounter2_table_avg(), false);
                 colorForgeRound(window.counter2_table_avg_field, (int) client.getCounter2_table_avg(), false);
+                colorForgeRound(window.top_weight_counter_2_field_new, (int) client.getTop_weight_counter_2(), false);
                 
                 // O/P fields - op_avg values from WeekExp (formatted to 2 decimals)
                 window.op_avg_field.colorForge(client.getExps().getWeek().getOp_avg(), DF_2);
@@ -110,6 +111,7 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.future_month_counter_reset_field, client.getMonth_bid_ask_counter_change_since_op_avg_60_cross(), false);
                 colorForgeRound(window.basket_reset_field, (int) client.getCounter2_table_avg_change_since_op_avg_60_cross(), false);
                 colorForgeRound(window.counter2_table_avg_reset_field, (int) client.getCounter2_table_avg_change_since_op_avg_60_cross(), false);
+                colorForgeRound(window.top_weight_counter_2_reset_field, client.getTop_weight_counter_2_change_since_op_avg_60_cross(), false);
                 
                 // Reset fields - Value changes since op_avg_15 crossed zero
                 colorForgeRound(window.ind_race_reset_15_field, (int) client.getIndex_races_iw_change_since_op_avg_15_cross(), false);
@@ -118,6 +120,7 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.weight_counter2_reset_15_field, client.getWeight_counter2_change_since_op_avg_15_cross(), false);
                 colorForgeRound(window.basket_reset_15_field, (int) client.getCounter2_table_avg_change_since_op_avg_15_cross(), false);
                 colorForgeRound(window.counter2_table_avg_reset_15_field, (int) client.getCounter2_table_avg_change_since_op_avg_15_cross(), false);
+                colorForgeRound(window.top_weight_counter_2_reset_15_field, client.getTop_weight_counter_2_change_since_op_avg_15_cross(), false);
                 // Stocks count present
             }
         } catch (Exception e) {

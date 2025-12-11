@@ -53,7 +53,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             weight_counter1_reset_15_field, weight_counter2_reset_15_field, weight_delta_reset_15_field,
             basket_field, basket_reset_field, basket_reset_15_field,
             op_avg_field, op_avg_60_field, op_avg_15_field,
-            counter2_table_avg_field, counter2_table_avg_reset_field, counter2_table_avg_reset_15_field;
+            counter2_table_avg_field, counter2_table_avg_reset_field, counter2_table_avg_reset_15_field,
+            top_weight_counter_2_field_new, top_weight_counter_2_reset_field, top_weight_counter_2_reset_15_field;
 
     // Constructor
     public WindowTA35() {
@@ -266,13 +267,19 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             field -> future_month_counter_reset_15_field = field
         )));
         
-        columns.add(new ColumnConfig("cw", List.of(
+        columns.add(new ColumnConfig("Cw", List.of(
             field -> weight_counter2_field = field,
             field -> weight_counter2_reset_field = field,
             field -> weight_counter2_reset_15_field = field
         )));
 
-        columns.add(new ColumnConfig("C2Avg", List.of(
+        columns.add(new ColumnConfig("T60%", List.of(
+            field -> top_weight_counter_2_field_new = field,
+            field -> top_weight_counter_2_reset_field = field,
+            field -> top_weight_counter_2_reset_15_field = field
+        )));
+
+        columns.add(new ColumnConfig("CAvg", List.of(
             field -> counter2_table_avg_field = field,
             field -> counter2_table_avg_reset_field = field,
             field -> counter2_table_avg_reset_15_field = field
@@ -290,6 +297,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             field -> op_avg_15_field = field
         )));
         
+     
        
 
         // Create all columns

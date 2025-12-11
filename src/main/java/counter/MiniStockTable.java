@@ -177,7 +177,6 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         controlPanel.add(createColumn("C2 W:", counter_2_weight_field));
         controlPanel.add(createColumn("T60%:", top_weight_counter_2_field));
         controlPanel.add(createColumn("AVG:", top60_avg_counter_2_field));
-        controlPanel.add(createColumn("TOT D:", delta_field));
         controlPanel.add(createColumn("DELTA:", total_delta_field));
 
         JPanel midPanel = new JPanel(new GridLayout(1, 2, 15, 0));

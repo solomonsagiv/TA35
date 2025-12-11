@@ -302,18 +302,34 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
 
             double[][] newCurr = buildMatrixFromRows(newRows);
             
-            // Map previous values to new rows before updating
-            double[][] newPrev = remapPrevByStrike(rows, prevValues, newRows, getColumnCount());
+            // Map previous values to new rows based on strike matching
+            // This preserves previous values for comparison when strikes match
+            double[][] mappedPrev = remapPrevByStrike(rows, prevValues, newRows, getColumnCount());
 
             // Update rows first
             rows.clear();
             rows.addAll(newRows);
             
-            // Update values: store current as previous, then update current
-            prevValues = newPrev;
+            // Update previous values to mapped values (for comparison during rendering)
+            // This preserves previous values for comparison when strikes match
+            prevValues = mappedPrev;
+            
+            // Update current values
             currValues = newCurr;
             
+            // Fire change event to trigger repaint with comparison: oldPrevValues -> currValues
             fireTableDataChanged();
+            
+            // After rendering, update prevValues to current for next refresh
+            // This ensures that when values don't change, dir will be 0 and color returns to normal
+            SwingUtilities.invokeLater(() -> {
+                synchronized (this) {
+                    // Update prevValues to current values so next refresh will detect no change correctly
+                    if (currValues.length > 0 && currValues[0].length > 0) {
+                        prevValues = copy2D(currValues);
+                    }
+                }
+            });
         }
 
         private double[][] buildMatrixFromRows(List<Row> rs) {
@@ -430,14 +446,18 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
         }
 
         int getChangeDirection(int row, int col) {
-            if (row < 0 || row >= rows.size() || row >= prevValues.length || row >= currValues.length) return 0;
+            if (row < 0 || row >= rows.size()) return 0;
+            if (prevValues.length == 0 || currValues.length == 0) return 0;
+            if (row >= prevValues.length || row >= currValues.length) return 0;
+            if (prevValues[0].length == 0 || currValues[0].length == 0) return 0;
             if (col < 0 || col >= prevValues[0].length || col >= currValues[0].length) return 0;
             double prev = prevValues[row][col], curr = currValues[row][col];
             if (Double.isNaN(prev) || Double.isNaN(curr)) return 0;
-            // Use small tolerance for floating point comparison
+            // Use small tolerance for floating point comparison - if values are equal, return 0 (no change)
             double tolerance = 0.0001;
-            if (Math.abs(curr - prev) < tolerance) return 0;
-            return (curr > prev) ? 1 : -1;
+            double diff = curr - prev;
+            if (Math.abs(diff) < tolerance) return 0; // No change - will return to original color
+            return (diff > 0) ? 1 : -1;
         }
 
         Double getDeltaVsPrev(int row, int col) {

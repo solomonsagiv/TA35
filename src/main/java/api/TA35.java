@@ -79,6 +79,8 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
     private int weight_delta_at_op_avg_15_cross = 0;
     private double counter2_table_avg_at_op_avg_60_cross = 0.0;
     private double counter2_table_avg_at_op_avg_15_cross = 0.0;
+    private int top_weight_counter_2_at_op_avg_60_cross = 0;
+    private int top_weight_counter_2_at_op_avg_15_cross = 0;
 
     // Private constructor
     private TA35() {
@@ -416,6 +418,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
             week_bid_ask_counter_at_op_avg_60_cross = getExps().getWeek().getOptions().getBidAskCounter();
             month_bid_ask_counter_at_op_avg_60_cross = getExps().getMonth().getOptions().getBidAskCounter();
             counter2_table_avg_at_op_avg_60_cross = getCounter2_table_avg();
+            top_weight_counter_2_at_op_avg_60_cross = (int) getTop_weight_counter_2();
             
             // Reset op_avg_60 tracking
             op_avg_60_crossed_zero = true;
@@ -513,6 +516,7 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
             weight_counter2_at_op_avg_15_cross = (int) getCounter2_weight();
             weight_delta_at_op_avg_15_cross = (int) getDelta_weight();
             counter2_table_avg_at_op_avg_15_cross = getCounter2_table_avg();
+            top_weight_counter_2_at_op_avg_15_cross = (int) getTop_weight_counter_2();
             
             // Reset op_avg_15 tracking
             op_avg_15_crossed_zero = true;
@@ -597,6 +601,20 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
             return 0.0;
         }
         return getCounter2_table_avg() - counter2_table_avg_at_op_avg_15_cross;
+    }
+
+    public int getTop_weight_counter_2_change_since_op_avg_60_cross() {
+        if (!op_avg_60_crossed_zero) {
+            return 0;
+        }
+        return (int) getTop_weight_counter_2() - top_weight_counter_2_at_op_avg_60_cross;
+    }
+
+    public int getTop_weight_counter_2_change_since_op_avg_15_cross() {
+        if (!op_avg_15_crossed_zero) {
+            return 0;
+        }
+        return (int) getTop_weight_counter_2() - top_weight_counter_2_at_op_avg_15_cross;
     }
 
 
