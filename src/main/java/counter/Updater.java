@@ -96,9 +96,7 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.month_race_wm_field, (int) client.get_month_races_wm(), false);
                 colorForgeRound(window.future_week_counter_field, client.get_week_bid_ask_counter(), false);
                 colorForgeRound(window.future_month_counter_field, client.get_month_bid_ask_counter(), false);
-                colorForgeRound(window.weight_counter1_field, (int) client.getCounter1_weight(), false);
                 colorForgeRound(window.weight_counter2_field, (int) client.getCounter2_weight(), false);
-                colorForgeRound(window.weight_delta_field, (int) client.getDelta_weight(), false);
                 colorForgeRound(window.basket_field, (int) client.getCounter2_table_avg(), false);
                 
                 // O/P fields - op_avg values from WeekExp
@@ -120,9 +118,7 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.month_race_reset_15_field, (int) client.getMonth_races_wm_change_since_op_avg_15_cross(), false);
                 colorForgeRound(window.future_week_counter_reset_15_field, client.getWeek_bid_ask_counter_change_since_op_avg_15_cross(), false);
                 colorForgeRound(window.future_month_counter_reset_15_field, client.getMonth_bid_ask_counter_change_since_op_avg_15_cross(), false);
-                colorForgeRound(window.weight_counter1_reset_15_field, client.getWeight_counter1_change_since_op_avg_15_cross(), false);
                 colorForgeRound(window.weight_counter2_reset_15_field, client.getWeight_counter2_change_since_op_avg_15_cross(), false);
-                colorForgeRound(window.weight_delta_reset_15_field, client.getWeight_delta_change_since_op_avg_15_cross(), false);
                 colorForgeRound(window.basket_reset_15_field, (int) client.getCounter2_table_avg_change_since_op_avg_15_cross(), false);
                 // Stocks count present
             }
