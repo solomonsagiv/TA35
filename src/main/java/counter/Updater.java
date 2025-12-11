@@ -106,7 +106,7 @@ public class Updater extends MyThread implements Runnable {
                 } else {
                     window.top_weight_counter_2_field_new.setForeground(Themes.RED);
                 }
-                window.top_weight_counter_2_field_new.setText(DF_2.format(topWeightPercent) + "%");
+                window.top_weight_counter_2_field_new.setText(String.valueOf((int)Math.round(topWeightPercent)) + "%");
                 
                 // O/P fields - op_avg values from WeekExp (formatted to 2 decimals)
                 window.op_avg_field.colorForge(client.getExps().getWeek().getOp_avg(), DF_2);

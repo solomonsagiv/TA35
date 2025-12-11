@@ -448,7 +448,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 } else {
                     top_weight_counter_2_field.setForeground(Themes.RED);
                 }
-                top_weight_counter_2_field.setText(DF_PCT.format(topWeightPercent) + "%");
+                top_weight_counter_2_field.setText(String.valueOf((int)Math.round(topWeightPercent)) + "%");
                 
                 delta_field.colorForge((int)vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
                 delta_weight_field.colorForge((int)Math.round(TA35.getInstance().getDelta_weight()));

@@ -56,7 +56,7 @@ public class NewDataReaderService extends MyBaseService {
 
     // Rows (נשמרוקשתך)
     final int START_ROW_MONTH = 51;
-    final int END_ROW_MONTH = 79;
+    final int END_ROW_MONTH = 110;
 
     private Options optionsMonth, optionsWeek;
 
