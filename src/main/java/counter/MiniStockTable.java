@@ -365,7 +365,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
      * Override applyDarkMode כדי לעדכן את כל הצבעים בטבלה
      */
     @Override
-    protected void applyDarkMode() {
+    public void applyDarkMode() {
         super.applyDarkMode();
         updateTableColors();
         // Update all panels in the summary panel
