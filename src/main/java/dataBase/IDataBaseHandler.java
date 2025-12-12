@@ -346,51 +346,6 @@ public abstract class IDataBaseHandler {
         }
     }
 
-    public void load_exp_data() {
-        try {
-            ExpWeek week = client.getExps().getWeek();
-            ExpMonth month = client.getExps().getMonth();
-
-            int baskets_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BASKETS);
-            int last_price_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.LAST_PRICE);
-            int df_4_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.DF_4_CDF_OLD);
-            int df_8_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.DF_8_CDF_OLD);
-            int df_5_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.DF_5_CDF_OLD);
-            int df_6_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.DF_6_CDF_OLD);
-
-            double baskets_exp_week = Queries.handle_rs(Queries.get_exp_data(TA35.getInstance(), baskets_id, Props.EXP_WEEK_START, MySql.JIBE_PROD_CONNECTION));
-            double baskets_exp_month = Queries.handle_rs(Queries.get_exp_data(TA35.getInstance(), baskets_id, Props.EXP_MONTH_START, MySql.JIBE_PROD_CONNECTION));
-            double start_exp_week = Queries.handle_rs(Queries.get_start_exp_mega(last_price_id, TA35.getInstance(), Props.EXP_WEEK_START, MySql.JIBE_PROD_CONNECTION));
-            double start_exp_month = Queries.handle_rs(Queries.get_start_exp_mega(last_price_id, TA35.getInstance(), Props.EXP_MONTH_START, MySql.JIBE_PROD_CONNECTION));
-
-            double v4_week = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), df_4_id, Props.EXP_WEEK_START, MySql.JIBE_PROD_CONNECTION));
-            double v8_week = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), df_8_id, Props.EXP_WEEK_START, MySql.JIBE_PROD_CONNECTION));
-
-            double v5_month = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), df_5_id, Props.EXP_MONTH_START, MySql.JIBE_PROD_CONNECTION));
-            double v6_month = Queries.handle_rs(Queries.get_exp_data_by_candle(TA35.getInstance(), df_6_id, Props.EXP_MONTH_START, MySql.JIBE_PROD_CONNECTION));
-
-            // Start
-            week.getExpData().setStart(start_exp_week);
-            month.getExpData().setStart(start_exp_month);
-
-            // Baskets
-            week.getExpData().setBaskets((int) baskets_exp_week);
-            month.getExpData().setBaskets((int) baskets_exp_month);
-
-            // DF
-            // Week
-            week.getExpData().setV4(v4_week);
-            week.getExpData().setV8(v8_week);
-
-            // Month
-            month.getExpData().setV5(v5_month);
-            month.getExpData().setV6(v6_month);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public List<Map<String, Object>> get_exp_data(String target_table_location, String exp, int result_type) {
         String q = "";
 

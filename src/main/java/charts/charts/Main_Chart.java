@@ -43,7 +43,7 @@ public class Main_Chart extends MyChartCreator {
         // ----------------------------------------- //
 
         // Index
-        MyTimeSeries index_with_bid_ask_Serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.MID_DEV, client);
+        MyTimeSeries index_with_bid_ask_Serie = TimeSeriesFactory.get_serie(Factories.TimeSeries.MID, client);
         index_with_bid_ask_Serie.setColor(Color.BLACK);
         index_with_bid_ask_Serie.setStokeSize(1.2f);
 

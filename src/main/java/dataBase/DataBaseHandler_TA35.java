@@ -25,9 +25,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> mid_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> mid_races_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> month_races_timeStamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> op_week_interest_timeStamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> op_month_interest_timeStamp = new ArrayList<>();
-    ArrayList<MyTimeStampObject> roll_interest_timeStamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> baskets_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> month_counter_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> week_counter_timestamp = new ArrayList<>();
@@ -37,6 +34,8 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
     ArrayList<MyTimeStampObject> counter_2_tot_weight_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> total_delta_timestamp = new ArrayList<>();
     ArrayList<MyTimeStampObject> counter2_table_avg_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> future_week_timestamp = new ArrayList<>();
+    ArrayList<MyTimeStampObject> future_month_timestamp = new ArrayList<>();
 
     ArrayList<MyTimeSeries> timeSeries;
     Race_Logic wi_race, wm_race;
@@ -47,9 +46,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             last_0 = 0,
             mid_0 = 0,
             mid_races_0 = 0,
-            op_week_interest_0 = 0,
-            op_month_interest_0 = 0,
-            roll_interest_0 = 0,
             baskets_0 = 0,
             month_races_0 = 0,
             month_counter_0 = 0,
@@ -59,7 +55,9 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
             delta_tot_pos_weight_0 = 0,
             counter_2_tot_weight_0 = 0,
             total_delta_0 = 0,
-            counter2_table_avg_0 = 0;
+            counter2_table_avg_0 = 0, 
+            future_week_0 = 0,
+            future_month_0 = 0;
 
     public DataBaseHandler_TA35(BASE_CLIENT_OBJECT client) {
         super(client);
@@ -365,8 +363,20 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
 
             // Index ask synthetic
             if (client.getAsk() != ask_0) {
-                ask_0 = client.getAsk();
                 ask_timestamp.add(new MyTimeStampObject(Instant.now(), ask_0));
+                ask_0 = client.getAsk();
+            }
+
+            // Future week
+            if (week_options.getContract() != future_week_0) {
+                future_week_timestamp.add(new MyTimeStampObject(Instant.now(), future_week_0));
+                future_week_0 = week_options.getContract();
+            }
+
+            // Future month
+            if (month_options.getContract() != future_month_0) {
+                future_month_timestamp.add(new MyTimeStampObject(Instant.now(), future_month_0));
+                future_month_0 = month_options.getContract();
             }
 
             // BA tot pos weight
@@ -429,33 +439,6 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                     month_races_timeStamp.add(new MyTimeStampObject(Instant.now(), last_count));
                 }
                 month_races_0 = month_races;
-            }
-
-            // OP week interest
-            double week_interest = client.getOp_week_interest();
-            if (week_interest != op_week_interest_0) {
-                if (L.abs(week_interest) < 10) {
-                    op_week_interest_0 = week_interest;
-                    op_week_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), op_week_interest_0));
-                }
-            }
-
-            // OP month interest
-            double month_interest = client.getOp_month_interest();
-            if (month_interest != op_month_interest_0) {
-                if (L.abs(month_interest) < 10) {
-                    op_month_interest_0 = month_interest;
-                    op_month_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), op_month_interest_0));
-                }
-            }
-
-            // Roll interest
-            double roll_interest = client.getRoll_interest();
-            if (roll_interest != roll_interest_0) {
-                if (L.abs(roll_interest) < 10) {
-                    roll_interest_0 = roll_interest;
-                    roll_interest_timeStamp.add(new MyTimeStampObject(Instant.now(), roll_interest_0));
-                }
             }
 
             // Month bid ask counter
@@ -613,16 +596,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
                 "Insert !!!!! -------------------------- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + sleep_count);
 
         // Interest
-        int prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_WEEK_INTEREST_PROD);
-        insert_dev_prod(op_week_interest_timeStamp, prod_id);
-
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.OP_MONTH_INTEREST_PROD);
-        insert_dev_prod(op_month_interest_timeStamp, prod_id);
-
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ROLL_INTEREST_PROD);
-        insert_dev_prod(roll_interest_timeStamp, prod_id);
-
-        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BASKETS);
+        int prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BASKETS);
         insert_dev_prod(baskets_timestamp, prod_id);
 
         // Last
@@ -630,7 +604,7 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         insert_dev_prod(last_timestamp, prod_id);
 
         // Mid
-        prod_id = 0;
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
         insert_dev_prod(mid_timestamp, prod_id);
 
         // Bid
@@ -640,6 +614,15 @@ public class DataBaseHandler_TA35 extends IDataBaseHandler {
         // Ask
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ASK);
         insert_dev_prod(ask_timestamp, prod_id);
+
+
+        // Future week
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_WEEK);
+        insert_dev_prod(future_week_timestamp, prod_id);
+
+        // Future month
+        prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.FUTURE_MONTH);
+        insert_dev_prod(future_month_timestamp, prod_id);
 
         // Index race
         prod_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX_RACES_WI);

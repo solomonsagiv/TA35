@@ -186,7 +186,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         summaryPanel.add(controlPanel);
         summaryPanel.add(midPanel);
         add(summaryPanel, BorderLayout.NORTH);
-        
+        , 
         // Apply initial colors based on dark mode
         if (Themes.isDarkMode()) {
             controlPanel.setBackground(Themes.getPanelBackgroundColor());
@@ -439,7 +439,9 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 double[] vals = Calculator.get_stocks_counters();
 
                 // עדכון ה-KPIs העליונים
-                counter_2_weight_field.colorForge((int)vals[Calculator.COUNTER_2_WEIGHT_POSITIVE]);
+                int counter2WeightValue = (int)vals[Calculator.COUNTER_2_WEIGHT_POSITIVE];
+                counter_2_weight_field.colorForge(counter2WeightValue);
+                counter_2_weight_field.setText(counter_2_weight_field.getText() + "%");
                 
                 // Update top_weight_counter_2 as percentage with % sign and color coding (>50 green, <50 red)
                 double topWeightPercent = TA35.getInstance().getTop_weight_counter_2();
@@ -451,10 +453,14 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
                 top_weight_counter_2_field.setText(String.valueOf((int)Math.round(topWeightPercent)) + "%");
                 
                 delta_field.colorForge((int)vals[Calculator.DELTA_WEIGHT_POSITIVE_STOCKS]);
-                delta_weight_field.colorForge((int)Math.round(TA35.getInstance().getDelta_weight()));
+                int deltaWeightValue = (int)Math.round(TA35.getInstance().getDelta_weight());
+                delta_weight_field.colorForge(deltaWeightValue);
+                delta_weight_field.setText(delta_weight_field.getText() + "%");
                 
                 // Get counter2_table_avg from BASE_CLIENT_OBJECT (calculated in Calculator.get_stocks_counters)
-                top60_avg_counter_2_field.colorForge((int) Math.round(TA35.getInstance().getCounter2_table_avg()));
+                int top60AvgValue = (int) Math.round(TA35.getInstance().getCounter2_table_avg());
+                top60_avg_counter_2_field.colorForge(top60AvgValue);
+                top60_avg_counter_2_field.setText(top60_avg_counter_2_field.getText() + "%");
 
 
                 double[] midVals = Calculator.get_midle_stocks_ba_counter();

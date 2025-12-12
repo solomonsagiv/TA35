@@ -96,6 +96,7 @@ public class Updater extends MyThread implements Runnable {
                 colorForgeRound(window.future_week_counter_field, client.get_week_bid_ask_counter(), false);
                 colorForgeRound(window.future_month_counter_field, client.get_month_bid_ask_counter(), false);
                 colorForgeRound(window.weight_counter2_field, (int) client.getCounter2_weight(), false);
+                window.weight_counter2_field.setText(window.weight_counter2_field.getText() + "%");
                 colorForgeRound(window.basket_field, (int) client.getCounter2_table_avg(), false);
                 colorForgeRound(window.counter2_table_avg_field, (int) client.getCounter2_table_avg(), false);
                 

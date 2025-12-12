@@ -71,7 +71,7 @@ public class TA90 extends BASE_CLIENT_OBJECT {
         timeSeriesHandler.put_id(Factories.TimeSeries.LAST_PRICE, 10069);
         timeSeriesHandler.put_id(Factories.TimeSeries.BID, 10070);
         timeSeriesHandler.put_id(Factories.TimeSeries.ASK, 10071);
-        timeSeriesHandler.put_id(Factories.TimeSeries.MID_DEV, 10072);
+        timeSeriesHandler.put_id(Factories.TimeSeries.MID, 10072);
     }
 
     @Override

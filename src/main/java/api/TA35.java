@@ -153,6 +153,9 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
         timeSeriesHandler.put(Factories.TimeSeries.DF_6_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_6_CDF_OLD, this));
         timeSeriesHandler.put(Factories.TimeSeries.DF_8_CDF_OLD, TimeSeriesFactory.get_serie(Factories.TimeSeries.DF_8_CDF_OLD, this));
 
+        timeSeriesHandler.put(Factories.TimeSeries.LAST_PRICE, TimeSeriesFactory.get_serie(Factories.TimeSeries.LAST_PRICE, this));
+        timeSeriesHandler.put(Factories.TimeSeries.MID, TimeSeriesFactory.get_serie(Factories.TimeSeries.MID, this));
+
         timeSeriesHandler.put(Factories.TimeSeries.ROLL_900, TimeSeriesFactory.get_serie(Factories.TimeSeries.ROLL_900, this));
         timeSeriesHandler.put(Factories.TimeSeries.ROLL_3600, TimeSeriesFactory.get_serie(Factories.TimeSeries.ROLL_3600, this));
 
@@ -189,11 +192,11 @@ public class TA35 extends INDEX_OBJECT implements IJsonData {
 
         setTimeSeriesHandler(timeSeriesHandler);
 
-        timeSeriesHandler.put_id(Factories.TimeSeries.INDEX, 10182);
+        // timeSeriesHandler.put_id(Factories.TimeSeries.INDEX, 10182);
         timeSeriesHandler.put_id(Factories.TimeSeries.BID, 10180);
         timeSeriesHandler.put_id(Factories.TimeSeries.ASK, 10181);
-        timeSeriesHandler.put_id(Factories.TimeSeries.MID_DEV, 11997);
-        timeSeriesHandler.put_id(Factories.TimeSeries.LAST_PRICE, 10182);
+        timeSeriesHandler.put_id(Factories.TimeSeries.MID, 10182);
+        timeSeriesHandler.put_id(Factories.TimeSeries.LAST_PRICE, 10185);
         timeSeriesHandler.put_id(Factories.TimeSeries.BASKETS, 9513);
         timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_WEEK, 10183);
         timeSeriesHandler.put_id(Factories.TimeSeries.FUTURE_MONTH, 10184);

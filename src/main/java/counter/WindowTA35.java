@@ -26,6 +26,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public static JButton start;
     private MyGuiComps.MyPanel bottomPanel;
     public static JTextArea log;
+    private java.util.List<MyGuiComps.MyPanel> separators = new ArrayList<>();
 
     public MyGuiComps.MyTextField v5_field;
     public MyGuiComps.MyTextField v6_field;
@@ -44,13 +45,13 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     private MyGuiComps.MyButton btnDetails;
 
     public MyGuiComps.MyTextField index_races_iw_field, week_races_iw_field,
-            week_races_wm_field, month_race_wm_field, future_week_counter_field, future_month_counter_field, weight_counter1_field, weight_counter2_field, weight_delta_field,
+            week_races_wm_field, month_race_wm_field, future_week_counter_field, future_month_counter_field, weight_counter2_field, weight_delta_field,
             ind_race_reset_field, week_race_reset_field, month_race_reset_field,
             future_week_counter_reset_field, future_month_counter_reset_field,
-            weight_counter1_reset_field, weight_counter2_reset_field, weight_delta_reset_field,
+            weight_counter2_reset_field, weight_delta_reset_field,
             ind_race_reset_15_field, week_race_reset_15_field, month_race_reset_15_field,
             future_week_counter_reset_15_field, future_month_counter_reset_15_field,
-            weight_counter1_reset_15_field, weight_counter2_reset_15_field, weight_delta_reset_15_field,
+            weight_counter2_reset_15_field, weight_delta_reset_15_field,
             basket_field, basket_reset_field, basket_reset_15_field,
             op_avg_field, op_avg_60_field, op_avg_15_field,
             counter2_table_avg_field, counter2_table_avg_reset_field, counter2_table_avg_reset_15_field,
@@ -115,19 +116,27 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     protected void applyDarkMode() {
         super.applyDarkMode();
         
+        // Update separator colors
+        Color separatorColor = Themes.isDarkMode() ? new Color(0x666666) : new Color(0xCCCCCC);
+        for (MyGuiComps.MyPanel separator : separators) {
+            if (separator != null) {
+                separator.setBackground(separatorColor);
+            }
+        }
+        
         // Update all TextFields explicitly
         MyGuiComps.MyTextField[] allFields = {
             v2_field, v5_field, v6_field, v7_field,
             basket_up_field, basket_down_field, basketsSumField,
             index_races_iw_field, week_races_iw_field, week_races_wm_field, month_race_wm_field,
             future_week_counter_field, future_month_counter_field,
-            weight_counter1_field, weight_counter2_field, weight_delta_field,
+            weight_counter2_field, weight_delta_field,
             ind_race_reset_field, week_race_reset_field, month_race_reset_field,
             future_week_counter_reset_field, future_month_counter_reset_field,
-            weight_counter1_reset_field, weight_counter2_reset_field, weight_delta_reset_field,
+            weight_counter2_reset_field, weight_delta_reset_field,
             ind_race_reset_15_field, week_race_reset_15_field, month_race_reset_15_field,
             future_week_counter_reset_15_field, future_month_counter_reset_15_field,
-            weight_counter1_reset_15_field, weight_counter2_reset_15_field, weight_delta_reset_15_field
+            weight_counter2_reset_15_field, weight_delta_reset_15_field
         };
         
         for (MyGuiComps.MyTextField field : allFields) {
@@ -204,6 +213,25 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         }
 
         return x + columnWidth + 1;
+    }
+
+    /**
+     * Creates a vertical separator line after a column
+     * @param x the x position where the separator should be placed
+     * @param y the y position (top)
+     * @param height the height of the separator
+     */
+    private void createSeparator(int x, int y, int height) {
+        MyGuiComps.MyPanel separator = new MyGuiComps.MyPanel();
+        separator.setBounds(x, y, 2, height);
+        // Use appropriate color based on dark mode
+        if (Themes.isDarkMode()) {
+            separator.setBackground(new Color(0x666666)); // Darker gray for dark mode
+        } else {
+            separator.setBackground(new Color(0xCCCCCC)); // Light gray for light mode
+        }
+        getContentPane().add(separator);
+        separators.add(separator);
     }
 
     /**
@@ -306,6 +334,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         for (ColumnConfig column : columns) {
             currentX = createColumn(currentX, startY, columnWidth, headerHeight, fieldHeight, 
                                     fieldSpacing, maxPanelsHeight, headerBg, column);
+            
+            // Add separator after FMonth and CAvg columns
+            if ("FMonth".equals(column.label) || "CAvg".equals(column.label)) {
+                createSeparator(currentX - 1, startY, maxPanelsHeight);
+            }
         }
 
         // Log Panel

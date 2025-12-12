@@ -32,14 +32,14 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void updateData() {
-                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX);
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
                         double val = Queries.handle_rs(Queries.get_serie_moving_avg(id, 60, MySql.JIBE_PROD_CONNECTION));
                         setValue(val);
                     }
 
                     @Override
                     public void load() {
-                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX);
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
                         List<Map<String, Object>> rs = Queries.get_cumulative_avg_serie(id, 60, MySql.JIBE_PROD_CONNECTION);
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
@@ -55,7 +55,7 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void updateData() {
-                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX);
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
                         double val = Queries.handle_rs(Queries.get_serie_moving_avg(id, 15, MySql.JIBE_PROD_CONNECTION));
                         setValue(val);
 
@@ -63,12 +63,28 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.INDEX);
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
                         List<Map<String, Object>> rs = Queries.get_cumulative_avg_serie(id, 15, MySql.JIBE_PROD_CONNECTION);
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
                 };
 
+            case Factories.TimeSeries.LAST_PRICE:
+                return new MyTimeSeries(Factories.TimeSeries.LAST_PRICE, client) {
+                    @Override
+                    public double getValue() {
+                        return client.getLast_price();
+                    }
+                    @Override
+                    public void load() {
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.LAST_PRICE);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
+                        IDataBaseHandler.loadSerieData(rs, this);
+                    }
+                    @Override
+                    public void updateData() {
+                    }
+                };
 
             case Factories.TimeSeries.ROLL_900:
                 return new MyTimeSeries(Factories.TimeSeries.ROLL_900, client) {
@@ -155,8 +171,8 @@ public class TimeSeriesFactory {
                 };
 
 
-            case Factories.TimeSeries.MID_DEV:
-                return new MyTimeSeries(Factories.TimeSeries.MID_DEV, client) {
+            case Factories.TimeSeries.MID:
+                return new MyTimeSeries(Factories.TimeSeries.MID, client) {
 
                     @Override
                     public double getValue() {
@@ -165,9 +181,8 @@ public class TimeSeriesFactory {
 
                     @Override
                     public void load() {
-                        int bid_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.BID);
-                        int ask_id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.ASK);
-                        List<Map<String, Object>> rs = Queries.get_index_with_bid_ask_series(bid_id, ask_id, MySql.JIBE_PROD_CONNECTION);
+                        int id = client.getTimeSeriesHandler().get_id(Factories.TimeSeries.MID);
+                        List<Map<String, Object>> rs = Queries.get_serie_mega_table(id, MySql.RAW, MySql.JIBE_PROD_CONNECTION);
                         IDataBaseHandler.loadSerieData(rs, this);
                     }
 
