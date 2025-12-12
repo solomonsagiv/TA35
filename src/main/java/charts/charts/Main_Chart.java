@@ -7,7 +7,6 @@ import dataBase.mySql.MySql;
 import dataBase.mySql.Queries;
 import locals.Themes;
 import api.TA35;
-import org.jfree.chart.plot.ValueMarker;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;

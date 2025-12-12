@@ -43,6 +43,10 @@ public abstract class BASE_CLIENT_OBJECT {
     private double op_month_interest_avg = 0;
     private double op_week_interest = 0;
 
+
+    private double current_strike = 0;
+
+
     private double counter1_weight = 0,
                 delta_weight = 0, 
                 counter2_weight = 0, 
@@ -104,6 +108,14 @@ public abstract class BASE_CLIENT_OBJECT {
 
     public double getLowPresent() {
         return L.floor(((low - base) / base) * 100, 100);
+    }
+
+    public double getCurrent_strike() {
+        return current_strike;
+    }
+
+    public void setCurrent_strike(double current_strike) {
+        this.current_strike = current_strike;
     }
 
     public double get_ask_last_margin() {

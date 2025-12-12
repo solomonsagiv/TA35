@@ -100,6 +100,52 @@ public class MyChartContainer extends JFrame {
                 chart.applyDarkMode();
             }
         }
+        
+        // Update all ChartPanel components recursively
+        updateAllComponents(getContentPane());
+    }
+    
+    /**
+     * Recursively updates all components in the container for dark mode
+     */
+    private void updateAllComponents(Container container) {
+        if (container == null) return;
+        
+        // Update container background
+        if (container instanceof JComponent) {
+            JComponent comp = (JComponent) container;
+            if (Themes.isDarkMode()) {
+                comp.setBackground(Themes.DARK_BLUE_BG);
+            } else {
+                comp.setBackground(Color.WHITE);
+            }
+        }
+        
+        // Update all child components
+        for (Component comp : container.getComponents()) {
+            if (comp instanceof charts.MyChartPanel) {
+                charts.MyChartPanel chartPanel = (charts.MyChartPanel) comp;
+                if (Themes.isDarkMode()) {
+                    chartPanel.setBackground(Themes.DARK_BLUE_BG);
+                } else {
+                    chartPanel.setBackground(Color.WHITE);
+                }
+                
+                // Update labels in chart panel
+                if (chartPanel.getHighLbl() != null) {
+                    chartPanel.getHighLbl().setForeground(Themes.isDarkMode() ? Themes.WHITE_TEXT : Themes.BLUE);
+                }
+                if (chartPanel.getLowLbl() != null) {
+                    chartPanel.getLowLbl().setForeground(Themes.isDarkMode() ? Themes.WHITE_TEXT : Themes.BLUE);
+                }
+                if (chartPanel.getLastLbl() != null) {
+                    chartPanel.getLastLbl().setForeground(Themes.isDarkMode() ? Themes.WHITE_TEXT : Themes.BLUE);
+                }
+            } else if (comp instanceof Container) {
+                // Recursively update child containers
+                updateAllComponents((Container) comp);
+            }
+        }
     }
 
     private void load_data() {
@@ -163,6 +209,11 @@ public class MyChartContainer extends JFrame {
             addPan(chartPanel);
             mouseListener(chartPanel, myChart, this);
             add(chartPanel);
+            
+            // Apply dark mode to chart panel if enabled
+            if (Themes.isDarkMode()) {
+                chartPanel.setBackground(Themes.DARK_BLUE_BG);
+            }
         }
     }
 

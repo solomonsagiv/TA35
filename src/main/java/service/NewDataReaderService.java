@@ -37,6 +37,9 @@ public class NewDataReaderService extends MyBaseService {
     String interest = "R2C23";
     String day_to_exp = "R2C24";
 
+    String current_strike_cell = "R2C26";
+    String status_cell = "R2C25";
+
     DDEClientConversation conversation;        // נשאר ל-HEAD/אופציות (כמו שהיה)
 
     TA35 ta35;
@@ -119,6 +122,8 @@ public class NewDataReaderService extends MyBaseService {
                 // Reset sleep count
                 if (sleepCount == 10000)  {
                     sleepCount = 0;
+                    write_current_strike();
+                    write_status();
                 }
 
                 // Read options – נשמר כתגובה (מושבת)
@@ -126,6 +131,22 @@ public class NewDataReaderService extends MyBaseService {
 
             }
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void write_current_strike() {
+        try {
+            conversation.poke(current_strike_cell, String.valueOf(ta35.getCurrent_strike()));
+        } catch (DDEException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void write_status() {
+        try {
+            conversation.poke(status_cell, String.valueOf(ta35.getStatus()));
+        } catch (DDEException e) {
             e.printStackTrace();
         }
     }

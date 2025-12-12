@@ -37,10 +37,11 @@ public class BackGroundRunner extends MyThread implements Runnable {
 
     // Rando
     LocalTime end_day = LocalTime.of(17, 25, 0);
-
+    LocalTime start_day = LocalTime.of(9, 59, 0);
     JSONArray j;
 
     api.TA35 client;
+
 
     double index = 0;
 
@@ -82,7 +83,9 @@ public class BackGroundRunner extends MyThread implements Runnable {
                     if (client.isDb_loaded()) {
 
                         // Open charts
-                        if (StocksReaderService.initStocksCells && client.getStatus() == 0 && !open_charts && index != client.getIndex() && ask > bid && !client.isStarted()) {
+                        if (StocksReaderService.initStocksCells && LocalTime.now().isAfter(start_day) && LocalTime.now().isBefore(end_day) 
+                            && !open_charts && index != client.getIndex() && ask > bid && !client.isStarted()) {
+                            client.setStatus(0);
                             client.start();
                             start_stocks();
                        
@@ -93,7 +96,8 @@ public class BackGroundRunner extends MyThread implements Runnable {
                         }
 
                         // End of day
-                        if (client.getStatus() != 0 && LocalTime.now().isAfter(end_day)) {
+                        if (LocalTime.now().isAfter(end_day)) {
+                            client.setStatus(1);
                             client.close();
                             exported = true;
                         }

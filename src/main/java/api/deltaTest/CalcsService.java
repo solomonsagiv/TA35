@@ -5,6 +5,7 @@ import api.Manifest;
 import api.TA35;
 import blackScholes.FairIVCalc;
 import dataBase.mySql.MySql;
+import locals.L;
 import backTest.Writer;
 import options.Options;
 import service.MyBaseService;
@@ -63,13 +64,22 @@ public class CalcsService extends MyBaseService {
                 writer = new Writer(TA35.getInstance());
                 writer.write_iv();
             }
+
+            // Set strikes
+            set_strikes();
         }
     }
     
     private void set_strikes() {
+        // If the current strike is 0, set the current strike to the nearest 10
         if (current_strike == 0) {
-            current_strike = client.getMid();
+            current_strike = L.roundTo(client.getMid(), 10);
         }
+        // If the mid is more than 30 points away from the current strike, round the mid to the nearest 10
+        if (client.getMid() > current_strike + 30 || client.getMid() < current_strike - 30) { 
+            current_strike = L.roundTo(client.getMid(), 10);
+        }
+
     }
 
     /**

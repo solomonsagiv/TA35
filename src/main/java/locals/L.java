@@ -27,10 +27,12 @@ public class L {
 
 	public static DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 
-
 	public static void main(String[] args) {
-		System.out.println(L.round(105090.45, 2));
-		
+		System.out.println(L.roundTo(3655.45, 10));
+	}
+
+	public static int roundTo(double value, int roundTo) {
+		return ((int)(value / roundTo)) * roundTo;
 	}
 
 	public static double modulu(double value) {
@@ -137,6 +139,7 @@ public class L {
 	public static double round(double d, int places) {
 		return Math.round(d * Math.pow(10, places)) / Math.pow(10, places);
 	}
+
 
 	public static DecimalFormat format10() {
 		if (df10 == null) {
