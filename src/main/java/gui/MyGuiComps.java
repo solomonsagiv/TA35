@@ -88,7 +88,7 @@ public class MyGuiComps {
             popup.show(e.getComponent(), e.getX(), e.getY());
         }
         
-        protected void applyDarkMode() {
+        public void applyDarkMode() {
             // This will be overridden in subclasses to apply dark mode
             updateDarkMode();
         }

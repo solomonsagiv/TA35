@@ -89,7 +89,7 @@ public class MyChartContainer extends JFrame {
         popup.show(e.getComponent(), e.getX(), e.getY());
     }
     
-    private void applyDarkMode() {
+    public void applyDarkMode() {
         // Update frame background using Themes helper methods
         setBackground(Themes.getBackgroundColor());
         getContentPane().setBackground(Themes.getBackgroundColor());

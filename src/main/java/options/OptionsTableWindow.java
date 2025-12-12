@@ -112,6 +112,14 @@ public class OptionsTableWindow extends MyGuiComps.MyFrame {
     @Override
     public void initListeners() {
     }
+    
+    @Override
+    public void applyDarkMode() {
+        super.applyDarkMode();
+        if (table != null) {
+            table.refresh();
+        }
+    }
 
     @Override
     public void initialize() {

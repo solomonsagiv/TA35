@@ -27,6 +27,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     private MyGuiComps.MyPanel bottomPanel;
     public static JTextArea log;
     private java.util.List<MyGuiComps.MyPanel> separators;
+    private MyGuiComps.MyButton darkModeBtn;
 
     public MyGuiComps.MyTextField v5_field;
     public MyGuiComps.MyTextField v6_field;
@@ -113,7 +114,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     }
     
     @Override
-    protected void applyDarkMode() {
+    public void applyDarkMode() {
         super.applyDarkMode();
         
         // Update separator colors
@@ -155,6 +156,11 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         if (log != null) {
             log.setBackground(Themes.getLogBackgroundColor());
             log.setForeground(Themes.getTextFieldForegroundColor());
+        }
+        
+        // Update dark mode button text
+        if (darkModeBtn != null) {
+            updateDarkModeButtonText(darkModeBtn);
         }
         // Note: Charts will be updated when they are created/refreshed
         // For existing charts, they would need to be accessed and updated
@@ -337,8 +343,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
             currentX = createColumn(currentX, startY, columnWidth, headerHeight, fieldHeight, 
                                     fieldSpacing, maxPanelsHeight, headerBg, column);
             
-            // Add separator after FMonth and CAvg columns
-            if ("FMonth".equals(column.label) || "CAvg".equals(column.label)) {
+            // Add separator after Sec, FMonth and CAvg columns
+            if ("Sec".equals(column.label) || "FMonth".equals(column.label) || "CAvg".equals(column.label)) {
                 createSeparator(currentX - 1, startY, maxPanelsHeight);
             }
         }
@@ -385,6 +391,20 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         btnDetails.setBackground(Themes.getButtonBackgroundColor());
         btnDetails.setBounds(88, 7, 72, 23);
         bottomPanel.add(btnDetails);
+        
+        // Dark Mode Toggle Button
+        darkModeBtn = new MyGuiComps.MyButton("Dark Mode");
+        darkModeBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent arg0) {
+                toggleDarkModeForAllWindows();
+            }
+        });
+        darkModeBtn.setBorder(null);
+        darkModeBtn.setForeground(Themes.getButtonForegroundColor());
+        darkModeBtn.setBackground(Themes.getButtonBackgroundColor());
+        darkModeBtn.setBounds(btnDetails.getX() + btnDetails.getWidth() + 5, 7, 100, 23);
+        bottomPanel.add(darkModeBtn);
+        updateDarkModeButtonText(darkModeBtn);
 
         JComboBox<String> chartsCombo = new JComboBox<>(new String[]{"Real time", "Main", "Races", "Stocks", "Options"});
         chartsCombo.setBounds(start.getX() + start.getWidth() + 5, 8, 182, 23);
@@ -417,6 +437,52 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
         chartsCombo.setForeground(Themes.getTextColor());
         chartsCombo.setFont(new Font("Dubai Medium", Font.PLAIN, 15));
         ((JLabel) chartsCombo.getRenderer()).setHorizontalAlignment(JLabel.CENTER);
+    }
+    
+    /**
+     * Toggles dark mode for all open windows
+     */
+    private void toggleDarkModeForAllWindows() {
+        Themes.toggleDarkMode();
+        updateAllWindowsDarkMode();
+    }
+    
+    /**
+     * Updates dark mode for all open windows
+     */
+    private void updateAllWindowsDarkMode() {
+        // Update this window
+        applyDarkMode();
+        
+        // Update all MyFrame windows (OptionsTableWindow, MiniStockTable, etc.)
+        Frame[] frames = Frame.getFrames();
+        for (Frame frame : frames) {
+            if (frame instanceof MyGuiComps.MyFrame) {
+                MyGuiComps.MyFrame myFrame = (MyGuiComps.MyFrame) frame;
+                if (myFrame != this) {
+                    myFrame.applyDarkMode();
+                }
+            } else if (frame instanceof charts.myChart.MyChartContainer) {
+                charts.myChart.MyChartContainer container = (charts.myChart.MyChartContainer) frame;
+                container.applyDarkMode();
+            }
+        }
+        
+        // Update dark mode button text
+        if (darkModeBtn != null) {
+            updateDarkModeButtonText(darkModeBtn);
+        }
+    }
+    
+    /**
+     * Updates the dark mode button text
+     */
+    private void updateDarkModeButtonText(MyGuiComps.MyButton btn) {
+        if (Themes.isDarkMode()) {
+            btn.setText("Light Mode");
+        } else {
+            btn.setText("Dark Mode");
+        }
     }
 
     public static void openCharts() {
