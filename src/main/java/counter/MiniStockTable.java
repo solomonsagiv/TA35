@@ -186,7 +186,7 @@ public class MiniStockTable extends MyGuiComps.MyFrame {
         summaryPanel.add(controlPanel);
         summaryPanel.add(midPanel);
         add(summaryPanel, BorderLayout.NORTH);
-        , 
+
         // Apply initial colors based on dark mode
         if (Themes.isDarkMode()) {
             controlPanel.setBackground(Themes.getPanelBackgroundColor());

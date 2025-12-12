@@ -26,7 +26,7 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
     public static JButton start;
     private MyGuiComps.MyPanel bottomPanel;
     public static JTextArea log;
-    private java.util.List<MyGuiComps.MyPanel> separators = new ArrayList<>();
+    private java.util.List<MyGuiComps.MyPanel> separators;
 
     public MyGuiComps.MyTextField v5_field;
     public MyGuiComps.MyTextField v6_field;
@@ -239,6 +239,8 @@ public class WindowTA35 extends MyGuiComps.MyFrame {
      */
     @Override
     public void initialize() {
+
+        separators = new ArrayList<>();
 
         int columnWidth = 55;
         int headerHeight = 25;
